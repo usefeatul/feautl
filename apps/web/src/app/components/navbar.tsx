@@ -4,9 +4,9 @@ import { TwitterIcon } from "@feedgot/ui/icons/twitter"
 export function Navbar() {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-6">
-      <nav className="flex items-center justify-between px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full shadow-lg w-full max-w-4xl">
-        <div className="text-white text-xl font-bold">
-          feedgot
+      <nav className="flex items-center justify-between px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-sm shadow-lg w-full max-w-4xl">
+        <div className="flex items-center">
+          <img src="/logo.svg" alt="FeedGot" className="h-8 w-auto" />
         </div>
         <div className="flex items-center gap-3">
           <a 

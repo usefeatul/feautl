@@ -308,7 +308,6 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"div">) {
       className={cn(
         "absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex items-center justify-center",
         "cursor-col-resize select-none group",
-        // "hover:bg-gray-800/50 active:bg-gray-900/60",
         "group-data-[collapsible=offcanvas]:translate-x-0",
         "[[data-side=left][data-collapsible=offcanvas]_&]:-right-2",
         "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2",
@@ -318,12 +317,12 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"div">) {
       {...props}
     >
       <div className={cn(
-        "bg-black w-1 h-12 rounded-full transition-all duration-200",
+        "bg-black w-1 h-8 rounded-full transition-all duration-200",
         "opacity-0 group-hover:opacity-100",
         "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
         "before:absolute before:inset-0 before:w-4 before:h-full before:-translate-x-1/2",
         !isDragging && "hover:bg-black",
-        isDragging && "bg-black scale-110 opacity-100"
+        isDragging && "bg-black"
       )} />
     </div>
   )

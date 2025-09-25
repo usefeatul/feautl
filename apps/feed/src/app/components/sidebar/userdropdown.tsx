@@ -42,9 +42,9 @@ export function UserDropdown() {
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton size="lg">
-            <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarFallback className="rounded-lg"></AvatarFallback>
-            </Avatar>
+            <Avatar className="h-8 w-8">
+                <AvatarFallback></AvatarFallback>
+              </Avatar>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
@@ -76,9 +76,9 @@ export function UserDropdown() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="h-8 w-8">
                 <AvatarImage src={displayUser.image || ""} alt={displayUser.name} />
-                <AvatarFallback className="rounded-lg">
+                <AvatarFallback>
                   {getInitials(displayUser.name)}
                 </AvatarFallback>
               </Avatar>
@@ -91,16 +91,16 @@ export function UserDropdown() {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
+                <Avatar className="h-8 w-8">
                   <AvatarImage src={displayUser.image || ""} alt={displayUser.name} />
-                  <AvatarFallback className="rounded-lg">
+                  <AvatarFallback>
                     {getInitials(displayUser.name)}
                   </AvatarFallback>
                 </Avatar>

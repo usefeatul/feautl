@@ -3,13 +3,21 @@ import Image from "next/image"
 import { navigationConfig } from "@/config/navigation"
 import { Container } from "./container"
 import { LinkIcon } from "./icons/link"
+import { cn } from "@feedgot/ui/lib/utils"
 
 export default function Navbar() {
   const main = navigationConfig.main
   const before = main.slice(0, 2)
   const after = main.slice(2)
+
+
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background">
+    <header
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 bg-background"
+      )}
+    >
       <Container>
         <div className="flex items-center justify-between h-14">
           {/* Logo */}

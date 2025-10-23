@@ -16,10 +16,6 @@ export const navigationConfig: NavigationConfig = {
       href: '/pricing',
     },
     {
-      name: 'About us',
-      href: '/about',
-    },
-    {
       name: 'Blog',
       href: '/blog',
     },

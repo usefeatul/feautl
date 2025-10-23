@@ -52,7 +52,7 @@ export default function Navbar() {
             ))}
             <Link
               href="/signup"
-              className="inline-flex items-center rounded-md bg-[#3b82f6] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#2563eb]"
+              className="inline-flex items-center rounded-md bg-[#3b82f6] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#2563eb]"
             >
               Start for free
             </Link>

@@ -42,13 +42,13 @@ export function Hero() {
             <div className="mt-8 flex flex-col items-start justify-start gap-4 sm:flex-row sm:gap-6">
               <Link
                 href="/signup"
-                className="inline-flex items-center rounded-md bg-[#3b82f6] px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#2563eb]"
+                className="inline-flex items-center rounded-md bg-[#3b82f6] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#2563eb]"
               >
                 Add to your website
               </Link>
               <Link
                 href="/demo"
-                className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-6 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted"
+                className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-6 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
               >
                 <Play className="h-4 w-4" />
                 View live demo
@@ -58,22 +58,22 @@ export function Hero() {
             {/* Feature highlights row */}
             <div className="mt-8 flex items-center gap-6 text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-2">
-                <FreeIcon width={18} height={18} />
+                <FreeIcon width={18} height={18} className="text-foreground" />
                 Free forever
               </span>
               <span className="inline-flex items-center gap-2">
-                <SetupIcon width={12} height={12} />
+                <SetupIcon width={18} height={18} className="text-foreground" />
                 30-second setup
               </span>
               <span className="inline-flex items-center gap-2">
-                <UsersIcon width={18} height={18} />
+                <UsersIcon width={18} height={18} className="text-foreground" />
                 Unlimited users
               </span>
             </div>
           </div>
 
           {/* Screenshot placeholder card */}
-          <div className="mt-12 max-w-5xl rounded-2xl border border-border bg-white shadow-lg">
+          <div className="mt-12 max-w-5xl rounded-2xl border border-border bg-white">
             <div className="aspect-[16/9] w-full rounded-2xl bg-muted" />
             <div className="px-4 py-2 text-center text-xs text-muted-foreground">
               Dashboard • Click to switch between our core features

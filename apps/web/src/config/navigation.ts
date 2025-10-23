@@ -12,20 +12,20 @@ export interface NavigationConfig {
 export const navigationConfig: NavigationConfig = {
   main: [
     {
-      name: 'Product',
-      href: '/product',
-    },
-    {
       name: 'Pricing',
       href: '/pricing',
+    },
+    {
+      name: 'About us',
+      href: '/about',
     },
     {
       name: 'Blog',
       href: '/blog',
     },
     {
-      name: 'Help',
-      href: '/help',
+      name: 'Docs',
+      href: '/docs',
     },
   ],
   auth: [

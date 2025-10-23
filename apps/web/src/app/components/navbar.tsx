@@ -4,7 +4,7 @@ import { navigationConfig } from "@/config/navigation"
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-12 sm:px-16 lg:px-20 xl:px-24">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -38,8 +38,8 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Auth */}
-          <div className="flex items-center">
+          {/* Auth + CTA */}
+          <div className="flex items-center gap-4">
             {navigationConfig.auth.map((item) => (
               <Link
                 key={item.name}
@@ -50,6 +50,12 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
+            <Link
+              href="/signup"
+              className="inline-flex items-center rounded-md bg-[#3b82f6] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#2563eb]"
+            >
+              Start for free
+            </Link>
           </div>
         </div>
       </div>

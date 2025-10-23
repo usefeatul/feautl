@@ -38,7 +38,7 @@ export function WorkspaceSwitcher() {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size="lg" className="rounded-sm group-data-[collapsible=icon]:gap-0">
+            <SidebarMenuButton size="lg" className="rounded-md group-data-[collapsible=icon]:gap-0">
               {/* Icon/avatar for active workspace */}
               <Avatar className="size-4">
                 <AvatarImage src={activeWorkspace.logo} alt={activeWorkspace.name} />

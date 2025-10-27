@@ -39,7 +39,7 @@ export default function Navbar() {
               className="inline-flex items-center gap-3"
             >
               <Image 
-                src="/logo.svg" 
+                src="/logo.png" 
                 alt="Feedgot" 
                 width={24} 
                 height={24} 

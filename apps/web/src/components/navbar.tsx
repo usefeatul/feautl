@@ -3,7 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { navigationConfig } from "@/config/homeNav"
 import { Container } from "./container"
-import { LinkIcon } from "@feedgot/ui/icons/link"
+import { ArrowIcon } from "@feedgot/ui/icons/arrow"
 import { cn } from "@feedgot/ui/lib/utils"
 import { useEffect, useState } from 'react'
 
@@ -68,7 +68,7 @@ export default function Navbar() {
               >
                 {item.name}
                 {item.name === "Docs" && (
-                  <LinkIcon aria-hidden className="ml-1 h-4 w-4 align-middle" />
+                  <ArrowIcon aria-hidden className="ml-1 h-4 w-4 align-middle" />
                 )}
               </Link>
             ))}

@@ -96,6 +96,8 @@ export function Hero() {
               </div>
             </div>
           </div>
+
+          {/* Pointer temporarily removed */}
         </div>
       </Container>
     </section>

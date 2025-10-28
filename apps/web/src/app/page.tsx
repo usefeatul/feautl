@@ -4,6 +4,7 @@ import  Feature  from '../components/feature'
 import Faq  from '../components/faq'
 import BentoFeature from '../components/bento-feature'
 import Pricing from '../components/pricing'
+import StatsSection from '../components/cta'
 
 export default async function Home() {
   return (
@@ -13,6 +14,7 @@ export default async function Home() {
       <Feature />
       <Pricing />
       <Faq />
+      <StatsSection />
     </main>
   )
 }

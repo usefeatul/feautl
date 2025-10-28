@@ -1,12 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { LinkIcon } from "@feedgot/ui/icons/link";
-import { Button } from "@feedgot/ui/components/button";
 import { FreeIcon } from "@feedgot/ui/icons/free";
 import { UsersIcon } from "@feedgot/ui/icons/users";
 import { SetupIcon } from "@feedgot/ui/icons/setup";
 import { HotkeyLink } from "./hotkey-link";
+import { LiveDemo } from "./live-demo";
 
 export function HeroContent() {
   return (
@@ -29,15 +27,8 @@ export function HeroContent() {
 
       {/* CTAs */}
       <div className="mt-8 flex flex-col items-start justify-start gap-4 sm:flex-row sm:gap-6">
-        <HotkeyLink href="/signup" hotkeyHref="https://dashboard.feedbot.com">
-          Get started Free
-        </HotkeyLink>
-        <Button asChild variant="outline" size="lg" className="text-gray-500">
-          <Link href="/demo">
-            View live demo
-            <LinkIcon aria-hidden className="h-4 w-4" />
-          </Link>
-        </Button>
+        <HotkeyLink href="/signup" hotkeyHref="https://dashboard.feedbot.com" />
+        <LiveDemo />
       </div>
 
       {/* Feature highlights row */}

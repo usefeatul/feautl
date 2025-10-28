@@ -9,7 +9,8 @@ type HotkeyLinkProps = {
   hotkeyHref: string;
   hotkey?: string;
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  label?: string;
 };
 
 export function HotkeyLink({
@@ -18,6 +19,7 @@ export function HotkeyLink({
   hotkey = "A",
   className,
   children,
+  label,
 }: HotkeyLinkProps) {
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLAnchorElement>) => {
@@ -58,8 +60,13 @@ export function HotkeyLink({
         href={href}
         onKeyDown={handleKeyDown}
         aria-keyshortcuts={hotkey.toUpperCase()}
+        aria-label={
+          typeof (children ?? label ?? "Get started Free") === "string"
+            ? ((children ?? label ?? "Get started Free") as string)
+            : "Open link"
+        }
       >
-        {children}
+        {children ?? label ?? "Get started Free"}
         <span className="sr-only">
           Press {hotkey.toUpperCase()} to open dashboard
         </span>

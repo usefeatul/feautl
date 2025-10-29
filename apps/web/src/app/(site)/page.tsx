@@ -11,11 +11,11 @@ export default async function Home() {
   return (
     <main className="min-h-screen pt-16">
       <Hero />
-      {/* <BentoFeature /> */}
-      {/* <Feature /> */}
+      <BentoFeature />
+      <Feature />
       {/* <Pricing /> */}
-      {/* <Faq /> */}
-      {/* <StatsSection /> */}
+      <Faq />
+      <StatsSection />
     </main>
   )
 }

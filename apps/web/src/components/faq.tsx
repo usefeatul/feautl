@@ -2,7 +2,7 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@feedgot/ui/components/accordion'
 import { Container } from './container'
-import Link from 'next/link'
+import { ChevronDownIcon } from 'lucide-react'
 
 export default function FAQsFour() {
     const faqItems = [
@@ -34,47 +34,41 @@ export default function FAQsFour() {
     ]
 
     return (
-        <Container  maxWidth="6xl">
+        <Container  maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
             <section className="py-16 md:py-24">
-                <div className="mx-auto max-w-5xl px-4 md:px-6">
-                    <div className="mx-auto max-w-xl text-center">
-                        <h2 className="text-balance text-3xl font-bold md:text-4xl lg:text-5xl">Frequently Asked Questions</h2>
-                    <p className="text-muted-foreground mt-4 text-balance">Discover quick and comprehensive answers to common questions about our platform, services, and features.</p>
-                </div>
+                <div className="max-w-5xl px-0 sm:px-6">
+                    <div className="max-w-xl text-left">
+                        <h2 className="text-balance text-3xl font-semibold">Questions &amp; Answers</h2>
+                    </div>
 
-                <div className="mx-auto mt-12 max-w-xl">
-                    <Accordion
-                        type="single"
-                        collapsible
-                        className="bg-muted dark:bg-muted/50 w-full rounded-2xl p-1">
-                        {faqItems.map((item) => (
-                            <div
-                                className="group"
-                                key={item.id}>
-                                <AccordionItem
-                                    value={item.id}
-                                    className="data-[state=open]:bg-card dark:data-[state=open]:bg-muted peer rounded-xl border-none px-7 py-1 data-[state=open]:border-none data-[state=open]:shadow-sm">
-                                    <AccordionTrigger className="cursor-pointer text-base hover:no-underline">{item.question}</AccordionTrigger>
-                                    <AccordionContent>
-                                        <p className="text-base">{item.answer}</p>
-                                    </AccordionContent>
-                                </AccordionItem>
-                                <hr className="mx-7 border-dashed group-last:hidden peer-data-[state=open]:opacity-0" />
-                            </div>
-                        ))}
-                    </Accordion>
-
-                    <p className="text-muted-foreground mt-6 px-8">
-                        Can't find what you're looking for? Contact our{' '}
-                        <Link
-                            href="#"
-                            className="text-primary font-medium hover:underline">
-                            customer support team
-                        </Link>
-                    </p>
+                    <div className="mt-12 max-w-xl">
+                        <Accordion
+                            type="single"
+                            collapsible
+                            className="w-full divide-y">
+                            {faqItems.map((item) => (
+                                <div
+                                    className="group"
+                                    key={item.id}>
+                                    <AccordionItem
+                                        value={item.id}
+                                        className="border-none px-0 py-3">
+                                        <AccordionTrigger className="group cursor-pointer text-left text-base font-medium !no-underline hover:!no-underline justify-start [&>svg]:hidden">
+                                            <span className="inline-flex items-center gap-2">
+                                                <ChevronDownIcon className="size-4 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                                                <span>{item.question}</span>
+                                            </span>
+                                        </AccordionTrigger>
+                                        <AccordionContent>
+                                            <p className="text-left text-zinc-500 text-base">{item.answer}</p>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                </div>
+                            ))}
+                        </Accordion>
+                    </div>
                 </div>
-            </div>
-        </section>
-      </Container>
+            </section>
+        </Container>
     )
 }

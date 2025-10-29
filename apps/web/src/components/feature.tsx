@@ -11,12 +11,12 @@ const GLODIE_AVATAR = 'https://avatars.githubusercontent.com/u/99137927?v=4'
 
 export default function FeaturesSection() {
     return (
-        <Container maxWidth="6xl">
+        <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
         <section>
             <div className="py-24">
-                <div className="mx-auto w-full max-w-3xl px-6">
-                    <h2 className="text-foreground text-balance text-3xl font-semibold md:text-4xl">
-                        <span className="text-muted-foreground">Empowering Marketing teams with</span> AI-driven solutions
+                <div className="mx-auto w-full max-w-6xl px-0 sm:px-6">
+                    <h2 className="text-foreground text-balance text-3xl sm:text-4xl font-semibold">
+                        <span className="text-muted-foreground">jean daly Marketing teams with</span> AI-driven solutions
                     </h2>
                     <div className="mt-12 grid gap-12 sm:grid-cols-2">
                         <div className="col-span-full space-y-4">
@@ -73,7 +73,7 @@ const MeetingIllustration = () => {
             <div className="mb-4 flex gap-2 text-sm">
                 <span className="text-muted-foreground">2:30 - 3:45 PM</span>
             </div>
-            <div className="mb-2 flex -space-x-1.5">
+            {/* <div className="mb-2 flex -space-x-1.5">
                 <div className="flex -space-x-1.5">
                     {[
                         { src: MESCHAC_AVATAR, alt: 'Méschac Irung' },
@@ -94,7 +94,7 @@ const MeetingIllustration = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
             <div className="text-muted-foreground text-sm font-medium">ML Pipeline Discussion</div>
         </Card>
     )

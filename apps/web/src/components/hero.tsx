@@ -56,23 +56,23 @@ export function Hero() {
                   <div className="absolute inset-x-0 top-[1px] h-[20px] bg-gray-50"></div>
                 </div>
                 <div className="pointer-events-auto absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-30">
-                  <div className="relative flex items-center gap-1.5 rounded-lg bg-white/80 backdrop-blur-md ring-1 ring-border/60 shadow-2xl px-2 py-1.5">
+                  <div className="relative flex items-center gap-1.5 rounded-xl bg-white/80 backdrop-blur-md ring-1 ring-border/60 shadow-2xl px-2 py-1.5">
                     {showPillHint && (
-                      <div className="pointer-events-none absolute inset-0 rounded-lg ring-2 ring-border/60 animate-pulse"></div>
+                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-2 ring-border/60 animate-pulse"></div>
                     )}
                     <div
                       role="group"
                       aria-label="Preview feature"
-                      className="relative z-10 inline-flex items-center gap-1"
+                      className="relative z-10 inline-flex items-center gap-3"
                     >
                       <Button
                         size="sm"
-                        variant="ghost"
+                        variant="outline"
                         className={`${
                           active === "dashboard"
                             ? "bg-black text-white border border-border shadow-sm"
                             : "bg-transparent text-muted-foreground hover:bg-white/70"
-                        } rounded-lg px-2`}
+                        } rounded-xl px-2`}
                         onClick={() => setActive("dashboard")}
                         aria-pressed={active === "dashboard"}
                       >
@@ -80,12 +80,12 @@ export function Hero() {
                       </Button>
                       <Button
                         size="sm"
-                        variant="ghost"
+                        variant="outline"
                         className={`${
                           active === "roadmap"
                             ? "bg-black text-white border border-border shadow-sm"
                             : "bg-transparent text-muted-foreground hover:bg-white/70"
-                        } rounded-lg px-2`}
+                        } rounded-xl px-2`}
                         onClick={() => setActive("roadmap")}
                         aria-pressed={active === "roadmap"}
                       >
@@ -93,12 +93,12 @@ export function Hero() {
                       </Button>
                       <Button
                         size="sm"
-                        variant="ghost"
+                        variant="outline"
                         className={`${
                           active === "changelog"
                             ? "bg-black text-white border border-border shadow-sm"
                             : "bg-transparent text-muted-foreground hover:bg-white/70"
-                        } rounded-lg px-2`}
+                        } rounded-xl px-2`}
                         onClick={() => setActive("changelog")}
                         aria-pressed={active === "changelog"}
                       >

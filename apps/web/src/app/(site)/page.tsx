@@ -6,6 +6,7 @@ import BentoFeature from '@/components/bento-feature'
 import Pricing from '@/components/pricing'
 import StatsSection from '@/components/cta'
 
+
 export default async function Home() {
   return (
     <main className="min-h-screen pt-16">

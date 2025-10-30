@@ -6,6 +6,8 @@ export type MarblePost = {
   coverImage?: string | null
   publishedAt?: string | null
   content?: string | null
+  author?: MarbleAuthor | null
+  authors?: MarbleAuthor[] | null
 }
 
 export type MarblePostListResponse = {

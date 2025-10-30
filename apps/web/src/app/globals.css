@@ -3,29 +3,13 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
-@custom-variant dark (&:is(.dark *));
-
-/* WebKit scrollbar customization */
-*::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* Smooth scrolling for in-page anchors, respecting reduced motion */
+html:focus-within {
+  scroll-behavior: smooth;
 }
-
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: var(--color-border);
-  border-radius: 999px;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-primary);
-}
-
-/* Firefox */
-html {
-  scrollbar-width: thin;
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
 }
 

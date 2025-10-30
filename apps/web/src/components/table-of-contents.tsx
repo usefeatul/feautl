@@ -8,7 +8,7 @@ type TableOfContentsProps = {
   title?: string
 }
 
-export function TableOfContents({ items, className, title = "On this page" }: TableOfContentsProps) {
+export function TableOfContents({ items, className, title = "Table of content" }: TableOfContentsProps) {
   if (!items?.length) return null
   return (
     <nav
@@ -18,14 +18,14 @@ export function TableOfContents({ items, className, title = "On this page" }: Ta
         className
       )}
     >
-      <div className="text-xs text-zinc-500 mb-2">{title}</div>
+      <div className="text-xs font-bold text-foreground mb-2">{title}</div>
       <ul className="space-y-1">
         {items.map((item) => (
           <li key={item.id} className={cn("leading-snug", item.level === 3 && "pl-4")}> 
             <Link
               href={`#${item.id}`}
               className={cn(
-                "block py-1 text-zinc-500 hover:text-foreground",
+                "block py-1 text-zinc-500 hover:text-primary hover:underline underline-offset-2 decoration-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 rounded-sm",
                 item.level === 2 ? "font-medium" : "font-normal"
               )}
             >

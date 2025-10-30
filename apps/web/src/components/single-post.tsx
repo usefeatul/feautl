@@ -2,7 +2,6 @@ import Link from "next/link"
 import { Prose } from "@/components/prose"
 import { generateToc } from "@/lib/toc"
 import { TableOfContents } from "@/components/table-of-contents"
-import { PromoCard } from "@/components/promo-card"
 import type { MarblePost } from "@/types/marble"
 
 type SinglePostProps = {
@@ -22,19 +21,16 @@ export function SinglePost({ post, backHref = "/blog", showBack = true }: Single
   const date = post.publishedAt ? new Date(post.publishedAt) : null
   const reading = estimateReadingTime(post.content)
   const { html, items } = generateToc(post.content)
+  const authorName = post.author?.name ?? post.authors?.[0]?.name ?? null
 
   return (
     <article className="py-16 md:py-24">
-      {/* Start grid from the very top so ToC aligns with Back button */}
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-12">
-        {/* Left column */}
         <div className="text-left w-full max-w-3xl">
-
-          {/* Breadcrumb for subtle context */}
-          <nav aria-label="Breadcrumb" className="mb-3 text-md text-muted-foreground">
+          <nav aria-label="Breadcrumb" className="mb-3 text-sm text-muted-foreground">
             <Link href="/blog" className=" hover:text-primary">Blog</Link>
             <span aria-hidden className="mx-1">›</span>
-            <span className="text-foreground/80 break-words">{post.title}</span>
+            <span className="text-zinc-500 break-words">{post.title}</span>
           </nav>
 
           {/* Title/meta constrained to left column width */}
@@ -42,11 +38,21 @@ export function SinglePost({ post, backHref = "/blog", showBack = true }: Single
             <h1 className="text-foreground text-3xl md:text-4xl font-bold leading-tight tracking-tight break-words text-balance">{post.title}</h1>
             {post.excerpt ? <p className="text-muted-foreground mt-3">{post.excerpt}</p> : null}
             {date ? (
-              <div className="text-xs text-muted-foreground mt-3">
-                <time dateTime={date.toISOString()}>
-                  {date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })}
+              <div className="mt-3 text-xs flex items-center flex-wrap">
+                <span className="text-zinc-500">Posted on</span>
+                <time className="ml-1 text-primary" dateTime={date.toISOString()}>
+                  {date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" })}
                 </time>
-                {reading ? <span> • {reading} min read</span> : null}
+                {(authorName || reading) ? <span className="mx-2 text-zinc-300">•</span> : null}
+                {authorName ? (
+                  <span className="text-black dark:text-foreground font-medium">{authorName}</span>
+                ) : null}
+                {reading ? (
+                  <>
+                    {authorName ? <span className="mx-2 text-zinc-300">•</span> : null}
+                    <span className="text-zinc-500">{reading} min read</span>
+                  </>
+                ) : null}
               </div>
             ) : null}
           </header>
@@ -68,11 +74,6 @@ export function SinglePost({ post, backHref = "/blog", showBack = true }: Single
             </div>
           ) : null}
 
-          {/* Mobile promo card under ToC */}
-          <div className="lg:hidden mb-8 w-full">
-            <PromoCard />
-          </div>
-
           <Prose html={html ?? undefined} />
         </div>
 
@@ -80,7 +81,6 @@ export function SinglePost({ post, backHref = "/blog", showBack = true }: Single
         {items.length > 0 ? (
           <aside className="hidden lg:block sticky top-24 h-fit">
             <TableOfContents items={items} />
-            <PromoCard className="mt-6" />
           </aside>
         ) : null}
       </div>

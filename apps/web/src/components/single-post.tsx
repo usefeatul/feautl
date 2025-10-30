@@ -37,6 +37,13 @@ export function SinglePost({ post, backHref = "/blog", showBack = true }: Single
             </div>
           ) : null}
 
+          {/* Breadcrumb for subtle context */}
+          <nav aria-label="Breadcrumb" className="mb-3 text-xs text-muted-foreground">
+            <Link href="/blog" className="hover:underline hover:text-foreground">Blog</Link>
+            <span aria-hidden className="mx-1">›</span>
+            <span className="text-foreground/80 line-clamp-1">{post.title}</span>
+          </nav>
+
           {/* Title/meta constrained to left column width */}
           <header className="mb-6 text-left">
             <h1 className="text-foreground text-3xl md:text-4xl font-bold">{post.title}</h1>

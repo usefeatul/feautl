@@ -6,7 +6,7 @@ import { UpIcon } from "@feedgot/ui/icons/up";
 import type {
   ReadingProgressProps,
   ScrollBehaviorOption,
-} from "../types/reading-progress.types";
+} from "../../types/reading-progress.types";
 
 
 function clamp(n: number, min = 0, max = 1) {

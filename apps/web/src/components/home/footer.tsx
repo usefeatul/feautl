@@ -4,7 +4,7 @@ import { Logo } from "@/components/logo";
 import { footerNavigationConfig } from "@/config/footerNav";
 import { GitHubIcon } from "@feedgot/ui/icons/github";
 import { TwitterIcon } from "@feedgot/ui/icons/twitter";
-import { StatusIndicator } from "@/components/status-indicator";
+import { StatusIndicator } from "@/components/home/status-indicator";
 
 export default function FooterSection() {
   const year = new Date().getFullYear();

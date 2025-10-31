@@ -3,8 +3,8 @@ import { notFound } from "next/navigation"
 import { Container } from "@/components/container"
 import { getSinglePost } from "@/lib/query"
 import type { MarblePostResponse } from "@/types/marble"
-import { SinglePost } from "@/components/single-post"
-import CTA from "@/components/cta"
+import { SinglePost } from "@/components/blog/single-post"
+import CTA from "@/components/home/cta"
 
 
 

@@ -1,10 +1,10 @@
 
-import { Hero } from '@/components/hero'
-import Feature from '@/components/feature'
-import Faq from '@/components/faq'
-import BentoFeature from '@/components/bento-feature'
-import Pricing from '@/components/pricing'
-import StatsSection from '@/components/cta'
+import { Hero } from '@/components/home/hero'
+import Feature from '@/components/home/feature'
+import Faq from '@/components/home/faq'
+import BentoFeature from '@/components/home/bento-feature'
+import Pricing from '@/components/home/pricing'
+import StatsSection from '@/components/home/cta'
 
 
 export default async function Home() {
@@ -13,7 +13,6 @@ export default async function Home() {
       <Hero />
       <BentoFeature />
       <Feature />
-      {/* <Pricing /> */}
       <Faq />
       <StatsSection />
     </main>

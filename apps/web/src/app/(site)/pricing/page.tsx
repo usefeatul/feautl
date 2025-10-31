@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
-import Faq from "@/components/faq"
-import Pricing from "@/components/pricing"
+import Faq from "@/components/home/faq"
+import Pricing from "@/components/home/pricing"
 
 export const metadata: Metadata = {
   title: "Pricing",

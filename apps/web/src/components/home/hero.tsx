@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Container } from "./container";
+import { Container } from "../container";
 import Image from "next/image";
 import { HeroContent } from "./hero-content";
 import { Button } from "@feedgot/ui/components/button";

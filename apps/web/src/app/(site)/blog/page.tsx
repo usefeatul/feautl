@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Container } from "@/components/container"
 import { getPosts } from "@/lib/query"
-import { BlogCard } from "@/components/blog-card"
+import { BlogCard } from "@/components/blog/blog-card"
 import type { MarblePostListResponse } from "@/types/marble"
 
 export const metadata: Metadata = {

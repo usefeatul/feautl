@@ -31,7 +31,14 @@ export default function Navbar() {
     >
       <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
         <div className="flex items-center justify-between h-14">
-          <Logo />
+          <Link
+            href="/"
+            aria-label="Go home"
+            className="inline-flex items-center gap-2"
+          >
+            <Logo />
+            <span className="text-md font-medium">Feedgot</span>
+          </Link>
           <nav className="hidden md:flex items-center font-medium text-sm gap-6 md:ml-auto">
             {before.map((item) => (
               <Link

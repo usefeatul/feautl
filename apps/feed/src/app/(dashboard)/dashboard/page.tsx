@@ -22,7 +22,7 @@ export default function Page() {
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />
-        <Container className="flex flex-1 flex-col py-2" maxWidth="5xl">
+        <Container className="flex flex-1 flex-col py-2" maxWidth="6xl">
           {/* Main dashboard content area with ultra-minimal styling */}
           <div className="bg-background text-foreground p-4 min-h-[400px]">
             <h2 className="text-lg font-normal mb-3">Dashboard</h2>

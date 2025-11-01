@@ -4,7 +4,7 @@ import { Logo } from "@/components/logo";
 import { footerNavigationConfig } from "@/config/footerNav";
 import { GitHubIcon } from "@feedgot/ui/icons/github";
 import { TwitterIcon } from "@feedgot/ui/icons/twitter";
-import { StatusIndicator } from "@/components/home/status-indicator";
+import { StatusButton } from "@/components/home/status";
 
 export default function FooterSection() {
   const year = new Date().getFullYear();
@@ -12,7 +12,6 @@ export default function FooterSection() {
     <footer className="bg-background">
       <Container maxWidth="6xl" className="py-10 md:py-14">
         <div className="grid items-start gap-10 md:grid-cols-5">
-          {/* Brand & meta */}
           <div className="md:col-span-2">
             <Link
               href="/"
@@ -26,8 +25,10 @@ export default function FooterSection() {
             <p className="text-zinc-500 mt-1 text-sm">
               Customer feedback platform • © {year}
             </p>
+            <div className="mt-2">
+              <StatusButton />
+            </div>
             <div className="mt-4 flex items-center gap-3 text-zinc-500 ">
-              {/* GitHub */}
               <Link
                 href="#"
                 target="_blank"
@@ -35,9 +36,11 @@ export default function FooterSection() {
                 aria-label="GitHub"
                 className="hover:text-foreground"
               >
-                <GitHubIcon className="text-current hover:text-primary" size={19} />
+                <GitHubIcon
+                  className="text-current hover:text-primary"
+                  size={19}
+                />
               </Link>
-              {/* Twitter/X */}
               <Link
                 href="#"
                 target="_blank"
@@ -45,7 +48,10 @@ export default function FooterSection() {
                 aria-label="Twitter"
                 className="hover:text-foreground"
               >
-                <TwitterIcon className="text-current hover:text-primary" size={14} />
+                <TwitterIcon
+                  className="text-current hover:text-primary"
+                  size={14}
+                />
               </Link>
             </div>
           </div>
@@ -64,14 +70,7 @@ export default function FooterSection() {
                       href={item.href}
                       className="text-zinc-500 hover:text-primary block transition-colors"
                     >
-                      {item.name === "Status page" ? (
-                        <span className="inline-flex items-center gap-2">
-                          <StatusIndicator />
-                          {item.name}
-                        </span>
-                      ) : (
-                        <span>{item.name}</span>
-                      )}
+                      <span>{item.name}</span>
                     </Link>
                   ))}
                 </div>

@@ -12,7 +12,7 @@ type LiveDemoProps = {
 export function LiveDemo({ href = "/demo", className }: LiveDemoProps) {
   return (
     <Button asChild variant="outline" size="lg" className={className ?? "text-gray-500"}>
-      <Link href={href} aria-label="View live demo">
+      <Link href={href} aria-label="View live demo" data-sln-event="cta: view live demo clicked">
         View live demo
         <LinkIcon aria-hidden className="h-4 w-4" />
       </Link>

@@ -60,6 +60,7 @@ export function HotkeyLink({
         href={href}
         onKeyDown={handleKeyDown}
         aria-keyshortcuts={hotkey.toUpperCase()}
+        data-sln-event="cta: get started free clicked"
         aria-label={
           typeof (children ?? label ?? "Get started Free") === "string"
             ? ((children ?? label ?? "Get started Free") as string)

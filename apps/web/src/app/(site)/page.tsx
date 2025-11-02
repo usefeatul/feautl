@@ -3,7 +3,7 @@ import { Hero } from '@/components/home/hero'
 import Feature from '@/components/home/feature'
 import Faq from '@/components/home/faq'
 import BentoFeature from '@/components/home/bento-feature'
-import Pricing from '@/components/home/pricing'
+// import Pricing from '@/components/home/pricing'
 import StatsSection from '@/components/home/cta'
 
 

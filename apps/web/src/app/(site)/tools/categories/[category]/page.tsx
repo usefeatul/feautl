@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import { Container } from "@/components/container"
 import { getCategoryBySlug, getAllCategorySlugs } from "@/config/tools"
 import ToolList from "@/components/tools/tool-list"
-import Breadcrumbs from "@/components/tools/breadcrumbs"
+import {Breadcrumb} from "@feedgot/ui/components/breadcrumb"
 
 type Props = { params: Promise<{ category: string }> }
 
@@ -26,7 +26,7 @@ export default async function CategoryPage({ params }: Props) {
     <main className="min-h-screen pt-16">
       <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
         <section className="py-12 sm:py-16">
-          <Breadcrumbs items={[{ href: '/tools', label: 'Tools' }, { href: '/tools/categories', label: 'Categories' }, { label: cat.name }]} />
+          <Breadcrumb items={[{ href: '/tools', label: 'Tools' }, { href: '/tools/categories', label: 'Categories' }, { label: cat.name }]} />
           <h1 className="text-balance font-serif text-3xl font-bold md:text-4xl">{cat.name}</h1>
           <p className="text-muted-foreground mt-4">{cat.description}</p>
           <ToolList categorySlug={cat.slug} tools={cat.tools} />

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Container } from "@/components/container"
 import { getCategoryBySlug, getToolBySlugs, getAllToolParams } from "@/config/tools"
-import { TOOL_COMPONENTS } from "@/components/tools/registry"
+import { TOOL_COMPONENTS } from "@/types/registry"
 import ToolTemplate from "@/components/tools/template"
 import Breadcrumbs from "@/components/tools/breadcrumbs"
 

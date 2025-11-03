@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import {
   Card,
   CardHeader,
@@ -12,7 +14,7 @@ import {
 import { Label } from "@feedgot/ui/components/label";
 import { Input } from "@feedgot/ui/components/input";
 import { Button } from "@feedgot/ui/components/button";
-import { Plus, Trash } from "lucide-react";
+import { Plus, Trash, ArrowLeft } from "lucide-react";
 
 type Cohort = {
   size: number;
@@ -22,6 +24,10 @@ type Cohort = {
 };
 
 export default function CohortAnalysisTool() {
+  const params = useParams() as { category?: string | string[] };
+  const category = Array.isArray(params.category)
+    ? params.category?.[0]
+    : params.category;
   const [cohorts, setCohorts] = useState<Cohort[]>([
     { size: 120, m1: 70, m2: 55, m3: 45 },
     { size: 100, m1: 68, m2: 52, m3: 42 },
@@ -195,6 +201,15 @@ export default function CohortAnalysisTool() {
             </div>
           </CardContent>
         </Card>
+        <div className="px-0">
+          <Link
+            href={category ? `/tools/categories/${category}` : "/tools/categories"}
+            aria-label="Back to our tools categories"
+            className="inline-flex items-center text-sm text-zinc-500 hover:text-foreground"
+          >
+            <ArrowLeft className="mr-1 h-4 w-4" /> Our tools
+          </Link>
+        </div>
       </div>
 
       <section className="mt-8 prose prose-sm sm:prose-base prose-zinc dark:prose-invert">

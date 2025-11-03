@@ -30,25 +30,7 @@ export default async function ToolPage({ params }: Props) {
     <main className="min-h-screen pt-16 bg-background">
       <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
         <section className="py-12 sm:py-16">
-          <Breadcrumb className="mb-6">
-            <BreadcrumbList className="text-zinc-500">
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/tools">Tools</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href={`/tools/categories/${category}`}>{getCategoryBySlug(category)?.name ?? 'Category'}</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{tool.name}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          {/* Breadcrumb removed for a cleaner tool detail page. */}
           {/* Page-level title and description omitted to avoid duplication; the tool component provides its own content. */}
           {ToolComponent ? <ToolComponent /> : <ToolTemplate tool={tool} />}
         </section>

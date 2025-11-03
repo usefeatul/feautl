@@ -1,5 +1,5 @@
 import { Card } from "@feedgot/ui/components/card";
-import { Container } from "../container";
+import { Container } from "../global/container";
 import { CalendarCheck, Sparkles, Target } from "lucide-react";
 
 export default function BentoFeature() {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Container } from "@/components/container"
+import { Container } from "@/components/global/container"
 import { getPosts } from "@/lib/query"
 import { BlogCard } from "@/components/blog/blog-card"
 import type { MarblePostListResponse } from "@/types/marble"

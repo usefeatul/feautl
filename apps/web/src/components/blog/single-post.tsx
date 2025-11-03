@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Prose } from "@/components/blog/prose";
 import { generateToc } from "@/lib/toc";
 import { TableOfContents } from "@/components/blog/table-of-contents";
-import { PromoCard } from "@/components/promo-card";
+import { PromoCard } from "@/components/blog/promo-card";
 import type { MarblePost } from "@/types/marble";
 import { ReadingProgress } from "@/components/blog/reading-progress";
 

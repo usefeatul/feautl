@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { Container } from "@/components/container"
+import { Container } from "@/components/global/container"
 import { getSinglePost } from "@/lib/query"
 import type { MarblePostResponse } from "@/types/marble"
 import { SinglePost } from "@/components/blog/single-post"

@@ -5,13 +5,11 @@ import NpsTool from '../components/tools/feedback/nps'
 import FeedbackTemplatesTool from '../components/tools/feedback/templates'
 
 export const TOOL_COMPONENTS: Record<string, Record<string, ComponentType>> = {
-  revenue: {
+  'revenue-growth': {
     'mrr-calculator': MrrTool,
   },
-  retention: {
+  'customer-metrics': {
     'churn-calculator': ChurnTool,
-  },
-  feedback: {
     'nps-calculator': NpsTool,
     'feedback-templates': FeedbackTemplatesTool,
   },

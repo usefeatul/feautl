@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { ToolItem } from '@/config/tools'
+import type { ToolItem } from '@/types/tools'
 import { Card, CardHeader, CardTitle, CardDescription, CardAction } from '@feedgot/ui/components/card'
 import { PieChart, TrendingDown, Smile, FileText, CornerUpRight } from 'lucide-react'
 
@@ -23,14 +23,14 @@ export default function ToolList({ categorySlug, tools }: { categorySlug: string
     <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {tools.map((tool) => (
         <Link key={tool.slug} href={`/tools/categories/${categorySlug}/${tool.slug}`} className="group block">
-          <Card className="h-full overflow-hidden transition group hover:shadow-sm hover:ring-border bg-gray-100">
+          <Card className="h-full overflow-hidden transition group hover:shadow-sm hover:ring-border bg-background">
             <CardHeader className="p-6 sm:p-8">
               {(() => {
                 const Icon = getToolIcon(tool.slug)
                 return <Icon className="size-5 text-black mb-3" />
               })()}
               <CardTitle className="font-medium text-lg">{tool.name}</CardTitle>
-              <CardDescription className="mt-1">{tool.description}</CardDescription>
+              <CardDescription className="mt-1 text-zinc-500">{tool.description}</CardDescription>
             </CardHeader>
             <div className="px-6 sm:px-8 pb-6">
               {/* spacer to balance content height if needed */}

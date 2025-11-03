@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Container } from "@/components/container"
+import { Container } from "@/components/global/container"
 import CategoryList from "@/components/tools/category-list"
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default function ToolsCategoriesPage() {
       <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
         <section className="py-12 sm:py-16">
           <h1 className="text-balance font-serif text-3xl font-bold md:text-4xl">Categories</h1>
-          <p className="text-muted-foreground mt-4">Find calculators and templates grouped by topic.</p>
+          <p className="text-zinc-500 mt-4">Find calculators and templates grouped by topic.</p>
           <CategoryList />
         </section>
       </Container>

@@ -1,4 +1,4 @@
-import type { ToolItem, ToolContentSection } from '@/config/tools'
+import type { ToolItem, ToolContentSection } from '@/types/tools'
 
 export default function ToolTemplate({ tool }: { tool: ToolItem }) {
   const sections: ToolContentSection[] = tool.contentSections ?? []

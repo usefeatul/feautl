@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import { navigationConfig } from "@/config/homeNav";
-import { Container } from "../container";
+import { Container } from "../global/container";
 import { ArrowIcon } from "@feedgot/ui/icons/arrow";
 import { cn } from "@feedgot/ui/lib/utils";
 import { useEffect, useState } from "react";
 import { Button } from "@feedgot/ui/components/button";
-import { Logo } from "../logo";
+import { Logo } from "../global/logo";
 
 export default function Navbar() {
   const main = navigationConfig.main;

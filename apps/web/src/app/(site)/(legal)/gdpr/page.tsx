@@ -1,4 +1,4 @@
-import { Container } from "@/components/container"
+import { Container } from "@/components/global/container"
 
 export const metadata = {
   title: "GDPR Compliance",

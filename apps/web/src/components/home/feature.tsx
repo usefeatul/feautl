@@ -1,4 +1,4 @@
-import { Container } from '../container'
+import { Container } from '../global/container'
 
 import { Button } from '@feedgot/ui/components/button'
 import { Card } from '@feedgot/ui/components/card'

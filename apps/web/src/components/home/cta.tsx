@@ -1,6 +1,6 @@
-import { Container } from "../container";
-import { HotkeyLink } from "../hotkey-link";
-import { LiveDemo } from "../live-demo";
+import { Container } from "../global/container";
+import { HotkeyLink } from "../global/hotkey-link";
+import { LiveDemo } from "../global/live-demo";
 
 export default function CTA() {
   return (

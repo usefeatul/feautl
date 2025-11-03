@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Container } from "../container";
-import { Logo } from "@/components/logo";
+import { Container } from "../global/container";
+import { Logo } from "@/components/global/logo";
 import { footerNavigationConfig } from "@/config/footerNav";
 import { GitHubIcon } from "@feedgot/ui/icons/github";
 import { TwitterIcon } from "@feedgot/ui/icons/twitter";

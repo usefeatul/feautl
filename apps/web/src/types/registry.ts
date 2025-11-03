@@ -13,6 +13,15 @@ import RetentionRateTool from '../components/tools/customer/retention-rate'
 import CustomerCohortsTool from '../components/tools/customer/customer-cohorts'
 import FeatureAdoptionTool from '../components/tools/product/feature-adoption'
 import CohortAnalysisTool from '../components/tools/product/cohort-analysis'
+import RunwayTool from '../components/tools/finance/runway'
+import GrossMarginTool from '../components/tools/finance/gross-margin'
+import BurnRateTool from '../components/tools/finance/burn-rate'
+import NetMarginTool from '../components/tools/finance/net-margin'
+import CashFlowTool from '../components/tools/finance/cashflow'
+import PaybackPeriodTool from '../components/tools/finance/payback-period'
+import BreakEvenTool from '../components/tools/finance/break-even'
+import OpexRatioTool from '../components/tools/finance/opex-ratio'
+import RevenuePerEmployeeTool from '../components/tools/finance/revenue-per-employee'
 
 export const TOOL_COMPONENTS: Record<string, Record<string, ComponentType>> = {
   'product-feature-analytics': {
@@ -34,5 +43,16 @@ export const TOOL_COMPONENTS: Record<string, Record<string, ComponentType>> = {
     'activation-rate': ActivationRateTool,
     'retention-rate': RetentionRateTool,
     'customer-cohort-analysis': CustomerCohortsTool,
+  },
+  'financial-health': {
+    'runway-calculator': RunwayTool,
+    'gross-margin-calculator': GrossMarginTool,
+    'burn-rate-calculator': BurnRateTool,
+    'net-margin-calculator': NetMarginTool,
+    'cashflow-analyzer': CashFlowTool,
+    'payback-period': PaybackPeriodTool,
+    'break-even-analysis': BreakEvenTool,
+    'operating-expense-ratio': OpexRatioTool,
+    'revenue-per-employee': RevenuePerEmployeeTool,
   },
 }

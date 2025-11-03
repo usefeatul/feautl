@@ -1,20 +1,17 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import Link from "next/link"
-import { useParams } from "next/navigation"
+import BackLink from "@/components/tools/backlink"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from "@feedgot/ui/components/card"
 import { Label } from "@feedgot/ui/components/label"
 import { Input } from "@feedgot/ui/components/input"
 import { Badge } from "@feedgot/ui/components/badge"
 import { Button } from "@feedgot/ui/components/button"
-import { Plus, Trash, ArrowLeft } from "lucide-react"
+import { Plus, Trash } from "lucide-react"
 
 type Cohort = { size: number; adopted: number }
 
 export default function FeatureAdoptionTool() {
-  const params = useParams() as { category?: string | string[] }
-  const category = Array.isArray(params.category) ? params.category?.[0] : params.category
   const [cohorts, setCohorts] = useState<Cohort[]>([
     { size: 100, adopted: 45 },
     { size: 80, adopted: 32 },
@@ -138,15 +135,7 @@ export default function FeatureAdoptionTool() {
           </CardContent>
         </Card>
 
-        <div className="px-0">
-          <Link
-            href={category ? `/tools/categories/${category}` : "/tools/categories"}
-            aria-label="Back to our tools categories"
-            className="inline-flex items-center text-sm text-zinc-500 hover:text-foreground"
-          >
-            <ArrowLeft className="mr-1 h-4 w-4" /> Our tools
-          </Link>
-        </div>
+        <BackLink />
       </div>
 
       <section className="mt-8 prose prose-sm sm:prose-base prose-zinc dark:prose-invert">

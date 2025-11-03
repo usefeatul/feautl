@@ -24,11 +24,11 @@ export default async function CategoryPage({ params }: Props) {
   if (!cat) return notFound()
 
   return (
-    <main className="min-h-screen pt-16 bg-background">
+    <main className="min-[height:calc(100vh-64px)]  pt-16 bg-background">
       <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
         <section className="py-12 sm:py-16">
-          <Breadcrumb>
-            <BreadcrumbList>
+          <Breadcrumb className="mb-6">
+            <BreadcrumbList className="text-zinc-500">
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link href="/tools">Tools</Link>

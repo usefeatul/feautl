@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function ToolsIndexPage() {
   const totalTools = TOOL_CATEGORIES.reduce((sum, c) => sum + c.tools.length, 0)
   return (
-    <main className="min-h-[70vh] pt-16 bg-background">
+    <main className="min-[height:calc(100vh-64px)]  pt-16 bg-background">
       <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
         <section className="py-12 sm:py-16">
           <p className="text-sm text-zinc-500">Growth tools • {totalTools} calculators</p>

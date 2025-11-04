@@ -5,6 +5,7 @@ import FAQs from "@/components/home/faq";
 import ComparisonBento from "@/components/alternatives/comparison-bento";
 import ComparisonFeature from "@/components/alternatives/comparison-feature";
 import StatsSection from "@/components/home/cta";
+import { getAltDescription } from "@/components/alternatives/descriptions";
 import {
   getAlternativeBySlug,
   getAlternativeSlugs,
@@ -23,9 +24,8 @@ export async function generateMetadata({
   const alt = getAlternativeBySlug(slug);
   if (!alt) return {};
   const title = `${alt.name} vs Feedgot`;
-  const description =
-    alt.summary ??
-    `Compare ${alt.name} to Feedgot across features, privacy, and hosting.`;
+  const rawDescription = getAltDescription(slug, 'first');
+  const description = rawDescription.length > 160 ? `${rawDescription.slice(0, 157)}…` : rawDescription;
   return {
     title,
     description,

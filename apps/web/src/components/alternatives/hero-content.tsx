@@ -6,7 +6,7 @@ import { SetupIcon } from "@feedgot/ui/icons/setup";
 import { HotkeyLink } from "@/components/global/hotkey-link";
 import { LiveDemo } from "@/components/global/live-demo";
 
-export function AlternativeHeroContent({ name }: { name: string }) {
+export function AlternativeHeroContent({ name, description }: { name: string; description?: string }) {
   return (
     <div className="mx-auto max-w-5xl lg:max-w-6xl px-0 sm:px-0 lg:px-0 text-left mt-14 sm:mt-0">
       {/* Main heading */}
@@ -20,8 +20,9 @@ export function AlternativeHeroContent({ name }: { name: string }) {
 
       {/* Subtitle */}
       <p className="mt-6 max-w-3xl sm:max-w-4xl lg:max-w-5xl text-base sm:text-lg md:text-xl leading-relaxed text-zinc-500 text-balance">
-        Compare {name} and Feedgot. Get organized feedback boards, auto-syncing roadmaps,
-        self-writing changelogs, and privacy-conscious hosting in the EU.
+        {description ?? (
+          <>Compare {name} and Feedgot. Get organized feedback boards, auto-syncing roadmaps, self-writing changelogs, and privacy-conscious hosting in the EU.</>
+        )}
       </p>
 
       {/* CTAs */}

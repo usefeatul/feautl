@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@feedgot/ui/components/button";
 import { Alternative } from "@/config/alternatives";
 import { AlternativeHeroContent } from "./hero-content";
+import { getAltDescription } from "@/components/alternatives/descriptions";
 
 export function AlternativeHero({ alt }: { alt: Alternative }) {
   const [active, setActive] = useState<"dashboard" | "roadmap" | "changelog">("dashboard");
@@ -29,7 +30,7 @@ export function AlternativeHero({ alt }: { alt: Alternative }) {
     <section className="relative overflow-hidden">
       <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
         <div className="pt-10 pb-24 sm:pt-16 sm:pb-32">
-          <AlternativeHeroContent name={alt.name} />
+          <AlternativeHeroContent name={alt.name} description={getAltDescription(alt.slug, 'slug-hash')} />
 
           {/* Screenshot card */}
           <div className="mt-6 w-full rounded-sm shadow-black shadow-2xl">

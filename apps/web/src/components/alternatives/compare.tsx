@@ -3,7 +3,6 @@ import type { Alternative } from "@/config/alternatives";
 import { StatusIcon } from "./status-icon";
 import { SquareIcon } from "@feedgot/ui/icons/square";
 
-
 export default function Compare({ alt }: { alt: Alternative }) {
   return (
     <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
@@ -14,57 +13,54 @@ export default function Compare({ alt }: { alt: Alternative }) {
             Side‑by‑side features
           </h2>
           <p className="text-zinc-500 mt-3">
-            Quick comparison of essential capabilities across {alt.name} and Feedgot.
+            Quick comparison of essential capabilities across {alt.name} and
+            Feedgot.
           </p>
 
           <div className="mt-10">
-            <div className="hidden sm:grid grid-cols-[1.5fr_1fr_1fr] items-center gap-x-12 bg-muted/30">
-              <div className="pl-0 pr-4 py-3 text-base sm:text-lg font-semibold text-foreground text-left">Feature</div>
-              <div className="px-4 py-3 text-base sm:text-lg font-semibold text-foreground text-right">{alt.name}</div>
-              <div className="px-4 py-3 text-base sm:text-lg font-semibold text-foreground text-right">Feedgot</div>
+            <div className="grid grid-cols-[minmax(0,1fr)_minmax(56px,auto)_minmax(56px,auto)] sm:grid-cols-[1.5fr_1fr_1fr] items-center gap-x-2 sm:gap-x-12 bg-muted/30 sticky top-2 z-10 rounded-md">
+              <div className="pl-0 pr-2 sm:pr-4 py-2 sm:py-3 text-xs sm:text-lg font-semibold text-foreground text-left">
+                Feature
+              </div>
+              <div className="px-1 sm:px-4 py-2 sm:py-3 text-xs sm:text-lg font-semibold text-foreground text-right">
+                {alt.name}
+              </div>
+              <div className="px-1 sm:px-4 py-2 sm:py-3 text-xs sm:text-lg font-semibold text-foreground text-right">
+                Feedgot
+              </div>
             </div>
 
             <ul className="divide-y divide-muted/30">
               {alt.features.map((f) => (
-                <li key={f.key} className="grid sm:grid-cols-[1.5fr_1fr_1fr] items-start gap-x-12">
-                  <div className="pl-0 pr-4 py-3">
+                <li
+                  key={f.key}
+                  className="grid grid-cols-[minmax(0,1fr)_minmax(56px,auto)_minmax(56px,auto)] sm:grid-cols-[1.5fr_1fr_1fr] items-center gap-x-2 sm:gap-x-12"
+                >
+                  <div className="pl-0 pr-2 sm:pr-4 py-2 sm:py-3">
                     <div className="text-left space-y-1">
-                      <div className="text-md sm:text-lg font-semibold text-foreground">{f.label}</div>
+                      <div className="text-base sm:text-lg font-semibold text-foreground">
+                        {f.label}
+                      </div>
                       {f.description && (
-                        <p className="text-zinc-500 text-md leading-relaxed">
+                        <p className="text-zinc-500 text-sm sm:text-md leading-6 sm:leading-relaxed">
                           {f.description}
                         </p>
                       )}
                     </div>
                   </div>
-                  {/* Desktop / larger screens */}
-                  <div className="hidden sm:flex px-4 py-3 items-center gap-2 justify-end text-right">
+                  {/* Competitor column (mobile & desktop) */}
+                  <div className="px-0 sm:px-4 py-2 sm:py-3 min-w-[56px] flex items-center justify-center sm:justify-end gap-2 text-right">
                     <StatusIcon value={f.competitor} />
-                    <span className="sr-only">{String(f.competitor)}</span>
+                    <span className="sr-only">
+                      {alt.name}: {String(f.competitor)}
+                    </span>
                   </div>
-                  <div className="hidden sm:flex px-4 py-3 items-center gap-2 justify-end text-right">
+                  {/* Feedgot column (mobile & desktop) */}
+                  <div className="px-0 sm:px-4 py-2 sm:py-3 min-w-[56px] flex items-center justify-center sm:justify-end gap-2 text-right">
                     <StatusIcon value={f.feedgot} />
-                    <span className="sr-only">{String(f.feedgot)}</span>
-                  </div>
-
-                  {/* Mobile layout: show both comparisons stacked under the feature */}
-                  <div className="px-4 pb-4 sm:hidden">
-                    <div className="mt-1 grid grid-cols-2 gap-4">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-medium text-muted-foreground">{alt.name}</span>
-                        <div className="flex items-center gap-2">
-                          <StatusIcon value={f.competitor} />
-                          <span className="sr-only">{String(f.competitor)}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-medium text-muted-foreground">Feedgot</span>
-                        <div className="flex items-center gap-2">
-                          <StatusIcon value={f.feedgot} />
-                          <span className="sr-only">{String(f.feedgot)}</span>
-                        </div>
-                      </div>
-                    </div>
+                    <span className="sr-only">
+                      Feedgot: {String(f.feedgot)}
+                    </span>
                   </div>
                 </li>
               ))}
@@ -72,7 +68,8 @@ export default function Compare({ alt }: { alt: Alternative }) {
           </div>
 
           <p className="text-zinc-500 mt-6 text-md sm:text-lg">
-            Partial means the feature is available with limitations or requires workarounds.
+            Partial means the feature is available with limitations or requires
+            workarounds.
           </p>
         </div>
       </section>

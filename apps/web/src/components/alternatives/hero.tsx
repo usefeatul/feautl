@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Button } from "@feedgot/ui/components/button";
 import { Alternative } from "@/config/alternatives";
 import { AlternativeHeroContent } from "./hero-content";
-import { getAltDescription } from "@/components/alternatives/descriptions";
+import { getAltDescription } from "@/types/descriptions";
 
 export function AlternativeHero({ alt }: { alt: Alternative }) {
   const [active, setActive] = useState<"dashboard" | "roadmap" | "changelog">("dashboard");

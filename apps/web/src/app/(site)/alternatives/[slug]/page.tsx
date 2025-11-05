@@ -5,7 +5,7 @@ import FAQs from "@/components/home/faq";
 import ComparisonBento from "@/components/alternatives/comparison-bento";
 import ComparisonFeature from "@/components/alternatives/comparison-feature";
 import StatsSection from "@/components/home/cta";
-import { getAltDescription } from "@/components/alternatives/descriptions";
+import { getAltDescription } from "@/types/descriptions";
 import { createArticleMetadata } from "@/lib/seo";
 import {
   getAlternativeBySlug,

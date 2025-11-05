@@ -18,15 +18,15 @@ export default function Compare({ alt }: { alt: Alternative }) {
           </p>
 
           <div className="mt-10">
-            <div className="grid grid-cols-[1.5fr_1fr_1fr] items-center gap-x-12 bg-muted/30">
+            <div className="hidden sm:grid grid-cols-[1.5fr_1fr_1fr] items-center gap-x-12 bg-muted/30">
               <div className="pl-0 pr-4 py-3 text-base sm:text-lg font-semibold text-foreground text-left">Feature</div>
               <div className="px-4 py-3 text-base sm:text-lg font-semibold text-foreground text-right">{alt.name}</div>
               <div className="px-4 py-3 text-base sm:text-lg font-semibold text-foreground text-right">Feedgot</div>
             </div>
 
-            <ul>
+            <ul className="divide-y divide-muted/30">
               {alt.features.map((f) => (
-                <li key={f.key} className="grid grid-cols-[1.5fr_1fr_1fr] items-start gap-x-12">
+                <li key={f.key} className="grid sm:grid-cols-[1.5fr_1fr_1fr] items-start gap-x-12">
                   <div className="pl-0 pr-4 py-3">
                     <div className="text-left space-y-1">
                       <div className="text-md sm:text-lg font-semibold text-foreground">{f.label}</div>
@@ -37,13 +37,34 @@ export default function Compare({ alt }: { alt: Alternative }) {
                       )}
                     </div>
                   </div>
-                  <div className="px-4 py-3 flex items-center gap-2 justify-end text-right">
+                  {/* Desktop / larger screens */}
+                  <div className="hidden sm:flex px-4 py-3 items-center gap-2 justify-end text-right">
                     <StatusIcon value={f.competitor} />
                     <span className="sr-only">{String(f.competitor)}</span>
                   </div>
-                  <div className="px-4 py-3 flex items-center gap-2 justify-end text-right">
+                  <div className="hidden sm:flex px-4 py-3 items-center gap-2 justify-end text-right">
                     <StatusIcon value={f.feedgot} />
                     <span className="sr-only">{String(f.feedgot)}</span>
+                  </div>
+
+                  {/* Mobile layout: show both comparisons stacked under the feature */}
+                  <div className="px-4 pb-4 sm:hidden">
+                    <div className="mt-1 grid grid-cols-2 gap-4">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs font-medium text-muted-foreground">{alt.name}</span>
+                        <div className="flex items-center gap-2">
+                          <StatusIcon value={f.competitor} />
+                          <span className="sr-only">{String(f.competitor)}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs font-medium text-muted-foreground">Feedgot</span>
+                        <div className="flex items-center gap-2">
+                          <StatusIcon value={f.feedgot} />
+                          <span className="sr-only">{String(f.feedgot)}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </li>
               ))}

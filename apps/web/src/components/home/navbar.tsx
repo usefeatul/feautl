@@ -38,7 +38,7 @@ export default function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-colors",
         scrolled
-          ? "backdrop-blur-lg bg-muted/80 border-b border-border"
+          ? "backdrop-blur-lg bg-background/70 border-b border-border"
           : "bg-background"
       )}
     >

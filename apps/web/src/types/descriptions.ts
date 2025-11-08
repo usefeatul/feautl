@@ -1,31 +1,30 @@
 export const alternativeDescriptions: Record<string, string[]> = {
   userjot: [
-    "UserJot has a free‑forever plan with unlimited users and posts, 2 boards, a public roadmap/changelog, and 3 admin seats. It’s hosted only (not open‑source or self‑hostable). Feedgot is open‑source and supports self‑hosting while keeping feedback, roadmap and changelog connected.",
-    "UserJot offers helpful AI features like duplicate detection and categorization. Choose Feedgot when you want open‑source transparency, self‑hosting, and a simple path from feedback to public planning and release notes — all in one place.",
-    "UserJot’s paid tiers add branding and custom domains. Feedgot emphasizes openness and control: run privately or in your own cloud, share a public roadmap, and publish a clean changelog without vendor lock‑in.",
+    "UserJot’s free plan includes unlimited users/posts, 2 boards, a roadmap, and 3 admin seats. It’s hosted only. Feedgot is open‑source, self‑hostable, and connects feedback, roadmap, and changelog.",
+    "UserJot adds AI tools like duplicate detection. Feedgot offers open‑source transparency, self‑hosting, and a unified flow from feedback to release notes.",
+    "UserJot’s paid tiers add branding. Feedgot focuses on control: run privately, share a roadmap, and publish a clean changelog without vendor lock‑in.",
   ],
   featurebase: [
-    "Featurebase’s free plan is limited (≈1 team member, 1 feedback board, 1 roadmap) and paid plans start around $49/mo. It’s hosted and not open‑source/self‑hostable. Feedgot is open‑source, supports self‑hosting, and connects feedback to a public roadmap and changelog.",
-    "Featurebase is great for voting and surfacing ideas; Feedgot adds end‑to‑end planning and announcements so teams can prioritize, track progress publicly, and ship with clear release notes.",
-    "Pick Featurebase for a simple hosted board; pick Feedgot to keep intake, prioritization, planning, and releases in a transparent, self‑hostable stack that you control.",
+    "Featurebase’s free plan is limited (~1 team, board, roadmap); paid from $49/mo. It’s hosted only. Feedgot is open‑source, self‑hostable, and links feedback, roadmap, and changelog.",
+    "Featurebase handles voting; Feedgot adds planning and release tracking to ship transparently with clear notes.",
+    "Choose Featurebase for a simple hosted board; choose Feedgot for a full, self‑hostable, transparent feedback‑to‑release stack.",
   ],
   nolt: [
-    "Nolt offers a 10‑day free trial; there’s no ongoing free tier, and paid plans start around $29/mo. It’s hosted only (not open‑source or self‑hostable). Feedgot provides an open‑source, self‑hostable alternative that links feedback, roadmap, and changelog.",
-    "Nolt focuses on community boards and voting. Feedgot complements that with public planning, statuses, and release notes, plus the option to deploy privately and own your infrastructure.",
-    "If ownership and cost control matter, Feedgot’s open‑source model and self‑hosting options avoid per‑seat limits and keep data under your control while maintaining a clear feedback, roadmap, and changelog loop.",
+    "Nolt’s 10‑day trial leads to paid plans (~$29/mo), hosted only. Feedgot is open‑source, self‑hostable, and ties feedback, roadmap, and changelog together.",
+    "Nolt centers on voting; Feedgot extends it with statuses, planning, and release notes you can self‑host.",
+    "For ownership and cost control, Feedgot’s open‑source model avoids seat limits and keeps your data private.",
   ],
   canny: [
-    "Canny’s Free plan currently includes about 25 tracked users and requires a brief unlock flow; paid tiers scale with tracked users/admin seats. It’s hosted only and not open‑source/self‑hostable. Feedgot is open‑source, self‑hostable, and connects feedback, roadmap, and changelog.",
-    "Canny is strong for discovery and prioritization. Choose Feedgot when you want open‑source transparency, self‑hosting, and a straightforward path from feedback to a public roadmap and structured release notes.",
-    "Teams avoiding per‑user limits and seeking deployment control pick Feedgot: run privately, keep a public roadmap, and publish a clean changelog while retaining ownership.",
+    "Canny’s free tier covers ~25 tracked users and paid plans scale by seats. It’s hosted only. Feedgot is open‑source, self‑hostable, and unites feedback, roadmap, and changelog.",
+    "Canny is great for discovery; Feedgot adds transparency, self‑hosting, and public planning with structured release notes.",
+    "Skip user limits with Feedgot—self‑host, share a roadmap, and publish clean changelogs while keeping full control.",
   ],
   upvoty: [
-    "Upvoty offers a free trial but no free plan; v2 paid plans start around $15/mo. It’s hosted only (not open‑source or self‑hostable). Feedgot is open‑source and supports self‑hosting with a connected feedback, roadmap, and changelog workflow.",
-    "Upvoty keeps voting simple. Feedgot adds public planning and release notes, plus the option to deploy privately for data ownership and flexibility.",
-    "Choose Upvoty for a straightforward hosted board; choose Feedgot to own your stack, keep the roadmap public, and publish structured changelogs with open‑source transparency.",
+    "Upvoty offers a trial but no free plan; paid starts ~\$15/mo. It’s hosted only. Feedgot is open‑source, self‑hostable, and connects feedback, roadmap, and changelog.",
+    "Upvoty focuses on voting simplicity; Feedgot adds public planning, release notes, and private deployment options.",
+    "Choose Upvoty for hosted ease, or Feedgot to own your stack with transparent roadmaps and changelogs.",
   ],
 }
-
 function hashIndex(key: string, length: number): number {
   if (length <= 1) return 0
   let h = 0

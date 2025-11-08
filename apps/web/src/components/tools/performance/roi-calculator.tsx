@@ -132,19 +132,7 @@ export default function RoiCalculatorTool() {
         </p>
       </div>
 
-      <script type="application/ld+json" suppressHydrationWarning>
-        {JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: [
-            { '@type': 'Question', name: 'What is ROI?', acceptedAnswer: { '@type': 'Answer', text: 'Return on Investment compares net profit to investment cost to evaluate efficiency.' } },
-            { '@type': 'Question', name: 'How do I calculate ROI?', acceptedAnswer: { '@type': 'Answer', text: 'ROI = (Return − Cost) ÷ Cost × 100%.' } },
-            { '@type': 'Question', name: 'When is ROI useful?', acceptedAnswer: { '@type': 'Answer', text: 'Use ROI to compare initiatives, prioritize budgets, and track campaign efficiency.' } },
-            { '@type': 'Question', name: 'What is the difference between ROI, ROMI, and ROAS?', acceptedAnswer: { '@type': 'Answer', text: 'ROI is overall investment efficiency, ROMI uses margin to convert attributed revenue to profit, and ROAS is revenue ÷ ad spend without margin.' } },
-            { '@type': 'Question', name: 'Is 30% ROI good?', acceptedAnswer: { '@type': 'Answer', text: 'It depends on risk, payback period, and opportunity cost. Compare against your hurdle rate and alternatives.' } },
-          ],
-        })}
-      </script>
+      {/* FAQ JSON-LD moved to the tool page for centralized, dynamic injection */}
     </div>
   );
 }

@@ -1,45 +1,82 @@
-import type { Metadata } from "next"
-import { notFound } from "next/navigation"
-import { Container } from "@/components/global/container"
-import { getCategoryBySlug, getToolBySlugs, getAllToolParams } from "@/types/tools"
-import { TOOL_COMPONENTS } from "@/types/registry"
-import ToolTemplate from "@/components/tools/global/template"
-import { createArticleMetadata } from "@/lib/seo"
+import type { Metadata } from "next";
+import Script from "next/script";
+import { notFound } from "next/navigation";
+import { Container } from "@/components/global/container";
+import {
+  getCategoryBySlug,
+  getToolBySlugs,
+  getAllToolParams,
+} from "@/types/tools";
+import { TOOL_COMPONENTS } from "@/types/registry";
+import ToolTemplate from "@/components/tools/global/template";
+import { createArticleMetadata } from "@/lib/seo";
+import { SITE_URL } from "@/config/seo";
+import {
+  buildToolFaqSchema,
+  buildBreadcrumbSchema,
+} from "@/lib/structured-data";
 
-
-type Props = { params: Promise<{ category: string; tool: string }> }
+type Props = { params: Promise<{ category: string; tool: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { category, tool: toolSlug } = await params
-  const cat = getCategoryBySlug(category)
-  const tool = getToolBySlugs(category, toolSlug)
-  if (!cat || !tool) return { title: "Tool" }
+  const { category, tool: toolSlug } = await params;
+  const cat = getCategoryBySlug(category);
+  const tool = getToolBySlugs(category, toolSlug);
+  if (!cat || !tool) return { title: "Tool" };
   return createArticleMetadata({
     title: tool.name,
     description: tool.description,
     path: `/tools/categories/${category}/${toolSlug}`,
-  })
+  });
 }
- 
+
 export default async function ToolPage({ params }: Props) {
-  const { category, tool: toolSlug } = await params
-  const tool = getToolBySlugs(category, toolSlug)
-  if (!tool) return notFound()
-  const ToolComponent = TOOL_COMPONENTS[category]?.[toolSlug]
+  const { category, tool: toolSlug } = await params;
+  const tool = getToolBySlugs(category, toolSlug);
+  if (!tool) return notFound();
+  const ToolComponent = TOOL_COMPONENTS[category]?.[toolSlug];
+
+  const cat = getCategoryBySlug(category);
+  const faqSchema = buildToolFaqSchema({
+    tool,
+    categoryName: cat?.name || "Tools",
+  });
+  const breadcrumbSchema = buildBreadcrumbSchema({
+    siteUrl: SITE_URL,
+    categorySlug: category,
+    categoryName: cat?.name || category,
+    toolSlug,
+    toolName: tool.name,
+  });
 
   return (
     <main className="min-h-screen pt-16 bg-background">
       <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
         <section className="py-12 sm:py-16">
+          {/* JSON-LD for SEO: FAQ and Breadcrumbs */}
+          <Script
+            id="tool-faq-jsonld"
+            type="application/ld+json"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          />
+          <Script
+            id="tool-breadcrumb-jsonld"
+            type="application/ld+json"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(breadcrumbSchema),
+            }}
+          />
           {/* Breadcrumb removed for a cleaner tool detail page. */}
           {/* Page-level title and description omitted to avoid duplication; the tool component provides its own content. */}
           {ToolComponent ? <ToolComponent /> : <ToolTemplate tool={tool} />}
         </section>
       </Container>
     </main>
-  )
+  );
 }
 
 export function generateStaticParams() {
-  return getAllToolParams()
+  return getAllToolParams();
 }

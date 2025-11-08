@@ -10,7 +10,7 @@ export function AlternativeHeroContent({
   description?: string;
 }) {
   return (
-    <div className="mx-auto max-w-5xl lg:max-w-6xl text-left mt-14 sm:mt-0">
+    <div className="w-full max-w-2xl sm:max-w-3xl text-left mt-14 sm:mt-0">
       {/* Main heading */}
       <h1 className=" text-3xl leading-tight tracking-normal sm:tracking-tight font-extrabold text-foreground text-balance">
         The simple, fast and privacy-first
@@ -28,19 +28,26 @@ export function AlternativeHeroContent({
         )}
       </p>
 
-      <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4">
-        <HotkeyLink
-          href="/signup"
-          hotkeyHref="https://dashboard.feedbot.com"
-          className="w-full sm:w-auto"
-          label="Add to your website"
-        />
-        <LiveDemo className="w-full sm:w-auto text-accent" />
-      <p className="mt-3 text-xs sm:text-sm text-accent gap-2  items-center justify-center">
-        
-        <span className="block sm:inline text-black">no credit card required.</span>
-        no obligation. quick setup.
-      </p>
+      {/* CTA + microcopy wrapper: full width on mobile, fits row on larger screens */}
+      <div className="mt-8 w-full sm:w-fit">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4">
+          <HotkeyLink
+            href="/signup"
+            hotkeyHref="https://dashboard.feedbot.com"
+            className="w-full sm:w-auto"
+            label="Add to your website"
+          />
+          <LiveDemo className="w-full sm:w-auto text-accent" />
+        </div>
+
+        {/* Reassurance microcopy centered to match button row width */}
+        <p className="mt-4 text-center text-xs sm:text-sm text-accent">
+          <span className="block sm:inline text-black">
+            no credit card required.
+          </span>
+          <span className="sm:ml-1">no obligation.</span>
+          <span className="sm:ml-1">quick setup.</span>
+        </p>
       </div>
     </div>
   );

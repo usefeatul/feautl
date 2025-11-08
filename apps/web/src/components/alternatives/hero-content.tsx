@@ -1,53 +1,46 @@
 "use client";
-
-import { FreeIcon } from "@feedgot/ui/icons/free";
-import { UsersIcon } from "@feedgot/ui/icons/users";
-import { SetupIcon } from "@feedgot/ui/icons/setup";
 import { HotkeyLink } from "@/components/global/hotkey-link";
 import { LiveDemo } from "@/components/global/live-demo";
 
-export function AlternativeHeroContent({ name, description }: { name: string; description?: string }) {
+export function AlternativeHeroContent({
+  name,
+  description,
+}: {
+  name: string;
+  description?: string;
+}) {
   return (
     <div className="mx-auto max-w-5xl lg:max-w-6xl text-left mt-14 sm:mt-0">
       {/* Main heading */}
-      <h1 className=" text-3xl sm:text-3xl md:text-5xl leading-tight tracking-normal sm:tracking-tight font-extrabold text-foreground text-balance">
-        The
-        <span className="mx-2 inline-block rounded-md bg-primary/15 px-3 py-0 text-primary leading-none align-middle">
-          simple and joyful
-        </span>
+      <h1 className=" text-3xl leading-tight tracking-normal sm:tracking-tight font-extrabold text-foreground text-balance">
+        The simple, fast and privacy-first
         <span className="block mt-0">alternative to {name}</span>
       </h1>
 
       {/* Subtitle */}
-      <p className="mt-6 max-w-3xl sm:max-w-4xl lg:max-w-5xl text-base sm:text-lg md:text-xl leading-relaxed text-accent text-balance">
+      <p className="mt-6 max-w-3xl sm:max-w-4xl lg:max-w-5xl text-xs sm:text-sm md:text-base leading-relaxed text-accent text-balance">
         {description ?? (
-          <>Compare {name} and Feedgot. Get organized feedback boards, auto-syncing roadmaps, self-writing changelogs, and privacy-conscious hosting in the EU.</>
+          <>
+            Compare {name} and Feedgot — transparent by design, focused on
+            simplicity and user-first UX. Organized feedback boards,
+            auto-syncing roadmaps, and self-writing changelogs.
+          </>
         )}
       </p>
 
-      {/* CTAs */}
       <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4">
-        <HotkeyLink href="/signup" hotkeyHref="https://dashboard.feedbot.com" className="w-full sm:w-auto" />
+        <HotkeyLink
+          href="/signup"
+          hotkeyHref="https://dashboard.feedbot.com"
+          className="w-full sm:w-auto"
+          label="Add to your website"
+        />
         <LiveDemo className="w-full sm:w-auto text-accent" />
-      </div>
-
-      {/* Feature highlights row */}
-      <div
-        className="mt-8 flex flex-wrap items-center gap-3 sm:gap-6 text-xs sm:text-sm md:text-base text-accent"
-        aria-label="Key highlights"
-      >
-        <span className="inline-flex items-center gap-2">
-          <FreeIcon width={18} height={18} className="text-foreground" />
-          Free forever
-        </span>
-        <span className=" inline-flex items-center gap-2">
-          <SetupIcon width={18} height={18} className="text-foreground" />
-          30-second setup
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <UsersIcon width={18} height={18} className="text-foreground" />
-          Unlimited users
-        </span>
+      <p className="mt-3 text-xs sm:text-sm text-accent gap-2  items-center justify-center">
+        
+        <span className="block sm:inline text-black">no credit card required.</span>
+        no obligation. quick setup.
+      </p>
       </div>
     </div>
   );

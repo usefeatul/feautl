@@ -12,16 +12,18 @@ type Diagnostic = {
 };
 
 function usePersistentBoolean(key: string, defaultValue: boolean) {
-  const [value, setValue] = useState<boolean>(() => {
-    if (typeof window === "undefined") return defaultValue;
+  const [value, setValue] = useState<boolean>(defaultValue);
+
+  // Read persisted value after mount to avoid SSR/CSR mismatch
+  useEffect(() => {
     try {
       const raw = window.localStorage.getItem(key);
-      return raw === null ? defaultValue : raw === "true";
-    } catch {
-      return defaultValue;
-    }
-  });
+      if (raw !== null) setValue(raw === "true");
+    } catch {}
+    // only re-run if key changes
+  }, [key]);
 
+  // Persist changes
   useEffect(() => {
     try {
       window.localStorage.setItem(key, String(value));
@@ -45,7 +47,7 @@ function parseRGB(color: string | null): [number, number, number] | null {
 
 function luminance([r, g, b]: [number, number, number]) {
   const srgb = [r, g, b].map((v) => v / 255).map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
-  return srgb[0] * 0.2126 + srgb[1] * 0.7152 + srgb[2] * 0.0722;
+  return (srgb[0] ?? 0) * 0.2126 + (srgb[1] ?? 0) * 0.7152 + (srgb[2] ?? 0) * 0.0722;
 }
 
 function contrastRatio(fg: [number, number, number], bg: [number, number, number]) {
@@ -142,10 +144,15 @@ export function DebugTools() {
   const [showOutline, setShowOutline] = usePersistentBoolean("__debug_outline", false);
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [results, setResults] = useState<Diagnostic[]>([]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Toggle global outline via data attribute so scoped CSS can handle it
   useEffect(() => {
-    if (typeof document === "undefined") return;
+    if (!mounted) return;
     const root = document.documentElement;
     if (showOutline) {
       root.setAttribute("data-debug-outline", "true");
@@ -155,7 +162,7 @@ export function DebugTools() {
     return () => {
       root.removeAttribute("data-debug-outline");
     };
-  }, [showOutline]);
+  }, [showOutline, mounted]);
 
   const counts = useMemo(() => {
     return {
@@ -189,7 +196,7 @@ export function DebugTools() {
 
   return (
     <div className="fixed bottom-4 right-4 z-[10000] flex gap-2 items-end">
-      {showGrid && (
+      {mounted && showGrid && (
         <div
           aria-hidden
           className="pointer-events-none fixed inset-0 z-[9999]"
@@ -201,7 +208,7 @@ export function DebugTools() {
         />
       )}
 
-      {showAnalysis && results.map((r) =>
+      {mounted && showAnalysis && results.map((r) =>
         r.rect ? (
           <div
             key={r.id}

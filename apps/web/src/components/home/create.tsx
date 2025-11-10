@@ -21,7 +21,7 @@ const CardAccent = ({ children }: { children: ReactNode }) => (
 );
 
 const CardTag = ({ children = "no setup required" }: { children?: ReactNode }) => (
-  <span className="absolute right-3 top-3 text-accent text-xs border border-border bg-background/80 backdrop-blur-sm rounded px-2 py-0.5">
+  <span className="absolute right-3 top-3 text-accent text-xs border border-border bg-muted backdrop-blur-sm rounded-sm px-2 py-0.5">
     {children}
   </span>
 );
@@ -46,14 +46,14 @@ export default function Create() {
               <Card className="relative p-6">
                 <CardTag />
                 <div className="absolute left-3 top-3 z-10 space-y-1">
-                  <ChartIcon className="size-4" aria-hidden />
+                  <ChartIcon className="size-4 text-primary opacity-100"   opacity={1} aria-hidden />
+                  <h3 className="text-foreground text-sm sm:text-base font-semibold">Marketing Campaigns</h3>
                   <CardAccent>Plan, track, and optimize campaigns.</CardAccent>
                 </div>
                 <div className="flex aspect-video items-center justify-center">
                   <CodeIllustration className="w-full" />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-foreground text-xl font-semibold">Marketing Campaigns</h3>
                   <p className="text-muted-foreground mt-4 text-balance text-lg">
                     Effortlessly plan and execute your marketing campaigns
                     organized.
@@ -63,14 +63,14 @@ export default function Create() {
               <Card className="relative p-6">
                 <CardTag />
                 <div className="absolute left-3 top-3 z-10 space-y-1">
-                  <UsersIcon className="size-4" aria-hidden />
+                  <UsersIcon className="size-4 text-primary opacity-100"  opacity={1} aria-hidden />
+                  <h3 className="text-foreground text-sm sm:text-base font-semibold">AI Meeting Scheduler</h3>
                   <CardAccent>Auto-schedule and manage meetings with AI.</CardAccent>
                 </div>
                 <div className="flex aspect-video items-center justify-center">
                   <ScheduleIllustation className="border" variant="mixed" />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-foreground text-xl font-semibold">AI Meeting Scheduler</h3>
                   <p className="text-muted-foreground mt-4 text-balance text-lg">
                     Effortlessly book and manage your meetings. Stay on top of
                     your schedule.
@@ -80,14 +80,14 @@ export default function Create() {
               <Card className="relative p-6 col-span-2">
                 <CardTag />
                 <div className="absolute left-3 top-3 z-10 space-y-1">
-                  <SetupIcon className="size-4" aria-hidden />
+                  <SetupIcon className="size-4 text-primary opacity-100"  opacity={1} aria-hidden />
+                  <h3 className="text-foreground text-sm sm:text-base font-semibold">Create workspace</h3>
                   <CardAccent>Get started in seconds.</CardAccent>
                 </div>
                 <div className="flex h-32 sm:h-40 items-center justify-center">
                   <ScheduleIllustation className="border" variant="mixed" />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-foreground text-xl font-semibold">Create workspace</h3>
                   <p className="text-muted-foreground mt-4 text-balance text-lg">
                     Sign up with just an email and pick a name — that’s it.
                   </p>
@@ -170,7 +170,7 @@ export const CodeIllustration = ({ className }: { className?: string }) => {
       )}
     >
       <ul className="text-muted-foreground mx-auto w-fit font-mono text-2xl font-medium">
-        {["Images", "Variables", "Pages", "Components", "Styles"].map((item, index) => (
+        {["Variables", "Pages", "Components", ].map((item, index) => (
           <li
             key={index}
             className={cn(

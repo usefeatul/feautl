@@ -6,19 +6,23 @@ import { Badge } from "@feedgot/ui/components/badge";
 type Status = "Low" | "Moderate" | "Strong";
 
 export function getStatusBadgeProps(status: Status) {
+  const base = "px-2 h-6 text-xs rounded-sm";
   if (status === "Low") {
-    return { variant: "destructive" as const, className: undefined };
+    return {
+      variant: "outline" as const,
+      className: `${base} bg-muted text-accent border-border/60`,
+    };
   }
   if (status === "Moderate") {
     return {
       variant: "outline" as const,
-      className: "bg-yellow-500 text-white border-transparent dark:bg-yellow-600",
+      className: `${base} bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20`,
     };
   }
   // Strong
   return {
     variant: "outline" as const,
-    className: "bg-emerald-600 text-white border-transparent dark:bg-emerald-500",
+    className: `${base} bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20`,
   };
 }
 

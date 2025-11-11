@@ -18,7 +18,7 @@ export function StatusIndicator({
       : `Status: ${status.replace("-", " ")}`)
 
   return (
-    <span className={cn("relative inline-block size-2.5", className)}>
+    <span className={cn("relative inline-block size-2 top-[1px] align-middle", className)}>
       {pulse && (
         <span
           aria-hidden
@@ -28,7 +28,7 @@ export function StatusIndicator({
           )}
         />
       )}
-      <span className={cn("relative block size-2.5 rounded-full", color)} />
+      <span className={cn("relative block size-2 rounded-full", color)} />
       <span className="sr-only">{label}</span>
     </span>
   )

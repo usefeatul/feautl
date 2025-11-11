@@ -16,9 +16,8 @@ export function StatusButton({ href = "https://status.feedgot.com", label = "sta
       href={href}
       aria-label="View status page"
       className={cn(
-        "inline-flex items-center gap-2 px-2.5 py-1 text-sm rounded-sm",
-        "border border-border/50 ring-1 ring-border/50 ring-offset-1 ring-offset-background",
-        "text-zinc-600 hover:text-foreground hover:bg-muted transition-colors",
+        "inline-flex items-center align-middle gap-2 h-7 px-2.5 rounded-md text-xs",
+        "border border-border/60 bg-muted/40 text-accent hover:bg-muted hover:text-foreground transition-colors",
         className
       )}
     >

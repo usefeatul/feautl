@@ -37,10 +37,7 @@ export default function FooterSection() {
                   aria-label="GitHub"
                   className="hover:text-foreground"
                 >
-                  <GitHubIcon
-                    className="text-current hover:text-primary"
-                    size={19}
-                  />
+                  <GitHubIcon className="text-accent hover:text-foreground" size={19} />
                 </Link>
                 <Link
                   href="#"
@@ -49,10 +46,7 @@ export default function FooterSection() {
                   aria-label="Twitter"
                   className="hover:text-foreground"
                 >
-                  <TwitterIcon
-                    className="text-current hover:text-primary"
-                    size={14}
-                  />
+                  <TwitterIcon className="text-accent hover:text-foreground" size={14} />
                 </Link>
               </div>
             </div>
@@ -62,14 +56,14 @@ export default function FooterSection() {
               <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
                 {footerNavigationConfig.groups.map((group, index) => (
                   <div key={index} className="space-y-3 text-sm">
-                    <span className="text-foreground block text-sm font-semibold">
+                    <span className="text-foreground/90 block text-sm font-medium">
                       {group.title}
                     </span>
                     {group.items.map((item, idx) => (
                       <Link
                         key={idx}
                         href={item.href}
-                        className="text-accent hover:text-primary block transition-colors"
+                        className="text-accent hover:text-foreground block transition-colors"
                       >
                         <span>{item.name}</span>
                       </Link>

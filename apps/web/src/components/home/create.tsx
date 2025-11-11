@@ -36,7 +36,7 @@ export default function Create() {
               <h2 className="text-foreground mt-4 text-4xl font-semibold">
                 Up and running in 30 seconds
               </h2>
-              <p className="text-muted-foreground mb-12 mt-4 text-balance text-lg">
+              <p className="text-accent mb-12 mt-4 text-balance text-lg">
                 Sign up with an email, create your workspace, then add one line
                 of code or share your board link. You’re ready to collect feedback.
               </p>

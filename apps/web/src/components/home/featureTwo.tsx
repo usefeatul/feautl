@@ -15,6 +15,21 @@ import {
 import { Button } from "@feedgot/ui/components/button";
 import { Card } from "@feedgot/ui/components/card";
 import { Container } from "../global/container";
+import type { ReactNode } from "react";
+import { ChartIcon } from "@feedgot/ui/icons/chart";
+import { UsersIcon } from "@feedgot/ui/icons/users";
+import { SetupIcon } from "@feedgot/ui/icons/setup";
+import { AiIcon } from "@feedgot/ui/icons/ai";
+
+const CardAccent = ({ children }: { children: ReactNode }) => (
+  <p className="text-accent mt-1 text-sm sm:text-base">{children}</p>
+);
+
+const CardTag = ({ children = "no setup required" }: { children?: ReactNode }) => (
+  <span className="absolute right-3 top-3 text-accent text-xs border border-border bg-muted backdrop-blur-sm rounded-sm px-2 py-0.5">
+    {children}
+  </span>
+);
 
 export default function FeaturesSection() {
   return (
@@ -34,12 +49,15 @@ export default function FeaturesSection() {
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               {/* Long top card (1) */}
-              <Card className="p-8 md:col-span-2">
+              <Card className="relative p-8 md:col-span-2">
+                <CardTag />
+                <div className="absolute left-3 top-3 z-10 space-y-1">
+                  <AiIcon className="size-4 text-primary opacity-100" opacity={1} aria-hidden />
+                  <h3 className="text-foreground text-sm sm:text-base font-semibold">Quick AI</h3>
+                  <CardAccent>Always ready with a single hotkey.</CardAccent>
+                </div>
                 <div className="flex flex-col gap-6 md:flex-row md:items-center">
-                  <div className="flex-1">
-                    <h3 className="text-foreground text-2xl font-semibold">
-                      Quick AI, ready when you are
-                    </h3>
+                  <div className="flex-1 mt-16 text-left">
                     <p className="text-muted-foreground mt-3 text-lg">
                       Summon a focused assistant with a single hotkey. Draft content,
                       schedule meetings, and move work forward without context switching.
@@ -58,23 +76,33 @@ export default function FeaturesSection() {
               </Card>
 
               {/* Row 2 (2 items) */}
-              <Card className="p-6">
+              <Card className="relative p-6">
+                <CardTag />
+                <div className="absolute left-3 top-3 z-10 space-y-1">
+                  <ChartIcon className="size-4 text-primary opacity-100" opacity={1} aria-hidden />
+                  <h3 className="text-foreground text-sm sm:text-base font-semibold">Marketing Campaigns</h3>
+                  <CardAccent>Plan, track, and optimize campaigns.</CardAccent>
+                </div>
                 <div className="flex aspect-video items-center justify-center">
                   <CodeIllustration className="w-full" />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-foreground text-xl font-semibold">Marketing Campaigns</h3>
                   <p className="text-muted-foreground mt-4 text-balance text-lg">
                     Plan and execute campaigns with briefs, assets, and timelines in one view.
                   </p>
                 </div>
               </Card>
-              <Card className="p-6">
+              <Card className="relative p-6">
+                <CardTag />
+                <div className="absolute left-3 top-3 z-10 space-y-1">
+                  <UsersIcon className="size-4 text-primary opacity-100" opacity={1} aria-hidden />
+                  <h3 className="text-foreground text-sm sm:text-base font-semibold">AI Meeting Scheduler</h3>
+                  <CardAccent>Auto-schedule and manage meetings with AI.</CardAccent>
+                </div>
                 <div className="flex aspect-video items-center justify-center">
                   <ScheduleIllustation className="border" variant="outlined" />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-foreground text-xl font-semibold">AI Meeting Scheduler</h3>
                   <p className="text-muted-foreground mt-4 text-balance text-lg">
                     Book, manage, and prep meetings. Auto-summarize agendas and follow-ups.
                   </p>
@@ -82,7 +110,13 @@ export default function FeaturesSection() {
               </Card>
 
               {/* Row 3 (2 items) */}
-              <Card className="p-6">
+              <Card className="relative p-6">
+                <CardTag />
+                <div className="absolute left-3 top-3 z-10 space-y-1">
+                  <SetupIcon className="size-4 text-primary opacity-100" opacity={1} aria-hidden />
+                  <h3 className="text-foreground text-sm sm:text-base font-semibold">Content Planner</h3>
+                  <CardAccent>Keep ideas, drafts, and cadence organized.</CardAccent>
+                </div>
                 <div className="flex aspect-video items-center justify-center">
                   <div className="text-center">
                     <ul className="text-muted-foreground mx-auto w-fit font-mono text-lg font-medium">
@@ -93,13 +127,18 @@ export default function FeaturesSection() {
                   </div>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-foreground text-xl font-semibold">Content Planner</h3>
                   <p className="text-muted-foreground mt-4 text-balance text-lg">
                     Keep ideas, drafts, and publishing cadence organized.
                   </p>
                 </div>
               </Card>
-              <Card className="p-6">
+              <Card className="relative p-6">
+                <CardTag>optional</CardTag>
+                <div className="absolute left-3 top-3 z-10 space-y-1">
+                  <SetupIcon className="size-4 text-primary opacity-100" opacity={1} aria-hidden />
+                  <h3 className="text-foreground text-sm sm:text-base font-semibold">Knowledge Base Assistant</h3>
+                  <CardAccent>Search and summarize from your docs.</CardAccent>
+                </div>
                 <div className="flex aspect-video items-center justify-center">
                   <div className="flex items-center gap-2 rounded-lg border-foreground/10 border p-2">
                     <ToggleGroup type="multiple" size="sm" className="gap-0.5 *:rounded-md">
@@ -123,7 +162,6 @@ export default function FeaturesSection() {
                   </div>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-foreground text-xl font-semibold">Knowledge Base Assistant</h3>
                   <p className="text-muted-foreground mt-4 text-balance text-lg">
                     Search, summarize, and draft accurate answers from your docs.
                   </p>
@@ -150,12 +188,11 @@ export const ScheduleIllustation = ({
     <div className={cn("relative", className)}>
       <div
         className={cn(
-          "bg-background -translate-x-1/8 absolute flex -translate-y-[110%] items-center gap-2 rounded-lg p-1",
+          "bg-background absolute left-1/2 top-6 -translate-x-1/2 flex items-center gap-2 rounded-lg p-1",
           {
             "shadow-black-950/10 shadow-lg": variant === "elevated",
             "border-foreground/10 border": variant === "outlined",
-            "border-foreground/10 border shadow-md shadow-black/5":
-              variant === "mixed",
+            "border-foreground/10 border shadow-md shadow-black/5": variant === "mixed",
           }
         )}
       >

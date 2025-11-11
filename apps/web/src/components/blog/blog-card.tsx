@@ -19,16 +19,17 @@ export function BlogCard({ post }: BlogCardProps) {
   const readMinutes = words.length
     ? Math.max(1, Math.round(words.length / 200))
     : null;
-  const tags = post.tags ?? [];
-  const category = post.category ?? null;
-  const label = category?.name ?? tags[0]?.name ?? null;
+  const tagNames = (post.tags ?? [])
+    .map((t: any) => (typeof t === "string" ? t : t?.name))
+    .filter(Boolean) as string[];
+  const categoryName = post.category?.name ?? null;
   return (
     <Link
       href={`/blog/${post.slug}`}
       className="group block h-full"
       prefetch={false}
     >
-      <Card className="h-full overflow-hidden transition-colors group-hover:bg-muted/30 flex flex-col">
+      <Card className="h-full overflow-hidden border flex flex-col transition-colors hover:bg-muted/20">
         {post.coverImage ? (
           <div className="aspect-[16/9] w-full relative">
             <img
@@ -38,11 +39,23 @@ export function BlogCard({ post }: BlogCardProps) {
             />
           </div>
         ) : null}
-        <CardContent className="py-6 flex-1 flex flex-col">
-          {label ? (
-            <span className="inline-flex w-fit items-center rounded-full border border-primary/20 bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
-              {label}
-            </span>
+        <CardContent className="p-5 flex-1 flex flex-col">
+          {(categoryName || tagNames.length > 0) ? (
+            <div className="flex flex-wrap items-center gap-2">
+              {categoryName && (
+                <span className="inline-flex w-fit items-center rounded-sm border border-border bg-muted/40 px-2 py-[2px] text-xs text-accent">
+                  {categoryName}
+                </span>
+              )}
+              {tagNames.map((t, idx) => (
+                <span
+                  key={idx}
+                  className="inline-flex w-fit items-center rounded-sm border border-border/60 bg-muted/30 px-2 py-[2px] text-xs text-accent"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
           ) : null}
 
           <div className="mt-3 flex items-center gap-2">
@@ -71,16 +84,16 @@ export function BlogCard({ post }: BlogCardProps) {
             )}
             {readMinutes ? (
               <span className="text-xs text-muted-foreground">
-                — {readMinutes} min read
+                • {readMinutes} min read
               </span>
             ) : null}
           </div>
 
-          <h3 className="mt-2 text-lg font-semibold text-foreground line-clamp-2">
+          <h3 className="mt-2 text-base font-semibold text-foreground line-clamp-2">
             {post.title}
           </h3>
           {post.excerpt ? (
-            <p className="text-muted-foreground mt-2 line-clamp-2">
+            <p className="text-accent mt-2 text-sm line-clamp-2">
               {post.excerpt}
             </p>
           ) : null}

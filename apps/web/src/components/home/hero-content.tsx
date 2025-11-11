@@ -26,8 +26,6 @@ export function HeroContent() {
       {/* CTAs */}
       <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4">
         <HotkeyLink
-          href="/signup"
-          hotkeyHref="https://dashboard.feedbot.com"
           className="w-full sm:w-auto min-h-[40px] min-w-[40px]"
           label="Add to your website"
         />

@@ -2,116 +2,81 @@ import { Button } from '@feedgot/ui/components/button'
 import { Check } from 'lucide-react'
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle, CardDescription } from '@feedgot/ui/components/card'
+import { Container } from '../global/container'
+import { topPlans, selfHostedPlan } from '../../types/plan'
+
+// plans moved to ../tools/pricing/plan for cleaner structure
 
 export default function Pricing() {
-    return (
-        <div className="bg-background relative py-12 sm:py-16 md:py-24" data-component="Pricing">
-            <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                <div className="mx-auto max-w-2xl text-center">
-                    <h2 className="text-balance text-3xl sm:text-4xl lg:text-5xl font-bold">Pricing that scale with your business</h2>
-                    <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-balance text-base sm:text-lg">Choose the perfect plan for your needs and start optimizing your workflow today</p>
-                </div>
-                <div className="@container relative mt-12 md:mt-20">
-                    <Card className="relative mx-auto max-w-full">
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                            <div>
-                                <CardHeader className="p-6 sm:p-8">
-                                    <CardTitle className="font-medium">Free</CardTitle>
-                                    <span className="mb-0.5 mt-2 block text-2xl sm:text-3xl font-semibold">$0 / mo</span>
-                                    <CardDescription className="text-sm">Per editor</CardDescription>
-                                </CardHeader>
-                                <div className="border-y px-6 sm:px-8 py-4">
-                                    <Button
-                                        asChild
-                                        className="w-full"
-                                        variant="outline">
-                                        <Link href="#">Get Started</Link>
-                                    </Button>
-                                </div>
-
-                                <ul
-                                    role="list"
-                                    className="space-y-3 p-6 sm:p-8">
-                                    {['Basic Analytics Dashboard', '5GB Cloud Storage', 'Email and Chat Support'].map((item, index) => (
-                                        <li
-                                            key={index}
-                                            className="flex items-center gap-2">
-                                            <Check
-                                                className="text-primary size-3"
-                                                strokeWidth={3.5}
-                                            />
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="ring-foreground/10 bg-background rounded-(--radius) @3xl:mx-0 @3xl:-my-3 -mx-1 border-transparent shadow ring-1">
-                                <div className="@3xl:py-3 @3xl:px-0 relative px-1">
-                                    <CardHeader className="p-6 sm:p-8">
-                                        <CardTitle className="font-medium">Pro</CardTitle>
-                                        <span className="mb-0.5 mt-2 block text-2xl sm:text-3xl font-semibold">$19 / mo</span>
-                                        <CardDescription className="text-sm">Per editor</CardDescription>
-                                    </CardHeader>
-                                    <div className="@3xl:mx-0 -mx-1 border-y px-6 sm:px-8 py-4">
-                                        <Button
-                                            asChild
-                                            className="w-full">
-                                            <Link href="#">Get Started</Link>
-                                        </Button>
-                                    </div>
-
-                                    <ul
-                                        role="list"
-                                        className="space-y-3 p-6 sm:p-8">
-                                        {['Everything in Free Plan', '5GB Cloud Storage', 'Email and Chat Support', 'Access to Community Forum', 'Single User Access', 'Access to Basic Templates', 'Mobile App Access', '1 Custom Report Per Month', 'Monthly Product Updates', 'Standard Security Features'].map((item, index) => (
-                                            <li
-                                                key={index}
-                                                className="flex items-center gap-2">
-                                                <Check
-                                                    className="text-primary size-3"
-                                                    strokeWidth={3.5}
-                                                />
-                                                {item}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-                            <div>
-                                <CardHeader className="p-6 sm:p-8">
-                                    <CardTitle className="font-medium">Pro Plus</CardTitle>
-                                    <span className="mb-0.5 mt-2 block text-2xl sm:text-3xl font-semibold">$49 / mo</span>
-                                    <CardDescription className="text-sm">Per editor</CardDescription>
-                                </CardHeader>
-                                <div className="border-y px-6 sm:px-8 py-4">
-                                    <Button
-                                        asChild
-                                        className="w-full"
-                                        variant="outline">
-                                        <Link href="#">Get Started</Link>
-                                    </Button>
-                                </div>
-
-                                <ul
-                                    role="list"
-                                    className="space-y-3 p-6 sm:p-8">
-                                    {['Everything in Pro Plan', '5GB Cloud Storage', 'Email and Chat Support'].map((item, index) => (
-                                        <li
-                                            key={index}
-                                            className="flex items-center gap-2">
-                                            <Check
-                                                className="text-primary size-3"
-                                                strokeWidth={3.5}
-                                            />
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    </Card>
-                </div>
+  return (
+    <section className="bg-background" data-component="Pricing">
+      <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
+        <section className="py-16 md:py-24">
+          <div className="mx-auto w-full max-w-6xl px-0 sm:px-6">
+            <div className="text-center max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">Transparent, minimal pricing</h2>
+            <p className="text-accent mt-4 text-base sm:text-lg">Generous free tier. Simple plans. Developer‑first and self‑host friendly.</p>
             </div>
-        </div>
-    )
+
+          <div className="mt-12 md:mt-16">
+            {/* Top row: 3 cards (Free, Growth, Scale) */}
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {topPlans.map((plan) => (
+                  <Card key={plan.key} className="border border-border/60 bg-background shadow-none hover:border-primary/50 transition-colors">
+                    <CardHeader className="p-5">
+                      <CardTitle className="text-foreground text-base sm:text-lg font-medium">{plan.name}</CardTitle>
+                      <div className="mt-1 text-2xl font-semibold tracking-tight">{plan.price}</div>
+                      <CardDescription className="mt-2 text-sm text-accent">{plan.note}</CardDescription>
+                    </CardHeader>
+                    <div className="border-y border-border/60 px-5 py-4">
+                      <Button asChild className="w-full" variant={plan.key === 'pro' ? 'default' : 'outline'}>
+                        <Link href={plan.href}>{plan.ctaLabel}</Link>
+                      </Button>
+                    </div>
+                    <ul role="list" className="space-y-2.5 p-5 text-accent">
+                      {plan.features.map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm">
+                          <Check className="text-primary size-3" strokeWidth={3.5} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </Card>
+                ))}
+            </div>
+
+            {/* Bottom row: 1 card (Self‑Hosted) */}
+            <div className="mt-8">
+              {[selfHostedPlan].map((plan) => (
+                  <Card key={plan.key} className="border border-border/60 bg-background shadow-none hover:border-primary/50 transition-colors">
+                    <CardHeader className="p-5">
+                      <CardTitle className="text-foreground text-base sm:text-lg font-medium">{plan.name}</CardTitle>
+                      <div className="mt-1 text-2xl font-semibold tracking-tight">{plan.price}</div>
+                      <CardDescription className="mt-2 text-sm text-accent">{plan.note}</CardDescription>
+                    </CardHeader>
+                    <div className="border-y border-border/60 px-5 py-4">
+                      <Button asChild className="w-full" variant="outline">
+                        <Link href={plan.href}>{plan.ctaLabel}</Link>
+                      </Button>
+                    </div>
+                    <ul role="list" className="space-y-2.5 p-5 text-accent">
+                      {plan.features.map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm">
+                          <Check className="text-primary size-3" strokeWidth={3.5} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="px-5 pb-5 text-xs text-accent">
+                      Optional add‑ons: Professional Support $99/mo, Managed Self‑Hosting $199/mo
+                    </div>
+                  </Card>
+                ))}
+            </div>
+          </div>
+          </div>
+        </section>
+      </Container>
+    </section>
+  )
 }

@@ -10,115 +10,115 @@ export default function DefinitionDetail({ def }: { def: Definition }) {
       <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
         <section className="py-12 sm:py-16" data-component="DefinitionDetail">
           <div className="mx-auto w-full max-w-6xl px-0 sm:px-6">
-            <div className="mb-4">
-              <Link href="/definitions" className="inline-flex items-center gap-1 text-accent hover:text-primary">
+            <div className="mb-4 flex items-center gap-3">
+              <Link href="/definitions" className="inline-flex items-center gap-1 text-sm text-accent hover:text-primary">
                 <ChevronLeft className="size-4" />
                 Back
               </Link>
+              <span className="text-xs uppercase tracking-wide text-accent/80">Definition</span>
             </div>
-            <p className="text-sm text-accent">Definition</p>
             <h1 className="text-balance text-3xl font-bold md:text-4xl lg:text-5xl mt-4">{def.name}</h1>
             <p className="text-accent mt-4 max-w-2xl">{def.short}</p>
 
-            <div className="mt-8 space-y-6">
-              <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+            <div className="mt-8 space-y-10">
+              <section>
                 <h2 className="text-foreground text-lg font-semibold">Overview</h2>
                 <p className="text-accent mt-2 text-sm sm:text-base leading-7">{overview}</p>
-              </div>
+              </section>
 
-              <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+              <section>
                 <h2 className="text-foreground text-lg font-semibold">ELI5</h2>
                 <p className="text-accent mt-2 text-sm sm:text-base leading-7">{def.eli5}</p>
-              </div>
+              </section>
 
-              <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+              <section>
                 <h2 className="text-foreground text-lg font-semibold">Practical</h2>
                 <p className="text-accent mt-2 text-sm sm:text-base leading-7">{def.practical}</p>
-              </div>
+              </section>
 
-              <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+              <section>
                 <h2 className="text-foreground text-lg font-semibold">Expert</h2>
                 <p className="text-accent mt-2 text-sm sm:text-base leading-7">{def.expert}</p>
-              </div>
+              </section>
 
               {def.formula ? (
-                <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+                <section>
                   <h2 className="text-foreground text-lg font-semibold">{def.formula.title}</h2>
                   <p className="text-accent mt-2 text-sm sm:text-base leading-7">{def.formula.body}</p>
                   {def.formula.code ? (
                     <pre className="mt-4 rounded-md bg-foreground/5 p-4 text-sm text-foreground whitespace-pre-wrap">{def.formula.code}</pre>
                   ) : null}
-                </div>
+                </section>
               ) : null}
 
               {def.example ? (
-                <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+                <section>
                   <h2 className="text-foreground text-lg font-semibold">{def.example.title}</h2>
                   <p className="text-accent mt-2 text-sm sm:text-base leading-7">{def.example.body}</p>
-                </div>
+                </section>
               ) : null}
 
               {def.why ? (
-                <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+                <section>
                   <h2 className="text-foreground text-lg font-semibold">Why it matters</h2>
                   <p className="text-accent mt-2 text-sm sm:text-base leading-7">{def.why}</p>
-                </div>
+                </section>
               ) : null}
 
               {def.pitfalls && def.pitfalls.length ? (
-                <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+                <section>
                   <h2 className="text-foreground text-lg font-semibold">Common pitfalls</h2>
                   <ul className="mt-2 list-disc pl-5 text-accent text-sm sm:text-base leading-7 space-y-1">
                     {def.pitfalls.map((p, i) => (
                       <li key={i}>{p}</li>
                     ))}
                   </ul>
-                </div>
+                </section>
               ) : null}
 
               {def.benchmarks ? (
-                <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+                <section>
                   <h2 className="text-foreground text-lg font-semibold">Benchmarks</h2>
                   <p className="text-accent mt-2 text-sm sm:text-base leading-7">{def.benchmarks}</p>
-                </div>
+                </section>
               ) : null}
 
               {def.notes && def.notes.length ? (
-                <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+                <section>
                   <h2 className="text-foreground text-lg font-semibold">Notes</h2>
                   <ul className="mt-2 list-disc pl-5 text-accent text-sm sm:text-base leading-7 space-y-1">
                     {def.notes.map((n, i) => (
                       <li key={i}>{n}</li>
                     ))}
                   </ul>
-                </div>
+                </section>
               ) : null}
 
               {def.related && def.related.length ? (
-                <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+                <section>
                   <h2 className="text-foreground text-lg font-semibold">Related terms</h2>
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="mt-3 flex flex-wrap gap-x-3 gap-y-2">
                     {def.related.map((r) => (
-                      <Link key={r} href={`/definitions/${r}`} className="inline-flex items-center rounded-md border border-foreground/10 bg-white px-3 py-1.5 text-sm text-foreground hover:shadow-sm">
+                      <Link key={r} href={`/definitions/${r}`} className="text-accent hover:text-primary underline-offset-2 hover:underline">
                         {r}
                       </Link>
                     ))}
                   </div>
-                </div>
+                </section>
               ) : null}
 
               {def.faqs && def.faqs.length ? (
-                <div className="rounded-xl border border-foreground/10 bg-white p-5 sm:p-6">
+                <section>
                   <h2 className="text-foreground text-lg font-semibold">FAQs</h2>
                   <div className="mt-4 space-y-4">
                     {def.faqs.map((f, i) => (
-                      <div key={i} className="rounded-lg border border-foreground/10 bg-white p-4 sm:p-5">
+                      <div key={i} className="space-y-2">
                         <p className="text-foreground font-medium">{f.q}</p>
-                        <p className="text-accent mt-2 text-sm sm:text-base leading-7">{f.a}</p>
+                        <p className="text-accent text-sm sm:text-base leading-7">{f.a}</p>
                       </div>
                     ))}
                   </div>
-                </div>
+                </section>
               ) : null}
             </div>
           </div>

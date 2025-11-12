@@ -19,7 +19,7 @@ export default function Listening() {
             ideas.
           </p>
 
-          <div className="mt-10 grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
             <Card className="overflow-hidden p-6 flex flex-col items-start gap-2">
               <LoveIcon
                 aria-hidden

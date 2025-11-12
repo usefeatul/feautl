@@ -12,7 +12,7 @@ export default function DefinedTermJsonLd({ name, description, path, alternateNa
     alternateName: alternateNames && alternateNames.length ? alternateNames : undefined,
   }
   return (
-    <Script id="schema-defined-term" type="application/ld+json" strategy="beforeInteractive">
+    <Script id="schema-defined-term" type="application/ld+json" strategy="afterInteractive">
       {JSON.stringify(data)}
     </Script>
   )

@@ -16,7 +16,7 @@ export default function FaqJsonLd({ faqs }: { faqs: FaqItem[] }) {
     })),
   }
   return (
-    <Script id="schema-faq" type="application/ld+json" strategy="beforeInteractive">
+    <Script id="schema-faq" type="application/ld+json" strategy="afterInteractive">
       {JSON.stringify(data)}
     </Script>
   )

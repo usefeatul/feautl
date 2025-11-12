@@ -8,6 +8,11 @@ export type Definition = {
   eli5: string;
   practical: string;
   expert: string;
+  overview?: string;
+  why?: string;
+  pitfalls?: string[];
+  benchmarks?: string;
+  notes?: string[];
   formula?: { title: string; body: string; code?: string };
   example?: { title: string; body: string };
   faqs?: DefinitionFaq[];

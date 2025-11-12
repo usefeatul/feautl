@@ -15,6 +15,7 @@ import { CardAccent, CardTag } from "./cardElements";
 import { ChartIcon } from "@feedgot/ui/icons/chart";
 import { UsersIcon } from "@feedgot/ui/icons/users";
 import { SetupIcon } from "@feedgot/ui/icons/setup";
+import FeatureCard from "./featureCard";
 
 
 export default function Create() {
@@ -86,8 +87,9 @@ export default function Create() {
               </Card>
             </div>
 
+            <FeatureCard withinContainer={false} />
             <div className="mt-10 flex items-start gap-3">
-              <div className="h-5 w-[4px] bg-primary rounded-full" aria-hidden />
+              <div className="h-6 w-[4px] bg-primary rounded-full ring-2 ring-inset ring-primary" aria-hidden />
               <p className="text-accent text-sm sm:text-base">
                 Seriously, it’s that simple. Most teams collect feedback within minutes of signup.
               </p>

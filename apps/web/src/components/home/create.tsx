@@ -90,7 +90,7 @@ export default function Create() {
             <FeatureCard withinContainer={false} />
             <div className="mt-10 flex items-start gap-3">
               <div className="h-6 w-[6px] bg-primary rounded-full ring-2 ring-inset ring-primary" aria-hidden />
-              <p className="text-accent text-sm sm:text-base">
+              <p className="text-accent/90 text-sm sm:text-base">
                 Seriously, it’s that simple. Most teams collect feedback within minutes of signup.
               </p>
             </div>

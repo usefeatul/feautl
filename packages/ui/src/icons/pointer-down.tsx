@@ -8,12 +8,13 @@ export function PointerDownIcon(props: React.SVGProps<SVGSVGElement>) {
       width={width}
       height={height}
       viewBox="0 0 18 18"
-      opacity={0.4}
       {...rest}
     >
       <title>pointer-down</title>
-      <circle cx="9" cy="9" r="7" fill="currentColor" fillOpacity="0.4" />
-      <path d="M8.25 5V9.25H6.9L9 12L11.1 9.25H9.75V5H8.25Z" fill="currentColor" />
+      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="9" cy="9" r="7" strokeOpacity={0.35} strokeWidth={1.5} />
+        <polyline points="6.5 8 9 10.5 11.5 8" strokeWidth={1.6} />
+      </g>
     </svg>
   )
 }

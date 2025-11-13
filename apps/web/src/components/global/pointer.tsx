@@ -14,10 +14,10 @@ export function Pointer({ className, alt = "Switch features pointer" }: PointerP
     <motion.div
       className={cn("flex justify-center", className)}
       initial={false}
-      animate={{ scale: [1, 1.12, 1], opacity: [0.6, 1, 0.6] }}
-      transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut", times: [0, 0.5, 1] }}
+      animate={{ y: [0, 2, 0], opacity: [0.65, 1, 0.65] }}
+      transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
     >
-      <PointerDownIcon aria-label={alt} className="size-12 text-primary" opacity={1}/>
+      <PointerDownIcon aria-label={alt} className="size-12 text-primary" opacity={1} />
     </motion.div>
   )
 }

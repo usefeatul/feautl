@@ -18,6 +18,17 @@ export type Definition = {
   example?: { title: string; body: string };
   faqs?: DefinitionFaq[];
   related?: string[];
+  essay?: {
+    intro?: string;
+    analysis?: string;
+    formulaContext?: string;
+    exampleContext?: string;
+    pitfallsContext?: string;
+    benchmarksContext?: string;
+    notesContext?: string;
+    relatedContext?: string;
+    faqsContext?: string;
+  };
 };
 
 export const getDefinitionContent = (d: Definition): string => {
@@ -43,6 +54,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "MRR excludes one‑time charges and includes prorations. Align recognition with billing cycles.",
     overview: "Monthly Recurring Revenue is predictable subscription revenue recognized for a calendar month. Excludes one‑time charges and accounts for prorations from upgrades or downgrades.",
     why: "MRR is foundational for forecasting cash flow, measuring growth momentum, and planning hiring and marketing investments.",
+    essay: {
+      intro: "MRR provides a clear, time‑boxed view of recurring revenue that decision‑makers can trust. Beyond a simple total, it communicates how durable your revenue base is and whether your commercial motion compounds month over month.",
+      analysis: "Interpreting MRR well means separating the drivers: new business, expansion, contraction, and churn. Tracking these components highlights whether growth is coming from adding logos, growing existing accounts, or masking losses.",
+      formulaContext: "While MRR is often presented as a straightforward sum, accurate recognition depends on proration for mid‑cycle changes and excluding non‑recurring items. This ensures the figure reflects service actually delivered in the month.",
+      exampleContext: "The example illustrates clean monthly recognition. In practice, real‑world MRR includes partial periods, add‑ons, and seat changes, all of which should be prorated so the recognized amount matches usage.",
+      pitfallsContext: "Common mistakes stem from mixing one‑time revenue with recurring, ignoring proration, and failing to separate paid subscribers from trials. Each issue can materially overstate momentum and mislead planning.",
+      benchmarksContext: "Use benchmarks as directional context, not targets. Healthy MRR varies by segment, ACV, and go‑to‑market model. Trend, cleanliness, and net movement are more informative than absolute size.",
+      notesContext: "Operational teams benefit from reporting net MRR (new + expansion − contraction − churn) and reconciling it to billing ledgers monthly. This keeps finance and growth teams aligned on the same source of truth.",
+      relatedContext: "MRR connects directly to ARR (annualized view), ARPU (value per account), and NRR (durability within the existing base). Together these metrics describe scale, unit value, and cohort health.",
+      faqsContext: "FAQs for MRR typically focus on recognition rules and edge cases like upgrades, downgrades, and refunds. Clear policies prevent confusion and maintain comparability over time."
+    },
     pitfalls: [
       "Including one‑time or setup fees",
       "Ignoring proration from plan changes",
@@ -74,6 +96,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use contract terms to avoid overstating volatile monthly changes.",
     overview: "Annual Recurring Revenue is the annualized value of active subscription contracts. Calculated as 12×MRR or by summing contracted annual values.",
     why: "ARR communicates run‑rate scale for board reporting and long‑range planning, smoothing monthly volatility.",
+    essay: {
+      intro: "ARR offers a long‑view snapshot of recurring scale by annualizing contract value. It helps leaders compare momentum across quarters without the noise of monthly fluctuations.",
+      analysis: "Treat ARR as a contracted, durable figure. Avoid annualizing a spiky month and keep non‑recurring revenue separate so the signal remains clean and comparable.",
+      formulaContext: "Use 12×MRR for monthly contracts and contracted annual values for enterprise deals. Keep definitions consistent across reporting periods.",
+      exampleContext: "When mixing monthly and annual plans, normalize each to an annual value before presenting ARR so the figure reflects true run‑rate.",
+      pitfallsContext: "Annualizing an atypical month, including one‑time items, or double‑counting multi‑year prepayments will distort ARR.",
+      benchmarksContext: "ARR varies widely by stage and market. Track composition and growth rate over time rather than chasing absolute targets.",
+      notesContext: "Report contracted ARR, reconcile to billing systems, and separate pipeline or uncontracted deals for clarity.",
+      relatedContext: "ARR pairs with MRR (monthly view) and NRR (cohort durability) to show scale and health together.",
+      faqsContext: "FAQs often cover how to treat prepayments, multi‑year deals, and the difference between contracted ARR and annualized MRR."
+    },
     pitfalls: [
       "Annualizing a spiky month",
       "Including non‑recurring revenue",
@@ -103,6 +136,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Segment ARPU by plan and cohort to see pricing leverage.",
     overview: "ARPU measures average monthly revenue generated per paying customer or account.",
     why: "Reveals pricing power and helps evaluate packaging, upsell impact, and segment profitability.",
+    essay: {
+      intro: "ARPU reveals the typical economic value per paying account. It turns abstract revenue totals into unit‑level insight that informs pricing and packaging decisions.",
+      analysis: "Segment ARPU by plan, cohort, and channel. Watching ARPU trends alongside NRR shows whether value per account is growing through upsell and adoption.",
+      formulaContext: "Divide current period MRR by the number of paying customers. Compute per account when seat‑based pricing applies.",
+      exampleContext: "In practice, remove trials and credits before computing ARPU so the value reflects paying customers only.",
+      pitfallsContext: "Including trials, letting outliers skew means, and ignoring refunds will misstate ARPU.",
+      benchmarksContext: "Benchmarks depend on segment. Track ARPU trend and distribution by plan to find pricing leverage.",
+      notesContext: "Pair ARPU with NRR and cohort views to understand whether per‑account value compounds.",
+      relatedContext: "ARPU connects to MRR (scale) and CLTV (lifetime value) to shape pricing strategy.",
+      faqsContext: "FAQs typically ask whether to include trials, credits, and how to treat seat‑based pricing."
+    },
     pitfalls: [
       "Including trials or unpaid accounts",
       "Letting enterprise outliers skew means",
@@ -132,6 +176,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Track logo churn separately to avoid masking by large expansions.",
     overview: "NRR is the share of revenue retained and expanded from the existing customer cohort over a period.",
     why: "A top signal of product‑market fit and expansion potential. >100% indicates strong upsell/cross‑sell.",
+    essay: {
+      intro: "NRR captures the durability and expansion of revenue from the existing customer base. It isolates the core health of cohorts without the noise of new sales.",
+      analysis: "Break NRR into expansion, contraction, and churn. Sustained >100% signals a product that increases in value over time and a motion that nurtures adoption and upsell.",
+      formulaContext: "Anchor to start‑of‑period MRR for the existing cohort and adjust by expansion, contraction, and churn.",
+      exampleContext: "Show the math using a start baseline; avoid end‑of‑period counts which can hide losses with big expansions.",
+      pitfallsContext: "Including new logo revenue or mixing start and end baselines will produce misleading NRR.",
+      benchmarksContext: "Healthy NRR ranges by segment. Focus on sustaining >100% and the drivers behind it.",
+      notesContext: "Report logo churn separately and pair NRR with GRR to show both durability and expansion.",
+      relatedContext: "NRR sits alongside MRR and ARR to describe scale, and complements churn and retention metrics.",
+      faqsContext: "Common questions address whether to include new sales, how to treat downgrades, and anchoring baselines."
+    },
     pitfalls: [
       "Including new logo revenue",
       "Using end‑of‑period counts instead of start baselines",
@@ -161,6 +216,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Match costs and acquisitions by cohort for accuracy.",
     overview: "CAC is the fully loaded cost to acquire one new paying customer in a period.",
     why: "Core unit economics metric for efficient growth and budget allocation across channels.",
+    essay: {
+      intro: "CAC measures the fully loaded cost to win a new paying customer. It transforms marketing and sales spend into unit‑level economics you can optimize.",
+      analysis: "Match costs and acquisitions by cohort for accuracy. Compare CAC by channel and segment, and judge against margin‑adjusted CLTV and payback to ensure efficiency.",
+      formulaContext: "Sum fully loaded sales and marketing costs and divide by new paying customers in the period.",
+      exampleContext: "Align costs and acquisitions to the same attribution window and cohort to avoid mismatches.",
+      pitfallsContext: "Excluding salaries, mixing signups with customers, or using inconsistent windows misstates CAC.",
+      benchmarksContext: "Healthy CLTV/CAC ≥ 3 and payback ≤ target months indicate efficient growth.",
+      notesContext: "Compute CAC by channel and segment so budget shifts can target the most efficient paths.",
+      relatedContext: "CAC pairs with CLTV, payback period, and CPA to evaluate acquisition sustainability.",
+      faqsContext: "FAQs often ask whether to include salaries, tools, and how to attribute spend."
+    },
     pitfalls: [
       "Excluding salaries or overhead",
       "Using signups instead of paying customers",
@@ -190,6 +256,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use gross margin adjusted LTV for unit economics.",
     overview: "CLTV estimates the total gross‑margin‑adjusted revenue expected from a customer over their lifetime.",
     why: "Guides acquisition spend, pricing strategy, and product investments.",
+    essay: {
+      intro: "CLTV estimates the total economic value a customer generates over their relationship. It connects retention, expansion, and margin into a single strategic figure.",
+      analysis: "Use margin‑adjusted models and cohorts for precision. Pair CLTV with CAC and payback to calibrate acquisition spend and prioritize retention work.",
+      formulaContext: "Use average ARPU and churn rate or cohort cash flows, adjusted by gross margin, to estimate CLTV.",
+      exampleContext: "Show a simple ARPU/churn example, then contrast with a cohort‑based model for greater accuracy.",
+      pitfallsContext: "Using revenue instead of margin, assuming constant churn, or ignoring expansion will skew CLTV.",
+      benchmarksContext: "Healthy businesses target CLTV/CAC > 3; absolute CLTV depends on ARPU and segment.",
+      notesContext: "Present confidence intervals for small samples and prefer cohort modeling where data allows.",
+      relatedContext: "CLTL connects to CAC, NRR, and ARPU to inform pricing and acquisition strategy.",
+      faqsContext: "FAQs often cover margin adjustment, churn assumptions, and the choice of average vs cohort models."
+    },
     pitfalls: [
       "Using revenue instead of margin",
       "Assuming constant churn across cohorts",
@@ -219,6 +296,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Target 3:1 or better for healthy growth.",
     overview: "The CLTV/CAC ratio compares the value of a customer over time to the cost to acquire them.",
     why: "Simple sanity check for scaling efficiency; investors watch this closely.",
+    essay: {
+      intro: "CLTV/CAC summarizes whether the value of a customer justifies the cost to acquire them. It is a fast reality check on growth efficiency.",
+      analysis: "Target ≈3:1 or better, but interpret alongside churn and payback. Extremely high ratios can signal under‑investment if growth is constrained.",
+      formulaContext: "Divide margin‑adjusted CLTV by fully loaded CAC for the same segment and window.",
+      exampleContext: "Provide a simple ratio example and explain how segment differences can change the result.",
+      pitfallsContext: "Using gross CLTV, mixing signups with customers, or ignoring payback duration distorts the ratio.",
+      benchmarksContext: "Healthy ≈ 3:1; strong 4–5:1. Context matters; very high can imply missed growth investment.",
+      notesContext: "Track by channel and segment and pair with churn and payback for a full picture.",
+      relatedContext: "Relates directly to CAC and CLTV and supports budget allocation decisions.",
+      faqsContext: "FAQs commonly ask what ratio is good and how to calculate it accurately."
+    },
     pitfalls: [
       "Using gross CLTV not margin‑adjusted",
       "Mixing signups with customers",
@@ -247,6 +335,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use cohort cash flows for precision.",
     overview: "Payback period is the number of months required for gross margin from a customer's revenue to cover CAC.",
     why: "Indicates cash efficiency and runway impact; shorter payback reduces funding needs.",
+    essay: {
+      intro: "Payback period shows how quickly gross margin from a customer repays acquisition cost. It connects growth pace to cash efficiency.",
+      analysis: "Segment payback by plan and channel. Shorter payback improves runway and reduces financing pressure, especially in paid acquisition motions.",
+      formulaContext: "Divide CAC by monthly gross margin contribution. Use cohorts for precise cash flow timing.",
+      exampleContext: "Walk through a CAC, ARPU, and margin example to compute months to repay.",
+      pitfallsContext: "Ignoring gross margin, using revenue instead of contribution, or not accounting for refunds will mislead decisions.",
+      benchmarksContext: "SMB ≤ 12 months, mid‑market ≤ 18, enterprise can be longer depending on ACV and margins.",
+      notesContext: "Report median payback and segment by plan and acquisition channel to target improvements.",
+      relatedContext: "Payback ties to CAC and CLTV and impacts runway and fundraising timing.",
+      faqsContext: "FAQs focus on what counts as good payback and how to compute it with margin."
+    },
     pitfalls: [
       "Ignoring gross margin",
       "Using revenue instead of contribution",
@@ -276,6 +375,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use feature‑level funnels and segment by source.",
     overview: "Activation rate is the share of new users who achieve the first value event within a defined onboarding window.",
     why: "Strong leading indicator of retention and monetization.",
+    essay: {
+      intro: "Activation rate captures how many new users reach the first meaningful value quickly. It is the first milestone on the path to retention.",
+      analysis: "Define predictive activation events and measure in tight windows. Improving activation usually lifts downstream retention and monetization.",
+      formulaContext: "Use the count of activated users within the window divided by total new users, expressed as a percentage.",
+      exampleContext: "Illustrate with a cohort of signups reaching a defined first‑value event within 7 or 14 days.",
+      pitfallsContext: "Vague activation definitions, too long windows, and vanity events weaken the signal.",
+      benchmarksContext: "Benchmarks vary; track by product and platform. Focus on trend and correlation with retention.",
+      notesContext: "Ensure the activation event strongly predicts retention and segment by source and device.",
+      relatedContext: "Activation relates to TTFV, retention rate, and stickiness metrics.",
+      faqsContext: "FAQs usually ask what counts as activation and what window to use."
+    },
     pitfalls: [
       "Vague activation definitions",
       "Too long measurement windows",
@@ -305,6 +415,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use cohort curves and survival analysis.",
     overview: "Retention rate is the percentage of users/accounts still active at the end of a period relative to the start cohort.",
     why: "Primary signal of product‑market fit and long‑term health.",
+    essay: {
+      intro: "Retention rate shows the share of users who remain active across periods. It reveals whether value persists beyond initial adoption.",
+      analysis: "Use cohort curves to see decay and where they flatten. High, stable retention underpins sustainable growth and compounding economics.",
+      formulaContext: "Divide end‑of‑period active users by the start‑of‑period cohort and express as a percentage.",
+      exampleContext: "Present a cohort example with monthly measurements to show where the curve stabilizes.",
+      pitfallsContext: "Comparing different cohorts, using cumulative retention, or counting reactivations as retained can mislead.",
+      benchmarksContext: "Healthy cohorts often flatten after 3–6 months depending on category and use case.",
+      notesContext: "Plot cohort curves monthly and use survival analysis for more precise insights.",
+      relatedContext: "Retention pairs with churn rate, cohort analysis, and stickiness to describe engagement.",
+      faqsContext: "Common questions cover DAU vs MAU baselines and correct cohort definitions."
+    },
     pitfalls: [
       "Comparing different cohorts",
       "Using cumulative instead of period retention",
@@ -334,6 +455,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Normalize by start counts; exclude upgrades.",
     overview: "Churn rate is the share of customers or revenue lost during a period; the inverse of retention.",
     why: "Quantifies leakage and highlights onboarding, product, or billing issues.",
+    essay: {
+      intro: "Churn rate measures customer or revenue loss. It is the mirror of retention and a direct read on value and reliability gaps.",
+      analysis: "Separate voluntary cancellations from involuntary churn due to failed payments. Track logo churn versus revenue churn to understand mix effects.",
+      formulaContext: "Use start‑of‑period baselines for customers or MRR and compute lost share as a percentage.",
+      exampleContext: "Show customer churn and revenue churn examples and explain why revenue churn is usually lower.",
+      pitfallsContext: "Counting upgrades as negative churn, mixing start and end baselines, and not isolating involuntary churn obscure the signal.",
+      benchmarksContext: "Ranges depend on segment; SMB customer churn often 2–6% monthly with revenue churn lower.",
+      notesContext: "Track logo churn and revenue churn separately and implement dunning to reduce involuntary churn.",
+      relatedContext: "Churn complements NRR and retention and highlights onboarding and billing reliability work.",
+      faqsContext: "FAQs ask about voluntary vs involuntary churn and the correct formulas to use."
+    },
     pitfalls: [
       "Counting upgrades as negative churn",
       "Using end counts instead of start baselines",
@@ -363,6 +495,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "SaaS COGS usually includes infra, support, third‑party APIs.",
     overview: "Gross margin is revenue minus cost of goods sold divided by revenue.",
     why: "Determines unit economics potential and cash available for growth.",
+    essay: {
+      intro: "Gross margin shows how much revenue remains after direct delivery costs. It sets the ceiling for healthy unit economics.",
+      analysis: "Define COGS consistently and include support and third‑party APIs tied to delivery. High gross margins enable investing in growth with confidence.",
+      formulaContext: "Compute (Revenue − COGS) / Revenue × 100% using period values and consistently defined COGS.",
+      exampleContext: "Provide a simple revenue and COGS example to illustrate the calculation.",
+      pitfallsContext: "Misclassifying support or infrastructure, excluding third‑party API costs, or including opex will distort margins.",
+      benchmarksContext: "Typical SaaS gross margin is 70–90%; vary by product mix and infra costs.",
+      notesContext: "Define COGS consistently and include support that directly delivers customer value.",
+      relatedContext: "Gross margin relates to net margin and payback and informs pricing and cost strategy.",
+      faqsContext: "FAQs address what belongs in COGS and whether salaries are included."
+    },
     pitfalls: [
       "Misclassifying support or infrastructure costs",
       "Excluding third‑party API costs",
@@ -392,6 +535,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use this for overall profitability, not unit economics.",
     overview: "Net margin is net income divided by revenue, including all operating expenses, taxes, and interest.",
     why: "Summarizes overall profitability beyond unit economics.",
+    essay: {
+      intro: "Net margin reflects what remains after all operating expenses, taxes, and interest. It is the bottom‑line view of profitability.",
+      analysis: "Use GAAP‑compliant definitions and compare on trailing twelve months to smooth seasonality and one‑time items.",
+      formulaContext: "Compute Net income / Revenue × 100% over the period and reconcile to financial statements.",
+      exampleContext: "Show a simple net income and revenue example to illustrate percentage margins.",
+      pitfallsContext: "One‑time gains or losses, differing capitalization, and accounting bases can make comparisons unreliable.",
+      benchmarksContext: "Varies by stage; mature SaaS often target positive and growing net margins.",
+      notesContext: "Prefer TTM comparisons and GAAP‑consistent treatment for clarity.",
+      relatedContext: "Net margin complements gross margin and informs overall efficiency and profitability.",
+      faqsContext: "FAQs ask about typical margins and which expenses are included."
+    },
     pitfalls: [
       "One‑time gains or losses distorting margins",
       "Different capitalization policies",
@@ -420,6 +574,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use operating burn; separate investing and financing flows.",
     overview: "Burn rate is net monthly cash outflow when spending exceeds cash inflow.",
     why: "Determines runway and fundraising timing.",
+    essay: {
+      intro: "Burn rate is net monthly cash outflow. It shows how quickly you consume cash relative to inflows.",
+      analysis: "Track gross and net burn and monitor the trend. Clear visibility aligns hiring, pricing, and fundraising decisions with reality.",
+      formulaContext: "Compute cash outflows minus cash inflows on a cash basis. Track both gross and net burn.",
+      exampleContext: "Provide a monthly cash flows example to compute net burn clearly.",
+      pitfallsContext: "Mixing gross and net burn, ignoring seasonality, or combining operating and investing flows reduces clarity.",
+      benchmarksContext: "Contextual by stage. Focus on trend and sustainability rather than fixed thresholds.",
+      notesContext: "Tie burn planning to hiring plans, margins, and cash forecasts.",
+      relatedContext: "Burn rate connects to runway and pricing strategy and guides fundraising timing.",
+      faqsContext: "FAQs ask about gross vs net burn and which cash flows to include."
+    },
     pitfalls: [
       "Mixing gross and net burn",
       "Ignoring seasonality",
@@ -448,6 +613,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Model scenarios with planned changes.",
     overview: "Runway is the number of months a company can operate at current net burn before cash hits zero.",
     why: "Helps plan fundraising, pricing changes, and expense reductions.",
+    essay: {
+      intro: "Runway estimates months until cash reaches zero at current burn. It converts burn into time for iteration and execution.",
+      analysis: "Model optimistic, base, and conservative scenarios. Longer runway reduces forced decisions and creates room for strategic bets.",
+      formulaContext: "Divide current cash balance by monthly net burn to estimate months of runway.",
+      exampleContext: "Provide a cash and burn example to compute runway and discuss sensitivity to burn changes.",
+      pitfallsContext: "Using uncertain receivables, ignoring planned changes to burn, or not modeling multiple scenarios creates false confidence.",
+      benchmarksContext: "Targets vary; many teams aim ≥ 12–18 months post‑raise to allow iteration.",
+      notesContext: "Refresh cash forecasts monthly and use conservative assumptions for inflows.",
+      relatedContext: "Runway depends on burn rate and informs hiring, pricing, and fundraising choices.",
+      faqsContext: "FAQs focus on extending runway via burn reductions or margin improvements."
+    },
     pitfalls: [
       "Using uncertain receivables",
       "Ignoring planned changes to burn",
@@ -476,6 +652,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use SaaS unit economics for recurring models.",
     overview: "Break‑even is the point where contribution margin covers fixed costs; profit begins beyond this point.",
     why: "Clarifies scale needed to reach sustainable operations.",
+    essay: {
+      intro: "Break‑even marks the point where contribution margin covers fixed costs. Beyond this point, incremental units contribute to profit.",
+      analysis: "Focus on contribution margin for recurring models. Track blended margins over time so the break‑even calculation reflects current economics.",
+      formulaContext: "Divide fixed costs by contribution margin per unit to estimate break‑even units.",
+      exampleContext: "Provide a fixed cost and margin example to show how many units are needed to break even.",
+      pitfallsContext: "Using gross revenue instead of contribution, ignoring variable cost shifts, or mixing cash and accrual accounting skews results.",
+      benchmarksContext: "Context‑dependent. Emphasize reaching sustainable operations before scaling spend.",
+      notesContext: "In SaaS, prioritize contribution margin and retention to reach break‑even sustainably.",
+      relatedContext: "Break‑even connects to gross margin and net margin and guides scale decisions.",
+      faqsContext: "FAQs ask about revenue break‑even and converting units to revenue."
+    },
     pitfalls: [
       "Using gross revenue instead of contribution",
       "Ignoring variable cost changes",
@@ -504,6 +691,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use survival and hazard functions.",
     overview: "Cohort analysis groups users and tracks behavior over time to reveal retention and value patterns.",
     why: "Exposes onboarding issues and long‑term behavior masked by averages.",
+    essay: {
+      intro: "Cohort analysis groups users by a shared start point and follows behavior over time. It reveals retention patterns and where value compounds.",
+      analysis: "Normalize definitions and use monthly tables and curves. Segment cohorts by source and plan to uncover actionable differences.",
+      formulaContext: "Index cohorts to month 0 and track active share over time using consistent definitions.",
+      exampleContext: "Provide a cohort table example with percentages across months to illustrate decay and stabilization.",
+      pitfallsContext: "Small cohort noise, incorrect definitions, unfixed windows, and unnormalized comparisons undermine insight.",
+      benchmarksContext: "Healthy products show cohort curves flattening above 30–50% depending on category.",
+      notesContext: "Use percentile curves and medians and segment by source and plan for actionability.",
+      relatedContext: "Cohort analysis complements retention and churn rate and informs onboarding improvements.",
+      faqsContext: "FAQs ask which cohort anchors to use and how to interpret curves."
+    },
     pitfalls: [
       "Small cohort noise",
       "Incorrect cohort definitions",
@@ -533,6 +731,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Segment by feature usage.",
     overview: "Stickiness is DAU divided by MAU, a proxy for habitual usage.",
     why: "Indicates how frequently users return and engage.",
+    essay: {
+      intro: "Stickiness, computed as DAU/MAU, indicates how habit‑forming your product is. It complements retention by showing frequency of engagement.",
+      analysis: "Segment by feature and audience. Improving daily value loops and reducing friction are typical levers to lift stickiness.",
+      formulaContext: "Compute DAU divided by MAU × 100% for the period and track by feature usage.",
+      exampleContext: "Provide a DAU and MAU example to show how stickiness percentage is derived.",
+      pitfallsContext: "Bots, seasonality, and uneven feature adoption across segments can distort stickiness.",
+      benchmarksContext: "Consumer social often 40–60%+; productivity tools 20–40% typical.",
+      notesContext: "Track weekly stickiness (WAU/MAU) and pair with retention analysis for depth.",
+      relatedContext: "Stickiness relates to activation and retention and highlights engagement loops.",
+      faqsContext: "FAQs ask what good stickiness looks like and how to segment it."
+    },
     pitfalls: [
       "Bots or non‑human activity",
       "Seasonality effects",
@@ -561,6 +770,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Define events that predict retention and expansion.",
     overview: "TTFV is the elapsed time from signup to the first event that delivers meaningful value.",
     why: "Faster time to value correlates with better retention and conversion.",
+    essay: {
+      intro: "TTFV measures how quickly a new user reaches the first outcome that proves value. It is the speedometer of onboarding.",
+      analysis: "Instrument critical events and compute medians. Removing friction in discovery and setup typically reduces TTFV and lifts activation.",
+      formulaContext: "Use event timestamps from signup to first value and compute median time across the cohort.",
+      exampleContext: "Provide a median days example from signup to publish or equivalent value event.",
+      pitfallsContext: "Poor event definitions, ignoring segment complexity, and overly broad windows hide true time to value.",
+      benchmarksContext: "Targets vary by product; aim to reduce TTFV through onboarding improvements.",
+      notesContext: "Instrument key events end‑to‑end and prefer median rather than mean.",
+      relatedContext: "TTFV connects to activation rate and retention as upstream drivers.",
+      faqsContext: "FAQs ask how to define first value and which measurement window to use."
+    },
     pitfalls: [
       "Poor event definition",
       "Ignoring product complexity by segment",
@@ -589,6 +809,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use incremental gains and net costs.",
     overview: "ROI expresses the return relative to cost as a percentage and evaluates investment efficiency.",
     why: "Guides resource allocation across marketing, product, and operations.",
+    essay: {
+      intro: "ROI expresses net gain relative to cost. It turns initiatives into comparable percentages so you can rank opportunities.",
+      analysis: "Use incremental lift versus a baseline and consistent attribution windows. Pair ROI with quality metrics to avoid optimizing vanity gains.",
+      formulaContext: "Compute (Gain − Cost) / Cost × 100% using net gains over consistent windows.",
+      exampleContext: "Provide a gain and cost example and explain incremental vs gross ROI.",
+      pitfallsContext: "Attribution errors, using gross instead of net gains, and ignoring time value can inflate ROI.",
+      benchmarksContext: "ROMI often 100–300% for strong campaigns; context varies widely.",
+      notesContext: "Use incremental lift versus baseline and align windows across channels.",
+      relatedContext: "ROI pairs with CPA, CAC, and conversion rate to guide budget allocation.",
+      faqsContext: "FAQs ask about ROMI, attribution windows, and calculating net gains."
+    },
     pitfalls: [
       "Attribution errors",
       "Using gross instead of net gains",
@@ -617,6 +848,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Use consistent attribution and windows.",
     overview: "CPA is the average marketing or ad cost per attributed conversion.",
     why: "Controls acquisition efficiency in paid channels.",
+    essay: {
+      intro: "CPA is the average ad or marketing cost per attributed conversion. It focuses on the price of volume in paid growth.",
+      analysis: "Track by channel, creative, and audience. Pair CPA with conversion quality and downstream CAC and payback so spend scales sustainably.",
+      formulaContext: "Divide attributed ad spend by the number of conversions within a consistent attribution window.",
+      exampleContext: "Provide a spend and conversions example and clarify definition of conversion (signup vs customer).",
+      pitfallsContext: "Last‑click bias, mismatched windows, and counting low‑quality conversions will distort CPA.",
+      benchmarksContext: "Benchmarks depend on ARPU and CLTV; ensure paid CAC remains viable when scaling.",
+      notesContext: "Track CPA by channel and creative and pair with conversion quality metrics.",
+      relatedContext: "CPA connects to CAC and conversion rate and informs paid acquisition budgeting.",
+      faqsContext: "FAQs ask about signup vs customer definitions and proper attribution."
+    },
     pitfalls: [
       "Last‑click bias in attribution",
       "Mismatched attribution windows",
@@ -645,6 +887,17 @@ export const DEFINITIONS: Definition[] = [
     expert: "Segment by source and intent.",
     overview: "Conversion rate is the share of visitors or users who complete a target action within a time window.",
     why: "Measures funnel performance and highlights growth levers.",
+    essay: {
+      intro: "Conversion rate measures how effectively visits or exposures become target actions. It is the core efficiency metric of the funnel.",
+      analysis: "Build consistent conversion definitions, segment by source and intent, and run experiments to remove friction. Improving conversion multiplies acquisition.",
+      formulaContext: "Divide conversions by visitors or exposures in the period and express as a percentage.",
+      exampleContext: "Provide a visits and conversions example to compute CR and discuss intent differences.",
+      pitfallsContext: "Counting duplicate conversions, not separating qualified traffic, and comparing across different intents reduce signal quality.",
+      benchmarksContext: "Typical SaaS signup conversion 2–8%; checkout conversion varies by pricing and product.",
+      notesContext: "Use consistent definitions and analyze by source, device, and region to find levers.",
+      relatedContext: "Conversion rate ties to CPA, ROI, and funnel health and influences CAC.",
+      faqsContext: "FAQs ask how to improve CR and how to segment by source and intent."
+    },
     pitfalls: [
       "Counting duplicate conversions",
       "Not separating qualified traffic",

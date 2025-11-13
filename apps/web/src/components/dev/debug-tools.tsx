@@ -240,7 +240,7 @@ export function DebugTools() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-[10000] flex gap-2 items-end">
+    <div className="fixed bottom-5 right-4 z-[10000] flex gap-2 items-end">
       {mounted && showGrid && (
         <div
           aria-hidden
@@ -264,24 +264,22 @@ export function DebugTools() {
                 top: `${Math.max(0, r.rect.top)}px`,
                 width: `${Math.max(0, r.rect.width)}px`,
                 height: `${Math.max(0, r.rect.height)}px`,
-                border: `2px solid ${r.severity === "error" ? "rgba(255,0,0,0.8)" : r.severity === "warn" ? "rgba(255,140,0,0.8)" : "rgba(0,112,244,0.7)"}`,
-                boxShadow: "0 0 0 2px rgba(0,0,0,0.05)",
-                background: r.severity === "error" ? "rgba(255,0,0,0.06)" : r.severity === "warn" ? "rgba(255,140,0,0.06)" : "rgba(0,112,244,0.06)",
+                border: `1px solid ${r.severity === "error" ? "rgba(255,0,0,0.7)" : r.severity === "warn" ? "rgba(255,140,0,0.7)" : "rgba(0,112,244,0.6)"}`,
+                background: r.severity === "error" ? "rgba(255,0,0,0.04)" : r.severity === "warn" ? "rgba(255,140,0,0.04)" : "rgba(0,112,244,0.04)",
               }}
             />
             <div
               aria-hidden
-              className="pointer-events-none fixed z-[9999] text-[11px]"
+              className="pointer-events-none fixed z-[9999] text-[10px]"
               style={{
                 left: `${Math.max(0, r.rect.left)}px`,
-                top: `${Math.max(0, r.rect.top - 18)}px`,
+                top: `${Math.max(0, r.rect.top - 14)}px`,
                 padding: "2px 6px",
-                borderRadius: "6px",
+                borderRadius: "5px",
                 color: r.severity === "error" ? "#7f1d1d" : r.severity === "warn" ? "#7c2d12" : "#1e40af",
-                background: r.severity === "error" ? "rgba(255,0,0,0.12)" : r.severity === "warn" ? "rgba(255,140,0,0.12)" : "rgba(0,112,244,0.12)",
-                border: `1px solid ${r.severity === "error" ? "rgba(255,0,0,0.5)" : r.severity === "warn" ? "rgba(255,140,0,0.5)" : "rgba(0,112,244,0.5)"}`,
-                maxWidth: "56ch",
-                backdropFilter: "blur(2px)",
+                background: r.severity === "error" ? "rgba(255,0,0,0.10)" : r.severity === "warn" ? "rgba(255,140,0,0.10)" : "rgba(0,112,244,0.10)",
+                border: `1px solid ${r.severity === "error" ? "rgba(255,0,0,0.45)" : r.severity === "warn" ? "rgba(255,140,0,0.45)" : "rgba(0,112,244,0.45)"}`,
+                maxWidth: "48ch",
               }}
             >
               {r.component ? `[${r.component}] ` : ""}{r.severity.toUpperCase()}: {r.message}
@@ -290,7 +288,7 @@ export function DebugTools() {
         ) : null
       )}
 
-      <div className="rounded-md border bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/50 p-2 shadow-sm min-w-[260px]">
+      <div className="rounded-sm border bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-2 py-1 shadow-sm">
         <div className="flex items-center gap-1">
           <Button
             size="sm"
@@ -299,7 +297,7 @@ export function DebugTools() {
             aria-pressed={showGrid}
             aria-label="Toggle baseline grid overlay"
           >
-            {showGrid ? "Grid On" : "Grid Off"}
+            Grid
           </Button>
           <Button
             size="sm"
@@ -308,7 +306,7 @@ export function DebugTools() {
             aria-pressed={showOutline}
             aria-label="Toggle element outlines"
           >
-            {showOutline ? "Outline On" : "Outline Off"}
+            Outline
           </Button>
           <Button
             size="sm"
@@ -316,19 +314,21 @@ export function DebugTools() {
             onClick={analyze}
             aria-label="Analyze layout for UX issues"
           >
-            Analyze Layout
+            Scan
           </Button>
+          {showAnalysis && (
+            <div className="ml-2 flex items-center gap-1">
+              <span className="px-2 py-0.5 rounded-full border text-[11px] bg-red-500/10 border-red-200 text-red-600">{counts.error}</span>
+              <span className="px-2 py-0.5 rounded-full border text-[11px] bg-orange-400/10 border-orange-200 text-orange-600">{counts.warn}</span>
+              <span className="px-2 py-0.5 rounded-full border text-[11px] bg-blue-500/10 border-blue-200 text-blue-600">{counts.info}</span>
+            </div>
+          )}
         </div>
 
         {showAnalysis && (
-          <div className="mt-2 text-xs text-accent">
-            <div className="flex gap-2 mb-2">
-              <span className="inline-flex items-center gap-1"><span className="size-2 rounded-full bg-red-500" />{counts.error} errors</span>
-              <span className="inline-flex items-center gap-1"><span className="size-2 rounded-full bg-orange-400" />{counts.warn} warnings</span>
-              <span className="inline-flex items-center gap-1"><span className="size-2 rounded-full bg-blue-500" />{counts.info} infos</span>
-            </div>
-            <ul className="max-h-40 overflow-auto space-y-1 pr-1">
-              {results.slice(0, 12).map((r) => (
+          <div className="mt-1 text-[11px] text-accent">
+            <ul className="max-h-28 overflow-auto space-y-0.5 pr-1">
+              {results.slice(0, 8).map((r) => (
                 <li key={r.id}>
                   <span className={r.severity === "error" ? "text-red-600" : r.severity === "warn" ? "text-orange-600" : "text-blue-600"}>
                     {r.component ? `[${r.component}] ` : ""}{r.severity.toUpperCase()}: {r.message}
@@ -336,8 +336,8 @@ export function DebugTools() {
                 </li>
               ))}
             </ul>
-            <div className="mt-2 flex gap-2">
-              <Button size="sm" variant="outline" onClick={copyReport} aria-label="Copy analysis report">Copy Report</Button>
+            <div className="mt-1 flex gap-1">
+              <Button size="sm" variant="outline" onClick={copyReport} aria-label="Copy analysis report">Copy</Button>
               <Button size="sm" variant="outline" onClick={resetAll} aria-label="Reset debug toggles">Reset</Button>
             </div>
           </div>

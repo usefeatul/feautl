@@ -4,7 +4,6 @@ import { AlternativeHero } from "@/components/alternatives/hero";
 import TLDR from "@/components/alternatives/tldr";
 import Compare from "@/components/alternatives/compare";
 import AlternativeFAQs from "@/components/alternatives/faq";
-import ProsCons from "@/components/alternatives/pros-cons";
 import StatsSection from "@/components/home/cta";
 import { getAltDescription } from "@/types/descriptions";
 import { createArticleMetadata } from "@/lib/seo";
@@ -48,7 +47,6 @@ export default async function AlternativePage({
     <main className="min-h-screen pt-16">
       <AlternativeHero alt={alt} />
       <TLDR alt={alt} />
-      <ProsCons alt={alt} />
       <Compare alt={alt} />
       <AlternativeFAQs alt={alt} />
       <StatsSection />

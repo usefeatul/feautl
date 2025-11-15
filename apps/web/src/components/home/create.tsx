@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@feedgot/ui/components/toggle-group";
 import { cn } from "@/lib/utils";
-import { CardAccent, CardTag } from "./cardElements";
+import { CardAccent, CardTag, AccentBar } from "./cardElements";
 import { ChartIcon } from "@feedgot/ui/icons/chart";
 import { UsersIcon } from "@feedgot/ui/icons/users";
 import { SetupIcon } from "@feedgot/ui/icons/setup";
@@ -89,7 +89,7 @@ export default function Create() {
 
             <FeatureCard withinContainer={false} />
             <div className="mt-10 flex items-start gap-3">
-              <div className="h-6 w-[6px] bg-primary rounded-full ring-2 ring-inset ring-primary" aria-hidden />
+              <AccentBar  />
               <p className="text-accent/90 text-sm sm:text-base">
                 Seriously, it’s that simple. Most teams collect feedback within minutes of signup.
               </p>

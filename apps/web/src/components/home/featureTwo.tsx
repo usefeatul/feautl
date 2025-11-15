@@ -19,7 +19,7 @@ import { ChartIcon } from "@feedgot/ui/icons/chart";
 import { UsersIcon } from "@feedgot/ui/icons/users";
 import { SetupIcon } from "@feedgot/ui/icons/setup";
 import { AiIcon } from "@feedgot/ui/icons/ai";
-import { CardAccent, CardTag } from "./cardElements";
+import { CardAccent, CardTag, AccentBar } from "./cardElements";
 
 export default function FeaturesSection() {
   return (
@@ -29,15 +29,14 @@ export default function FeaturesSection() {
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
             <div>
               <h2 className="text-foreground mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold">
+
+
                 Personal AI, with you Anywhere
               </h2>
-              <div className="mt-10 flex items-start gap-3">
-                <div
-                  className="h-10 w-[10px] bg-primary rounded-full ring-2 ring-inset ring-primary"
-                  aria-hidden
-                />
-                <p className="text-accent text-sm sm:text-base mb-8">
-                  Quick AI lives a single hotkey away - ready to quickly appear
+              <div className="mt-10 flex items-stretch gap-3">
+                <AccentBar width={10}  />
+                <p className="text-accent text-sm sm:text-base">
+                  Quick AI jean lives a single hotkey away - ready to quickly appear
                   as a floating window above your other apps. Get instant
                   assistance whether you're browsing, coding, or writing
                   documents. 
@@ -45,7 +44,7 @@ export default function FeaturesSection() {
               </div>
             </div>
 
-            <div className="grid gap-3 sm:gap-4 lg:gap-6 md:grid-cols-2">
+            <div className="grid gap-3 sm:gap-4 lg:gap-6 md:grid-cols-2 mt-6">
               {/* Long top card (1) */}
               <Card className="relative p-4 sm:p-6 md:p-8 md:col-span-2">
                 <CardTag />

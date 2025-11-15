@@ -14,7 +14,7 @@ export default function Listening() {
             <span className="block mt-1">Listen and act.</span>
           </h2>
           <div className="mt-10 flex items-stretch gap-3">
-            <AccentBar />
+            <AccentBar width={8} />
             <p className="text-accent text-md leading-6 text-balance sm:max-w-4xl">
               Feedgot gives every request a single homecaptured, organized, and
               ready to ship. No more buried DMs, scattered emails, or forgotten

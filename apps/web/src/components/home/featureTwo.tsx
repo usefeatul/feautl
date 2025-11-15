@@ -34,7 +34,7 @@ export default function FeaturesSection() {
                 Personal AI, with you Anywhere
               </h2>
               <div className="mt-10 flex items-stretch gap-3">
-                <AccentBar width={10}  />
+                <AccentBar />
                 <p className="text-accent text-sm sm:text-base">
                   Quick AI jean lives a single hotkey away - ready to quickly appear
                   as a floating window above your other apps. Get instant

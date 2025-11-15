@@ -11,7 +11,7 @@ export const CardTag = ({ children = "no setup required" }: { children?: ReactNo
   </span>
 );
 
-export const AccentBar = ({ width = 6, height, className }: { width?: number; height?: number | string; className?: string }) => (
+export const AccentBar = ({ width = 10, height, className }: { width?: number; height?: number | string; className?: string }) => (
   <div
     aria-hidden
     className={cn(height == null ? "self-stretch" : "", "rounded-full bg-primary ring-2 ring-inset ring-primary", className)}

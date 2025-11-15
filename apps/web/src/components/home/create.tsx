@@ -28,13 +28,16 @@ export default function Create() {
               <h2 className="text-foreground mt-4 text-3xl sm:text-4xl font-semibold">
                 Up and running in 30 seconds
               </h2>
-              <p className="text-accent mb-8 sm:mb-12 mt-4 text-balance text-base sm:text-lg">
-                Sign up with an email, create your workspace, then add one line
-                of code or share your board link. You’re ready to collect feedback.
-              </p>
+              <div className="mt-10 flex items-start gap-2">
+                <AccentBar width={8} />
+                <p className="text-accent text-sm sm:text-base">
+                  Sign up with an email, create your workspace, then add one line
+                  of code or share your board link. You’re ready to collect feedback.
+                </p>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mt-8">
               <Card className="relative p-4 sm:p-6">
                 <CardTag />
                 <div className="absolute left-3 top-3 z-10 space-y-1">
@@ -88,9 +91,9 @@ export default function Create() {
             </div>
 
             <FeatureCard withinContainer={false} />
-            <div className="mt-10 flex items-start gap-3">
+            <div className="mt-10 flex items-start gap-2">
               <AccentBar width={8} />
-              <p className="text-accent/90 text-sm sm:text-base">
+              <p className="text-accent/80 text-sm">
                 Seriously, it’s that simple. Most teams collect feedback within minutes of signup.
               </p>
             </div>

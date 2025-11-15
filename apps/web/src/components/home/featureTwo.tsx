@@ -44,7 +44,7 @@ export default function FeaturesSection() {
               </div>
             </div>
 
-            <div className="grid gap-3 sm:gap-4 lg:gap-6 md:grid-cols-2 mt-6">
+            <div className="grid gap-3 sm:gap-4 lg:gap-6 md:grid-cols-2 mt-8">
               {/* Long top card (1) */}
               <Card className="relative p-4 sm:p-6 md:p-8 md:col-span-2">
                 <CardTag />

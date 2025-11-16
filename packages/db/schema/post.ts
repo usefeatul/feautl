@@ -35,7 +35,7 @@ export const post = pgTable(
     isFeatured: boolean('is_featured').default(false),
     publishedAt: timestamp('published_at'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),
     metadata: json('metadata').$type<{
       attachments?: { name: string; url: string; type: string }[];
       integrations?: { github?: string; jira?: string };

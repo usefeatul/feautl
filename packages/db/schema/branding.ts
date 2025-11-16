@@ -74,7 +74,7 @@ export const brandingConfig = pgTable("branding_config", {
   }>(),
 
   createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
 });
 
 // Predefined color palettes
@@ -127,7 +127,7 @@ export const customTheme = pgTable("custom_theme", {
     .notNull()
     .references(() => user.id),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
 });
 
 // Asset management for branding

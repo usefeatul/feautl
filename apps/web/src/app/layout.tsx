@@ -77,14 +77,14 @@ export default function RootLayout({
         <ReactScan />
         <Script
           src="https://cdn.seline.com/seline.js"
-          data-token="1eadc8582cdf3ff"
+          data-token={process.env.NEXT_PUBLIC_SELINE_TOKEN}
           strategy="afterInteractive"
         />
         <OrganizationJsonLd />
       </head>
       <body className={fontsClassName}>
         {children}
-        <DebugTools />
+        {((process.env.NODE_ENV !== "production") || process.env.NEXT_PUBLIC_ENABLE_DEBUG === "true") && <DebugTools />}
       </body>
     </html>
   );

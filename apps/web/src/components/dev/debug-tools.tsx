@@ -174,6 +174,8 @@ function collectDiagnostics(): Diagnostic[] {
 }
 
 export function DebugTools() {
+  const enabled = (process.env.NODE_ENV !== "production") || process.env.NEXT_PUBLIC_ENABLE_DEBUG === "true";
+  if (!enabled) return null;
   const [showGrid, setShowGrid] = usePersistentBoolean("__debug_grid", false);
   const [showOutline, setShowOutline] = usePersistentBoolean("__debug_outline", false);
   const [showAnalysis, setShowAnalysis] = usePersistentBoolean("__debug_analysis", false);

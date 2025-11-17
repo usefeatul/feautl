@@ -8,6 +8,7 @@ import Setup from "@/components/home/setup";
 import Create from "@/components/home/create";
 import Listening from "@/components/home/listening";
 import FeaturesSection from "@/components/home/featureTwo";
+import { ConversionHero } from "@/components/home/conversion-hero";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Privacy‑first product feedback, roadmaps, and changelogs | Feedgot",
@@ -20,6 +21,7 @@ export default function Home() {
   return (
     <main className="min-h-screen pt-16 space-y-16 md:space-y-24">
       <Hero />
+      <ConversionHero />
       <Listening />
       <FeaturesSection />
       <Setup />

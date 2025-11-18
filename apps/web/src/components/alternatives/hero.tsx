@@ -20,7 +20,8 @@ export function AlternativeHero({ alt }: { alt: Alternative }) {
             <div className="order-first">
               <AlternativeHeroContent
                 name={alt.name}
-                description={getAltDescription(alt.slug)}
+                description={getAltDescription(alt.slug, 'slug-hash')}
+                slug={alt.slug}
               />
             </div>
             <div className="order-last">

@@ -32,11 +32,15 @@ function hashIndex(key: string, length: number): number {
   return h % length
 }
 
-export function getAltDescription(slug: string, strategy: 'slug-hash' | 'first' = 'slug-hash'): string {
+export function getAltDescription(slug: string, strategy: 'slug-hash' | 'first' | 'random' = 'slug-hash'): string {
   const list = alternativeDescriptions[slug] ?? []
   const fallback = `Compare ${slug} and Feedgot across feedback, roadmap, and changelog.`
   if (!list.length) return fallback
   if (strategy === 'first') return list[0] ?? fallback
+  if (strategy === 'random') {
+    const idx = Math.floor(Math.random() * list.length)
+    return list[idx] ?? fallback
+  }
   const idx = hashIndex(slug, list.length)
   return list[idx] ?? fallback
 }

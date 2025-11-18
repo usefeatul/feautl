@@ -1,14 +1,24 @@
 "use client";
 import { HotkeyLink } from "@/components/global/hotkey-link";
 import { LiveDemo } from "@/components/global/live-demo";
+import { useEffect, useState } from "react";
+import { getAltDescription } from "@/types/descriptions";
 
 export function AlternativeHeroContent({
   name,
   description,
+  slug,
 }: {
   name: string;
   description?: string;
+  slug: string;
 }) {
+  const [clientDescription, setClientDescription] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    setClientDescription(getAltDescription(slug, 'random'));
+  }, [slug]);
+
   return (
     <div className="w-full max-w-2xl sm:max-w-3xl text-left mt-14 sm:mt-0 mr-auto self-start justify-self-start">
       {/* Main heading */}
@@ -19,7 +29,7 @@ export function AlternativeHeroContent({
 
       {/* Subtitle */}
       <p className="mt-6 max-w-3xl sm:max-w-4xl lg:max-w-5xl text-xs sm:text-sm md:text-base leading-relaxed text-accent text-balance">
-        {description ?? (
+        {clientDescription ?? description ?? (
           <>
             Compare {name} and Feedgot — transparent by design, focused on
             simplicity and user first UX. Organized feedback boards,

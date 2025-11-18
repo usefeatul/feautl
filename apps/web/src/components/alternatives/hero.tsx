@@ -7,8 +7,6 @@ import { Alternative } from "@/config/alternatives";
 import { AlternativeHeroContent } from "./hero-content";
 import { getAltDescription } from "@/types/descriptions";
 
-// Distinct layout from the main hero: image-right, content-left
-// with tighter alignment and a smaller screenshot.
 export function AlternativeHero({ alt }: { alt: Alternative }) {
   const imageSrc = "/bg.png";
 

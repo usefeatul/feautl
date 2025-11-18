@@ -12,16 +12,16 @@ export default function CTA() {
               <span className="text-muted-foreground">
                 Collect and prioritize feedback.
               </span>{" "}
-              <span className="text-accent">Ship what customers want</span>
+              <span className="text-accent/90">Ship what customers want</span>
             </h2>
-            <p className="mt-4 max-w-2xl text-base sm:text-lg text-accent">
+            <p className="mt-4 max-w-2xl text-base sm:text-lg text-accent/70">
               Centralize customer input in boards, prioritize with votes, keep
               roadmaps in sync, and publish changelogs automatically. Built for
               SaaS teams.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <HotkeyLink className="w-full sm:w-auto min-h-[40px] min-w-[40px]" />
-              <LiveDemo className="w-full sm:w-auto min-h-[40px] min-w-[40px]" />
+              <LiveDemo className="w-full sm:w-auto min-h-[40px] min-w-[40px] text-accent" />
             </div>
           </div>
         </div>

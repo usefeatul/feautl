@@ -6,6 +6,9 @@ import type { MarblePostResponse } from "@/types/marble"
 import { SinglePost } from "@/components/blog/single-post"
 import CTA from "@/components/home/cta"
 import { createArticleMetadata } from "@/lib/seo"
+import { SITE_URL } from "@/config/seo"
+import { buildBlogPostingSchema, buildBlogBreadcrumbSchema } from "@/lib/structured-data"
+import Script from "next/script"
 
 export const dynamic = "force-dynamic"
 
@@ -29,11 +32,22 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = res?.post
   if (!post) return notFound()
 
-
   return (
     <main className="min-h-screen pt-16">
-      <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
+      <Container maxWidth="6xl" className="px-4 sm:px-12 lg:px-16 xl:px-18">
         <div className="mx-auto w-full max-w-6xl px-0 sm:px-6">
+          <Script
+            id="blog-posting-jsonld"
+            type="application/ld+json"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBlogPostingSchema({ siteUrl: SITE_URL, slug, post })) }}
+          />
+          <Script
+            id="blog-breadcrumb-jsonld"
+            type="application/ld+json"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBlogBreadcrumbSchema({ siteUrl: SITE_URL, slug, title: post.title })) }}
+          />
           <SinglePost post={post} />
         </div>
       </Container>

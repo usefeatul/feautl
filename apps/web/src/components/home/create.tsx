@@ -11,29 +11,33 @@ import {
 } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@feedgot/ui/components/toggle-group";
 import { cn } from "@/lib/utils";
-import { CardAccent, CardTag } from "./cardElements";
+import { CardAccent, CardTag, AccentBar } from "./cardElements";
 import { ChartIcon } from "@feedgot/ui/icons/chart";
 import { UsersIcon } from "@feedgot/ui/icons/users";
 import { SetupIcon } from "@feedgot/ui/icons/setup";
+import FeatureCard from "./featureCard";
 
 
 export default function Create() {
   return (
-    <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
+    <Container maxWidth="6xl" className="px-4 sm:px-12 lg:px-16 xl:px-18">
       <section>
         <div className="bg-background py-16 sm:py-24">
-          <div className="mx-auto w-full max-w-5xl px-6">
+          <div className="mx-auto w-full px-1 sm:px-6 max-w-5xl ">
             <div>
-              <h2 className="text-foreground mt-4 text-3xl sm:text-4xl font-semibold">
+              <h2 className="text-foreground mt-4 text-2xl sm:text-3xl lg:text-3xl font-semibold">
                 Up and running in 30 seconds
               </h2>
-              <p className="text-accent mb-8 sm:mb-12 mt-4 text-balance text-base sm:text-lg">
-                Sign up with an email, create your workspace, then add one line
-                of code or share your board link. You’re ready to collect feedback.
-              </p>
+              <div className="mt-10 flex items-start gap-2">
+                <AccentBar width={8} />
+                <p className="text-accent text-sm sm:text-base">
+                  Sign up with an email, create your workspace, then add one line
+                  of code or share your board link. You’re ready to collect feedback.
+                </p>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mt-8">
               <Card className="relative p-4 sm:p-6">
                 <CardTag />
                 <div className="absolute left-3 top-3 z-10 space-y-1">
@@ -86,9 +90,10 @@ export default function Create() {
               </Card>
             </div>
 
-            <div className="mt-10 flex items-start gap-3">
-              <div className="h-5 w-[4px] bg-primary rounded-full" aria-hidden />
-              <p className="text-accent text-sm sm:text-base">
+            <FeatureCard withinContainer={false} />
+            <div className="mt-10 flex items-start gap-2">
+              <AccentBar width={8} />
+              <p className="text-accent/80 text-sm">
                 Seriously, it’s that simple. Most teams collect feedback within minutes of signup.
               </p>
             </div>

@@ -43,8 +43,8 @@ export default function Navbar() {
       )}
       data-component="Navbar"
     >
-      <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
-        <div className="mx-auto w-full max-w-6xl px-0 sm:px-6 flex items-center justify-between h-14">
+      <Container maxWidth="6xl" className="px-4 sm:px-12 lg:px-16 xl:px-18">
+        <div className="mx-auto w-full max-w-6xl px-1 sm:px-6 flex items-center justify-between h-14">
           <Link
             href="/"
             aria-label="Go home"
@@ -95,7 +95,7 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            <Button asChild size="sm" className="font-semibold">
+            <Button asChild size="sm" className="font-light ">
               <Link href="/signup" data-sln-event="cta: start for free clicked">
                 Start for free
               </Link>
@@ -105,10 +105,10 @@ export default function Navbar() {
           <button
             type="button"
             aria-label="Toggle menu"
-            className="md:hidden inline-flex items-center justify-center rounded-lg p-2 bg-muted"
+            className="md:hidden inline-flex items-center justify-center rounded-lg p-2 bg-muted/70"
             onClick={() => setMobileOpen((o) => !o)}
           >
-            <MenuIcon width={22} height={22} className="text-foreground" />
+            <MenuIcon width={20} height={20} className="text-accent" />
           </button>
         </div>
       </Container>

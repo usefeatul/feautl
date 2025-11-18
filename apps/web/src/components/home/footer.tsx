@@ -10,14 +10,14 @@ export default function FooterSection() {
   const year = new Date().getFullYear();
   return (
     <footer className="bg-background">
-      <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24 py-10 md:py-14">
-        <div className="mx-auto w-full max-w-6xl px-0 sm:px-6">
+      <Container maxWidth="6xl" className="px-4 sm:px-12 lg:px-16 xl:px-18 py-10 md:py-14">
+        <div className="mx-auto w-full max-w-6xl px-1 sm:px-6">
           <div className="grid items-start gap-10 md:grid-cols-5">
             <div className="md:col-span-2">
               <Link
                 href="/"
                 aria-label="Go home"
-                className="inline-flex items-center gap-2"
+                className="inline-flex items-center gap-2 hover:text-primary"
               >
                 <Logo />
                 <span className="text-sm font-medium">Feedgot</span>
@@ -35,18 +35,18 @@ export default function FooterSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub"
-                  className="hover:text-foreground"
+                  className="hover:text-primary"
                 >
-                  <GitHubIcon className="text-accent hover:text-foreground" size={19} />
+                  <GitHubIcon className="text-accent hover:text-primary" size={19} />
                 </Link>
                 <Link
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Twitter"
-                  className="hover:text-foreground"
+                  className="hover:text-primary"
                 >
-                  <TwitterIcon className="text-accent hover:text-foreground" size={14} />
+                  <TwitterIcon className="text-accent hover:text-primary" size={14} />
                 </Link>
               </div>
             </div>
@@ -63,7 +63,7 @@ export default function FooterSection() {
                       <Link
                         key={idx}
                         href={item.href}
-                        className="text-accent hover:text-foreground block transition-colors"
+                        className="text-accent hover:text-primary block transition-colors"
                       >
                         <span>{item.name}</span>
                       </Link>

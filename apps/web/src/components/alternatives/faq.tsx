@@ -16,7 +16,7 @@ export default function AlternativeFAQs({ alt }: { alt: Alternative }) {
   const limitedItems = items.slice(0, 6);
 
   return (
-    <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
+    <Container maxWidth="6xl" className="px-4 sm:px-12 lg:px-16 xl:px-18">
       <section className="py-16 md:py-24">
         <div className="max-w-5xl px-0 sm:px-6">
           <div className="max-w-xl text-left">
@@ -26,7 +26,7 @@ export default function AlternativeFAQs({ alt }: { alt: Alternative }) {
           </div>
 
           <div className="mt-4 max-w-xl">
-            <p className="text-accent text-md">{description}</p>
+            <p className="text-accent text-[14px]">{description}</p>
             <Accordion type="single" collapsible className="w-full">
               {limitedItems.map((item) => (
                 <div className="group" key={item.id}>
@@ -34,7 +34,7 @@ export default function AlternativeFAQs({ alt }: { alt: Alternative }) {
                     value={item.id}
                     className="border-none px-0 py-3"
                   >
-                    <AccordionTrigger className="group cursor-pointer text-left text-md sm:text-lg font-medium !no-underline hover:!no-underline justify-start [&>svg]:hidden">
+                    <AccordionTrigger className="group cursor-pointer text-left text-md  font-medium !no-underline hover:!no-underline justify-start [&>svg]:hidden">
                       <span className="inline-flex items-center gap-2">
                         <ChevronDownIcon className="size-4 text-primary transition-transform duration-200 group-data-[state=open]:rotate-180" />
                         <span>{item.question}</span>

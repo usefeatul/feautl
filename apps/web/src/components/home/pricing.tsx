@@ -10,9 +10,9 @@ import { topPlans, selfHostedPlan } from '../../types/plan'
 export default function Pricing() {
   return (
     <section className="bg-background" data-component="Pricing">
-      <Container maxWidth="6xl" className="px-4 sm:px-16 lg:px-20 xl:px-24">
+      <Container maxWidth="6xl" className="px-4 sm:px-12 lg:px-16 xl:px-18">
         <section className="py-16 md:py-24">
-          <div className="mx-auto w-full max-w-6xl px-0 sm:px-6">
+          <div className="mx-auto w-full max-w-6xl px-1 sm:px-6">
             <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">Transparent, minimal pricing</h2>
             <p className="text-accent mt-4 text-base sm:text-lg">Generous free tier. Simple plans. Developer‑first and self‑host friendly.</p>

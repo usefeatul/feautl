@@ -4,7 +4,6 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-
   --text-xs: 0.8rem;
 }
 
@@ -18,14 +17,15 @@ html {
 }
 
 @layer base {
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-playfair), ui-serif, Georgia, "Times New Roman", Times, serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family:
+      var(--font-playfair), ui-serif, Georgia, "Times New Roman", Times, serif;
   }
-
-
-   /* h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-playfair), ui-serif, Georgia, "Times New Roman", Times, serif;
-  } */
 }
 
 /* Debug outline mode: highlights element boundaries when enabled */
@@ -35,4 +35,3 @@ html {
 :root[data-debug-outline="true"] *:hover {
   outline-color: rgba(255, 140, 0, 0.32);
 }
-

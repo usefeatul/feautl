@@ -15,12 +15,33 @@ If you have any questions, contact us at [contact@feedgot.com](mailto:contact@fe
 
 ## Definitions
 
-- **Service**: The software, websites, APIs, and related services operated by feedgot.
-- **Customer/User**: The individual or entity accessing or using the Service.
-- **Account**: The profile created to access the Service.
-- **Subscription**: A paid plan that grants access to certain features.
-- **Customer Data**: Content and data submitted to or generated within the Service by you.
-- **Personal Data**: Any information relating to an identified or identifiable natural person.
+### Service-Related Terms
+- **Service**: The comprehensive suite of software applications, websites, mobile applications, APIs, dashboards, tools, and related services operated by feedgot, including all associated features, functionality, and content.
+- **Platform**: The underlying technology infrastructure, systems, databases, and networks that support the Service.
+- **Documentation**: User guides, help articles, API documentation, tutorials, training materials, and other instructional content provided by feedgot.
+
+### User-Related Terms
+- **Customer/User**: Any individual, organization, or entity that accesses, uses, or subscribes to the Service, whether on their own behalf or on behalf of an organization.
+- **Authorized User**: An individual who is authorized by a Customer to access and use the Service under the Customer's account.
+- **Account**: The unique user profile, credentials, and associated settings created to access and use the Service, including all sub-accounts and user profiles.
+
+### Subscription and Payment Terms
+- **Subscription**: A paid service plan that grants access to specific features, functionality, usage limits, and support levels for a defined period.
+- **Free Trial**: A limited-time, no-cost access to the Service provided for evaluation purposes.
+- **Freemium Plan**: A no-cost service tier with limited features and functionality.
+- **Billing Cycle**: The recurring period for which subscription fees are charged (monthly, annual, or other agreed-upon intervals).
+
+### Data and Content Terms
+- **Customer Data**: All content, materials, information, data, text, images, files, documents, and other materials submitted, uploaded, created, stored, or processed by you or your Authorized Users within the Service.
+- **Personal Data**: Any information relating to an identified or identifiable natural person as defined by applicable data protection laws.
+- **Confidential Information**: Non-public information disclosed by either party that is designated as confidential or should reasonably be understood to be confidential.
+- **Aggregated Data**: Anonymized or de-identified data that has been combined with other data to create statistical or analytical information that does not identify individuals.
+
+### Technical Terms
+- **API**: Application Programming Interface that allows software applications to communicate with the Service.
+- **Integration**: Third-party software, services, or systems that connect with or interact with the Service.
+- **Beta Features**: Pre-release functionality that may be incomplete, subject to change, or contain bugs.
+- **Downtime**: Periods when the Service is unavailable or experiencing significant performance issues.
 
 ## Eligibility
 
@@ -28,10 +49,41 @@ You must be at least 18 years old and have the legal capacity to enter into cont
 
 ## Account Registration and Security
 
-- Provide accurate, complete information and keep it up to date.
-- Maintain the confidentiality of your credentials and restrict access to your Account.
-- You are responsible for all activities under your Account.
-- Notify feedgot promptly of any suspected unauthorized access or security incident.
+### Registration Requirements
+When creating an Account, you agree to:
+- **Accurate Information**: Provide true, accurate, current, and complete information during registration and maintain such information throughout your use of the Service
+- **Legal Capacity**: Represent and warrant that you have the legal capacity to enter into these Terms and are not barred from using the Service under applicable law
+- **Single Account**: Maintain only one Account per individual unless expressly permitted by feedgot
+- **Verification**: Cooperate with identity verification procedures, including providing government-issued identification when requested
+
+### Account Security Obligations
+You are responsible for maintaining the security of your Account:
+- **Confidentiality**: Keep your login credentials, API keys, and authentication tokens confidential and secure
+- **Access Control**: Implement appropriate access controls for your organization, including role-based permissions and user management
+- **Monitoring**: Regularly review account activity and immediately report any unauthorized access or suspicious activity
+- **Password Security**: Use strong, unique passwords and enable two-factor authentication when available
+- **Device Security**: Ensure devices used to access the Service are secure and protected from malware
+
+### Organizational Accounts
+If you create an Account on behalf of an organization:
+- **Authority**: You represent and warrant that you have the authority to bind the organization to these Terms
+- **Designated Administrator**: Designate an administrator who will be responsible for managing the organization's Account
+- **User Management**: Ensure all Authorized Users comply with these Terms and applicable policies
+- **Corporate Compliance**: Ensure use of the Service complies with your organization's internal policies and procedures
+
+### Account Suspension and Termination
+We may suspend or terminate your Account if:
+- **Security Breach**: Your Account is compromised or used for unauthorized activities
+- **Policy Violation**: You violate these Terms or any applicable policies
+- **Legal Requirement**: We are required to do so by law or regulation
+- **Service Protection**: Your use poses a risk to the Service or other users
+
+### Notification Requirements
+You must notify feedgot immediately if:
+- **Unauthorized Access**: You suspect unauthorized access to your Account
+- **Security Breach**: You experience a security incident that may affect the Service
+- **Contact Changes**: Your contact information changes and needs to be updated
+- **Account Transfer**: You need to transfer Account ownership or responsibilities
 
 ## Subscriptions, Fees, and Billing
 

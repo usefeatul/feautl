@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AlternativeHero } from "@/components/alternatives/hero";
 import TLDR from "@/components/alternatives/tldr";
 import Compare from "@/components/alternatives/compare";
+import WhyBetter from "@/components/alternatives/why";
 import AlternativeFAQs from "@/components/alternatives/faq";
 import StatsSection from "@/components/home/cta";
 import { getAltDescription } from "@/types/descriptions";
@@ -48,6 +49,7 @@ export default async function AlternativePage({
       <AlternativeHero alt={alt} />
       <TLDR alt={alt} />
       <Compare alt={alt} />
+      <WhyBetter alt={alt} />
       <AlternativeFAQs alt={alt} />
       <StatsSection />
     </main>

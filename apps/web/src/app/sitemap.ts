@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next"
 import { getPosts } from "@/lib/query"
 import { getAlternativeSlugs } from "@/config/alternatives"
 import { getAllCategorySlugs, getAllToolParams } from "@/types/tools"
+import { getAllDefinitionSlugs } from "@/types/definitions"
 import { SITE_URL } from "@/config/seo"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -14,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/tools`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE_URL}/tools/categories`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE_URL}/alternatives`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/definitions`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE_URL}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/gdpr`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
@@ -42,6 +44,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.55,
   }))
 
+  const definitionEntries: MetadataRoute.Sitemap = getAllDefinitionSlugs().map((slug) => ({
+    url: `${SITE_URL}/definitions/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }))
+
   // Blog posts (if configured)
   let blogEntries: MetadataRoute.Sitemap = []
   try {
@@ -63,6 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...alternativeEntries,
     ...categoryEntries,
     ...toolEntries,
+    ...definitionEntries,
     ...blogEntries,
   ]
 }

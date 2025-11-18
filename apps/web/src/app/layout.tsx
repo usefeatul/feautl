@@ -7,6 +7,9 @@ import { fontsClassName } from "./fonts";
 import "./globals.css";
 import { SITE_URL, DEFAULT_TITLE, TITLE_TEMPLATE, DEFAULT_DESCRIPTION, DEFAULT_KEYWORDS } from "@/config/seo";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
+import { buildSiteNavigationSchema, buildSoftwareApplicationSchema } from "@/lib/structured-data";
+import { navigationConfig } from "@/config/homeNav";
+import { footerNavigationConfig } from "@/config/footerNav";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -74,17 +77,42 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <ReactScan />
+        {/* <ReactScan /> */}
         <Script
           src="https://cdn.seline.com/seline.js"
-          data-token="1eadc8582cdf3ff"
+          data-token={process.env.NEXT_PUBLIC_SELINE_TOKEN}
           strategy="afterInteractive"
         />
         <OrganizationJsonLd />
+        <Script
+          id="site-navigation-jsonld"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              buildSiteNavigationSchema(
+                SITE_URL,
+                [
+                  { name: "Home", href: "/" },
+                  ...navigationConfig.main.filter((i) => ["/pricing", "/blog"].includes(i.href)),
+                  ...footerNavigationConfig.groups
+                    .flatMap((g) => g.items)
+                    .filter((i) => ["/tools", "/definitions", "/alternatives"].includes(i.href)),
+                ]
+              )
+            ),
+          }}
+        />
+        <Script
+          id="software-app-jsonld"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSoftwareApplicationSchema(SITE_URL)) }}
+        />
       </head>
       <body className={fontsClassName}>
         {children}
-        {/* <DebugTools /> */}
+        {((process.env.NODE_ENV !== "production") || process.env.NEXT_PUBLIC_ENABLE_DEBUG === "true") && <DebugTools />}
       </body>
     </html>
   );

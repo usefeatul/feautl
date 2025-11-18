@@ -1,18 +1,54 @@
-## Landing page
+# Feedgot Web Platform
 
-This is the codebase for the landing page.
+A modern business tools platform built with Next.js, featuring calculators, blog integration, and comprehensive business resources.
 
-### Blog (Marble CMS)
+## 🚀 Quick Start
 
-The blog is integrated with Marble CMS.
+```bash
+cd apps/web
+npm install
+cp .env.example .env.local
+npm run dev
+```
 
-Setup:
-- Copy `.env.example` to `.env.local` and set `MARBLE_WORKSPACE_KEY`.
-- Optional: adjust `MARBLE_API_URL` and `MARBLE_WORKSPACE_ID`.
+## 📁 Structure
 
-Pages:
-- `/blog` – lists posts from Marble.
-- `/blog/[slug]` – renders a single post with typography.
+- `src/app/(site)/` - Main pages (blog, tools, legal, pricing)
+- `src/components/tools/` - Business calculators (customer, finance, performance, pricing, product, revenue)
+- `src/content/legal/` - Legal documents (privacy, terms, GDPR)
+- `public/` - Static assets and logos
 
-Styling:
-- Uses Tailwind v4 with `@tailwindcss/typography` via `@plugin` in `globals.css`.
+## ✨ Features
+
+**Business Tools**: 30+ calculators for metrics, finance, pricing, and analytics
+**Blog**: Marble CMS integration with dynamic routing
+**Alternatives**: Tool comparison directory
+**Definitions**: Business glossary with SEO optimization
+**Legal**: Comprehensive privacy, terms, and GDPR compliance
+
+## 🛠️ Tech Stack
+
+- Next.js 15 + React 19 + TypeScript
+- Tailwind CSS with typography plugin
+- Marble CMS for blog content
+- SEO optimized with structured data
+
+## 🔧 Setup
+
+1. **Environment**: Copy `.env.example` → `.env.local`
+2. **Blog Setup**: Add `MARBLE_WORKSPACE_KEY` to enable blog
+3. **Development**: `npm run dev` → `localhost:3000`
+
+## 📱 Pages
+
+- `/` - Landing page with tools showcase
+- `/blog` - Blog posts from Marble CMS
+- `/tools/*` - Business calculators by category
+- `/alternatives/*` - Tool comparisons
+- `/definitions/*` - Business glossary
+- `/pricing` - Pricing information
+- `/privacy`, `/terms`, `/gdpr` - Legal pages
+
+---
+
+**Feedgot** - Built for modern business teams 🚀

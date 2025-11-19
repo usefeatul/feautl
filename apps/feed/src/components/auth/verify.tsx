@@ -101,6 +101,7 @@ export default function Verify() {
                 required
                 id="email"
                 autoComplete="email"
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -120,6 +121,7 @@ export default function Verify() {
                 pattern="^[0-9]{6}$"
                 title="Enter the 6-digit code"
                 autoComplete="one-time-code"
+                placeholder="123456"
                 aria-invalid={submitted && Boolean(error)}
                 aria-describedby={submitted && error ? "code-error" : undefined}
               />

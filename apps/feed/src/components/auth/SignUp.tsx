@@ -12,6 +12,7 @@ import GitHubIcon from "@feedgot/ui/icons/github"
 import Link from "next/link"
 import { toast } from "sonner"
 import { strongPasswordPattern, getPasswordError } from "@feedgot/auth/password"
+import { LoadingButton } from "@/components/loading-button"
 
 export default function SignUp() {
   const router = useRouter()
@@ -123,7 +124,7 @@ export default function SignUp() {
               )}
             </div>
 
-            <Button className="w-full" type="submit" disabled={isLoading}>Sign Up</Button>
+            <LoadingButton className="w-full" type="submit" loading={isLoading}>Sign Up</LoadingButton>
           </div>
         </div>
 

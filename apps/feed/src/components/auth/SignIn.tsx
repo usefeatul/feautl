@@ -118,7 +118,7 @@ export default function SignIn() {
               <Input type="password" required name="pwd" id="pwd" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
 
-            <Button className="w-full" type="submit" disabled={isLoading}>Sign In</Button>
+            <LoadingButton className="w-full" type="submit" loading={isLoading}>Sign In</LoadingButton>
           </div>
         </div>
 
@@ -134,3 +134,4 @@ export default function SignIn() {
     </section>
   )
 }
+import { LoadingButton } from "@/components/loading-button"

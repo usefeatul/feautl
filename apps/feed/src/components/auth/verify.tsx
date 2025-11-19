@@ -61,9 +61,6 @@ export default function Verify() {
       <form className="bg-muted m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border shadow-md shadow-zinc-950/5 dark:[--color-muted:var(--color-zinc-900)]" onSubmit={(e) => { e.preventDefault(); verify() }}>
         <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-8 pb-6">
           <div className="text-center">
-            <Link href="/" aria-label="go home" className="mx-auto block w-fit">
-              <span className="text-xl font-semibold">Feedgot</span>
-            </Link>
             <h1 className="mb-2 mt-4 text-xl font-semibold">Verify Email</h1>
             <p className="text-sm text-accent mb-2">Enter the code sent to your email</p>
             {error && (
@@ -89,15 +86,15 @@ export default function Verify() {
               <Input type="text" required id="code" value={code} onChange={(e) => setCode(e.target.value)} />
             </div>
 
-            <Button className="w-full" type="submit" disabled={isLoading}>Verify</Button>
-            <Button className="w-full" type="button" variant="outline" onClick={resend} disabled={isLoading}>Resend Code</Button>
+            <LoadingButton className="w-full" type="submit" loading={isLoading}>Verify</LoadingButton>
+            <LoadingButton className="w-full" type="button" variant="outline" onClick={resend} loading={isLoading}>Resend Code</LoadingButton>
           </div>
         </div>
 
         <div className="p-3">
           <p className="text-accent-foreground text-center text-sm">
             Already verified?
-            <Button asChild variant="ghost" className="px-2">
+            <Button asChild variant="link" className="px-2">
               <Link href="/auth/sign-in">Sign in</Link>
             </Button>
           </p>
@@ -106,3 +103,4 @@ export default function Verify() {
     </section>
   )
 }
+import { LoadingButton } from "@/components/loading-button"

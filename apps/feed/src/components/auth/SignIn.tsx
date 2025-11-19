@@ -125,7 +125,7 @@ export default function SignIn() {
         <div className="p-3">
           <p className="text-accent-foreground text-center text-sm">
             Don't have an account ?
-            <Button asChild variant="ghost" className="px-2">
+            <Button asChild variant="link" className="px-2">
               <Link href="/auth/sign-up">Create account</Link>
             </Button>
           </p>

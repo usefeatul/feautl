@@ -70,7 +70,7 @@ export default function SignUp() {
 
   return (
     <section className="flex min-h-screen bg-background">
-      <form className="bg-muted m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border shadow-md shadow-zinc-950/5 dark:[--color-muted:var(--color-zinc-900)]" onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
+      <form noValidate className="bg-muted m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border shadow-md shadow-zinc-950/5 dark:[--color-muted:var(--color-zinc-900)]" onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
         <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-8 pb-6">
           <div className="text-center">
             <Link href="/" aria-label="go home" className="mx-auto block w-fit">
@@ -78,11 +78,6 @@ export default function SignUp() {
             </Link>
             <h1 className="mb-2 mt-4 text-xl font-semibold">Create Account</h1>
             <p className="text-sm text-accent mb-2">Sign up with social or email</p>
-            {error && (
-              <div className="mt-3 flex justify-center">
-                <Badge variant="destructive">{error}</Badge>
-              </div>
-            )}
           </div>
 
           <div className="mt-6 space-y-6">
@@ -135,7 +130,7 @@ export default function SignUp() {
         <div className="p-3">
           <p className="text-accent-foreground text-center text-sm">
             Already have an account?
-            <Button asChild variant="ghost" className="px-2">
+            <Button asChild variant="link" className="px-2">
               <Link href="/auth/sign-in">Sign in</Link>
             </Button>
           </p>

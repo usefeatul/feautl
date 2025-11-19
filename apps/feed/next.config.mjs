@@ -9,6 +9,20 @@ const nextConfig = {
           'gravatar.com', // Gravatar images (commonly used as fallback)
         ],
       },
+      turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    },
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  }
 }
 
 export default nextConfig

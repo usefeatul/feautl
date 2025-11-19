@@ -138,6 +138,7 @@ export default function SignIn() {
                 id="email"
                 autoComplete="email"
                 placeholder="you@example.com"
+                className="placeholder:text-accent/50"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -161,6 +162,7 @@ export default function SignIn() {
                 id="pwd"
                 autoComplete="current-password"
                 placeholder="Enter your password"
+                className="placeholder:text-accent/50"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

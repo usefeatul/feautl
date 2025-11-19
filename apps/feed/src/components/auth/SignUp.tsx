@@ -142,6 +142,7 @@ export default function SignUp() {
                 id="email"
                 autoComplete="email"
                 placeholder="you@example.com"
+                className="placeholder:text-accent/50"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -157,6 +158,7 @@ export default function SignUp() {
                 id="password"
                 autoComplete="new-password"
                 placeholder="Create a strong password"
+                className="placeholder:text-accent/50"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 pattern={strongPasswordPattern}

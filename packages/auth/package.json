@@ -15,6 +15,7 @@
     "./server": "./src/auth.ts",
     "./workspace": "./src/workspace.ts",
     "./password": "./src/password.ts",
+    "./email": "./src/email.ts",
     "./*": "./src/*"
   },
   "dependencies": {

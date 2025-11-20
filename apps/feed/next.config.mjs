@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@feedgot/auth"],
     images: {
         domains: [
           'lh3.googleusercontent.com', // Google authentication provider

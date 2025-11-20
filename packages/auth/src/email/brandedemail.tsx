@@ -1,5 +1,5 @@
 import React from "react"
-import { Html, Head, Preview, Body, Container, Section, Text, Heading, Button } from "@react-email/components"
+import { Html, Head, Preview, Body, Container, Section, Text, Heading, Button, Hr } from "@react-email/components"
 
 export type Brand = {
   name?: string
@@ -15,12 +15,15 @@ type Props = {
   intro?: string
   highlight?: string
   body?: string
+  paragraphs?: string[]
   outro?: string
   ctaText?: string
   ctaUrl?: string
   footerText?: string
+  psText?: string
   signatureName?: string
   brand?: Brand
+  addressLines?: string[]
 }
 
 function resolveBrand(brand?: Brand): Required<Brand> {
@@ -40,35 +43,49 @@ export function BrandedEmail(props: Props) {
       <Head />
       <Preview>{props.title || b.name}</Preview>
       <Body style={{ margin: 0, padding: 0, backgroundColor: b.backgroundColor }}>
-        <Container style={{ maxWidth: 560, margin: "0 auto", padding: 24 }}>
-          <Section style={{ backgroundColor: "#ffffff", borderRadius: 12 }}>
-            <Section style={{ padding: "24px 24px 8px 24px" }}>
+        <Container style={{ maxWidth: 600, margin: "0 auto", padding: 32 }}>
+          <Section style={{ backgroundColor: "#ffffff", borderRadius: 16 }}>
+            <Section style={{ padding: "28px 28px 10px 28px" }}>
               {props.eyebrow && (
-                <Text style={{ color: "#6b7280", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", margin: 0 }}>{props.eyebrow}</Text>
+                <Text style={{ color: "#6b7280", fontSize: 12, letterSpacing: 6, textTransform: "uppercase", margin: 0 }}>{props.eyebrow}</Text>
               )}
-              <Heading style={{ fontSize: 28, lineHeight: "36px", margin: "8px 0 0 0", color: b.textColor }}>{b.name}</Heading>
+              <Heading style={{ fontSize: 32, lineHeight: "40px", margin: "10px 0 0 0", color: b.textColor }}>{b.name}</Heading>
             </Section>
-            <Section style={{ padding: "8px 24px 24px 24px" }}>
-              {props.intro && <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "26px" }}>{props.intro}</Text>}
-              {props.title && <Heading as="h2" style={{ fontSize: 18, margin: "16px 0", color: b.textColor }}>{props.title}</Heading>}
+            <Section style={{ padding: "10px 28px 28px 28px" }}>
+              {props.intro && <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "28px" }}>{props.intro}</Text>}
+              {props.title && <Heading as="h2" style={{ fontSize: 18, fontWeight: 600, margin: "16px 0", color: b.textColor }}>{props.title}</Heading>}
+              {props.paragraphs?.map((p, i) => (
+                <Text key={i} style={{ color: b.textColor, fontSize: 16, lineHeight: "28px" }}>{p}</Text>
+              ))}
+              {!props.paragraphs && props.body && <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "28px" }}>{props.body}</Text>}
               {props.highlight && <Text style={{ fontSize: 20, fontWeight: 700, letterSpacing: 4, color: b.textColor }}>{props.highlight}</Text>}
-              {props.body && <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "26px" }}>{props.body}</Text>}
-              {props.outro && <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "26px" }}>{props.outro}</Text>}
+              {props.outro && <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "28px" }}>{props.outro}</Text>}
               {props.ctaText && props.ctaUrl && (
-                <Button href={props.ctaUrl} style={{ display: "inline-block", backgroundColor: b.primaryColor, color: "#ffffff", textDecoration: "none", fontWeight: 600, padding: "12px 18px", borderRadius: 9999, marginTop: 16 }}>
+                <Button href={props.ctaUrl} style={{ display: "inline-block", backgroundColor: b.primaryColor, color: "#ffffff", textDecoration: "none", fontWeight: 600, padding: "14px 20px", borderRadius: 9999, marginTop: 20 }}>
                   {props.ctaText}
                 </Button>
               )}
-              {props.footerText && <Text style={{ color: "#6b7280", fontSize: 14, lineHeight: "24px", marginTop: 20 }}>{props.footerText}</Text>}
+              {props.psText && <Text style={{ color: "#6b7280", fontSize: 14, lineHeight: "24px", marginTop: 20 }}>{props.psText}</Text>}
+              {props.footerText && <Text style={{ color: "#6b7280", fontSize: 14, lineHeight: "24px", marginTop: 12 }}>{props.footerText}</Text>}
               {props.signatureName && (
                 <>
-                  <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "26px", marginTop: 16 }}>Best regards,</Text>
-                  <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "26px" }}>{props.signatureName}</Text>
+                  <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "28px", marginTop: 16 }}>Best regards,</Text>
+                  <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "28px" }}>{props.signatureName}</Text>
                 </>
               )}
             </Section>
+            <Hr style={{ borderColor: "#e5e7eb", margin: 0 }} />
             <Section style={{ padding: 16 }}>
-              <Text style={{ color: "#6b7280", fontSize: 12, margin: 0 }}>© {new Date().getFullYear()} {b.name}</Text>
+              {props.addressLines && props.addressLines.length > 0 ? (
+                <>
+                  <Text style={{ color: "#6b7280", fontSize: 12, margin: "0 0 4px 0" }}>{b.name}</Text>
+                  {props.addressLines.map((line, i) => (
+                    <Text key={i} style={{ color: "#9ca3af", fontSize: 12, margin: 0 }}>{line}</Text>
+                  ))}
+                </>
+              ) : (
+                <Text style={{ color: "#6b7280", fontSize: 12, margin: 0 }}>© {new Date().getFullYear()} {b.name}</Text>
+              )}
             </Section>
           </Section>
         </Container>

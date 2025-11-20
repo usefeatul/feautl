@@ -1,6 +1,6 @@
 import React from "react"
 import { render, toPlainText } from "@react-email/render"
-import { BrandedEmail, Brand } from "./brandedemail"
+import { BrandedEmail, Brand } from "./BrandedEmail"
 
 export type VerifyType = "email-verification" | "forget-password" | "sign-in"
 
@@ -20,6 +20,7 @@ export function VerifyEmail({ otp, type, brand }: { otp: string; type: VerifyTyp
       title={title}
       intro={intro}
       body={body}
+      outro={outro}
       highlight={otp}
       footerText={"If you didn’t request this, you can ignore this email."}
       brand={brand}

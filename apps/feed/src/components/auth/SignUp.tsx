@@ -83,21 +83,21 @@ export default function SignUp() {
   };
 
   return (
-    <section className="flex min-h-screen bg-background">
+    <section className="flex min-h-screen bg-background px-4 sm:px-6 py-8 sm:py-12">
       <form
         noValidate
-        className="bg-background m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border shadow-md shadow-zinc-950/5 dark:[--color-muted:var(--color-zinc-900)]"
+        className="bg-background m-auto h-fit w-full max-w-sm sm:max-w-md md:max-w-lg overflow-hidden rounded-[calc(var(--radius)+.125rem)] border shadow-md shadow-zinc-950/5 dark:[--color-muted:var(--color-zinc-900)]"
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
         }}
       >
-        <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-8 pb-6">
+        <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-6 sm:p-8 pb-5 sm:pb-6">
           <div className="text-left">
-            <h1 className="mb-2 mt-4 text-xl font-semibold text-left">
+            <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-left">
               Sign up to Feedgot
             </h1>
-            <p className="text-sm text-accent mb-2 text-left">
+            <p className="text-xs sm:text-sm text-accent mb-2 text-left">
               Sign up with social or email
             </p>
           </div>
@@ -109,8 +109,9 @@ export default function SignUp() {
                 variant="outline"
                 onClick={handleGoogleSignUp}
                 disabled={isLoading}
+                className="text-sm sm:text-base gap-2 sm:gap-3"
               >
-                <GoogleIcon className="size-4" />
+                <GoogleIcon className="size-4 sm:size-5" />
                 <span>Google</span>
               </Button>
               <Button
@@ -118,8 +119,9 @@ export default function SignUp() {
                 variant="outline"
                 onClick={handleGithubSignUp}
                 disabled={isLoading}
+                className="text-sm sm:text-base gap-2 sm:gap-3"
               >
-                <GitHubIcon className="size-4" />
+                <GitHubIcon className="size-4 sm:size-5" />
                 <span>GitHub</span>
               </Button>
             </div>
@@ -185,7 +187,7 @@ export default function SignUp() {
         </div>
 
         <div className="p-3">
-          <p className="text-accent-foreground text-center text-sm">
+          <p className="text-accent-foreground text-center text-sm sm:text-base">
             Already have an account?
             <Button asChild variant="link" className="px-2">
               <Link href="/auth/sign-in">Sign in</Link>

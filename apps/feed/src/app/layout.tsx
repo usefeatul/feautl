@@ -1,16 +1,16 @@
-import type { Metadata, Viewport } from "next"
-import Script from "next/script"
-import { Providers } from "../components/providers/providers"
-import "./styles/globals.css"
-import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd"
+import type { Metadata, Viewport } from "next";
+import Script from "next/script";
+import { Providers } from "../components/providers/providers";
+import "./styles/globals.css";
+import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import {
   SITE_URL,
   DEFAULT_TITLE,
   TITLE_TEMPLATE,
   DEFAULT_DESCRIPTION,
   DEFAULT_KEYWORDS,
-} from "@/config/seo"
-import { buildSoftwareApplicationSchema } from "@/lib/structured-data"
+} from "@/config/seo";
+import { buildSoftwareApplicationSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -26,9 +26,7 @@ export const metadata: Metadata = {
     siteName: "Feedgot",
     title: "Feedgot",
     description: DEFAULT_DESCRIPTION,
-    images: [
-      { url: "/logo.png", width: 1200, height: 630, alt: "Feedgot" },
-    ],
+    images: [{ url: "/logo.png", width: 1200, height: 630, alt: "Feedgot" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -56,18 +54,18 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
-}
+};
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: "#ffffff",
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -77,12 +75,14 @@ export default function RootLayout({
           id="software-app-jsonld"
           type="application/ld+json"
           strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSoftwareApplicationSchema(SITE_URL)) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(buildSoftwareApplicationSchema(SITE_URL)),
+          }}
         />
       </head>
       <body className="antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
-  )
+  );
 }

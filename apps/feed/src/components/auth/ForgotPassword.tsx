@@ -93,12 +93,12 @@ export default function ForgotPassword() {
   }
 
   return (
-    <section className="flex min-h-screen bg-background">
+    <section className="flex min-h-screen bg-background px-4 sm:px-6 py-8 sm:py-12">
       <form noValidate className="bg-background m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border shadow-md shadow-zinc-950/5 dark:[--color-muted:var(--color-zinc-900)]" onSubmit={(e) => { e.preventDefault(); hasSent ? resetPassword() : sendResetCode() }}>
-        <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-8 pb-6">
+        <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-6 sm:p-8 pb-5 sm:pb-6">
           <div className="text-left">
-            <h1 className="mb-2 mt-4 text-xl font-semibold text-left">Forgot your password</h1>
-            <p className="text-sm text-accent mb-2 text-left">Enter your email to receive a reset code</p>
+            <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-left">Forgot your password</h1>
+            <p className="text-xs sm:text-sm text-accent mb-2 text-left">Enter your email to receive a reset code</p>
           </div>
 
           <div className="mt-6 space-y-6">
@@ -150,7 +150,7 @@ export default function ForgotPassword() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <LoadingButton className="w-full" type="button" variant="outline" onClick={sendResetCode} loading={isSending}>Resend Code</LoadingButton>
                   <LoadingButton className="w-full" type="submit" loading={isResetting}>Reset Password</LoadingButton>
                 </div>
@@ -164,7 +164,7 @@ export default function ForgotPassword() {
         </div>
 
         <div className="p-3">
-          <p className="text-accent-foreground text-center text-sm">
+          <p className="text-accent-foreground text-center text-sm sm:text-base">
             Remembered your password?
             <Button asChild variant="link" className="px-2">
               <Link href="/auth/sign-in">Sign in</Link>

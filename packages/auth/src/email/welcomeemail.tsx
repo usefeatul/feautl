@@ -1,6 +1,6 @@
 import React from "react"
 import { render, toPlainText } from "@react-email/render"
-import { BrandedEmail, Brand } from "./brandemail.js"
+import { BrandedEmail, Brand } from "./brandemail"
 
 export function WelcomeEmail({ name, brand }: { name?: string; brand?: Brand }) {
   const eyebrow = "WELCOME"

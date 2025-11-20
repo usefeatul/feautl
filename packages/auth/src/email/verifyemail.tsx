@@ -1,6 +1,6 @@
 import React from "react"
 import { render, toPlainText } from "@react-email/render"
-import { BrandedEmail, Brand } from "./brandemail.js"
+import { BrandedEmail, Brand } from "./brandemail"
 
 export type VerifyType = "email-verification" | "forget-password" | "sign-in"
 

@@ -1,5 +1,5 @@
 import React from "react"
-import { Html, Head, Preview, Body, Container, Section, Text, Heading, Button, Hr } from "@react-email/components"
+import { Html, Head, Preview, Body, Container, Section, Text, Heading, Button } from "@react-email/components"
 
 export type Brand = {
   name?: string
@@ -19,7 +19,6 @@ type Props = {
   outro?: string
   ctaText?: string
   ctaUrl?: string
-  footerText?: string
   psText?: string
   signatureName?: string
   brand?: Brand
@@ -66,7 +65,6 @@ export function BrandedEmail(props: Props) {
                 </Button>
               )}
               {props.psText && <Text style={{ color: "#6b7280", fontSize: 14, lineHeight: "24px", marginTop: 20 }}>{props.psText}</Text>}
-              {props.footerText && <Text style={{ color: "#6b7280", fontSize: 14, lineHeight: "24px", marginTop: 12 }}>{props.footerText}</Text>}
               {props.signatureName && (
                 <>
                   <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "28px", marginTop: 16 }}>Best regards,</Text>
@@ -74,7 +72,6 @@ export function BrandedEmail(props: Props) {
                 </>
               )}
             </Section>
-            <Hr style={{ borderColor: "#e5e7eb", margin: 0 }} />
             <Section style={{ padding: 16 }}>
               {props.addressLines && props.addressLines.length > 0 ? (
                 <>

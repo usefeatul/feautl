@@ -49,11 +49,11 @@ export function BrandedEmail(props: Props) {
               <Heading style={{ fontSize: 28, lineHeight: "36px", margin: "8px 0 0 0", color: b.textColor }}>{b.name}</Heading>
             </Section>
             <Section style={{ padding: "8px 24px 24px 24px" }}>
-              {props.intro && <Text style={{ color: "#111827", fontSize: 16, lineHeight: "26px" }}>{props.intro}</Text>}
+              {props.intro && <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "26px" }}>{props.intro}</Text>}
               {props.title && <Heading as="h2" style={{ fontSize: 18, margin: "16px 0", color: b.textColor }}>{props.title}</Heading>}
               {props.highlight && <Text style={{ fontSize: 20, fontWeight: 700, letterSpacing: 4, color: b.textColor }}>{props.highlight}</Text>}
-              {props.body && <Text style={{ color: "#111827", fontSize: 16, lineHeight: "26px" }}>{props.body}</Text>}
-              {props.outro && <Text style={{ color: "#111827", fontSize: 16, lineHeight: "26px" }}>{props.outro}</Text>}
+              {props.body && <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "26px" }}>{props.body}</Text>}
+              {props.outro && <Text style={{ color: b.textColor, fontSize: 16, lineHeight: "26px" }}>{props.outro}</Text>}
               {props.ctaText && props.ctaUrl && (
                 <Button href={props.ctaUrl} style={{ display: "inline-block", backgroundColor: b.primaryColor, color: "#ffffff", textDecoration: "none", fontWeight: 600, padding: "12px 18px", borderRadius: 9999, marginTop: 16 }}>
                   {props.ctaText}

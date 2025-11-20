@@ -1,6 +1,6 @@
-import { renderWelcomeEmail } from "./email/WelcomeEmail"
-import { renderVerifyEmail, VerifyType } from "./email/VerifyEmail"
-import type { Brand } from "./email/BrandedEmail"
+import { renderWelcomeEmail } from "./email/welcomeemail"
+import { renderVerifyEmail, VerifyType } from "./email/verifyemail"
+import type { Brand } from "./email/brandemail"
 import { sendEmail } from "./email/transport"
 
 export async function sendWelcome(to: string, name?: string, brand?: Brand) {

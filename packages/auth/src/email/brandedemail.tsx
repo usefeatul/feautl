@@ -1,4 +1,3 @@
-import React from "react"
 import { Html, Head, Preview, Body, Container, Section, Text, Heading, Button, Hr } from "@react-email/components"
 
 export type Brand = {

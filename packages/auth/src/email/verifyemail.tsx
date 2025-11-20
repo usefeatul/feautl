@@ -7,24 +7,24 @@ export type VerifyType = "email-verification" | "forget-password" | "sign-in"
 export function VerifyEmail({ otp, type, brand }: { otp: string; type: VerifyType; brand?: Brand }) {
   const eyebrow = "SECURITY"
   const title = type === "email-verification" ? "Verify your email" : type === "forget-password" ? "Reset your password" : "Sign in code"
-  const intro = "Hi there!"
+  const intro = "Hello,"
   const body = type === "email-verification"
-    ? "Use this code to verify your email."
+    ? "Please use the verification code below."
     : type === "forget-password"
-    ? "Use this code to reset your password."
-    : "Use this code to sign in."
+    ? "Please use the reset code below."
+    : "Please use the sign-in code below."
   const paragraphs = [
     type === "email-verification"
-      ? "For security, we ask you to verify ownership of this email."
+      ? "To ensure the security of your account, we require email verification."
       : type === "forget-password"
-      ? "For your protection, we need to confirm this password reset."
-      : "Enter the code below to complete sign in.",
+      ? "To protect your account, we require confirmation of this password reset request."
+      : "To complete your sign-in, please enter the code provided below.",
   ]
-  const outro = "This code expires in 5 minutes."
-  const ctaText = type === "forget-password" ? "Reset password" : "Open Feedgot"
+  const outro = "This code will expire in five minutes."
+  const ctaText = type === "forget-password" ? "Reset Password" : "Open Dashboard"
   const ctaUrl = type === "forget-password" ? "https://feedgot.com/reset" : "https://feedgot.com/dashboard"
-  const psText = "If you need help, reply to this email — we’re here to help."
-  const signatureName = "Feedgot Security Team"
+  const psText = "If you require assistance, please reply to this message and our support team will respond promptly."
+  const signatureName = "Feedgot Support"
   const addressLines = ["267 Kentlands Boulevard PMB #5123", "Gaithersburg, MD 20878, United States"]
   return (
     <BrandedEmail

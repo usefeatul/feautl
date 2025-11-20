@@ -5,17 +5,16 @@ import { BrandedEmail, Brand } from "./BrandedEmail"
 export function WelcomeEmail({ name, brand }: { name?: string; brand?: Brand }) {
   const eyebrow = "WELCOME"
   const title = brand?.name ? `Welcome to ${brand.name}` : "Welcome to Feedgot"
-  const intro = `Hi ${name?.trim() || "there"}!`
+  const intro = `Hello ${name?.trim() || "there"},`
+  const body = "Thank you for creating your account."
   const paragraphs = [
-    `I’m ${brand?.name ? `${brand.name}` : "Feedgot"} team, and I want to personally thank you for joining us.`,
-    "We’re excited to help you collect and manage user feedback more effectively.",
-    `${brand?.name || "Feedgot"} is built by a small team who deeply care about helping you build better products. We’re always here if you need anything, and we’d love to hear your feedback and ideas as you explore the platform.`,
+    `Your account is now ready. You may sign in and begin exploring the features available to you.`,
+    `If you have any questions or require assistance, please do not hesitate to reach out to our support team.`,
   ]
-  const body = "Thanks for signing up. We’re excited to have you on board."
-  const ctaText = "Go to your dashboard"
+  const ctaText = "Visit Dashboard"
   const ctaUrl = "https://feedgot.com/dashboard"
-  const psText = "P.S. Need any help getting started? Just reply to this email — we read every message and we’re happy to help!"
-  const signatureName = brand?.name ? `${brand.name} Team` : "Feedgot Team"
+  const psText = "Should you need help getting started, simply reply to this email and our team will be happy to assist."
+  const signatureName = brand?.name ? `${brand.name} Support` : "Feedgot Support"
   const addressLines = ["267 Kentlands Boulevard PMB #5123", "Gaithersburg, MD 20878, United States"]
   return (
     <BrandedEmail

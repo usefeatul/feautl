@@ -58,7 +58,7 @@ export default function SignUp() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/dashboard",
+        callbackURL: "/workspace/new",
       });
     } catch (err) {
       setError("Failed with Google");
@@ -73,7 +73,7 @@ export default function SignUp() {
     try {
       await authClient.signIn.social({
         provider: "github",
-        callbackURL: "/dashboard",
+        callbackURL: "/workspace/new",
       });
     } catch (err) {
       setError("Failed with GitHub");

@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation"
+import UserInfo from "@/components/auth/UserInfo"
 import { getServerSession } from "@feedgot/auth/session"
 import { db, workspace } from "@feedgot/db"
 import { eq } from "drizzle-orm"
@@ -19,8 +20,13 @@ export default async function WorkspacePage({ params }: { params: { slug: string
 
   return (
     <section className="p-6">
-      <h1 className="text-2xl font-semibold">{ws.name}</h1>
-      <p className="text-sm text-accent">Workspace: {ws.slug}</p>
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h1 className="text-2xl font-semibold">{ws.name}</h1>
+          <p className="text-sm text-accent">Workspace: {ws.slug}</p>
+        </div>
+        <UserInfo />
+      </div>
     </section>
   )
 }

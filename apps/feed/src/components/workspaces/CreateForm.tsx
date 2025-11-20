@@ -175,7 +175,7 @@ export default function CreateProjectForm({ className = "" }: Props) {
             <p className="text-accent text-center text-sm">
               Already have a project?
               <Button asChild variant="link" className="px-2 ml-2">
-                <Link href="/dashboard">Go to dashboard</Link>
+                <Link href="/workspace/new">Go to setup</Link>
               </Button>
             </p>
           </div>

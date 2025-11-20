@@ -19,6 +19,9 @@ export default function CreateProjectForm({ className = "" }: Props) {
   const [name, setName] = useState("")
   const [domain, setDomain] = useState("")
   const [slug, setSlug] = useState("")
+  const [slugDirty, setSlugDirty] = useState(false)
+  const [slugChecking, setSlugChecking] = useState(false)
+  const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null)
   const [isCreating, setIsCreating] = useState(false)
   const [timezone, setTimezone] = useState<string>(
     typeof Intl !== "undefined" && Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -68,6 +71,7 @@ export default function CreateProjectForm({ className = "" }: Props) {
   }, [])
 
   useEffect(() => {
+    if (slugDirty) return
     const s = name
       .toLowerCase()
       .trim()
@@ -75,12 +79,37 @@ export default function CreateProjectForm({ className = "" }: Props) {
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
     setSlug(s)
-  }, [name])
+  }, [name, slugDirty])
+
+  useEffect(() => {
+    if (!slug || slug.length < 3) {
+      setSlugAvailable(null)
+      return
+    }
+    setSlugChecking(true)
+    setSlugAvailable(null)
+    const id = setTimeout(async () => {
+      try {
+        const res = await client.workspace.checkSlug.$post({ slug })
+        const data = await res.json()
+        setSlugAvailable(Boolean(data?.available))
+      } catch {
+        setSlugAvailable(null)
+      } finally {
+        setSlugChecking(false)
+      }
+    }, 500)
+    return () => clearTimeout(id)
+  }, [slug])
 
   const formatTime = (tz: string) =>
     new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: tz }).format(now)
 
-  const friendlyTZ = (tz: string) => tz.split("/").slice(-1)[0].replace(/_/g, " ")
+  const friendlyTZ = (tz: string) => {
+    const parts = tz.split("/")
+    const last = parts[parts.length - 1]
+    return last ? last.replace(/_/g, " ") : tz
+  }
 
   const filteredTZs = useMemo(() => {
     const q = tzQuery.trim().toLowerCase()
@@ -140,7 +169,26 @@ export default function CreateProjectForm({ className = "" }: Props) {
                 </div>
               </div>
 
-              {/* Slug is derived from name; hidden in UI. */}
+              <div className="space-y-2">
+                <Label htmlFor="slug" className="block text-sm">Subdomain</Label>
+                <div className="relative">
+                  <Input
+                    id="slug"
+                    value={slug}
+                    onChange={(e) => {
+                      setSlugDirty(true)
+                      const v = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "").replace(/-+/g, "-")
+                      setSlug(v)
+                    }}
+                    placeholder="mywebsite"
+                    aria-invalid={slugAvailable === false}
+                  />
+                  <div className={"absolute right-3 top-1/2 -translate-y-1/2 text-xs " + (slugChecking ? "text-accent" : slugAvailable === true ? "text-emerald-600" : slugAvailable === false ? "text-destructive" : "text-accent")}>
+                    {slugChecking ? "Checking..." : slugAvailable === true ? "Available" : slugAvailable === false ? "Taken" : ""}
+                  </div>
+                </div>
+                <p className="text-[12px] text-accent">Your workspace will be accessible at {slug ? `${slug}.feedgot.com` : "<slug>.feedgot.com"}.</p>
+              </div>
 
               <div className="space-y-2">
                 <Label className="block text-sm">Timezone</Label>
@@ -179,7 +227,7 @@ export default function CreateProjectForm({ className = "" }: Props) {
                 <p className="text-[12px] text-accent">All project graphs, ranges and timestamps will be matched to this timezone. Can be updated later.</p>
               </div>
 
-              <LoadingButton className="w-full" type="button" loading={isCreating} onClick={handleCreate}>Create workspace</LoadingButton>
+              <LoadingButton className="w-full" type="button" loading={isCreating} disabled={!name.trim() || !domain.trim() || !slug.trim() || slugAvailable === false} onClick={handleCreate}>Create workspace</LoadingButton>
             </div>
           </div>
           <div className="p-3">

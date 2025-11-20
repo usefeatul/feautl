@@ -6,7 +6,7 @@ import { db } from "@feedgot/db"
 export const j = jstack.init()
 
 const databaseMiddleware = j.middleware(async ({ next }) => {
-  return await next({ db })
+  return await next({ db: db as any })
 })
 
 const authMiddleware = j.middleware(async ({ next }) => {
@@ -16,7 +16,7 @@ const authMiddleware = j.middleware(async ({ next }) => {
   if (!session || !session.user) {
     throw new Error("Unauthorized")
   }
-  return await next({ session })
+  return await next({ session: session as any })
 })
 
 export const publicProcedure = j.procedure.use(databaseMiddleware)

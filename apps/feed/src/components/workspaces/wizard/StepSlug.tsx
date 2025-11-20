@@ -18,9 +18,9 @@ export default function StepSlug({ slug, onChange, checking, available }: { slug
             value={slug}
             onChange={(e) => onChange(e.target.value)}
             placeholder="mywebsite"
-            aria-invalid={available === false}
+            aria-invalid={available === false || (slug && slug.length < 5)}
           />
-          <div className={"absolute right-3 top-1/2 -translate-y-1/2 text-xs " + (checking ? "text-accent" : available === true ? "text-emerald-600" : available === false ? "text-destructive" : "text-accent")}>{checking ? "Checking..." : available === true ? "Available" : available === false ? "Taken" : ""}</div>
+          <div className={"absolute right-3 top-1/2 -translate-y-1/2 text-xs " + (slug && slug.length < 5 ? "text-destructive" : checking ? "text-accent" : available === true ? "text-emerald-600" : available === false ? "text-destructive" : "text-accent")}>{slug && slug.length < 5 ? "Min 5 chars" : checking ? "Checking..." : available === true ? "Available" : available === false ? "Taken" : ""}</div>
         </div>
         <p className="text-[12px] text-accent">Your workspace will be accessible at {slug ? `${slug}.feedgot.com` : "<slug>.feedgot.com"}.</p>
       </div>

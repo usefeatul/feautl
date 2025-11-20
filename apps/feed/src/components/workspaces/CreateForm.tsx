@@ -82,7 +82,7 @@ export default function CreateProjectForm({ className = "" }: Props) {
   }, [name, slugDirty])
 
   useEffect(() => {
-    if (!slug || slug.length < 3) {
+    if (!slug || slug.length < 5) {
       setSlugAvailable(null)
       return
     }
@@ -183,8 +183,8 @@ export default function CreateProjectForm({ className = "" }: Props) {
                     placeholder="mywebsite"
                     aria-invalid={slugAvailable === false}
                   />
-                  <div className={"absolute right-3 top-1/2 -translate-y-1/2 text-xs " + (slugChecking ? "text-accent" : slugAvailable === true ? "text-emerald-600" : slugAvailable === false ? "text-destructive" : "text-accent")}>
-                    {slugChecking ? "Checking..." : slugAvailable === true ? "Available" : slugAvailable === false ? "Taken" : ""}
+                  <div className={"absolute right-3 top-1/2 -translate-y-1/2 text-xs " + (slug.length < 5 ? "text-destructive" : slugChecking ? "text-accent" : slugAvailable === true ? "text-emerald-600" : slugAvailable === false ? "text-destructive" : "text-accent")}>
+                    {slug.length < 5 ? "Min 5 chars" : slugChecking ? "Checking..." : slugAvailable === true ? "Available" : slugAvailable === false ? "Taken" : ""}
                   </div>
                 </div>
                 <p className="text-[12px] text-accent">Your workspace will be accessible at {slug ? `${slug}.feedgot.com` : "<slug>.feedgot.com"}.</p>
@@ -227,7 +227,7 @@ export default function CreateProjectForm({ className = "" }: Props) {
                 <p className="text-[12px] text-accent">All project graphs, ranges and timestamps will be matched to this timezone. Can be updated later.</p>
               </div>
 
-              <LoadingButton className="w-full" type="button" loading={isCreating} disabled={!name.trim() || !domain.trim() || !slug.trim() || slugAvailable === false} onClick={handleCreate}>Create workspace</LoadingButton>
+              <LoadingButton className="w-full" type="button" loading={isCreating} disabled={!name.trim() || !domain.trim() || slug.length < 5 || slugAvailable === false} onClick={handleCreate}>Create workspace</LoadingButton>
             </div>
           </div>
           <div className="p-3">

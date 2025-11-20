@@ -49,7 +49,7 @@ export default function WorkspaceWizard({ className = "" }: { className?: string
   }, [name, slugDirty])
 
   useEffect(() => {
-    if (!slug || slug.length < 3) {
+    if (!slug || slug.length < 5) {
       setSlugAvailable(null)
       return
     }
@@ -78,7 +78,7 @@ export default function WorkspaceWizard({ className = "" }: { className?: string
   const canNext = useMemo(() => {
     if (step === 0) return name.trim().length > 0
     if (step === 1) return domainValid
-    if (step === 2) return !!slug && slugAvailable === true
+    if (step === 2) return slug.length >= 5 && slugAvailable === true
     if (step === 3) return !!timezone
     return false
   }, [step, name, domainValid, slug, slugAvailable, timezone])

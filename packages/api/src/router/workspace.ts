@@ -7,7 +7,7 @@ import { workspace, workspaceMember } from "@feedgot/db"
 export function createWorkspaceRouter() {
   const slugSchema = z
     .string()
-    .min(3)
+    .min(5)
     .max(32)
     .regex(/^[a-z0-9-]+$/, "Slug must be lowercase letters, numbers, or hyphens")
 

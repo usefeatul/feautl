@@ -1,10 +1,9 @@
 import type { Metadata } from "next"
 import CreateProjectForm from "@/components/projects/CreateForm"
+import { createPageMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: "New Project",
-  description: "Create a new project in Feedgot.",
-  alternates: { canonical: "/projects/new" },
+  ...createPageMetadata({ title: "New Project", description: "Create a new project in Feedgot.", path: "/projects/new" }),
   robots: { index: false, follow: false },
 }
 

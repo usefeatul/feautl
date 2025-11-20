@@ -1,10 +1,9 @@
 import type { Metadata } from "next"
 import SignUp from "@/components/auth/SignUp"
+import { createPageMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: "Create Account",
-  description: "Sign up for Feedgot.",
-  alternates: { canonical: "/auth/sign-up" },
+  ...createPageMetadata({ title: "Create Account", description: "Sign up for Feedgot.", path: "/auth/sign-up" }),
   robots: { index: false, follow: false },
 }
 

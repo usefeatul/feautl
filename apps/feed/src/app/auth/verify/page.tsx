@@ -1,11 +1,10 @@
 import type { Metadata } from "next"
 import Verify from "@/components/auth/verify"
 import { Suspense } from "react"
+import { createPageMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: "Verify Email",
-  description: "Verify your Feedgot email.",
-  alternates: { canonical: "/auth/verify" },
+  ...createPageMetadata({ title: "Verify Email", description: "Verify your Feedgot email.", path: "/auth/verify" }),
   robots: { index: false, follow: false },
 }
 

@@ -1,5 +1,11 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
+
+export const metadata: Metadata = {
+  ...createPageMetadata({ title: 'Dashboard', description: 'Overview of your projects in Feedgot.', path: '/dashboard' }),
+  robots: { index: false, follow: false },
+}
 
 const Homepage = () => {
   return (
@@ -11,9 +17,3 @@ const Homepage = () => {
 
 export default Homepage
 
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Overview of your projects in Feedgot.',
-  alternates: { canonical: '/dashboard' },
-  robots: { index: false, follow: false },
-}

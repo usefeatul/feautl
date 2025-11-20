@@ -1,53 +1,65 @@
 import type { Metadata, Viewport } from "next"
+import Script from "next/script"
 import { Providers } from "../components/providers/providers"
 import "./styles/globals.css"
+import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd"
+import {
+  SITE_URL,
+  DEFAULT_TITLE,
+  TITLE_TEMPLATE,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_KEYWORDS,
+} from "@/config/seo"
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://feedgot.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Feedgot",
-    template: "%s – Feedgot",
+    default: DEFAULT_TITLE,
+    template: TITLE_TEMPLATE,
   },
-  description: "Plan, track, and ship projects with Feedgot.",
-  applicationName: "Feedgot",
-  keywords: [
-    "Feedgot",
-    "project management",
-    "task planning",
-    "productivity",
-  ],
-  manifest: "/site.webmanifest",
-  icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-  },
+  description: DEFAULT_DESCRIPTION,
+  keywords: DEFAULT_KEYWORDS,
   openGraph: {
-    title: "Feedgot",
-    description: "Plan, track, and ship projects with Feedgot.",
-    url: "https://feedgot.com",
-    siteName: "Feedgot",
     type: "website",
-    images: [{ url: "/android-chrome-512x512.png", width: 512, height: 512 }],
+    url: SITE_URL,
+    siteName: "Feedgot",
+    title: "Feedgot",
+    description: DEFAULT_DESCRIPTION,
+    images: [
+      { url: "/logo.png", width: 1200, height: 630, alt: "Feedgot" },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Feedgot",
-    description: "Plan, track, and ship projects with Feedgot.",
-    images: ["/android-chrome-512x512.png"],
+    description: DEFAULT_DESCRIPTION,
+    images: ["/logo.png"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-32x32.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
 }
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
   themeColor: "#ffffff",
 }
 
@@ -60,15 +72,27 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Feedgot",
-    url: "https://feedgot.com",
-    logo: "https://feedgot.com/android-chrome-512x512.png",
+    url: SITE_URL,
+    logo: `${SITE_URL}/android-chrome-512x512.png`,
   }
   return (
     <html lang="en">
       <head>
-        <script
+        <OrganizationJsonLd />
+        <Script
+          id="software-app-jsonld"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "Feedgot",
+            url: SITE_URL,
+            applicationCategory: "Project planning and delivery",
+            operatingSystem: "Web",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            image: `${SITE_URL}/logo.png`,
+          }) }}
         />
       </head>
       <body className="antialiased">

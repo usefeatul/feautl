@@ -1,10 +1,9 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
+import { createPageMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: "Feedgot",
-  description: "Welcome to Feedgot.",
-  alternates: { canonical: "/" },
+  ...createPageMetadata({ title: "Feedgot", description: "Welcome to Feedgot.", path: "/" }),
   robots: { index: false, follow: false },
 }
 

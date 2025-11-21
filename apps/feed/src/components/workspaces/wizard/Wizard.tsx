@@ -158,7 +158,7 @@ export default function WorkspaceWizard({ className = "" }: { className?: string
               </div>
             </div>
 
-            <div className="w-full md:w-3/5 p-4 sm:p-6 flex items-center justify-center bg-muted">
+            <div className="w-full md:w-3/5 p-4 sm:p-6 flex items-center justify-center bg-muted/70">
               <RightInfo />
             </div>
           </div>

@@ -4,7 +4,7 @@ import { getSessionCookie } from "better-auth/cookies"
 
 export function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
-  const needsAuth = pathname.startsWith("/dashboard") || pathname.startsWith("/workspaces")
+  const needsAuth = pathname.startsWith("/dashboard") || pathname.startsWith("/workspaces") || pathname.startsWith("/workspace")
   if (needsAuth) {
     const cookie = getSessionCookie(req)
     if (!cookie) {
@@ -17,5 +17,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/workspaces/:path*", "/workspace/:path*"],
 }

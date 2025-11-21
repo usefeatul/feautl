@@ -8,9 +8,9 @@ export default function RightInfo() {
     { label: "Publish", color: "bg-blue-500" },
   ]
   return (
-    <div className="flex flex-col items-start gap-6 py-10">
+    <div className="flex flex-col items-center justify-center gap-10 w-full h-full">
       {blocks.map((b) => (
-        <div key={b.label} className={`${b.color} text-white rounded-xl px-8 py-6 text-2xl font-semibold shadow-sm`}>{b.label}</div>
+        <div key={b.label} className={`${b.color} text-white rounded-2xl px-10 py-8 text-4xl font-bold shadow-sm w-[320px] text-center`}>{b.label}</div>
       ))}
     </div>
   )

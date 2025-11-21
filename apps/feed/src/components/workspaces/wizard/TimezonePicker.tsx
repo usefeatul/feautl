@@ -50,11 +50,11 @@ export default function TimezonePicker({ value, onChange, now }: { value: string
           <ChevronDown className="size-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0 w-[360px]">
+      <PopoverContent className="p-0 w-[calc(100vw-2rem)] sm:w-[360px]">
         <div className="p-2">
           <Input placeholder="Search by city or country..." value={query} onChange={(e) => setQuery(e.target.value)} className="placeholder:text-accent/70" />
         </div>
-        <div className="max-h-64 overflow-y-auto">
+        <div className="max-h-[50vh] sm:max-h-64 overflow-y-auto">
           {filtered.map((tz) => (
             <button
               key={tz}

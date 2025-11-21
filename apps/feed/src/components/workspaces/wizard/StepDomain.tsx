@@ -9,8 +9,8 @@ export default function StepDomain({ domain, onChange, isValid }: { domain: stri
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-semibold">First things first.</h2>
-        <p className="text-sm text-accent">Which website do you want to collect feedback for?</p>
+        <h2 className="text-lg sm:text-xl font-semibold">First things first.</h2>
+        <p className="text-xs sm:text-sm text-accent">Which website do you want to collect feedback for?</p>
       </div>
       <div className="space-y-2">
         <div className="relative flex items-center">

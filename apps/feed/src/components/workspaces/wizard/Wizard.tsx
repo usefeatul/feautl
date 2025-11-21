@@ -109,12 +109,12 @@ export default function WorkspaceWizard({ className = "" }: { className?: string
   }
 
   return (
-    <section className="flex min-h-screen items-center justify-center bg-background px-6 md:px-10 lg:px-16">
+    <section className="flex min-h-screen items-center justify-center bg-background px-4 sm:px-6 md:px-10 lg:px-16">
       <div className={`w-full max-w-3xl mx-auto ${className}`}>
         <div className="bg-card rounded-[calc(var(--radius)+.125rem)] border shadow-md overflow-hidden">
-          <div className="flex">
-            <div className="w-2/5 p-6 border-r flex flex-col">
-              <div className="mb-10">
+          <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-2/5 p-4 sm:p-6 md:border-r border-b md:border-b-0 flex flex-col">
+              <div className="mb-6 sm:mb-10">
                 <Progress step={step} total={total} />
               </div>
 
@@ -134,8 +134,8 @@ export default function WorkspaceWizard({ className = "" }: { className?: string
               {step === 3 && (
                 <div className="space-y-4">
                   <div>
-                    <h2 className="text-xl font-semibold">Select your timezone.</h2>
-                    <p className="text-sm text-accent">We’ll use this to align dates and charts.</p>
+                    <h2 className="text-lg sm:text-xl font-semibold">Select your timezone.</h2>
+                    <p className="text-xs sm:text-sm text-accent">We’ll use this to align dates and charts.</p>
                   </div>
                   <TimezonePicker value={timezone} onChange={setTimezone} now={now} />
                   <p className="text-[12px] text-accent">All project graphs, ranges and timestamps will be matched to this timezone. Can be updated later.</p>
@@ -158,7 +158,7 @@ export default function WorkspaceWizard({ className = "" }: { className?: string
               </div>
             </div>
 
-            <div className="w-3/5 p-6 flex items-center justify-center bg-muted">
+            <div className="w-full md:w-3/5 p-4 sm:p-6 flex items-center justify-center bg-muted">
               <RightInfo />
             </div>
           </div>

@@ -10,7 +10,7 @@ export default function RightInfo() {
   return (
     <div className="flex flex-col items-center justify-center gap-4 w-full h-full">
       {blocks.map((b) => (
-        <div key={b.label} className={`${b.color} text-white rounded-2xl px-8 py-6 text-3xl font-bold shadow-sm w-[200px] text-center`}>{b.label}</div>
+        <div key={b.label} className={`${b.color} text-white rounded-2xl px-6 sm:px-8 py-5 sm:py-6 text-2xl sm:text-3xl font-bold shadow-sm w-[160px] sm:w-[200px] text-center`}>{b.label}</div>
       ))}
     </div>
   )

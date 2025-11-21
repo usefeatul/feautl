@@ -7,8 +7,8 @@ export default function StepName({ name, onChange }: { name: string; onChange: (
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-semibold">Name your workspace.</h2>
-        <p className="text-sm text-accent">A clear name helps your team identify it faster.</p>
+        <h2 className="text-lg sm:text-xl font-semibold">Name your workspace.</h2>
+        <p className="text-xs sm:text-sm text-accent">A clear name helps your team identify it faster.</p>
       </div>
       <div className="space-y-2">
         <Input id="name" value={name} onChange={(e) => onChange(e.target.value)} placeholder="Mywebsite" className="placeholder:text-accent/70" />

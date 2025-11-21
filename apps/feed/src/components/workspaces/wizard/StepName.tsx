@@ -1,9 +1,8 @@
 "use client"
 
-import { Label } from "@feedgot/ui/components/label"
 import { Input } from "@feedgot/ui/components/input"
 
-export default function StepName({ name, onChange }: { name: string; onChange: (v: string) => void }) {
+export default function StepName({ name, onChange, isValid }: { name: string; onChange: (v: string) => void; isValid: boolean }) {
   return (
     <div className="space-y-4">
       <div>
@@ -11,7 +10,10 @@ export default function StepName({ name, onChange }: { name: string; onChange: (
         <p className="text-xs sm:text-sm text-accent">A clear name helps your team identify it faster.</p>
       </div>
       <div className="space-y-2">
-        <Input id="name" value={name} onChange={(e) => onChange(e.target.value)} placeholder="Mywebsite" className="placeholder:text-accent/70" />
+        <Input id="name" value={name} onChange={(e) => onChange(e.target.value)} placeholder="Mywebsite" className="placeholder:text-accent/70" aria-invalid={!isValid && name.length > 0} />
+        {!isValid && name.length > 0 ? (
+          <p className="text-xs text-destructive">Name is required.</p>
+        ) : null}
       </div>
     </div>
   )

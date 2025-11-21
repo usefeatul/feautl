@@ -118,7 +118,7 @@ export default function WorkspaceWizard({ className = "" }: { className?: string
                 <Progress step={step} total={total} />
               </div>
 
-              {step === 0 && <StepName name={name} onChange={setName} />}
+              {step === 0 && <StepName name={name} onChange={setName} isValid={isNameValid(name)} />}
               {step === 1 && <StepDomain domain={domain} onChange={setDomain} isValid={domainValid} />}
               {step === 2 && (
                 <StepSlug
@@ -138,6 +138,9 @@ export default function WorkspaceWizard({ className = "" }: { className?: string
                     <p className="text-xs sm:text-sm text-accent">We’ll use this to align dates and charts.</p>
                   </div>
                   <TimezonePicker value={timezone} onChange={setTimezone} now={now} />
+                  {!isTimezoneValid(timezone) ? (
+                    <p className="text-xs text-destructive">Please select a valid timezone.</p>
+                  ) : null}
                   <p className="text-[12px] text-accent">All project graphs, ranges and timestamps will be matched to this timezone. Can be updated later.</p>
                 </div>
               )}

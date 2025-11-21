@@ -1,6 +1,5 @@
 "use client"
 
-import { Label } from "@feedgot/ui/components/label"
 import { Input } from "@feedgot/ui/components/input"
 import { AlertCircle } from "lucide-react"
 import { suggestDomainFix } from "./validators"
@@ -19,15 +18,23 @@ export default function StepDomain({ domain, onChange, isValid }: { domain: stri
           {!isValid && domain.length > 0 ? (
             <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 text-destructive size-4" />
           ) : null}
-          {(() => {
-            const suggested = suggestDomainFix(domain)
-            return !isValid && suggested ? (
-              <div className="absolute left-3 -bottom-6 text-xs text-accent">
-                Did you mean <button type="button" className="underline" onClick={() => onChange(suggested)}>{suggested}</button>?
-              </div>
-            ) : null
-          })()}
         </div>
+        {(() => {
+          if (!isValid && domain.length > 0) {
+            const suggested = suggestDomainFix(domain)
+            if (suggested) {
+              return (
+                <p className="text-xs text-accent">
+                  Did you mean <button type="button" className="underline text-primary cursor-pointer" onClick={() => onChange(suggested)}>{suggested}</button>?
+                </p>
+              )
+            }
+            return (
+              <p className="text-xs text-destructive ">Enter a valid domain, e.g. <span className="underline" onClick={() => onChange("mywebsite.com")}>mywebsite.com</span>.</p>
+            )
+          }
+          return null
+        })()}
       </div>
     </div>
   )

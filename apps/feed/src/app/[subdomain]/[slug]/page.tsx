@@ -26,7 +26,7 @@ export default async function SitePage({ params, searchParams }: { params: Promi
 
       <Container maxWidth="5xl">
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_360px] gap-6">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-[7fr_3fr] gap-6">
           <div>
             {tab==="issues" && <PostList workspaceSlug={slug} boardSlug="issues" />}
             {tab==="roadmap" && <PostList workspaceSlug={slug} boardSlug="roadmap" />}

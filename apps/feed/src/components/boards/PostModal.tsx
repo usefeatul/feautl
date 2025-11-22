@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { Dialog, DialogContent } from "@feedgot/ui/components/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@feedgot/ui/components/dialog"
 import { Button } from "@feedgot/ui/components/button"
 import { Star, ChevronRight, MessageSquare, Bell } from "lucide-react"
 import { client } from "@feedgot/api/client"
@@ -52,12 +52,8 @@ export default function PostModal({ open, onOpenChange, postId }: { open: boolea
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[min(80vw,880px)] max-h-[70vh] overflow-y-auto p-0">
-        {!p ? (
-          <div className="p-8 text-left">
-            <div className="text-sm text-muted-foreground">Loading…</div>
-          </div>
-        ) : (
+      {p ? (
+        <DialogContent className="w-[min(80vw,880px)] max-h-[70vh] overflow-y-auto p-0">
           <div className="grid grid-cols-1 md:grid-cols-[7fr_3fr]">
             <div className="p-6 md:p-8">
               <div className="flex items-center gap-3">
@@ -65,7 +61,7 @@ export default function PostModal({ open, onOpenChange, postId }: { open: boolea
                 <span className="text-xs text-muted-foreground">•</span>
                 <span className="text-xs text-muted-foreground">{formattedDate}</span>
               </div>
-              <h1 className="mt-3 text-xl md:text-2xl font-semibold tracking-tight">{p.title}</h1>
+              <DialogTitle className="mt-3 text-xl md:text-2xl font-semibold tracking-tight">{p.title}</DialogTitle>
               {tags.length > 0 ? (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {tags.map((t) => (
@@ -168,8 +164,8 @@ export default function PostModal({ open, onOpenChange, postId }: { open: boolea
               </div>
             </aside>
           </div>
-        )}
-      </DialogContent>
+        </DialogContent>
+      ) : null}
     </Dialog>
   )
 }

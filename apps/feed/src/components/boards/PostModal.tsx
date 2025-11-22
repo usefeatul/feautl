@@ -54,7 +54,7 @@ export default function PostModal({ open, onOpenChange, postId }: { open: boolea
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[min(92vw,980px)] max-h-[70vh] overflow-y-auto p-0">
         {!p ? (
-          <div className="p-8 text-center">
+          <div className="p-8 text-left">
             <div className="text-sm text-muted-foreground">Loading…</div>
           </div>
         ) : (
@@ -101,7 +101,7 @@ export default function PostModal({ open, onOpenChange, postId }: { open: boolea
               </div>
               {tab === "comments" ? (
                 comments.length === 0 ? (
-                  <div className="py-10 text-center">
+                  <div className="py-10 text-left">
                     <MessageSquare className="inline-block size-6 text-primary" />
                     <div className="mt-2 text-sm text-muted-foreground">No one has commented yet</div>
                   </div>
@@ -119,49 +119,53 @@ export default function PostModal({ open, onOpenChange, postId }: { open: boolea
                   </ul>
                 )
               ) : (
-                <div className="py-10 text-center">
+                <div className="py-10 text-left">
                   <div className="text-sm text-muted-foreground">No activity yet</div>
                 </div>
               )}
             </div>
             <aside className="border-l bg-card p-6 md:p-7 space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="grid grid-cols-[120px_1fr] items-center">
                 <div className="text-xs text-muted-foreground">Upvotes</div>
-                <span className="text-xs font-medium px-2 py-1 rounded-md bg-muted text-muted-foreground">▲ {p.upvotes ?? 0}</span>
+                <span className="justify-self-start text-left text-xs font-medium px-2 py-1 rounded-md bg-muted text-muted-foreground">▲ {p.upvotes ?? 0}</span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="grid grid-cols-[120px_1fr] items-center">
                 <div className="text-xs text-muted-foreground">Status</div>
-                <span className="px-2 py-1 rounded-md bg-muted text-muted-foreground text-xs">{p.status || "Published"}</span>
+                <span className="justify-self-start text-left px-2 py-1 rounded-md bg-muted text-muted-foreground text-xs">{p.status || "Published"}</span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="grid grid-cols-[120px_1fr] items-center">
                 <div className="text-xs text-muted-foreground">Board</div>
-                <span className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">{b?.name}</span>
+                <span className="justify-self-start text-left text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">{b?.name}</span>
               </div>
               {tags.length > 0 ? (
-                <div className="flex items-start justify-between">
+                <div className="grid grid-cols-[120px_1fr] items-start">
                   <div className="text-xs text-muted-foreground">Tags</div>
-                  <div className="flex flex-wrap gap-1">
+                  <div className="justify-self-start flex flex-wrap gap-1">
                     {tags.map((t) => (
-                      <span key={t.id} className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground" style={{ backgroundColor: t.color ? `${t.color}22` : undefined }}>
+                      <span
+                        key={t.id}
+                        className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground"
+                        style={{ backgroundColor: t.color ? `${t.color}22` : undefined }}
+                      >
                         {t.name}
                       </span>
                     ))}
                   </div>
                 </div>
               ) : null}
-              <div className="flex items-center justify-between">
+              <div className="grid grid-cols-[120px_1fr] items-center">
                 <div className="text-xs text-muted-foreground">ETA</div>
-                <span className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">
+                <span className="justify-self-start text-left text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">
                   {p.publishedAt ? new Date(p.publishedAt as any).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "—"}
                 </span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="grid grid-cols-[120px_1fr] items-center">
                 <div className="text-xs text-muted-foreground">Date</div>
-                <span className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">{formatRelative(p.createdAt || null)}</span>
+                <span className="justify-self-start text-left text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">{formatRelative(p.createdAt || null)}</span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="grid grid-cols-[120px_1fr] items-center">
                 <div className="text-xs text-muted-foreground">Author</div>
-                <span className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">{p.authorName || "Anonymous"}</span>
+                <span className="justify-self-start text-left text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">{p.authorName || "Anonymous"}</span>
               </div>
             </aside>
           </div>

@@ -1,4 +1,4 @@
-import { eq, and } from "drizzle-orm"
+import { eq, and, sql } from "drizzle-orm"
 import { j, publicProcedure } from "../jstack"
 import { workspace, board, post } from "@feedgot/db"
 import { checkSlugInputSchema } from "../validators/workspace"
@@ -32,7 +32,18 @@ export function createBoardRouter() {
           .from(board)
           .where(eq(board.workspaceId, ws.id))
 
-        return c.superjson({ boards: boardsList })
+        const withCounts = await Promise.all(
+          boardsList.map(async (b: typeof board.$inferSelect) => {
+            const [row] = await ctx.db
+              .select({ count: sql<number>`count(*)` })
+              .from(post)
+              .where(eq(post.boardId, b.id))
+              .limit(1)
+            return { ...b, postCount: Number(row?.count || 0) }
+          })
+        )
+
+        return c.superjson({ boards: withCounts })
       }),
 
     postsByBoard: publicProcedure
@@ -57,6 +68,8 @@ export function createBoardRouter() {
             id: post.id,
             title: post.title,
             slug: post.slug,
+            content: post.content,
+            commentCount: post.commentCount,
             upvotes: post.upvotes,
             roadmapStatus: post.roadmapStatus,
             publishedAt: post.publishedAt,

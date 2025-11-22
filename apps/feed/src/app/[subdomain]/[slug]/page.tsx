@@ -1,6 +1,8 @@
 import { db, workspace } from "@feedgot/db"
 import { eq } from "drizzle-orm"
-import Board from "@/components/boards/Board"
+import Tabs from "@/components/boards/Tabs"
+import PostList from "@/components/boards/PostList"
+import Sidebar from "@/components/boards/Sidebar"
 
 export const dynamic = "force-dynamic"
 
@@ -23,19 +25,16 @@ export default async function SitePage({ params, searchParams }: { params: Promi
         <h1 className="text-2xl font-semibold">{name}</h1>
         <p className="text-accent text-sm">{slug}.feedgot.com</p>
 
-        <nav className="mt-6 border-b border-zinc-200 dark:border-zinc-800 flex gap-6">
-          {["issues","roadmap","changelog"].map(k => (
-            <a key={k} href={`?tab=${k}`} className={tab===k ? "py-3 text-primary border-b-2 border-primary" : "py-3 text-accent hover:text-primary"}>
-              {k!.charAt(0).toUpperCase() + k!.slice(1)}
-            </a>
-          ))}
-        </nav>
+        <Tabs active={tab as any} />
 
-        {tab==="issues" && <Board workspaceSlug={slug} boardSlug="issues" className="mt-6" />}
-
-        {tab==="roadmap" && <Board workspaceSlug={slug} boardSlug="roadmap" className="mt-6" />}
-
-        {tab==="changelog" && <Board workspaceSlug={slug} boardSlug="changelog" className="mt-6" />}
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-[1fr_300px] gap-6">
+          <div>
+            {tab==="issues" && <PostList workspaceSlug={slug} boardSlug="issues" />}
+            {tab==="roadmap" && <PostList workspaceSlug={slug} boardSlug="roadmap" />}
+            {tab==="changelog" && <PostList workspaceSlug={slug} boardSlug="changelog" />}
+          </div>
+          <Sidebar workspaceSlug={slug} />
+        </div>
       </div>
     </main>
   )

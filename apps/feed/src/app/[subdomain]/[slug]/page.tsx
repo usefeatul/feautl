@@ -3,6 +3,8 @@ import { eq } from "drizzle-orm"
 import Tabs from "@/components/boards/Tabs"
 import PostList from "@/components/boards/PostList"
 import Sidebar from "@/components/boards/Sidebar"
+import WorkspaceHeader from "@/components/boards/WorkspaceHeader"
+import { Container } from "@/components/container"
 
 export const dynamic = "force-dynamic"
 
@@ -20,14 +22,13 @@ export default async function SitePage({ params, searchParams }: { params: Promi
   const name = ws?.name || slug
 
   return (
-    <main className="min-h-screen px-6 py-10">
-      <div className="mx-auto max-w-3xl">
-        <h1 className="text-2xl font-semibold">{name}</h1>
-        <p className="text-accent text-sm">{slug}.feedgot.com</p>
+    <main className="min-h-screen bg-background">
+      <WorkspaceHeader name={name} slug={slug} className="w-full rounded-none border-0 border-b border-zinc-200 dark:border-zinc-800 bg-muted px-6 py-5" />
 
+      <Container maxWidth="7xl">
         <Tabs active={tab as any} />
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-[1fr_300px] gap-6">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_360px] gap-6">
           <div>
             {tab==="issues" && <PostList workspaceSlug={slug} boardSlug="issues" />}
             {tab==="roadmap" && <PostList workspaceSlug={slug} boardSlug="roadmap" />}
@@ -35,7 +36,7 @@ export default async function SitePage({ params, searchParams }: { params: Promi
           </div>
           <Sidebar workspaceSlug={slug} />
         </div>
-      </div>
+      </Container>
     </main>
   )
 }

@@ -23,10 +23,9 @@ export default async function SitePage({ params, searchParams }: { params: Promi
 
   return (
     <main className="min-h-screen bg-background">
-      <WorkspaceHeader name={name} slug={slug} className="w-full rounded-none border-0 border-b border-zinc-200 dark:border-zinc-800 bg-muted px-6 py-5" />
+      <WorkspaceHeader name={name} slug={slug} activeTab={tab as any} className="w-full rounded-none border-0 border-b border-zinc-200 dark:border-zinc-800" />
 
-      <Container maxWidth="7xl">
-        <Tabs active={tab as any} />
+      <Container maxWidth="5xl">
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_360px] gap-6">
           <div>

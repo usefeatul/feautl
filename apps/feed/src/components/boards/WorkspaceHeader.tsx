@@ -1,34 +1,30 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query"
-import { client } from "@feedgot/api/client"
 import Link from "next/link"
 import { Button } from "@feedgot/ui/components/button"
 import { Container } from "@/components/container"
+import Tabs from "@/components/boards/Tabs"
 
-export default function WorkspaceHeader({ name, slug, className = "" }: { name: string; slug: string; className?: string }) {
-  const boardsQ = useQuery({
-    queryKey: ["boards", slug],
-    queryFn: async () => {
-      const res = await client.board.byWorkspaceSlug.$get({ slug })
-      const data = await res.json()
-      return (data?.boards || []) as { id: string; name: string; slug: string; type: string }[]
-    },
-  })
+export default function WorkspaceHeader({ name, slug, activeTab, className = "" }: { name: string; slug: string; activeTab: "issues" | "roadmap" | "changelog"; className?: string }) {
 
   return (
-    <header className={`bg-muted border-b border-zinc-200 dark:border-zinc-800 ${className}`}>
-      <Container maxWidth="7xl" className="py-5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="size-7 rounded-full bg-muted" />
-          <div>
-            <div className="text-base sm:text-lg font-semibold">{name}</div>
-            <div className="text-xs text-accent">{slug}.feedgot.com</div>
+    <header className={`bg-muted/50 border-b border-zinc-200 dark:border-zinc-800 ${className}`}>
+      <Container maxWidth="5xl" className="py-12">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3">
+              <div className="size-7 rounded-full bg-muted" />
+              <div>
+                <div className="text-base sm:text-lg font-semibold">{name}</div>
+                <div className="text-xs text-accent">{slug}.feedgot.com</div>
+              </div>
+            </div>
+            <Tabs active={activeTab} className="mt-0 border-none flex gap-6" />
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link href="/auth/sign-in"><Button variant="outline" size="sm">Sign in</Button></Link>
-          <Link href="/auth/sign-up"><Button size="sm">Sign up</Button></Link>
+          <div className="flex items-center gap-2">
+            <Link href="/auth/sign-in"><Button variant="outline" size="sm">Sign in</Button></Link>
+            <Link href="/auth/sign-up"><Button size="sm">Sign up</Button></Link>
+          </div>
         </div>
       </Container>
     </header>

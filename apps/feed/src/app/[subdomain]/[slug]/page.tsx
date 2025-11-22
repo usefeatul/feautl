@@ -1,6 +1,5 @@
 import { db, workspace } from "@feedgot/db"
 import { eq } from "drizzle-orm"
-import Tabs from "@/components/boards/Tabs"
 import PostList from "@/components/boards/PostList"
 import Sidebar from "@/components/boards/Sidebar"
 import WorkspaceHeader from "@/components/boards/WorkspaceHeader"

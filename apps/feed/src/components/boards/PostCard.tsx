@@ -7,11 +7,12 @@ export type PostCardProps = {
   description?: string | null
   metaLeft?: ReactNode
   metaRight?: ReactNode
+  onClick?: () => void
 }
 
-export default function PostCard({ title, description, metaLeft, metaRight }: PostCardProps) {
+export default function PostCard({ title, description, metaLeft, metaRight, onClick }: PostCardProps) {
   return (
-    <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-card shadow-sm">
+    <div onClick={onClick} className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-card shadow-sm cursor-pointer hover:bg-muted/40 transition-colors">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <h3 className="text-sm sm:text-base font-semibold leading-snug">{title}</h3>

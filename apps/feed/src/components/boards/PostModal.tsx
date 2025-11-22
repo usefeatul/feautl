@@ -1,10 +1,7 @@
 "use client"
-
-import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { Dialog, DialogContent, DialogTitle } from "@feedgot/ui/components/dialog"
-import { Button } from "@feedgot/ui/components/button"
-import { Star, ChevronRight, MessageSquare, Bell } from "lucide-react"
+import { MessageSquare } from "lucide-react"
 import { client } from "@feedgot/api/client"
 
 export default function PostModal({ open, onOpenChange, postId }: { open: boolean; onOpenChange: (o: boolean) => void; postId: string | null }) {
@@ -27,7 +24,7 @@ export default function PostModal({ open, onOpenChange, postId }: { open: boolea
   const b = q.data?.board
   const tags = q.data?.tags || []
   const comments = q.data?.comments || []
-  const [tab, setTab] = useState<"comments" | "activity">("comments")
+  
 
   const formattedDate =
     typeof p?.createdAt === "string" || p?.createdAt instanceof Date
@@ -76,47 +73,26 @@ export default function PostModal({ open, onOpenChange, postId }: { open: boolea
                 </div>
               ) : null}
               {p.content ? <div className="mt-5 text-sm leading-6 text-foreground/90 whitespace-pre-wrap">{p.content}</div> : null}
-              <div className="mt-6 flex items-center justify-between border-b">
-                <div className="flex items-center gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setTab("comments")}
-                    className={`text-sm pb-3 ${tab === "comments" ? "text-foreground border-b-2 border-foreground" : "text-muted-foreground"}`}
-                  >
-                    Comments
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setTab("activity")}
-                    className={`text-sm pb-3 ${tab === "activity" ? "text-foreground border-b-2 border-foreground" : "text-muted-foreground"}`}
-                  >
-                    Activity feed
-                  </button>
-                </div>
+              <div className="mt-6">
+                <div className="text-sm pb-3 text-foreground">Comments</div>
               </div>
-              {tab === "comments" ? (
-                comments.length === 0 ? (
-                  <div className="py-10 text-left">
-                    <MessageSquare className="inline-block size-6 text-primary" />
-                    <div className="mt-2 text-sm text-muted-foreground">No one has commented yet</div>
-                  </div>
-                ) : (
-                  <ul className="mt-6 space-y-4">
-                    {comments.map((c) => (
-                      <li key={c.id} className="rounded-lg border bg-card p-4">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-muted-foreground">{c.authorName || "Anonymous"}</span>
-                          <span className="text-xs text-muted-foreground">▲ {c.upvotes ?? 0}</span>
-                        </div>
-                        <div className="mt-2 text-sm">{c.content}</div>
-                      </li>
-                    ))}
-                  </ul>
-                )
-              ) : (
+              {comments.length === 0 ? (
                 <div className="py-10 text-left">
-                  <div className="text-sm text-muted-foreground">No activity yet</div>
+                  <MessageSquare className="inline-block size-6 text-primary" />
+                  <div className="mt-2 text-sm text-muted-foreground">No one has commented yet</div>
                 </div>
+              ) : (
+                <ul className="mt-6 space-y-4">
+                  {comments.map((c) => (
+                    <li key={c.id} className="rounded-lg border bg-card p-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">{c.authorName || "Anonymous"}</span>
+                        <span className="text-xs text-muted-foreground">▲ {c.upvotes ?? 0}</span>
+                      </div>
+                      <div className="mt-2 text-sm">{c.content}</div>
+                    </li>
+                  ))}
+                </ul>
               )}
             </div>
             <aside className="border-l bg-card p-6 md:p-7 space-y-3">

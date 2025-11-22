@@ -52,13 +52,13 @@ export default function PostModal({ open, onOpenChange, postId }: { open: boolea
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[min(92vw,980px)] max-h-[70vh] overflow-y-auto p-0">
+      <DialogContent className="w-[min(80vw,880px)] max-h-[70vh] overflow-y-auto p-0">
         {!p ? (
           <div className="p-8 text-left">
             <div className="text-sm text-muted-foreground">Loading…</div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="grid grid-cols-1 md:grid-cols-[7fr_3fr]">
             <div className="p-6 md:p-8">
               <div className="flex items-center gap-3">
                 <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{b?.name}</span>

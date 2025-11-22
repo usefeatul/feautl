@@ -1,8 +1,9 @@
 import { eq, and, sql } from "drizzle-orm"
 import { j, publicProcedure } from "../jstack"
-import { workspace, board, post } from "@feedgot/db"
+import { workspace, board, post, postTag, tag, comment, user } from "@feedgot/db"
 import { checkSlugInputSchema } from "../validators/workspace"
 import { byBoardInputSchema } from "../validators/board"
+import { byIdSchema } from "../validators/post"
 
 export function createBoardRouter() {
   return j.router({
@@ -78,6 +79,72 @@ export function createBoardRouter() {
           .where(eq(post.boardId, b.id))
 
         return c.superjson({ posts: postsList })
+      }),
+
+    postDetail: publicProcedure
+      .input(byIdSchema)
+      .get(async ({ ctx, input, c }: any) => {
+        const [p] = await ctx.db
+          .select({
+            id: post.id,
+            title: post.title,
+            content: post.content,
+            slug: post.slug,
+            boardId: post.boardId,
+            upvotes: post.upvotes,
+            downvotes: post.downvotes,
+            commentCount: post.commentCount,
+            publishedAt: post.publishedAt,
+            createdAt: post.createdAt,
+            authorId: post.authorId,
+            authorName: post.authorName,
+            authorEmail: post.authorEmail,
+            isAnonymous: post.isAnonymous,
+            status: post.status,
+            roadmapStatus: post.roadmapStatus,
+          })
+          .from(post)
+          .where(eq(post.id, input.postId))
+          .limit(1)
+        if (!p) return c.superjson({ post: null })
+
+        const [b] = await ctx.db
+          .select({ id: board.id, name: board.name, slug: board.slug, type: board.type })
+          .from(board)
+          .where(eq(board.id, p.boardId))
+          .limit(1)
+
+        const tagsList = await ctx.db
+          .select({ id: tag.id, name: tag.name, slug: tag.slug, color: tag.color })
+          .from(postTag)
+          .innerJoin(tag, eq(postTag.tagId, tag.id))
+          .where(eq(postTag.postId, p.id))
+
+        const commentsList = await ctx.db
+          .select({
+            id: comment.id,
+            content: comment.content,
+            authorId: comment.authorId,
+            authorName: comment.authorName,
+            authorEmail: comment.authorEmail,
+            createdAt: comment.createdAt,
+            upvotes: comment.upvotes,
+            downvotes: comment.downvotes,
+          })
+          .from(comment)
+          .where(eq(comment.postId, p.id))
+
+        let author: { id?: string; name?: string; image?: string } | null = null
+        if (p.authorId) {
+          const [au] = await ctx.db
+            .select({ id: user.id, name: user.name, image: user.image })
+            .from(user)
+            .where(eq(user.id, p.authorId))
+            .limit(1)
+          author = au || null
+        }
+
+        return c.superjson({ post: p, board: b || null, tags: tagsList, comments: commentsList, author })
       }),
   })
 }

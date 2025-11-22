@@ -16,8 +16,8 @@ export default function PostList({ workspaceSlug, boardSlug, className = "" }: {
     },
   })
 
-  const [selected, setSelected] = useState<{ title: string; content?: string | null; meta?: string } | null>(null)
-  const close = () => setSelected(null)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const close = () => setSelectedId(null)
 
   if (!q.isSuccess) return <div className={className + " text-sm text-accent"}>Loading…</div>
   if (q.data.length === 0) return <div className={className + " text-sm text-accent"}>No posts yet.</div>
@@ -35,10 +35,10 @@ export default function PostList({ workspaceSlug, boardSlug, className = "" }: {
               ? <span>{typeof p.publishedAt === "string" ? p.publishedAt : p.publishedAt?.toString() || ""}</span>
               : <div className="flex items-center gap-2"><span>▲ {p.upvotes ?? 0}</span><span>💬 {p.commentCount ?? 0}</span></div>
           }
-          onClick={() => setSelected({ title: p.title, content: p.content, meta: boardSlug === "changelog" ? (typeof p.publishedAt === "string" ? p.publishedAt : p.publishedAt?.toString() || "") : undefined })}
+          onClick={() => setSelectedId(p.id)}
         />
       ))}
-      <PostModal open={!!selected} onOpenChange={(o) => (o ? null : close())} title={selected?.title || ""} content={selected?.content} meta={selected?.meta} />
+      <PostModal open={!!selectedId} onOpenChange={(o) => (o ? null : close())} postId={selectedId} />
     </div>
   )
 }

@@ -58,9 +58,13 @@ export default function Sidebar({ className = "" }: { className?: string }) {
         <WorkspaceSwitcher className="mt-3" />
         <Timezone className="mt-2" />
       </div>
-      <nav className="p-3 space-y-1">{primaryNav.map(renderItem)}</nav>
+      <nav className="p-3">
+        <div className="mb-2 text-xs text-accent">REQUEST</div>
+        <div className="space-y-1">{primaryNav.map(renderItem)}</div>
+      </nav>
 
       <div className="p-3 mt-4">
+        <div className="mb-2 text-xs text-accent">WORKSPACE</div>
         <div className="space-y-1">{middleNav.map(renderItem)}</div>
       </div>
 

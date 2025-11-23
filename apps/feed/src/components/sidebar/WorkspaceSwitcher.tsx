@@ -84,7 +84,7 @@ export default function WorkspaceSwitcher({
         <DropdownMenuTrigger className="w-full cursor-pointer">
           <div className="group flex items-center gap-2 rounded-md px-2 py-2 text-sm text-accent hover:bg-muted cursor-pointer">
             {currentLogo ? (
-              <div className="relative w-6 h-6 rounded-sm bg-muted border ring-1 ring-border/40 shadow-sm overflow-hidden">
+              <div className="relative w-6 h-6 rounded-sm bg-muted border ring-1 ring-border  overflow-hidden">
                 <img
                   src={currentLogo}
                   alt={currentName}
@@ -92,7 +92,7 @@ export default function WorkspaceSwitcher({
                 />
               </div>
             ) : (
-              <div className="w-6 h-6 rounded-sm bg-muted border ring-1 ring-border/40" />
+              <div className="w-6 h-6 rounded-sm bg-muted border ring-1 ring-border" />
             )}
             <span className="transition-colors">{currentName}</span>
             <DropdownIcon className="ml-auto size-3 text-foreground/80 transition-colors" />
@@ -121,7 +121,7 @@ export default function WorkspaceSwitcher({
                     )}
                   >
                     {logoUrl ? (
-                      <div className="relative w-6 h-6 rounded-sm bg-muted border ring-1 ring-border/40 shadow-sm overflow-hidden">
+                      <div className="relative w-6 h-6 rounded-sm bg-muted border ring-1 ring-border overflow-hidden">
                         <img
                           src={logoUrl}
                           alt={w.name}
@@ -129,7 +129,7 @@ export default function WorkspaceSwitcher({
                         />
                       </div>
                     ) : (
-                      <div className="w-6 h-6 rounded-sm bg-muted border ring-1 ring-border/40" />
+                      <div className="w-6 h-6 rounded-sm bg-muted border ring-1 ring-border" />
                     )}
                     <span className="truncate text-sm">{w.name}</span>
                     {isCurrent ? (

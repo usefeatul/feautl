@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { client } from "@feedgot/api/client"
 import { getSlugFromPath } from "./nav"
 import { DropdownIcon } from "@feedgot/ui/icons/dropdown"
+import { Check } from "lucide-react"
 
 type Ws = { id: string; name: string; slug: string; logo?: string | null; domain?: string | null }
 
@@ -56,41 +57,56 @@ export default function WorkspaceSwitcher({ className = "" }: { className?: stri
 
   const current = workspaces.find((w) => w.slug === slug)
   const currentLogo: string | null = currentDetails?.logo ?? current?.logo ?? null
-  const others = workspaces.filter((w) => w.slug !== slug)
+  const all = workspaces
 
   return (
     <div className={cn(className)}>
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger className="w-full">
-          <div className="flex items-center gap-3 rounded-md px-3 py-2 hover:bg-muted">
+          <div className="group flex items-center gap-2 rounded-md px-2 py-2 text-sm text-accent hover:bg-muted">
             {currentLogo ? (
-              <img src={currentLogo} alt="Workspace" className="h-6 w-6 rounded-sm" />
+              <img src={currentLogo} alt="Workspace" className="w-6 h-6 rounded-sm" />
             ) : (
-              <div className="h-6 w-6 rounded-sm bg-muted border" />
+              <div className="w-6 h-6 rounded-sm bg-muted border" />
             )}
-            <span className="text-sm font-medium truncate">{currentDetails?.name || current?.name || slug || "Current"}</span>
-            <DropdownIcon className="ml-auto text-foreground/60" size={18} />
+            <span className="transition-colors">{currentDetails?.name || current?.name || slug || "Current"}</span>
+            <DropdownIcon className="ml-auto w-4 h-4 text-foreground/80 group-hover:text-primary transition-colors" />
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-64" side="bottom" align="start">
-          <DropdownMenuLabel>Switch workspace</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {others.length === 0 ? (
-            <DropdownMenuItem disabled>No other workspaces</DropdownMenuItem>
+        <DropdownMenuContent className="w-56 max-w-[95vw] max-h-[80vh] overflow-auto p-2" side="bottom" align="center" sideOffset={8}>
+          {all.length === 0 ? (
+            <DropdownMenuItem disabled>No workspaces yet</DropdownMenuItem>
           ) : (
-            others.map((w) => {
-              const logoUrl: string | null = w.logo ?? null
-              return (
-                <DropdownMenuItem key={w.slug} onSelect={() => { setOpen(false); router.push(`/workspaces/${w.slug}`) }}>
-                  {logoUrl ? (
-                    <img src={logoUrl} alt="" className="h-5 w-5 rounded-sm" />
-                  ) : (
-                    <div className="h-5 w-5 rounded-sm bg-muted border" />
-                  )}
-                  <span className="truncate">{w.name}</span>
-                </DropdownMenuItem>
-              )
-            })
+            <div className="flex flex-col gap-1">
+              {all.map((w) => {
+                const logoUrl: string | null = w.logo ?? null
+                const isCurrent = w.slug === slug
+                return (
+                  <DropdownMenuItem
+                    key={w.slug}
+                    onSelect={() => { setOpen(false); router.push(`/workspaces/${w.slug}`) }}
+                    className={cn("flex items-center gap-2 px-2 py-2 rounded-md", isCurrent ? "bg-muted" : "hover:bg-muted")}
+                  >
+                    {logoUrl ? (
+                      <img src={logoUrl} alt="" className="w-6 h-6 rounded-sm" />
+                    ) : (
+                      <div className="w-6 h-6 rounded-sm bg-muted border" />
+                    )}
+                    <span className="truncate text-sm">{w.name}</span>
+                    {isCurrent ? <Check className="ml-auto size-4 text-primary" /> : <span className="ml-auto" />}
+                  </DropdownMenuItem>
+                )
+              })}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onSelect={() => { setOpen(false); router.push("/workspaces/new") }}
+                className="p-0"
+              >
+                <div className="w-full rounded-md bg-primary text-primary-foreground px-3 py-2 text-sm text-center hover:bg-primary/90">
+                  Create new project
+                </div>
+              </DropdownMenuItem>
+            </div>
           )}
         </DropdownMenuContent>
       </DropdownMenu>

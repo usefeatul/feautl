@@ -28,7 +28,7 @@ export default function WorkspaceHeader() {
   if (!title && !show) return null
 
   return (
-    <div className="mb-3">
+    <div className="mt-3.5">
       <div className="flex items-center justify-between">
         {title ? <h1 className="text-xl font-semibold">{title}</h1> : <div />}
         {show ? <HeaderActions /> : null}

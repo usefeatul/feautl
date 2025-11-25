@@ -43,7 +43,7 @@ function CommandDialog({
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
-      <DialogContent className={cn("overflow-hidden  w-[min(92vw,600px)] top-26 sm:top-46 min-h-[80px] bg-card", className)}>
+      <DialogContent className={cn("overflow-hidden  w-[min(92vw,600px)] top-26 sm:top-46 min-h-[100px] bg-card", className)}>
         <Command className="">
           {children}
         </Command>
@@ -127,18 +127,14 @@ function CommandSeparator({
 
 function CommandItem({
   className,
-  children,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Item>) {
   return (
     <CommandPrimitive.Item
       data-slot="command-item"
-      className={cn("bg-card text-muted-foreground hover:bg-primary hover:text-black aria-[selected=true]:bg-primary aria-[selected=true]:text-black [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-pointer items-center gap-3 rounded-sm px-4 py-3 my-1 text-sm outline-hidden select-none transition-colors duration-150 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 group", className)}
+      className={cn("bg-card text-muted-foreground hover:bg-primary/20 hover:text-black aria-[selected=true]:bg-primary/20 aria-[selected=true]:text-primary [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-pointer items-center gap-3 rounded-sm px-4 py-3 my-1 text-sm outline-hidden select-none transition-colors duration-150 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4", className)}
       {...props}
-    >
-      <span className="truncate">{children}</span>
-      <span className="ml-auto hidden group-hover:inline group-aria-[selected=true]:inline bg-card text-foreground border rounded-sm px-2 py-0.5 text-xs">open</span>
-    </CommandPrimitive.Item>
+    />
   )
 }
 

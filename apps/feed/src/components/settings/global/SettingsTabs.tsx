@@ -42,7 +42,7 @@ export default function SettingsTabs({ slug }: Props) {
   }, [router, slug])
 
   return (
-    <section className="p-3 space-y-4">
+    <section className="space-y-4">
       <Tabs value={selected} onValueChange={onValueChange} className="space-y-4">
         <TabsList className="w-full">
           {sections.map((item) => (

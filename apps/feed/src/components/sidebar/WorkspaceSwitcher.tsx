@@ -7,13 +7,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@feedgot/ui/components/dropdown-menu";
 import { client } from "@feedgot/api/client";
 import { getSlugFromPath } from "../../config/nav";
-import { DropdownIcon } from "@feedgot/ui/icons/dropdown";
+import { ChevronIcon } from "@feedgot/ui/icons/chevron";
 import { PlusIcon } from "@feedgot/ui/icons/plus";
 import { useWorkspaceLogo } from "@/lib/branding-store";
 
@@ -64,14 +62,18 @@ export default function WorkspaceSwitcher({
   const current = React.useMemo(() => {
     return workspaces.find((w) => w.slug === slug) || null;
   }, [workspaces, slug]);
-  const currentLogo: string | null = liveLogo ?? currentDetails?.logo ?? current?.logo ?? null;
-  const currentName = currentDetails?.name ?? current?.name ?? (slug || "Current");
+  const currentLogo: string | null =
+    liveLogo ?? currentDetails?.logo ?? current?.logo ?? null;
+  const currentName =
+    currentDetails?.name ?? current?.name ?? (slug || "Current");
   const all = workspaces;
 
   const handleSelectWorkspace = React.useCallback(
     (targetSlug: string) => {
       setOpen(false);
-      try { router.prefetch(`/workspaces/${targetSlug}`) } catch {}
+      try {
+        router.prefetch(`/workspaces/${targetSlug}`);
+      } catch {}
       router.push(`/workspaces/${targetSlug}`);
     },
     [router]
@@ -80,8 +82,6 @@ export default function WorkspaceSwitcher({
     setOpen(false);
     router.push("/workspaces/new");
   }, [router]);
-
-  // No effect needed; logo reacts to global branding store
 
   return (
     <div className={cn(className)}>
@@ -100,7 +100,7 @@ export default function WorkspaceSwitcher({
               <div className="w-6 h-6 rounded-md bg-muted border ring-1 ring-border" />
             )}
             <span className="transition-colors">{currentName}</span>
-            <DropdownIcon className="ml-auto size-3 text-foreground/80 transition-colors" />
+            <ChevronIcon className="ml-auto size-3 text-foreground/80 transition-colors" />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -140,7 +140,10 @@ export default function WorkspaceSwitcher({
                   </DropdownMenuItem>
                 );
               })}
-              <DropdownMenuItem onSelect={handleCreateNew} className="text-sm flex items-center gap-2 px-2 py-2 rounded-md hover:bg-muted">
+              <DropdownMenuItem
+                onSelect={handleCreateNew}
+                className="text-sm flex items-center gap-2 px-2 py-2 rounded-md hover:bg-muted"
+              >
                 <PlusIcon className="size-4" />
                 Add workspace
               </DropdownMenuItem>

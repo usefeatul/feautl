@@ -16,7 +16,8 @@ export default function FilterSummary({ className = "" }: { className?: string }
   const status = React.useMemo(() => parseArrayParam(sp.get("status")), [sp])
   const boards = React.useMemo(() => parseArrayParam(sp.get("board")), [sp])
   const tags = React.useMemo(() => parseArrayParam(sp.get("tag")), [sp])
-  const count = status.length + boards.length + tags.length
+  const order = React.useMemo(() => (sp.get("order") || "newest").toLowerCase(), [sp])
+  const count = status.length + boards.length + tags.length + (order === "oldest" ? 1 : 0)
 
   if (count === 0) return null
 

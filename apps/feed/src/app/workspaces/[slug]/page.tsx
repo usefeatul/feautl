@@ -1,7 +1,6 @@
 import { getWorkspaceBySlug, getWorkspacePosts } from "@/lib/workspace";
 import RequestList from "@/components/requests/RequestList";
 import RequestsHeader from "@/components/requests/RequestsHeader";
-import { WorkspaceHeaderActionsToggle } from "@/components/providers/workspace-header-actions";
 import { notFound } from "next/navigation";
 export const dynamic = "force-dynamic";
 
@@ -16,7 +15,6 @@ export default async function WorkspacePage({ params }: Props) {
 
   return (
     <section className="space-y-4">
-      <WorkspaceHeaderActionsToggle enabled />
       <RequestsHeader selectedStatuses={[]} />
       <RequestList items={rows as any} workspaceSlug={slug} />
     </section>

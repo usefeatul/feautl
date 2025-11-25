@@ -2,7 +2,6 @@ import { notFound } from "next/navigation"
 import { db, workspace, board, post } from "@feedgot/db"
 import { eq, and, sql } from "drizzle-orm"
 import StatusIcon from "@/components/requests/StatusIcon"
-import { WorkspaceHeaderActionsToggle } from "@/components/providers/workspace-header-actions"
 
 export const dynamic = "force-dynamic"
 
@@ -39,7 +38,6 @@ export default async function RequestDetailPage({ params }: Props) {
 
   return (
     <section className="space-y-4">
-      <WorkspaceHeaderActionsToggle enabled />
       <div className="flex items-center gap-2">
         <StatusIcon status={p.roadmapStatus || undefined} className="w-[20px] h-[20px] text-foreground/80" />
         <h1 className="text-xl font-semibold">{p.title}</h1>

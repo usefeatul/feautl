@@ -1,5 +1,5 @@
 import { db, workspace, workspaceMember, brandingConfig, board, post, postTag, tag } from "@feedgot/db"
-import { eq, and, inArray, desc, asc } from "drizzle-orm"
+import { eq, and, inArray, desc, asc, sql } from "drizzle-orm"
 
 export async function findFirstAccessibleWorkspaceSlug(userId: string): Promise<string | null> {
   const [owned] = await db
@@ -65,7 +65,7 @@ export async function getWorkspaceBySlug(slug: string): Promise<{ id: string; na
   return ws || null
 }
 
-export async function getWorkspacePosts(slug: string, opts?: { statuses?: string[]; boardSlugs?: string[]; tagSlugs?: string[]; order?: "newest" | "oldest" }) {
+export async function getWorkspacePosts(slug: string, opts?: { statuses?: string[]; boardSlugs?: string[]; tagSlugs?: string[]; order?: "newest" | "oldest"; search?: string }) {
   const ws = await getWorkspaceBySlug(slug)
   if (!ws) return []
 
@@ -73,6 +73,7 @@ export async function getWorkspacePosts(slug: string, opts?: { statuses?: string
   const boardSlugs = (opts?.boardSlugs || []).map((s) => s.trim().toLowerCase()).filter(Boolean)
   const tagSlugs = (opts?.tagSlugs || []).map((s) => s.trim().toLowerCase()).filter(Boolean)
   const order = opts?.order === "oldest" ? asc(post.createdAt) : desc(post.createdAt)
+  const search = (opts?.search || "").trim()
 
   let tagPostIds: string[] | null = null
   if (tagSlugs.length > 0) {
@@ -90,6 +91,10 @@ export async function getWorkspacePosts(slug: string, opts?: { statuses?: string
   if (statuses.length > 0) filters.push(inArray(post.roadmapStatus, statuses))
   if (boardSlugs.length > 0) filters.push(inArray(board.slug, boardSlugs))
   if (tagPostIds && tagPostIds.length > 0) filters.push(inArray(post.id, tagPostIds))
+  if (search) {
+    const wildcard = `%${search}%`
+    filters.push(sql`(${post.title} ilike ${wildcard} or ${post.content} ilike ${wildcard})`)
+  }
 
   const rows = await db
     .select({

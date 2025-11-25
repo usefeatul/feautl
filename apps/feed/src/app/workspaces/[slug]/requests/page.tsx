@@ -49,6 +49,7 @@ export default async function RequestsPage({ params, searchParams }: Props) {
   const boardRaw = parseArrayParam((sp as any).board)
   const tagRaw = parseArrayParam((sp as any).tag)
   const order = typeof (sp as any).order === "string" && (sp as any).order ? (sp as any).order : "newest"
+  const search = typeof (sp as any).search === "string" ? (sp as any).search : ""
 
   const statusFilter = statusRaw.map(normalizeStatus)
   if (statusFilter.length === 0) statusFilter.push("pending", "under-review", "planned", "in-progress")
@@ -60,6 +61,7 @@ export default async function RequestsPage({ params, searchParams }: Props) {
     boardSlugs,
     tagSlugs,
     order: order === "oldest" ? "oldest" : "newest",
+    search,
   })
 
   return (

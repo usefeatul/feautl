@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Popover, PopoverContent, PopoverTrigger } from "@feedgot/ui/components/popover"
+import { Popover, PopoverContent, PopoverTrigger, PopoverList, PopoverListItem } from "@feedgot/ui/components/popover"
 import { LayersIcon } from "@feedgot/ui/icons/layers"
 import { cn } from "@feedgot/ui/lib/utils"
 import { client } from "@feedgot/api/client"
@@ -78,29 +78,21 @@ export default function BoardsAction({ className = "" }: { className?: string })
           <LayersIcon className="w-4 h-4" size={16} />
         </button>
       </PopoverTrigger>
-      <PopoverContent list className="w-[220px]">
-        <div className="p-2 text-xs text-accent">Boards</div>
-        <div className="divide-y">
-          {loading ? (
-            <div className="p-3 text-sm text-accent">Loading...</div>
-          ) : items.length === 0 ? (
-            <div className="p-3 text-sm text-accent">No boards</div>
-          ) : (
-            items.map((it) => (
-              <button
-                key={it.id}
-                onClick={() => toggle(it.slug)}
-                className={cn(
-                  "w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-muted",
-                  selected.includes(it.slug) ? "bg-muted" : ""
-                )}
-              >
-                <span className="truncate">{it.name}</span>
+      <PopoverContent list className="min-w-0 w-fit">
+        {loading ? (
+          <div className="p-3 text-sm text-accent">Loading...</div>
+        ) : items.length === 0 ? (
+          <div className="p-3 text-sm text-accent">No boards</div>
+        ) : (
+          <PopoverList>
+            {items.map((it) => (
+              <PopoverListItem key={it.id} onClick={() => toggle(it.slug)}>
+                <span className="text-sm truncate">{it.name}</span>
                 {selected.includes(it.slug) ? <span className="ml-auto text-xs">✓</span> : null}
-              </button>
-            ))
-          )}
-        </div>
+              </PopoverListItem>
+            ))}
+          </PopoverList>
+        )}
         <div className="p-2 flex items-center justify-end">
           <button type="button" onClick={clear} className="text-xs text-primary hover:underline px-2 py-1">Clear</button>
         </div>
@@ -108,4 +100,3 @@ export default function BoardsAction({ className = "" }: { className?: string })
     </Popover>
   )
 }
-

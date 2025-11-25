@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Popover, PopoverContent, PopoverTrigger } from "@feedgot/ui/components/popover"
+import { Popover, PopoverContent, PopoverTrigger, PopoverList, PopoverListItem } from "@feedgot/ui/components/popover"
 import { ArrowUpDownIcon } from "@feedgot/ui/icons/arrow-up-down"
 import { cn } from "@feedgot/ui/lib/utils"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
@@ -36,25 +36,18 @@ export default function SortAction({ className = "" }: { className?: string }) {
           <ArrowUpDownIcon className="w-4 h-4" size={16} />
         </button>
       </PopoverTrigger>
-      <PopoverContent list className="w-[180px]">
-        <button
-          type="button"
-          onClick={() => setOrder("newest")}
-          className={cn("w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-muted", order === "newest" ? "bg-muted" : "")}
-        >
-          <span>Newest</span>
-          {order === "newest" ? <span className="ml-auto text-xs">✓</span> : null}
-        </button>
-        <button
-          type="button"
-          onClick={() => setOrder("oldest")}
-          className={cn("w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-muted", order === "oldest" ? "bg-muted" : "")}
-        >
-          <span>Oldest</span>
-          {order === "oldest" ? <span className="ml-auto text-xs">✓</span> : null}
-        </button>
+      <PopoverContent list className="min-w-0 w-fit">
+        <PopoverList>
+          <PopoverListItem onClick={() => setOrder("newest")}> 
+            <span className="text-sm">Newest</span>
+            {order === "newest" ? <span className="ml-auto text-xs">✓</span> : null}
+          </PopoverListItem>
+          <PopoverListItem onClick={() => setOrder("oldest")}>
+            <span className="text-sm">Oldest</span>
+            {order === "oldest" ? <span className="ml-auto text-xs">✓</span> : null}
+          </PopoverListItem>
+        </PopoverList>
       </PopoverContent>
     </Popover>
   )
 }
-

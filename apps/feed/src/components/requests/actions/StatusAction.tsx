@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Popover, PopoverContent, PopoverTrigger } from "@feedgot/ui/components/popover"
+import { Popover, PopoverContent, PopoverTrigger, PopoverList, PopoverListItem } from "@feedgot/ui/components/popover"
 import { ListFilterIcon } from "@feedgot/ui/icons/list-filter"
 import { cn } from "@feedgot/ui/lib/utils"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
@@ -69,23 +69,15 @@ export default function StatusAction({ className = "" }: { className?: string })
           <ListFilterIcon className="w-4 h-4" size={16} />
         </button>
       </PopoverTrigger>
-      <PopoverContent list className="w-[220px]">
-        <div className="p-2 text-xs text-accent">Statuses</div>
-        <div className="divide-y">
+      <PopoverContent list className="min-w-0 w-fit">
+        <PopoverList>
           {options.map((opt) => (
-            <button
-              key={opt.value}
-              onClick={() => toggle(opt.value)}
-              className={cn(
-                "w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-muted",
-                selected.includes(opt.value) ? "bg-muted" : ""
-              )}
-            >
-              <span>{opt.label}</span>
+            <PopoverListItem key={opt.value} onClick={() => toggle(opt.value)}>
+              <span className="text-sm">{opt.label}</span>
               {selected.includes(opt.value) ? <span className="ml-auto text-xs">✓</span> : null}
-            </button>
+            </PopoverListItem>
           ))}
-        </div>
+        </PopoverList>
         <div className="p-2 flex items-center justify-end">
           <button type="button" onClick={clear} className="text-xs text-primary hover:underline px-2 py-1">Clear</button>
         </div>
@@ -93,4 +85,3 @@ export default function StatusAction({ className = "" }: { className?: string })
     </Popover>
   )
 }
-

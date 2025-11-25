@@ -11,11 +11,11 @@ export default async function WorkspaceLayout({ children, params }: { children: 
   const { slug } = await params
   const { primary: p } = await getBrandingColorsBySlug(slug)
   return (
-    <Container className="min-h-screen flex gap-6" maxWidth="8xl">
+    <Container className="min-h-screen md:flex md:gap-6 !px-0" maxWidth="8xl">
       <style>{`:root{--primary:${p};--ring:${p};--sidebar-primary:${p};}`}</style>
       <BrandVarsEffect primary={p} />
       <Sidebar />
-      <main className="mt-4 flex-1 pb-20 md:pb-0">
+      <main className="mt-4 w-full md:flex-1 px-3 sm:px-4 pb-20 md:pb-0">
         <WorkspaceHeader />
         {children}
       </main>

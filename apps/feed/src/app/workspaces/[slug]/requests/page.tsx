@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { getWorkspaceBySlug, getWorkspacePosts, parseArrayParam, normalizeStatus } from "@/lib/workspace"
 import RequestsHeader from "@/components/requests/RequestsHeader"
 import RequestList from "@/components/requests/RequestList"
+import { WorkspaceHeaderActionsToggle } from "@/components/providers/workspace-header-actions"
 import { createPageMetadata } from "@/lib/seo"
 
 export const dynamic = "force-dynamic"
@@ -64,6 +65,7 @@ export default async function RequestsPage({ params, searchParams }: Props) {
 
   return (
     <section className="space-y-4">
+      <WorkspaceHeaderActionsToggle enabled />
       <RequestsHeader selectedStatuses={statusRaw} />
       <div className="text-sm text-accent">{rows.length} items</div>
       <RequestList items={rows as any} workspaceSlug={slug} />

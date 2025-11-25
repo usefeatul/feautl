@@ -22,4 +22,5 @@ export const WORKSPACE_TITLES: Record<string, string> = {
   changelog: "Changelog",
   settings: "Settings",
   system: "System",
+  requests: "Requests",
 }

@@ -3,6 +3,8 @@
 import React from "react"
 import { usePathname } from "next/navigation"
 import { SECTIONS, WORKSPACE_TITLES } from "@/config/sections"
+import HeaderActions from "@/components/requests/HeaderActions"
+import { useWorkspaceHeaderActions } from "@/components/providers/workspace-header-actions"
 
 function resolveTitle(segment: string): string {
   const s = segment.toLowerCase()
@@ -13,21 +15,35 @@ function resolveTitle(segment: string): string {
 
 export default function WorkspaceHeader() {
   const pathname = usePathname() || "/"
+  const { show, actionsOnly, title: overrideTitle } = useWorkspaceHeaderActions()
   const parts = pathname.split("/").filter(Boolean)
   const idx = parts.indexOf("workspaces")
   const rest = idx >= 0 ? parts.slice(idx + 2) : []
 
-  let title = "Overview"
+  let title = overrideTitle || "Overview"
   if (rest.length > 0) {
     const t = resolveTitle(rest[0] ?? "")
-    title = t || ""
+    title = overrideTitle || t || ""
   }
 
-  if (!title) return null
+  if (!title && !show) return null
+
+  if (actionsOnly) {
+    return (
+      <div className="mb-3">
+        <div className="flex items-center justify-end">
+          {show ? <HeaderActions /> : null}
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="p-3">
-      <h1 className="text-xl font-semibold">{title}</h1>
+    <div className="mb-3">
+      <div className="flex items-center justify-between">
+        {title ? <h1 className="text-xl font-semibold">{title}</h1> : <div />}
+        {show ? <HeaderActions /> : null}
+      </div>
     </div>
   )
 }

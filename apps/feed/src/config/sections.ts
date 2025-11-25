@@ -17,3 +17,9 @@ export function getSectionMeta(v: string) {
   return found || { value: "branding", label: "Settings", desc: "View and manage your workspace settings." }
 }
 
+export const WORKSPACE_TITLES: Record<string, string> = {
+  roadmap: "Roadmap",
+  changelog: "Changelog",
+  settings: "Settings",
+  system: "System",
+}

@@ -2,20 +2,16 @@
 
 import React from "react"
 import { usePathname } from "next/navigation"
-import { SECTIONS } from "@/config/sections"
+import { SECTIONS, WORKSPACE_TITLES } from "@/config/sections"
 
-function titleFor(segment: string): string {
+function resolveTitle(segment: string): string {
   const s = segment.toLowerCase()
-  if (s === "roadmap") return "Roadmap"
-  if (s === "changelog") return "Changelog"
-  if (s === "settings") return "Settings"
-  if (s === "system") return "System"
+  if (WORKSPACE_TITLES[s]) return WORKSPACE_TITLES[s]
   const found = SECTIONS.find((x) => x.value === s)
-  if (found) return found.label
-  return ""
+  return found ? found.label : ""
 }
 
-export default function WorkspaceBreadcrumbs() {
+export default function WorkspaceHeader() {
   const pathname = usePathname() || "/"
   const parts = pathname.split("/").filter(Boolean)
   const idx = parts.indexOf("workspaces")
@@ -23,7 +19,7 @@ export default function WorkspaceBreadcrumbs() {
 
   let title = "Overview"
   if (rest.length > 0) {
-    const t = titleFor(rest[0] ?? "")
+    const t = resolveTitle(rest[0] ?? "")
     title = t || ""
   }
 

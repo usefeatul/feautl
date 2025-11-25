@@ -1,11 +1,11 @@
 "use client"
 
 import { SearchIcon } from "@feedgot/ui/icons/search"
-import { TagIcon } from "@feedgot/ui/icons/tag"
-import { ArrowUpDownIcon } from "@feedgot/ui/icons/arrow-up-down"
-import { ListFilterIcon } from "@feedgot/ui/icons/list-filter"
-import { LayersIcon } from "@feedgot/ui/icons/layers"
 import { cn } from "@feedgot/ui/lib/utils"
+import BoardsAction from "./actions/BoardsAction"
+import StatusAction from "./actions/StatusAction"
+import TagsAction from "./actions/TagsAction"
+import SortAction from "./actions/SortAction"
 
 export default function HeaderActions({ className = "" }: { className?: string }) {
   return (
@@ -13,18 +13,10 @@ export default function HeaderActions({ className = "" }: { className?: string }
       <button type="button" className="rounded-md border bg-card px-2 py-1" aria-label="Search">
         <SearchIcon className="w-4 h-4" size={16} />
       </button>
-      <button type="button" className="rounded-md border bg-card px-2 py-1" aria-label="Boards">
-        <LayersIcon className="w-4 h-4" size={16} />
-      </button>
-      <button type="button" className="rounded-md border bg-card px-2 py-1" aria-label="Requests">
-        <ListFilterIcon className="w-4 h-4" size={16} />
-      </button>
-      <button type="button" className="rounded-md border bg-card px-2 py-1" aria-label="Tags">
-        <TagIcon className="w-4 h-4" size={16} />
-      </button>
-      <button type="button" className="rounded-md border bg-card px-2 py-1" aria-label="Sort">
-        <ArrowUpDownIcon className="w-4 h-4" size={16} />
-      </button>
+      <BoardsAction />
+      <StatusAction />
+      <TagsAction />
+      <SortAction />
     </div>
   )
 }

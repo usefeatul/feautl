@@ -144,5 +144,33 @@ export function createBoardRouter() {
 
         return c.superjson({ post: p, board: b || null, tags: tagsList, comments: commentsList, author })
       }),
+
+    tagsByWorkspaceSlug: publicProcedure
+      .input(checkSlugInputSchema)
+      .get(async ({ ctx, input, c }: any) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.superjson({ tags: [] })
+
+        const rows = await ctx.db
+          .select({
+            id: tag.id,
+            name: tag.name,
+            slug: tag.slug,
+            color: tag.color,
+            count: sql<number>`count(*)`,
+          })
+          .from(postTag)
+          .innerJoin(tag, eq(postTag.tagId, tag.id))
+          .innerJoin(post, eq(postTag.postId, post.id))
+          .innerJoin(board, eq(post.boardId, board.id))
+          .where(and(eq(board.workspaceId, ws.id), eq(board.isSystem, false)))
+          .groupBy(tag.id, tag.name, tag.slug, tag.color)
+
+        return c.superjson({ tags: rows })
+      }),
   })
 }

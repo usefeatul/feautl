@@ -56,13 +56,13 @@ export default function TagsAction({ className = "" }: { className?: string }) {
   const toggle = (tagSlug: string) => {
     const next = toggleValue(selected, tagSlug)
     const href = buildRequestsUrl(slug, sp, { tag: next })
-    router.push(href)
+    React.startTransition(() => router.push(href, { scroll: false }))
   }
 
   const selectAll = () => {
     const next = isAllSelected ? [] : items.map((i: { slug: string }) => i.slug)
     const href = buildRequestsUrl(slug, sp, { tag: next })
-    router.push(href)
+    React.startTransition(() => router.push(href, { scroll: false }))
   }
 
   return (

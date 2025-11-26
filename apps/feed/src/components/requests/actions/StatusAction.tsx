@@ -32,13 +32,13 @@ export default function StatusAction({ className = "" }: { className?: string })
   const toggle = (v: string) => {
     const next = toggleValue(selected, v)
     const href = buildRequestsUrl(slug, sp, { status: next })
-    router.push(href)
+    React.startTransition(() => router.push(href, { scroll: false }))
   }
 
   const selectAll = () => {
     const next = isAllSelected ? [] : allValues
     const href = buildRequestsUrl(slug, sp, { status: next })
-    router.push(href)
+    React.startTransition(() => router.push(href, { scroll: false }))
   }
 
   return (
@@ -51,7 +51,10 @@ export default function StatusAction({ className = "" }: { className?: string })
       <PopoverContent list className="min-w-0 w-fit">
         <PopoverList>
           {options.map((opt) => (
-            <PopoverListItem key={opt.value} onClick={() => toggle(opt.value)}>
+            <PopoverListItem
+              key={opt.value}
+              onClick={() => toggle(opt.value)}
+            >
               <span className="text-sm">{opt.label}</span>
               {selected.includes(opt.value) ? <span className="ml-auto text-xs">✓</span> : null}
             </PopoverListItem>

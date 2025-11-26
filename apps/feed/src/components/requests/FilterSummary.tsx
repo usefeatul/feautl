@@ -22,7 +22,8 @@ export default function FilterSummary({ className = "" }: { className?: string }
   if (count === 0) return null
 
   const clearAll = () => {
-    router.push(workspaceBase(slug))
+    const href = workspaceBase(slug)
+    React.startTransition(() => router.replace(href, { scroll: false }))
   }
 
   return (

@@ -40,13 +40,13 @@ export default function BoardsAction({ className = "" }: { className?: string })
   const toggle = (slugItem: string) => {
     const next = toggleValue(selected, slugItem)
     const href = buildRequestsUrl(slug, sp, { board: next })
-    router.push(href)
+    React.startTransition(() => router.push(href, { scroll: false }))
   }
 
   const selectAll = () => {
     const next = isAllSelected ? [] : items.map((i: { slug: string }) => i.slug)
     const href = buildRequestsUrl(slug, sp, { board: next })
-    router.push(href)
+    React.startTransition(() => router.push(href, { scroll: false }))
   }
 
   return (

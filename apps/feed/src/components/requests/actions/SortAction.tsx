@@ -22,7 +22,7 @@ export default function SortAction({ className = "" }: { className?: string }) {
 
   const setOrder = (v: "newest" | "oldest") => {
     const href = buildRequestsUrl(slug, sp, { order: v })
-    router.push(href)
+    React.startTransition(() => router.push(href, { scroll: false }))
     setOpen(false)
   }
 
@@ -35,11 +35,13 @@ export default function SortAction({ className = "" }: { className?: string }) {
       </PopoverTrigger>
       <PopoverContent list className="min-w-0 w-fit">
         <PopoverList>
-          <PopoverListItem role="menuitemradio" aria-checked={order === "newest"} onClick={() => setOrder("newest")}>
+          <PopoverListItem role="menuitemradio" aria-checked={order === "newest"}
+            onClick={() => setOrder("newest")}>
             <span className="text-sm">Newest</span>
             {order === "newest" ? <span className="ml-auto text-xs">✓</span> : null}
           </PopoverListItem>
-          <PopoverListItem role="menuitemradio" aria-checked={order === "oldest"} onClick={() => setOrder("oldest")}>
+          <PopoverListItem role="menuitemradio" aria-checked={order === "oldest"}
+            onClick={() => setOrder("oldest")} >
             <span className="text-sm">Oldest</span>
             {order === "oldest" ? <span className="ml-auto text-xs">✓</span> : null}
           </PopoverListItem>

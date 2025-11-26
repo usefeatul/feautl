@@ -20,7 +20,7 @@ import SidebarSection from "./SidebarSection";
 import { useQuery } from "@tanstack/react-query";
 const secondaryNav: NavItem[] = buildBottomNav();
 
-export default function Sidebar({ className = "", initialCounts, initialTimezone }: { className?: string; initialCounts?: Record<string, number>; initialTimezone?: string }) {
+export default function Sidebar({ className = "", initialCounts, initialTimezone, initialServerNow }: { className?: string; initialCounts?: Record<string, number>; initialTimezone?: string | null; initialServerNow?: number }) {
   const pathname = usePathname();
   const router = useRouter();
   const slug = getSlugFromPath(pathname);
@@ -74,7 +74,7 @@ export default function Sidebar({ className = "", initialCounts, initialTimezone
           <div className="text-sm font-semibold">feedgot</div>
         </div>
         <WorkspaceSwitcher className="mt-3" />
-        <Timezone className="mt-2" initialTimezone={initialTimezone} />
+        <Timezone className="mt-2" initialTimezone={initialTimezone} initialServerNow={initialServerNow} />
       </div>
       <SidebarSection title="REQUEST">
         {primaryNav.map((item) => (

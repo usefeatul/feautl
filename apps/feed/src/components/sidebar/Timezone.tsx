@@ -12,11 +12,12 @@ type Props = {
   className?: string;
 };
 
-export default function Timezone({ className = "", initialTimezone }: { className?: string; initialTimezone?: string }) {
+export default function Timezone({ className = "", initialTimezone, initialServerNow }: { className?: string; initialTimezone?: string | null; initialServerNow?: number }) {
   const pathname = usePathname();
   const slug = getSlugFromPath(pathname || "");
   const [tz, setTz] = React.useState<string | null>(initialTimezone || null);
-  const [time, setTime] = React.useState<string | null>(() => (initialTimezone ? formatTime12h(initialTimezone) : null));
+  const driftRef = React.useRef<number>(initialServerNow ? initialServerNow - Date.now() : 0);
+  const [time, setTime] = React.useState<string | null>(() => (initialTimezone ? formatTime12h(initialTimezone, new Date(Date.now() + driftRef.current)) : null));
 
   React.useEffect(() => {
     let active = true;
@@ -41,7 +42,7 @@ export default function Timezone({ className = "", initialTimezone }: { classNam
 
   React.useEffect(() => {
     if (!tz) return;
-    const format = () => setTime(formatTime12h(tz));
+    const format = () => setTime(formatTime12h(tz, new Date(Date.now() + driftRef.current)));
     format();
     const id = setInterval(format, 1000);
     return () => clearInterval(id);

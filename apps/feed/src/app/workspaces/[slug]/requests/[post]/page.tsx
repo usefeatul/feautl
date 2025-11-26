@@ -41,5 +41,5 @@ export default async function RequestDetailPage({ params }: Props) {
     .limit(1)
   if (!p) return notFound()
 
-  return <RequestDetail post={p as any} />
+  return <RequestDetail post={p as any} workspaceSlug={slug} />
 }

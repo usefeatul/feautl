@@ -4,6 +4,11 @@ import React from "react"
 import StatusIcon from "./StatusIcon"
 import { LoveIcon } from "@feedgot/ui/icons/love"
 import { CommentsIcon } from "@feedgot/ui/icons/comments"
+import StatusPicker from "./meta/StatusPicker"
+import PriorityPicker from "./meta/PriorityPicker"
+import EffortPicker from "./meta/EffortPicker"
+import FlagsPicker from "./meta/FlagsPicker"
+import BoardPicker from "./meta/BoardPicker"
 
 export type RequestDetailData = {
   id: string
@@ -24,9 +29,18 @@ export type RequestDetailData = {
   boardSlug: string
 }
 
-export default function RequestDetail({ post }: { post: RequestDetailData }) {
+export default function RequestDetail({ post, workspaceSlug }: { post: RequestDetailData; workspaceSlug: string }) {
   const date = new Date(post.publishedAt ?? post.createdAt)
   const formatted = new Intl.DateTimeFormat(undefined, { month: "short", day: "2-digit" }).format(date)
+  const [meta, setMeta] = React.useState({
+    roadmapStatus: post.roadmapStatus || undefined,
+    priority: (post.priority as any) || undefined,
+    effort: (post.effort as any) || undefined,
+    isPinned: !!post.isPinned,
+    isLocked: !!post.isLocked,
+    isFeatured: !!post.isFeatured,
+  })
+  const [board, setBoard] = React.useState({ name: post.boardName, slug: post.boardSlug })
   return (
     <section className="mt-4 md:mt-6">
       <div className="grid md:grid-cols-[0.7fr_0.3fr] gap-6">
@@ -58,20 +72,31 @@ export default function RequestDetail({ post }: { post: RequestDetailData }) {
         </article>
         <aside className="space-y-4">
           <div className="rounded-md border bg-card p-3">
-            <div className="flex items-center gap-2">
-              <StatusIcon status={post.roadmapStatus || undefined} className="w-[20px] h-[20px] text-foreground/80" />
-              <span className="text-xs text-accent">{post.boardName}</span>
-            </div>
-            <div className="mt-2 flex items-center gap-3 text-xs text-accent">
-              <span className="rounded-md bg-muted px-2 py-0.5">{post.roadmapStatus || "pending"}</span>
-              <span>{formatted}</span>
-            </div>
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-accent">
-              {post.priority ? <span className="rounded-md bg-muted px-2 py-0.5">{post.priority}</span> : null}
-              {post.effort ? <span className="rounded-md bg-muted px-2 py-0.5">{post.effort}</span> : null}
-              {post.isPinned ? <span className="rounded-md bg-muted px-2 py-0.5">pinned</span> : null}
-              {post.isLocked ? <span className="rounded-md bg-muted px-2 py-0.5">locked</span> : null}
-              {post.isFeatured ? <span className="rounded-md bg-muted px-2 py-0.5">featured</span> : null}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-accent">Date</span>
+                <span className="text-xs text-accent">{formatted}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-accent">Board</span>
+                <BoardPicker workspaceSlug={workspaceSlug} postId={post.id} value={board} onChange={setBoard} />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-accent">Status</span>
+                <StatusPicker postId={post.id} value={meta.roadmapStatus} onChange={(v) => setMeta((m) => ({ ...m, roadmapStatus: v }))} />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-accent">Priority</span>
+                <PriorityPicker postId={post.id} value={meta.priority as any} onChange={(v) => setMeta((m) => ({ ...m, priority: v }))} />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-accent">Effort</span>
+                <EffortPicker postId={post.id} value={meta.effort as any} onChange={(v) => setMeta((m) => ({ ...m, effort: v }))} />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-accent">Flags</span>
+                <FlagsPicker postId={post.id} value={{ isPinned: meta.isPinned, isLocked: meta.isLocked, isFeatured: meta.isFeatured }} onChange={(v) => setMeta((m) => ({ ...m, ...v }))} />
+              </div>
             </div>
           </div>
         </aside>

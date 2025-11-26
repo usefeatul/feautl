@@ -1,10 +1,13 @@
 import { eq, and, sql } from "drizzle-orm"
 import { z } from "zod"
-import { j, publicProcedure } from "../jstack"
-import { workspace, board, post, postTag, tag, comment, user } from "@feedgot/db"
-import { checkSlugInputSchema } from "../validators/workspace"
+import { j, publicProcedure, privateProcedure } from "../jstack"
+import { workspace, board, post, postTag, tag, comment, user, workspaceMember } from "@feedgot/db"
+import { byIdSchema, updatePostMetaSchema, updatePostBoardSchema } from "../validators/post"
+import { HTTPException } from "hono/http-exception"
 import { byBoardInputSchema } from "../validators/board"
-import { byIdSchema } from "../validators/post"
+import { checkSlugInputSchema } from "../validators/workspace"
+
+
 
 export function createBoardRouter() {
   return j.router({
@@ -234,6 +237,103 @@ export function createBoardRouter() {
           .groupBy(tag.id, tag.name, tag.slug, tag.color)
 
         return c.superjson({ tags: rows })
+      }),
+
+    updatePostMeta: privateProcedure
+      .input(updatePostMetaSchema)
+      .post(async ({ ctx, input, c }: any) => {
+        const [p] = await ctx.db
+          .select({ id: post.id, boardId: post.boardId })
+          .from(post)
+          .where(eq(post.id, input.postId))
+          .limit(1)
+        if (!p) throw new HTTPException(404, { message: "Post not found" })
+
+        const [b] = await ctx.db
+          .select({ id: board.id, workspaceId: board.workspaceId })
+          .from(board)
+          .where(eq(board.id, p.boardId))
+          .limit(1)
+        if (!b) throw new HTTPException(404, { message: "Board not found" })
+
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.id, b.workspaceId))
+          .limit(1)
+        if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
+
+        let allowed = ws.ownerId === ctx.session.user.id
+        if (!allowed) {
+          const [member] = await ctx.db
+            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
+            .limit(1)
+          const perms = (member?.permissions || {}) as any
+          if (member?.role === "admin" || perms?.canManageBoards || perms?.canModerateAllBoards) allowed = true
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+
+        const patch: any = {}
+        if (input.priority !== undefined) patch.priority = input.priority
+        if (input.effort !== undefined) patch.effort = input.effort
+        if (input.roadmapStatus !== undefined) patch.roadmapStatus = input.roadmapStatus
+        if (input.isPinned !== undefined) patch.isPinned = input.isPinned
+        if (input.isLocked !== undefined) patch.isLocked = input.isLocked
+        if (input.isFeatured !== undefined) patch.isFeatured = input.isFeatured
+        if (Object.keys(patch).length === 0) return c.superjson({ ok: true })
+        patch.updatedAt = new Date()
+
+        await ctx.db.update(post).set(patch).where(eq(post.id, input.postId))
+        return c.superjson({ ok: true })
+      }),
+
+    updatePostBoard: privateProcedure
+      .input(updatePostBoardSchema)
+      .post(async ({ ctx, input, c }: any) => {
+        const [p] = await ctx.db
+          .select({ id: post.id, boardId: post.boardId })
+          .from(post)
+          .where(eq(post.id, input.postId))
+          .limit(1)
+        if (!p) throw new HTTPException(404, { message: "Post not found" })
+
+        const [currentBoard] = await ctx.db
+          .select({ id: board.id, workspaceId: board.workspaceId })
+          .from(board)
+          .where(eq(board.id, p.boardId))
+          .limit(1)
+        if (!currentBoard) throw new HTTPException(404, { message: "Board not found" })
+
+        const [targetBoard] = await ctx.db
+          .select({ id: board.id })
+          .from(board)
+          .where(and(eq(board.workspaceId, currentBoard.workspaceId), eq(board.slug, input.boardSlug)))
+          .limit(1)
+        if (!targetBoard) throw new HTTPException(404, { message: "Target board not found" })
+
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.id, currentBoard.workspaceId))
+          .limit(1)
+        if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
+
+        let allowed = ws.ownerId === ctx.session.user.id
+        if (!allowed) {
+          const [member] = await ctx.db
+            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
+            .limit(1)
+          const perms = (member?.permissions || {}) as any
+          if (member?.role === "admin" || perms?.canManageBoards || perms?.canModerateAllBoards) allowed = true
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+
+        await ctx.db.update(post).set({ boardId: targetBoard.id, updatedAt: new Date() }).where(eq(post.id, input.postId))
+        return c.superjson({ ok: true })
       }),
   })
 }

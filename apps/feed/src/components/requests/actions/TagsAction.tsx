@@ -28,6 +28,8 @@ export default function TagsAction({ className = "" }: { className?: string }) {
     staleTime: 300_000,
     gcTime: 300_000,
     enabled: !!getSlugFromPath(pathname),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   })
 
   const slug = React.useMemo(() => getSlugFromPath(pathname), [pathname])

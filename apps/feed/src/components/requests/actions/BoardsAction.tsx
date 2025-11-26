@@ -25,7 +25,9 @@ export default function BoardsAction({ className = "" }: { className?: string })
       const boards = (data?.boards || []).filter((b: any) => b?.slug !== "roadmap" && b?.slug !== "changelog")
       return boards.map((b: any) => ({ id: b.id, name: b.name, slug: b.slug }))
     },
-    staleTime: 60_000,
+    staleTime: 300_000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   })
 
   const slug = React.useMemo(() => getSlugFromPath(pathname), [pathname])

@@ -23,9 +23,6 @@ export const post = pgTable(
       enum: ['draft', 'published', 'archived', 'spam', 'pending_approval'],
     }).default('published'),
     roadmapStatus: text('roadmap_status'),
-    priority: text('priority', { enum: ['low', 'medium', 'high', 'critical'] })
-      .default('medium'),
-    effort: text('effort', { enum: ['small', 'medium', 'large', 'extra_large'] }),
     upvotes: integer('upvotes').default(0),
     commentCount: integer('comment_count').default(0),
     isPinned: boolean('is_pinned').default(false),

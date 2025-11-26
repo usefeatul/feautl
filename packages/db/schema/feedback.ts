@@ -54,9 +54,9 @@ export const board = pgTable(
       .notNull()
       .default([
         { id: 'pending', name: 'Pending', color: '#6b7280', order: 0 },
-        { id: 'under-review', name: 'Under Review', color: '#a855f7', order: 1 },
+        { id: 'review', name: 'Review', color: '#a855f7', order: 1 },
         { id: 'planned', name: 'Planned', color: '#6b7280', order: 2 },
-        { id: 'in-progress', name: 'In Progress', color: '#f59e0b', order: 3 },
+        { id: 'progress', name: 'Progress', color: '#f59e0b', order: 3 },
         { id: 'completed', name: 'Completed', color: '#10b981', order: 4 },
         { id: 'closed', name: 'Closed', color: '#ef4444', order: 5 },
       ]),

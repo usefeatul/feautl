@@ -31,6 +31,4 @@ export const {
   userVoteHistory,
   brandingConfig,
   colorPalette,
-  customTheme,
-  brandingAsset,
 } = schema

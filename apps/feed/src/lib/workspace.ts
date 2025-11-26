@@ -20,18 +20,16 @@ export async function findFirstAccessibleWorkspaceSlug(userId: string): Promise<
   return memberWs?.slug || null
 }
 
-export async function getBrandingColorsBySlug(slug: string): Promise<{ primary: string; accent?: string }> {
+export async function getBrandingColorsBySlug(slug: string): Promise<{ primary: string }> {
   let primary = "#3b82f6"
-  let accent: string | undefined
   const [row] = await db
-    .select({ primaryColor: brandingConfig.primaryColor, accentColor: brandingConfig.accentColor })
+    .select({ primaryColor: brandingConfig.primaryColor })
     .from(workspace)
     .leftJoin(brandingConfig, eq(brandingConfig.workspaceId, workspace.id))
     .where(eq(workspace.slug, slug))
     .limit(1)
   if (row?.primaryColor) primary = row.primaryColor
-  if (row?.accentColor) accent = row.accentColor
-  return { primary, accent }
+  return { primary }
 }
 
 export function parseArrayParam(v: any): string[] {

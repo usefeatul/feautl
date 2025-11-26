@@ -25,8 +25,6 @@ export default async function RequestDetailPage({ params }: Props) {
       upvotes: post.upvotes,
       commentCount: post.commentCount,
       roadmapStatus: post.roadmapStatus,
-      priority: post.priority,
-      effort: post.effort,
       isFeatured: post.isFeatured,
       isLocked: post.isLocked,
       isPinned: post.isPinned,

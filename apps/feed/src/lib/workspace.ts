@@ -78,7 +78,18 @@ export async function getWorkspacePosts(slug: string, opts?: { statuses?: string
   const ws = await getWorkspaceBySlug(slug)
   if (!ws) return []
 
-  const statuses = (opts?.statuses || []).map(normalizeStatus).filter(Boolean)
+  const normalizedStatuses = (opts?.statuses || []).map(normalizeStatus).filter(Boolean)
+  function statusSynonyms(s: string): string[] {
+    const t = s.toLowerCase()
+    if (t === "in-progress") return ["in-progress", "inprogress", "progress"]
+    if (t === "under-review") return ["under-review", "underreview", "review"]
+    if (t === "completed") return ["completed", "complete"]
+    if (t === "closed") return ["closed", "close"]
+    if (t === "planned") return ["planned"]
+    if (t === "pending") return ["pending"]
+    return [t]
+  }
+  const matchStatuses = Array.from(new Set(normalizedStatuses.flatMap(statusSynonyms)))
   const boardSlugs = (opts?.boardSlugs || []).map((s) => s.trim().toLowerCase()).filter(Boolean)
   const tagSlugs = (opts?.tagSlugs || []).map((s) => s.trim().toLowerCase()).filter(Boolean)
   const order = opts?.order === "oldest" ? asc(post.createdAt) : desc(post.createdAt)
@@ -97,7 +108,7 @@ export async function getWorkspacePosts(slug: string, opts?: { statuses?: string
   }
 
   const filters: any[] = [eq(board.workspaceId, ws.id), eq(board.isSystem, false)]
-  if (statuses.length > 0) filters.push(inArray(post.roadmapStatus, statuses))
+  if (matchStatuses.length > 0) filters.push(inArray(post.roadmapStatus, matchStatuses))
   if (boardSlugs.length > 0) filters.push(inArray(board.slug, boardSlugs))
   if (tagPostIds && tagPostIds.length > 0) filters.push(inArray(post.id, tagPostIds))
   if (search) {

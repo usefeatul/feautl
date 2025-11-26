@@ -48,11 +48,7 @@ export default function Sidebar({ className = "", initialCounts, initialTimezone
   });
 
   const statusKey = (label: string) => {
-    const t = label.trim().toLowerCase();
-    if (t === "progress") return "in-progress";
-    if (t === "review") return "under-review";
-    if (t === "complete") return "completed";
-    return t;
+    return label.trim().toLowerCase();
   };
 
   return (

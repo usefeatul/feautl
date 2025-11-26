@@ -32,26 +32,23 @@ export async function getBrandingColorsBySlug(slug: string): Promise<{ primary: 
   return { primary }
 }
 
-export function parseArrayParam(v: any): string[] {
-  try {
-    if (!v) return []
-    const s = Array.isArray(v) ? v[0] : v
-    const arr = typeof s === "string" ? JSON.parse(s) : []
-    return Array.isArray(arr) ? arr : []
-  } catch {
-    return []
-  }
-}
 
 export function normalizeStatus(s: string): string {
-  const t = (s || "").trim().toLowerCase()
-  if (t === "pending") return "pending"
-  if (t === "review" || t === "under-review" || t === "underreview") return "review"
-  if (t === "planned") return "planned"
-  if (t === "progress" || t === "inprogress" || t === "in-progress") return "progress"
-  if (t === "complete" || t === "completed") return "completed"
-  if (t === "closed" || t === "close") return "closed"
-  return t
+  const raw = (s || "").trim().toLowerCase()
+  const t = raw.replace(/-/g, "")
+  const map: Record<string, string> = {
+    pending: "pending",
+    review: "review",
+    underreview: "review",
+    planned: "planned",
+    progress: "progress",
+    inprogress: "progress",
+    completed: "completed",
+    complete: "completed",
+    closed: "closed",
+    close: "closed",
+  }
+  return map[t] || raw
 }
 
 export async function getWorkspaceBySlug(slug: string): Promise<{ id: string; name: string; slug: string } | null> {
@@ -77,17 +74,7 @@ export async function getWorkspacePosts(slug: string, opts?: { statuses?: string
   if (!ws) return []
 
   const normalizedStatuses = (opts?.statuses || []).map(normalizeStatus).filter(Boolean)
-  function statusSynonyms(s: string): string[] {
-    const t = s.toLowerCase()
-    if (t === "progress") return ["progress", "inprogress", "in-progress"]
-    if (t === "review") return ["review", "underreview", "under-review"]
-    if (t === "completed") return ["completed", "complete"]
-    if (t === "closed") return ["closed", "close"]
-    if (t === "planned") return ["planned"]
-    if (t === "pending") return ["pending"]
-    return [t]
-  }
-  const matchStatuses = Array.from(new Set(normalizedStatuses.flatMap(statusSynonyms)))
+  const matchStatuses = Array.from(new Set(normalizedStatuses))
   const boardSlugs = (opts?.boardSlugs || []).map((s) => s.trim().toLowerCase()).filter(Boolean)
   const tagSlugs = (opts?.tagSlugs || []).map((s) => s.trim().toLowerCase()).filter(Boolean)
   const order = opts?.order === "oldest" ? asc(post.createdAt) : desc(post.createdAt)

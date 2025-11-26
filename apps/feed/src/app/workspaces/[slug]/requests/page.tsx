@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import { getServerSession } from "@feedgot/auth/session"
 import { notFound } from "next/navigation"
-import { getWorkspaceBySlug, getWorkspacePosts, parseArrayParam, normalizeStatus } from "@/lib/workspace"
+import { getWorkspaceBySlug, getWorkspacePosts, normalizeStatus } from "@/lib/workspace"
+import { parseArrayParam } from "@/utils/request-filters"
 
 import RequestList from "@/components/requests/RequestList"
 import { createPageMetadata } from "@/lib/seo"

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { getServerSession } from "@feedgot/auth/session"
 import { notFound } from "next/navigation"
 import { getWorkspaceBySlug, getWorkspacePosts, parseArrayParam, normalizeStatus } from "@/lib/workspace"
-import RequestsHeader from "@/components/requests/RequestsHeader"
+
 import RequestList from "@/components/requests/RequestList"
 import { createPageMetadata } from "@/lib/seo"
 
@@ -66,8 +66,11 @@ export default async function RequestsPage({ params, searchParams }: Props) {
 
   return (
     <section className="space-y-4">
-      <RequestsHeader selectedStatuses={statusRaw} />
-      <div className="text-sm text-accent">{rows.length} items</div>
+      {rows.length > 0 ? (
+        <div className="text-sm text-accent mt-3 tabular-nums">
+          {rows.length} {rows.length === 1 ? "Post" : "Posts"}
+        </div>
+      ) : null}
       <RequestList items={rows as any} workspaceSlug={slug} />
     </section>
   )

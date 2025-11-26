@@ -37,7 +37,7 @@ export function buildTopNav(slug: string): NavItem[] {
     { label: "Planned", href: buildHref(["PLANNED"]), icon: PlannedIcon },
     { label: "Progress", href: buildHref(["PROGRESS"]), icon: InProgressIcon },
     { label: "Review", href: buildHref(["REVIEW"]), icon: InReviewingIcon },
-    { label: "Complete", href: buildHref(["COMPLETED"]), icon: CompleteIcon },
+    { label: "Completed", href: buildHref(["COMPLETED"]), icon: CompleteIcon },
     { label: "Pending", href: buildHref(["PENDING"]), icon: PendingIcon },
     { label: "Closed", href: buildHref(["CLOSED"]), icon: CloseIcon },
   ]

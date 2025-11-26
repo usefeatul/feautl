@@ -30,11 +30,11 @@ export default function FlagsPicker({ postId, value, onChange }: { postId: strin
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button type="button" variant="ghost" size="sm" className="h-7 px-2">
-          <span className="rounded-md bg-muted px-2 py-0.5 capitalize">{label}</span>
+          <span className="rounded-md bg-card px-2 py-0.5 capitalize">{label}</span>
           <DropdownIcon className="ml-1 opacity-60" size={12} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent list className="min-w-[220px]">
+      <PopoverContent list className="min-w-0 w-fit">
         <PopoverList>
           <PopoverListItem role="menuitemcheckbox" aria-checked={!!value.isPinned} onClick={() => toggle("isPinned")}>Pinned{value.isPinned ? <span className="ml-auto text-xs">✓</span> : null}</PopoverListItem>
           <PopoverListItem role="menuitemcheckbox" aria-checked={!!value.isLocked} onClick={() => toggle("isLocked")}>Locked{value.isLocked ? <span className="ml-auto text-xs">✓</span> : null}</PopoverListItem>

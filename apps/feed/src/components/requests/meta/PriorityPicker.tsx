@@ -28,11 +28,11 @@ export default function PriorityPicker({ postId, value, onChange }: { postId: st
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button type="button" variant="ghost" size="sm" className="h-7 px-2">
-          <span className="rounded-md bg-muted px-2 py-0.5 capitalize">{value || "medium"}</span>
+          <span className="rounded-md bg-card px-2 py-0.5 capitalize">{value || "medium"}</span>
           <DropdownIcon className="ml-1 opacity-60" size={12} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent list className="min-w-[220px]">
+      <PopoverContent list className="min-w-0 w-fit">
         <PopoverList>
           {PRIORITIES.map((p) => (
             <PopoverListItem key={p} role="menuitemradio" aria-checked={(value || "").toLowerCase() === p} onClick={() => select(p)}>

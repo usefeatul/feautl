@@ -41,7 +41,6 @@ export const board = pgTable(
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()
       .defaultNow()
-      // If your Drizzle version supports it, this will auto-update the timestamp on UPDATE
       .$onUpdate(() => new Date()),
     roadmapStatuses: json('roadmap_statuses')
       .$type<

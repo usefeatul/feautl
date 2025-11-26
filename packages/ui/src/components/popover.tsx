@@ -33,8 +33,8 @@ function PopoverContent({
         data-variant={list ? "list" : undefined}
         className={cn(
           list
-            ? "bg-popover text-popover-foreground z-50 w-fit min-w-0 rounded-md border p-0 shadow-sm outline-hidden"
-            : "bg-popover text-popover-foreground z-50 w-80 rounded-md border p-2 shadow-sm outline-hidden",
+            ? "bg-card text-popover-foreground z-50 w-fit min-w-0 rounded-md border p-0 shadow-sm outline-hidden"
+            : "bg-card text-popover-foreground z-50 w-80 rounded-md border p-2 shadow-sm outline-hidden",
           className
         )}
         {...props}

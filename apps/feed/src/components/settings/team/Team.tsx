@@ -129,7 +129,7 @@ export default function TeamSection({ slug }: { slug: string }) {
 
         <div className="space-y-2">
           <Label>Pending Invites</Label>
-          <InvitesList invites={invites} loading={loading} onRevoke={handleRevoke} />
+          <InvitesList slug={slug} invites={invites} loading={loading} onChanged={refresh} />
         </div>
 
         <div className="pt-2 space-y-2">

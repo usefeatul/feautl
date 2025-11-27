@@ -1,0 +1,117 @@
+import React from "react";
+import { TableRow, TableCell } from "@feedgot/ui/components/table";
+import { Button } from "@feedgot/ui/components/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@feedgot/ui/components/avatar";
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@feedgot/ui/components/popover";
+import { cn } from "@feedgot/ui/lib/utils";
+import { MoreVertical } from "lucide-react";
+import type { Invite } from "./Team";
+import { getInitials } from "@/utils/user-utils";
+import { client } from "@feedgot/api/client";
+import { toast } from "sonner";
+
+function badgeFor(role: "admin" | "member" | "viewer") {
+  if (role === "admin") return "bg-orange-50 text-orange-500";
+  if (role === "viewer") return "bg-green-50 text-green-500";
+  return "bg-card text-accent";
+}
+
+export default function InviteRow({
+  slug,
+  i,
+  onChanged,
+}: {
+  slug: string;
+  i: Invite;
+  onChanged: () => void;
+}) {
+  const [menuFor, setMenuFor] = React.useState<string | null>(null);
+  const updatingRef = React.useRef(false);
+
+  const handleUpdateRole = async (newRole: "admin" | "member" | "viewer") => {
+    if (updatingRef.current) return;
+    if (newRole === i.role) {
+      setMenuFor(null);
+      return;
+    }
+    updatingRef.current = true;
+    try {
+      const revokeRes = await client.team.revokeInvite.$post({ slug, inviteId: i.id });
+      if (!revokeRes.ok) throw new Error("Revoke failed");
+      const inviteRes = await client.team.invite.$post({ slug, email: i.email, role: newRole });
+      if (!inviteRes.ok) throw new Error("Invite failed");
+      toast.success("Invite updated");
+      onChanged();
+      setMenuFor(null);
+    } catch (e) {
+      toast.error("Failed to update invite");
+    } finally {
+      updatingRef.current = false;
+    }
+  };
+
+  const handleRevoke = async () => {
+    if (updatingRef.current) return;
+    updatingRef.current = true;
+    try {
+      const res = await client.team.revokeInvite.$post({ slug, inviteId: i.id });
+      if (!res.ok) throw new Error("Revoke failed");
+      toast.success("Invite revoked");
+      onChanged();
+      setMenuFor(null);
+    } catch (e) {
+      toast.error("Failed to revoke invite");
+    } finally {
+      updatingRef.current = false;
+    }
+  };
+
+  return (
+    <TableRow>
+      <TableCell className="px-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <Avatar>
+            <AvatarImage src="" alt={i.email} />
+            <AvatarFallback>{getInitials(i.email)}</AvatarFallback>
+          </Avatar>
+          <div className="min-w-0">
+            <div className="font-medium truncate">{i.email}</div>
+            <div className="text-xs text-accent">Expires {new Date(i.expiresAt).toLocaleDateString()}</div>
+          </div>
+        </div>
+      </TableCell>
+      <TableCell className="px-4 w-48">
+        <div className="relative h-6">
+          <span className={cn("text-xs px-2 py-0.5 rounded-md capitalize absolute left-1/2 -translate-x-1/2", badgeFor(i.role))}>{i.role}</span>
+          <div className="absolute right-0 top-1/2 -translate-y-1/2">
+            <Popover open={menuFor === i.id} onOpenChange={(v) => setMenuFor(v ? i.id : null)}>
+              <PopoverTrigger asChild>
+                <Button type="button" variant="ghost" size="icon-sm" aria-label="More">
+                  <MoreVertical className="size-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent list className="min-w-0 w-fit">
+                <PopoverList>
+                  {(["admin", "member", "viewer"] as const).map((r) => (
+                    <PopoverListItem
+                      key={r}
+                      role="menuitemradio"
+                      aria-checked={i.role === r}
+                      onClick={() => handleUpdateRole(r)}
+                    >
+                      <span className="text-sm capitalize">{r}</span>
+                      {i.role === r ? <span className="ml-auto text-xs">✓</span> : null}
+                    </PopoverListItem>
+                  ))}
+                  <PopoverListItem role="menuitem" onClick={handleRevoke}>
+                    <span className="text-sm">Revoke invite</span>
+                  </PopoverListItem>
+                </PopoverList>
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+      </TableCell>
+    </TableRow>
+  );
+}

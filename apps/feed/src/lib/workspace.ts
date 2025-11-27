@@ -1,4 +1,5 @@
 import { db, workspace, workspaceMember, brandingConfig, board, post, postTag, tag } from "@feedgot/db"
+import { randomAvatarUrl } from "@/utils/avatar"
 import { eq, and, inArray, desc, asc, sql } from "drizzle-orm"
 
 export async function findFirstAccessibleWorkspaceSlug(userId: string): Promise<string | null> {
@@ -144,7 +145,12 @@ export async function getWorkspacePosts(slug: string, opts?: { statuses?: string
     .limit(lim)
     .offset(off)
 
-  return rows
+  const withAvatars = rows.map((r) => ({
+    ...r,
+    authorImage: !r.isAnonymous ? (r.authorImage || randomAvatarUrl(r.id || r.slug)) : randomAvatarUrl(r.id || r.slug),
+  }))
+
+  return withAvatars
 }
 
 export async function getWorkspacePostsCount(slug: string, opts?: { statuses?: string[]; boardSlugs?: string[]; tagSlugs?: string[]; search?: string }) {

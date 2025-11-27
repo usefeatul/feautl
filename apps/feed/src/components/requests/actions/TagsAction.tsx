@@ -57,22 +57,34 @@ export default function TagsAction({ className = "" }: { className?: string }) {
     const next = toggleValue(selected, tagSlug)
     if (next.length === 0) {
       const href = workspaceBase(slug)
-      React.startTransition(() => router.replace(href, { scroll: false }))
+      React.startTransition(() => {
+        router.replace(href, { scroll: false })
+        setOpen(false)
+      })
       return
     }
     const href = buildRequestsUrl(slug, sp, { tag: next })
-    React.startTransition(() => router.push(href, { scroll: false }))
+    React.startTransition(() => {
+      router.push(href, { scroll: false })
+      setOpen(false)
+    })
   }
 
   const selectAll = () => {
     if (isAllSelected) {
       const href = workspaceBase(slug)
-      React.startTransition(() => router.replace(href, { scroll: false }))
+      React.startTransition(() => {
+        router.replace(href, { scroll: false })
+        setOpen(false)
+      })
       return
     }
     const next = items.map((i: { slug: string }) => i.slug)
     const href = buildRequestsUrl(slug, sp, { tag: next })
-    React.startTransition(() => router.push(href, { scroll: false }))
+    React.startTransition(() => {
+      router.push(href, { scroll: false })
+      setOpen(false)
+    })
   }
 
   return (

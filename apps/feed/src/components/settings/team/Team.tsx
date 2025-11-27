@@ -40,6 +40,7 @@ export default function TeamSection({ slug }: { slug: string }) {
   const [invites, setInvites] = React.useState<Invite[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [inviteOpen, setInviteOpen] = React.useState(false);
+  const [meId, setMeId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     let mounted = true;
@@ -50,6 +51,7 @@ export default function TeamSection({ slug }: { slug: string }) {
         if (mounted) {
           setMembers(data?.members || []);
           setInvites(data?.invites || []);
+          setMeId(data?.meId || null);
         }
       } catch (e) {
       } finally {
@@ -66,6 +68,7 @@ export default function TeamSection({ slug }: { slug: string }) {
     const data = await res.json();
     setMembers(data?.members || []);
     setInvites(data?.invites || []);
+    setMeId(data?.meId || null);
   };
 
   const handleRoleChange = async (
@@ -152,9 +155,9 @@ export default function TeamSection({ slug }: { slug: string }) {
                     <Button
                       variant="ghost"
                       onClick={() => handleRemove(m.userId)}
-                      disabled={m.isOwner === true}
+                      disabled={m.isOwner === true && m.userId !== meId}
                     >
-                      Remove
+                      {m.userId === meId ? "Leave" : "Remove"}
                     </Button>
                   </div>
                 </div>

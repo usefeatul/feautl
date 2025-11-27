@@ -1,5 +1,5 @@
 import { HTTPException } from "hono/http-exception"
-import { and, eq, gt } from "drizzle-orm"
+import { and, eq, gt, isNull } from "drizzle-orm"
 import { j, privateProcedure, publicProcedure } from "../jstack"
 import { workspace, workspaceMember, workspaceInvite, user } from "@feedgot/db"
 import { sendWorkspaceInvite } from "@feedgot/auth/email"
@@ -94,10 +94,10 @@ export function createTeamRouter() {
             createdAt: workspaceInvite.createdAt,
           })
           .from(workspaceInvite)
-          .where(and(eq(workspaceInvite.workspaceId, ws.id), gt(workspaceInvite.expiresAt, now)))
+          .where(and(eq(workspaceInvite.workspaceId, ws.id), gt(workspaceInvite.expiresAt, now), isNull(workspaceInvite.acceptedAt)))
 
         c.header("Cache-Control", "private, max-age=15, stale-while-revalidate=120")
-        return c.superjson({ members, invites })
+        return c.superjson({ members, invites, meId })
       }),
 
     invite: privateProcedure
@@ -171,7 +171,7 @@ export function createTeamRouter() {
             createdAt: workspaceInvite.createdAt,
           })
           .from(workspaceInvite)
-          .where(and(eq(workspaceInvite.workspaceId, ws.id), gt(workspaceInvite.expiresAt, now)))
+          .where(and(eq(workspaceInvite.workspaceId, ws.id), gt(workspaceInvite.expiresAt, now), isNull(workspaceInvite.acceptedAt)))
 
         return c.superjson({ invites })
       }),
@@ -243,10 +243,11 @@ export function createTeamRouter() {
           .from(workspaceMember)
           .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
           .limit(1)
-        const allowed = me?.permissions?.canManageMembers || me?.role === "admin" || ws.ownerId === meId
+        const isSelf = input.userId === meId
+        const allowed = isSelf || me?.permissions?.canManageMembers || me?.role === "admin" || ws.ownerId === meId
         if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
-        if (input.userId === ws.ownerId) throw new HTTPException(403, { message: "Cannot remove owner" })
+        if (input.userId === ws.ownerId && !isSelf) throw new HTTPException(403, { message: "Cannot remove owner" })
         await ctx.db
           .update(workspaceMember)
           .set({ isActive: false, updatedAt: new Date() })

@@ -35,7 +35,6 @@ export default function MobileSidebar({ className = "", initialCounts, initialTi
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     initialData: initialCounts,
-    placeholderData: (prev) => prev ?? initialCounts ?? null,
   });
 
   return (

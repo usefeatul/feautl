@@ -82,13 +82,19 @@ export default function RoadmapBoard({ workspaceSlug, items: initialItems }: { w
     const target = (overId || "").toLowerCase()
     if (!STATUSES.includes(target as any)) return
     if ((dragged.roadmapStatus || "pending").toLowerCase() === target) return
-    const prev = (dragged.roadmapStatus || "pending").toLowerCase()
+    const normalize = (s: string) => {
+      const raw = (s || "pending").trim().toLowerCase().replace(/[\s-]+/g, "")
+      const map: Record<string, string> = { pending:"pending", review:"review", inreviewing:"review", planned:"planned", progress:"progress", inprogress:"progress", completed:"completed", closed:"closed" }
+      return map[raw] || "pending"
+    }
+    const prev = normalize(dragged.roadmapStatus || "pending")
+    const next = normalize(target)
     setItems((prevItems) => prevItems.map((i) => (i.id === dragged.id ? { ...i, roadmapStatus: target } : i)))
     queryClient.setQueryData(["status-counts", workspaceSlug], (prevCounts: any) => {
       if (!prevCounts) return prevCounts
       const copy: Record<string, number> = { ...prevCounts }
       if (typeof copy[prev] === "number") copy[prev] = Math.max(0, (copy[prev] || 0) - 1)
-      copy[target] = ((copy[target] || 0) + 1)
+      copy[next] = ((copy[next] || 0) + 1)
       return copy
     })
     setSavingId(dragged.id)

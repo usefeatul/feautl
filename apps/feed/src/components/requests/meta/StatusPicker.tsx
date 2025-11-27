@@ -21,8 +21,13 @@ export default function StatusPicker({ postId, value, onChange }: { postId: stri
   const select = async (v: string) => {
     if (saving) return
     setSaving(true)
-    const prevStatus = (value || "pending").toLowerCase()
-    const nextStatus = (v || "pending").toLowerCase()
+    const normalize = (s: string) => {
+      const raw = (s || "pending").trim().toLowerCase().replace(/[\s-]+/g, "")
+      const map: Record<string, string> = { pending:"pending", review:"review", inreviewing:"review", planned:"planned", progress:"progress", inprogress:"progress", completed:"completed", closed:"closed" }
+      return map[raw] || "pending"
+    }
+    const prevStatus = normalize(value || "pending")
+    const nextStatus = normalize(v || "pending")
     try {
       onChange(v)
       setOpen(false)

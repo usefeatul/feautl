@@ -45,7 +45,6 @@ export default function Sidebar({ className = "", initialCounts, initialTimezone
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     initialData: initialCounts,
-    placeholderData: (prev) => prev ?? initialCounts ?? null,
   });
 
   const statusKey = (label: string) => {

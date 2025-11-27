@@ -82,16 +82,30 @@ export function createWorkspaceRouter() {
           .where(and(eq(board.workspaceId, ws.id), eq(board.isSystem, false)))
           .groupBy(post.roadmapStatus)
 
+        function normalizeStatus(status: string): string {
+          const raw = (status || "pending").trim().toLowerCase().replace(/[\s-]+/g, "")
+          const map: Record<string, string> = {
+            pending: "pending",
+            review: "review",
+            inreviewing: "review",
+            planned: "planned",
+            progress: "progress",
+            inprogress: "progress",
+            completed: "completed",
+            closed: "closed",
+          }
+          return map[raw] || "pending"
+        }
+
         const counts: Record<string, number> = {}
         for (const r of rows as any[]) {
-          const s = String(r.status || "pending").toLowerCase()
-          const key = ["planned","progress","review","completed","pending","closed"].includes(s) ? s : "pending"
+          const key = normalizeStatus(String(r.status || "pending"))
           counts[key] = (counts[key] || 0) + Number(r.count || 0)
         }
         for (const key of ["planned","progress","review","completed","pending","closed"]) {
           if (typeof counts[key] !== "number") counts[key] = 0
         }
-        c.header("Cache-Control", "public, max-age=30, stale-while-revalidate=300")
+        c.header("Cache-Control", "private, no-store")
         return c.json({ counts })
       }),
 

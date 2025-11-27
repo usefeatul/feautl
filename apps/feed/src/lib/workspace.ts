@@ -1,4 +1,4 @@
-import { db, workspace, workspaceMember, brandingConfig, board, post, postTag, tag, user } from "@feedgot/db"
+import { db, workspace, workspaceMember, brandingConfig, board, post, postTag, tag } from "@feedgot/db"
 import { eq, and, inArray, desc, asc, sql } from "drizzle-orm"
 
 export async function findFirstAccessibleWorkspaceSlug(userId: string): Promise<string | null> {
@@ -136,13 +136,9 @@ export async function getWorkspacePosts(slug: string, opts?: { statuses?: string
       authorName: post.authorName,
       isAnonymous: post.isAnonymous,
       authorId: post.authorId,
-      authorName: post.authorName,
-      isAnonymous: post.isAnonymous,
-      authorImage: user.image,
     })
     .from(post)
     .innerJoin(board, eq(post.boardId, board.id))
-    .leftJoin(user, eq(post.authorId, user.id))
     .where(and(...filters) as any)
     .orderBy(order)
     .limit(lim)

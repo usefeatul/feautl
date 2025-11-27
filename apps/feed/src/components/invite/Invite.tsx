@@ -15,7 +15,7 @@ export default function Invite({ workspaceName, workspaceLogo, inviterName, user
         <div className="mx-auto w-full max-w-[380px]">
           <div className="text-left">
             <h1 className="text-4xl font-semibold">You've been invited</h1>
-            <p className="mt-1 text-lg text-accent">{inviterName} has invited you to join {workspaceName}</p>
+            <p className="mt-1 text-lg text-accent">{(inviterName || "Someone")} has invited you to join {(workspaceName || "this workspace")}</p>
             <div className="mt-4 flex items-center justify-start gap-3">
               <div className="rounded-md border ring-1 ring-border overflow-hidden">
                 <Avatar className="size-8">
@@ -24,14 +24,14 @@ export default function Invite({ workspaceName, workspaceLogo, inviterName, user
                 </Avatar>
               </div>
               <div className="text-left">
-                <div className="text-sm font-medium truncate">{workspaceName}</div>
+                {name ? <div className="text-xs text-accent truncate">{name}</div> : null}
                 {email ? <div className="text-xs text-accent truncate">{email}</div> : null}
               </div>
             </div>
           </div>
           <div className="mt-4 flex flex-col items-start gap-2">
-            <Button type="button" variant="quiet" size="lg" className="w-full" disabled={busy} onClick={onAccept}>Accept invitation</Button>
-            <Button type="button" variant="quiet" size="lg" className="w-full" disabled={busy} onClick={onDecline}>Decline</Button>
+            <Button type="button" variant="quiet" size="lg" className="w-full bg-primary/90 hover:bg-primary text-white" disabled={busy} onClick={onAccept}>Accept invitation</Button>
+            <Button type="button" variant="quiet" size="lg" className="w-full bg-red-500 hover:bg-red-600 text-white" disabled={busy} onClick={onDecline}>Decline</Button>
           </div>
         </div>
       </div>

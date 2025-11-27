@@ -38,8 +38,8 @@ export default function RequestPagination({ workspaceSlug, page, pageSize, total
   }, [workspaceSlug, page, pageSize, totalCount, params, mk])
 
   return (
-    <div className="mt-4 flex items-center justify-between gap-3 mb-4">
-      <div className="text-sm text-accent tabular-nums">
+    <div className="mt-4 mb-2 flex w-full flex-col items-stretch justify-center gap-2 sm:mb-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+      <div className="order-2 w-full text-center text-sm text-accent tabular-nums sm:order-1 sm:w-auto sm:text-left">
         {totalCount > 0 ? (
           <span>
             {from}–{to} of {totalCount}
@@ -49,27 +49,27 @@ export default function RequestPagination({ workspaceSlug, page, pageSize, total
         )}
       </div>
 
-      <div className="flex items-center gap-2">
-        <Button asChild variant="quiet" disabled={page <= 1}>
+      <div className="order-1 flex min-w-0 w-full flex-wrap items-center justify-center gap-2 sm:order-2 sm:w-auto sm:justify-start">
+        <Button asChild variant="quiet" size="sm" disabled={page <= 1}>
           <Link prefetch={false} href={firstHref} aria-label="First page">First</Link>
         </Button>
-        <Button asChild variant="quiet" disabled={page <= 1}>
+        <Button asChild variant="quiet" size="sm" disabled={page <= 1}>
           <Link prefetch={false} href={prevHref} rel="prev" aria-label="Previous page">Prev</Link>
         </Button>
         <span className="text-xs text-accent tabular-nums">
           Page {Math.min(page, totalPages)} of {totalPages}
         </span>
-        <Button asChild variant="quiet" disabled={page >= totalPages || totalCount === 0}>
+        <Button asChild variant="quiet" size="sm" disabled={page >= totalPages || totalCount === 0}>
           <Link prefetch={false} href={nextHref} rel="next" aria-label="Next page">Next</Link>
         </Button>
-        <Button asChild variant="quiet" disabled={page >= totalPages || totalCount === 0}>
+        <Button asChild variant="quiet" size="sm" disabled={page >= totalPages || totalCount === 0}>
           <Link prefetch={false} href={lastHref} aria-label="Last page">Last</Link>
         </Button>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="order-3 flex w-full items-center justify-center gap-2 sm:w-auto sm:justify-end">
         <span className="text-xs text-accent">Page size:</span>
-        <div className="flex items-center gap-1">
+        <div className="-mx-2 flex items-center gap-1 overflow-x-auto whitespace-nowrap px-2 sm:m-0 sm:overflow-visible">
           {sizes.map((s) => {
             const href = mk(workspaceSlug, params as any, { pageSize: s, page: 1 })
             const active = s === pageSize

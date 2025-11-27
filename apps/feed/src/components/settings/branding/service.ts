@@ -1,6 +1,34 @@
 import { client } from "@feedgot/api/client"
 import type { BrandingConfig, BrandingResponse } from "./types"
 
+function getJSON<T>(key: string): T | null {
+  try {
+    if (typeof window === "undefined") return null
+    const raw = localStorage.getItem(key)
+    if (!raw) return null
+    return JSON.parse(raw) as T
+  } catch {
+    return null
+  }
+}
+
+function setJSON(key: string, value: unknown): void {
+  try {
+    if (typeof window === "undefined") return
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch {}
+}
+
+const BRANDING_CACHE_KEY = (slug: string) => `branding:${slug}`
+
+export function getCachedBranding(slug: string): BrandingConfig | null {
+  return getJSON<BrandingConfig>(BRANDING_CACHE_KEY(slug))
+}
+
+export function setCachedBranding(slug: string, conf: BrandingConfig): void {
+  setJSON(BRANDING_CACHE_KEY(slug), conf)
+}
+
 export async function loadBrandingBySlug(slug: string): Promise<BrandingConfig | null> {
   const res = await client.branding.byWorkspaceSlug.$get({ slug })
   const data = (await res.json()) as BrandingResponse

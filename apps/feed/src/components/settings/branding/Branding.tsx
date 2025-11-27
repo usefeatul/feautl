@@ -4,7 +4,7 @@ import React from "react"
 import SectionCard from "../global/SectionCard"
 import { Input } from "@feedgot/ui/components/input"
 import { LoadingButton } from "@/components/loading-button"
-import { loadBrandingBySlug, saveBranding } from "./service"
+import { loadBrandingBySlug, saveBranding, getCachedBranding, setCachedBranding } from "./service"
 import { toast } from "sonner"
 import { Switch } from "@feedgot/ui/components/switch"
 import { Badge } from "@feedgot/ui/components/badge"
@@ -14,7 +14,7 @@ import ThemePicker from "./ThemePicker"
 import LogoUploader from "./LogoUploader"
 import { setWorkspaceLogo } from "@/lib/branding-store"
 
-export default function BrandingSection({ slug }: { slug: string }) {
+export default function BrandingSection({ slug, initialPrimary }: { slug: string; initialPrimary?: string }) {
   const [logoUrl, setLogoUrl] = React.useState("")
   const [primaryColor, setPrimaryColor] = React.useState("#3b82f6")
   const [accentColor, setAccentColor] = React.useState("#60a5fa")
@@ -24,20 +24,37 @@ export default function BrandingSection({ slug }: { slug: string }) {
   const [saving, setSaving] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
 
+function applyConf(conf: { logoUrl?: string; primaryColor?: string; accentColor?: string; theme?: "light" | "dark" | "system"; hidePoweredBy?: boolean }) {
+  setLogoUrl(conf.logoUrl || "")
+  const currentPrimary = conf.primaryColor || "#3b82f6"
+  const found = findColorByPrimary(currentPrimary) || BRANDING_COLORS[1]
+  setPrimaryColor(currentPrimary)
+  setAccentColor(conf.accentColor || (found && found.accent) || "#60a5fa")
+  setColorKey(found ? found.key : "blue")
+  if (conf.theme === "light" || conf.theme === "dark" || conf.theme === "system") setTheme(conf.theme)
+  setHidePoweredBy(Boolean(conf.hidePoweredBy))
+  applyBrandPrimary(currentPrimary)
+}
+
   React.useEffect(() => {
     let mounted = true
+    const cached = getCachedBranding(slug)
+    if (cached) {
+      applyConf(cached)
+    } else if (initialPrimary) {
+      const p = initialPrimary.trim()
+      const found = findColorByPrimary(p) || BRANDING_COLORS[1]
+      setPrimaryColor(p)
+      setAccentColor(found ? found.accent : "#60a5fa")
+      setColorKey(found ? found.key : "blue")
+      applyBrandPrimary(p)
+    }
     void (async () => {
       try {
         const conf = await loadBrandingBySlug(slug)
         if (mounted && conf) {
-          setLogoUrl(conf.logoUrl || "")
-          const currentPrimary = conf.primaryColor || "#3b82f6"
-          const found = findColorByPrimary(currentPrimary) || BRANDING_COLORS[1]
-          setPrimaryColor(currentPrimary)
-          setAccentColor(conf.accentColor || (found && found.accent) || "#60a5fa")
-          setColorKey(found ? found.key : "blue")
-          if (conf.theme === "light" || conf.theme === "dark" || conf.theme === "system") setTheme(conf.theme)
-          setHidePoweredBy(Boolean(conf.hidePoweredBy))
+          applyConf(conf)
+          setCachedBranding(slug, conf)
         }
       } catch (e) {}
       finally {
@@ -45,7 +62,7 @@ export default function BrandingSection({ slug }: { slug: string }) {
       }
     })()
     return () => { mounted = false }
-  }, [slug])
+  }, [slug, initialPrimary])
 
   const handleSave = async () => {
     if (saving) return
@@ -58,6 +75,7 @@ export default function BrandingSection({ slug }: { slug: string }) {
     try {
       const ok = await saveBranding(slug, { logoUrl: logoUrl.trim(), primaryColor: p, accentColor: a, theme, hidePoweredBy })
       if (!ok) throw new Error("Update failed")
+      setCachedBranding(slug, { logoUrl: logoUrl.trim(), primaryColor: p, accentColor: a, theme, hidePoweredBy })
       if (logoUrl.trim()) setWorkspaceLogo(slug, logoUrl.trim())
       toast.success("Branding updated")
     } catch (e) {

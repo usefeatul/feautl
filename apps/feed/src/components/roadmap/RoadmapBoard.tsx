@@ -22,12 +22,12 @@ type Item = {
   boardName: string
 }
 
-const STATUSES = ["planned", "in-progress", "under-review", "completed", "pending", "closed"] as const
+const STATUSES = ["planned", "progress", "review", "completed", "pending", "closed"] as const
 
 function statusLabel(s: string) {
   const t = s.toLowerCase()
-  if (t === "in-progress") return "In Progress"
-  if (t === "under-review") return "Under Review"
+  if (t === "progress") return "Progress"
+  if (t === "review") return "Review"
   return t.charAt(0).toUpperCase() + t.slice(1)
 }
 

@@ -11,15 +11,11 @@ export default function StatusIcon({ status, className = "" }: { status?: string
   const s = (status || "").toLowerCase()
   const map: Record<string, any> = {
     planned: PlannedIcon,
-    "in-progress": InProgressIcon,
     progress: InProgressIcon,
-    "under-review": InReviewingIcon,
     review: InReviewingIcon,
     completed: CompleteIcon,
-    complete: CompleteIcon,
     pending: PendingIcon,
-    closed: CloseIcon,
-    close: CloseIcon,
+    closed: CloseIcon
   }
   const Icon = map[s] || PendingIcon
   return <Icon className={className} />

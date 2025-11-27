@@ -6,7 +6,7 @@ import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem }
 import { DropdownIcon } from "@feedgot/ui/icons/dropdown"
 import { client } from "@feedgot/api/client"
 
-const STATUSES = ["pending", "under-review", "planned", "in-progress", "completed", "closed"] as const
+const STATUSES = ["pending", "review", "planned", "progress", "completed", "closed"] as const
 
 export default function StatusPicker({ postId, value, onChange }: { postId: string; value?: string; onChange: (v: string) => void }) {
   const [open, setOpen] = React.useState(false)

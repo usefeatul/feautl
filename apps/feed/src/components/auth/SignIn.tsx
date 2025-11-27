@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@feedgot/auth/client";
 import { Button } from "@feedgot/ui/components/button";
 import { Input } from "@feedgot/ui/components/input";
@@ -15,6 +15,9 @@ import { LoadingButton } from "@/components/loading-button";
 
 export default function SignIn() {
   const router = useRouter();
+  const search = useSearchParams();
+  const rawRedirect = search?.get("redirect") || "";
+  const redirect = rawRedirect.startsWith("/") ? rawRedirect : "/start";
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -26,7 +29,7 @@ export default function SignIn() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/start",
+        callbackURL: redirect,
       });
     } catch (err) {
       setError("Failed to sign in with Google");
@@ -41,7 +44,7 @@ export default function SignIn() {
     try {
       await authClient.signIn.social({
         provider: "github",
-        callbackURL: "/start",
+        callbackURL: redirect,
       });
     } catch (err) {
       setError("Failed to sign in with GitHub");
@@ -55,7 +58,7 @@ export default function SignIn() {
     setError("");
     try {
       await authClient.signIn.email(
-        { email: email.trim(), password, callbackURL: "/start" },
+        { email: email.trim(), password, callbackURL: redirect },
         {
           onError: (ctx) => {
             if (ctx.error.status === 403) {
@@ -68,7 +71,7 @@ export default function SignIn() {
           },
           onSuccess: () => {
             toast.success("Signed in");
-            router.push("/start");
+            router.push(redirect);
           },
         }
       );

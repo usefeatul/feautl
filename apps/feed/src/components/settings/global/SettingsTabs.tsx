@@ -23,13 +23,6 @@ export default function SettingsTabs({ slug }: Props) {
   const routeParams = useParams()
   const paramSection = typeof routeParams?.section === "string" ? routeParams.section : undefined
   const selected = paramSection || sections[0]?.value
-const [initialPrimary, setInitialPrimary] = React.useState<string>("#3b82f6")
-React.useEffect(() => {
-  try {
-    const p = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim()
-    if (p) setInitialPrimary(p)
-  } catch {}
-}, [])
 
   const onValueChange = React.useCallback((v: string) => {
     const url = `/workspaces/${slug}/settings/${encodeURIComponent(v)}`
@@ -59,7 +52,7 @@ React.useEffect(() => {
 
         {sections.map((s) => (
           <TabsContent key={s.value} value={s.value} className="mt-2">
-            <SectionRenderer slug={slug} section={s.value} initialPrimary={initialPrimary} />
+            <SectionRenderer slug={slug} section={s.value} />
           </TabsContent>
         ))}
       </Tabs>
@@ -67,10 +60,10 @@ React.useEffect(() => {
   )
 }
 
-function SectionRenderer({ slug, section, initialPrimary }: { slug: string; section: string; initialPrimary?: string }) {
+function SectionRenderer({ slug, section }: { slug: string; section: string }) {
   switch (section) {
     case "branding":
-      return <BrandingSection slug={slug} initialPrimary={initialPrimary} />
+      return <BrandingSection slug={slug} />
     case "team":
       return <TeamSection slug={slug} />
     case "feedback":

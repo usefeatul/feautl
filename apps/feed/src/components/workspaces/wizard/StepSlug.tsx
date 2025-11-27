@@ -2,7 +2,7 @@
 
 import { Input } from "@feedgot/ui/components/input"
 import { Link2, Loader2 } from "lucide-react"
-import { CompleteIcon } from "@feedgot/ui/icons/complete"
+import { CompleteIcon } from "@feedgot/ui/icons/completed"
 import { CloseIcon } from "@feedgot/ui/icons/close"
 import { isSlugValid } from "./validators"
 

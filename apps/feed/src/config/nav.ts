@@ -1,9 +1,9 @@
 import PlannedIcon from "@feedgot/ui/icons/planned"
-import InProgressIcon from "@feedgot/ui/icons/inprogress"
-import InReviewingIcon from "@feedgot/ui/icons/inreviewing"
-import CompleteIcon from "@feedgot/ui/icons/complete"
+import ProgressIcon from "@feedgot/ui/icons/progress"
+import ReviewIcon from "@feedgot/ui/icons/review"
+import CompletedIcon from "@feedgot/ui/icons/completed"
 import PendingIcon from "@feedgot/ui/icons/pending"
-import CloseIcon from "@feedgot/ui/icons/close"
+import ClosedIcon from "@feedgot/ui/icons/closed"
 import { RoadmapIcon } from "@feedgot/ui/icons/roadmap"
 import { ChangelogIcon } from "@feedgot/ui/icons/changelog"
 import { BoardIcon } from "@feedgot/ui/icons/board"
@@ -35,11 +35,11 @@ export function buildTopNav(slug: string): NavItem[] {
   }
   return [
     { label: "Planned", href: buildHref(["PLANNED"]), icon: PlannedIcon },
-    { label: "Progress", href: buildHref(["PROGRESS"]), icon: InProgressIcon },
-    { label: "Review", href: buildHref(["REVIEW"]), icon: InReviewingIcon },
-    { label: "Completed", href: buildHref(["COMPLETED"]), icon: CompleteIcon },
+    { label: "Progress", href: buildHref(["PROGRESS"]), icon: ProgressIcon },
+    { label: "Review", href: buildHref(["REVIEW"]), icon: ReviewIcon },
+    { label: "Completed", href: buildHref(["COMPLETED"]), icon: CompletedIcon },
     { label: "Pending", href: buildHref(["PENDING"]), icon: PendingIcon },
-    { label: "Closed", href: buildHref(["CLOSED"]), icon: CloseIcon },
+    { label: "Closed", href: buildHref(["CLOSED"]), icon: ClosedIcon },
   ]
 }
 

@@ -3,6 +3,7 @@ import { eq, and, sql } from "drizzle-orm"
 import { j, privateProcedure, publicProcedure } from "../jstack"
 import { workspace, workspaceMember, board, brandingConfig, tag, post } from "@feedgot/db"
 import { createWorkspaceInputSchema, checkSlugInputSchema } from "../validators/workspace"
+import { normalizeStatus } from "../shared/status"
 
 export function createWorkspaceRouter() {
   return j.router({
@@ -81,21 +82,6 @@ export function createWorkspaceRouter() {
           .innerJoin(board, eq(post.boardId, board.id))
           .where(and(eq(board.workspaceId, ws.id), eq(board.isSystem, false)))
           .groupBy(post.roadmapStatus)
-
-        function normalizeStatus(status: string): string {
-          const raw = (status || "pending").trim().toLowerCase().replace(/[\s-]+/g, "")
-          const map: Record<string, string> = {
-            pending: "pending",
-            review: "review",
-            inreviewing: "review",
-            planned: "planned",
-            progress: "progress",
-            inprogress: "progress",
-            completed: "completed",
-            closed: "closed",
-          }
-          return map[raw] || "pending"
-        }
 
         const counts: Record<string, number> = {}
         for (const r of rows as any[]) {

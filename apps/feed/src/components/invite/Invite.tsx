@@ -15,7 +15,7 @@ export default function Invite({ workspaceName, workspaceLogo, inviterName, user
         <div className="mx-auto w-full max-w-[380px]">
           <div className="text-left">
             <h1 className="text-4xl font-semibold">You've been invited</h1>
-            <p className="mt-1 text-lg text-accent">{inviterName && workspaceName ? `${inviterName} has invited you to join ${workspaceName}`}</p>
+            <p className="mt-1 text-lg text-accent">{inviterName} has invited you to join {workspaceName}</p>
             <div className="mt-4 flex items-center justify-start gap-3">
               <div className="rounded-md border ring-1 ring-border overflow-hidden">
                 <Avatar className="size-8">

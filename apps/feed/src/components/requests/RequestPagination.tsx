@@ -20,6 +20,8 @@ export default function RequestPagination({ workspaceSlug, page, pageSize, total
 
   const sizes = [10, 20, 50, 100]
 
+  if (totalCount <= 0) return null
+
   const { totalPages, from, to, prevHref, nextHref, firstHref, lastHref } = useMemo(() => {
     const tp = Math.max(1, Math.ceil(Math.max(totalCount, 0) / Math.max(pageSize, 1)))
     const pPrev = Math.max(page - 1, 1)

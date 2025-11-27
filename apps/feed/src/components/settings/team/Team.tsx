@@ -4,17 +4,14 @@ import React from "react";
 import SectionCard from "../global/SectionCard";
 import { Button } from "@feedgot/ui/components/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@feedgot/ui/components/table";
-import { Avatar, AvatarImage, AvatarFallback } from "@feedgot/ui/components/avatar";
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@feedgot/ui/components/popover";
 import { Label } from "@feedgot/ui/components/label";
-import { cn } from "@feedgot/ui/lib/utils";
-import { MoreVertical } from "lucide-react";
 import { client } from "@feedgot/api/client";
 import { toast } from "sonner";
 import InviteMemberModal from "./InviteMemberModal";
-import { getInitials } from "@/utils/user-utils";
+import MemberRow from "./MemberRow";
+import InvitesList from "./InvitesList";
 
-type Member = {
+export type Member = {
   userId: string;
   role: "admin" | "member" | "viewer";
   isOwner?: boolean;
@@ -24,7 +21,7 @@ type Member = {
   email?: string;
   image?: string;
 };
-type Invite = {
+export type Invite = {
   id: string;
   email: string;
   role: "admin" | "member" | "viewer";
@@ -92,17 +89,6 @@ export default function TeamSection({ slug }: { slug: string }) {
     }
   };
 
-  const handleRemove = async (userId: string) => {
-    try {
-      const res = await client.team.removeMember.$post({ slug, userId });
-      if (!res.ok) throw new Error("Remove failed");
-      toast.success("Member removed");
-      await refresh();
-    } catch (e) {
-      toast.error("Failed to remove member");
-    }
-  };
-
   const handleRevoke = async (inviteId: string) => {
     try {
       const res = await client.team.revokeInvite.$post({ slug, inviteId });
@@ -112,13 +98,6 @@ export default function TeamSection({ slug }: { slug: string }) {
     } catch (e) {
       toast.error("Failed to revoke invite");
     }
-  };
-
-  const badgeFor = (m: Member) => {
-    if (m.isOwner) return "bg-primary/20 text-primary";
-    if (m.role === "admin") return "bg-orange-50 text-orange-500";
-    if (m.role === "viewer") return "bg-green-50 text-green-500";
-    return "bg-card text-accent";
   };
 
   return (
@@ -140,50 +119,7 @@ export default function TeamSection({ slug }: { slug: string }) {
                   </TableRow>
                 ) : (
                   members.map((m) => (
-                    <TableRow key={m.userId}>
-                      <TableCell className="px-4">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <Avatar>
-                            <AvatarImage src={m.image || ""} alt={m.name || m.email || ""} />
-                            <AvatarFallback>{getInitials(m.name || m.email || "")}</AvatarFallback>
-                          </Avatar>
-                          <div className="min-w-0">
-                            <div className="font-medium truncate">{m.name || m.email || m.userId}</div>
-                            <div className="text-xs text-accent truncate">{m.email}</div>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="px-4 w-48">
-                        <div className="relative h-6">
-                          <span className={cn("text-xs px-2 py-0.5 rounded-md capitalize absolute left-1/2 -translate-x-1/2", badgeFor(m))}>{m.isOwner ? "owner" : m.role}</span>
-                          <div className="absolute right-0 top-1/2 -translate-y-1/2">
-                            <Popover open={menuFor === m.userId} onOpenChange={(v) => setMenuFor(v ? m.userId : null)}>
-                              <PopoverTrigger asChild>
-                                <Button type="button" variant="ghost" size="icon-sm" disabled={m.isOwner === true} aria-label="More">
-                                  <MoreVertical className="size-4" />
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent list className="min-w-0 w-fit">
-                                <PopoverList>
-                                  {(["admin","member","viewer"] as const).map((r) => (
-                                    <PopoverListItem
-                                      key={r}
-                                      role="menuitemradio"
-                                      aria-checked={m.role === r}
-                                      onClick={() => handleRoleChange(m.userId, r)}
-                                    >
-                                      <span className="text-sm capitalize">{r}</span>
-                                      {m.role === r ? <span className="ml-auto text-xs">✓</span> : null}
-                                    </PopoverListItem>
-                                  ))}
-                                </PopoverList>
-                              </PopoverContent>
-                            </Popover>
-                          </div>
-                        </div>
-                      </TableCell>
-                      
-                    </TableRow>
+                    <MemberRow key={m.userId} m={m} menuFor={menuFor} setMenuFor={setMenuFor} onRoleChange={handleRoleChange} />
                   ))
                 )}
               </TableBody>
@@ -193,31 +129,7 @@ export default function TeamSection({ slug }: { slug: string }) {
 
         <div className="space-y-2">
           <Label>Pending Invites</Label>
-          <div className="divide-y">
-            {invites.length === 0 && !loading ? (
-              <div className="p-4 text-sm text-accent">No pending invites</div>
-            ) : (
-              invites.map((i) => (
-                <div
-                  key={i.id}
-                  className="p-4 flex items-center justify-between gap-4"
-                >
-                  <div className="min-w-0">
-                    <div className="font-medium truncate">{i.email}</div>
-                    <div className="text-xs text-accent">
-                      Expires {new Date(i.expiresAt).toLocaleDateString()}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm">{i.role}</span>
-                    <Button variant="ghost" onClick={() => handleRevoke(i.id)}>
-                      Revoke
-                    </Button>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
+          <InvitesList invites={invites} loading={loading} onRevoke={handleRevoke} />
         </div>
 
         <div className="pt-2 space-y-2">

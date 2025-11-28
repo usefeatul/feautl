@@ -3,7 +3,7 @@
 import React from "react"
 import { cn } from "@feedgot/ui/lib/utils"
 import { usePathname, useSearchParams } from "next/navigation"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { client } from "@feedgot/api/client"
 import { parseArrayParam } from "@/utils/request-filters"
 import { getSlugFromPath } from "@/config/nav"
@@ -18,16 +18,12 @@ export default function PostCountBadge({ className = "" }: { className?: string 
   const tags = parseArrayParam(sp.get("tag"))
   const search = sp.get("search") || ""
 
-  const storageKey = React.useMemo(() => {
-    const j = (arr: string[]) => arr.slice().sort().join(",")
-    return `fg:post-count:${slug}:${j(statuses)}:${j(boards)}:${j(tags)}:${(search || "").trim()}`
-  }, [slug, statuses, boards, tags, search])
+  const queryClient = useQueryClient()
+  const queryKey: (string | string[])[] = ["post-count", slug, statuses, boards, tags, search]
+  const seeded = queryClient.getQueryData<number>(queryKey as any)
 
-  const initialCount = typeof window !== "undefined" ? Number(window.localStorage.getItem(storageKey) || "0") : 0
-
-  const { data: count = initialCount } = useQuery<number, Error, number, (string | string[])[]>({
-
-    queryKey: ["post-count", slug, statuses, boards, tags, search],
+  const { data: count = seeded ?? 0 } = useQuery<number, Error, number, (string | string[])[]>({
+    queryKey,
     enabled: !!slug,
     queryFn: async () => {
       const res = await client.board.postCountByWorkspaceSlug.$get({
@@ -40,18 +36,12 @@ export default function PostCountBadge({ className = "" }: { className?: string 
       const data = await res.json()
       return Number(data?.count || 0)
     },
-    placeholderData: initialCount > 0 ? initialCount : undefined,
+    ...(seeded !== undefined ? { initialData: seeded } : {}),
     staleTime: 60_000,
     gcTime: 300_000,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
   })
-
-  React.useEffect(() => {
-    try {
-      if (count > 0) window.localStorage.setItem(storageKey, String(count))
-    } catch {}
-  }, [count, storageKey])
 
   if (count <= 0) return null
 

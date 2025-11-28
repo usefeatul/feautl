@@ -18,7 +18,15 @@ export default function PostCountBadge({ className = "" }: { className?: string 
   const tags = parseArrayParam(sp.get("tag"))
   const search = sp.get("search") || ""
 
-  const { data: count = 0, isFetching } = useQuery({
+  const storageKey = React.useMemo(() => {
+    const j = (arr: string[]) => arr.slice().sort().join(",")
+    return `fg:post-count:${slug}:${j(statuses)}:${j(boards)}:${j(tags)}:${(search || "").trim()}`
+  }, [slug, statuses, boards, tags, search])
+
+  const initialCount = typeof window !== "undefined" ? Number(window.localStorage.getItem(storageKey) || "0") : 0
+
+  const { data: count = initialCount } = useQuery<number, Error, number, (string | string[])[]>({
+
     queryKey: ["post-count", slug, statuses, boards, tags, search],
     enabled: !!slug,
     queryFn: async () => {
@@ -32,17 +40,24 @@ export default function PostCountBadge({ className = "" }: { className?: string 
       const data = await res.json()
       return Number(data?.count || 0)
     },
-    staleTime: 30_000,
+    placeholderData: initialCount > 0 ? initialCount : undefined,
+    staleTime: 60_000,
     gcTime: 300_000,
-    refetchOnMount: false,
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
   })
 
-  if (count <= 0 && !isFetching) return null
+  React.useEffect(() => {
+    try {
+      if (count > 0) window.localStorage.setItem(storageKey, String(count))
+    } catch {}
+  }, [count, storageKey])
+
+  if (count <= 0) return null
 
   return (
-    <span className={cn("inline-flex items-center gap-1 bg-muted rounded-full ring-1 ring-border px-2 py-1 text-xs tabular-nums", className)} aria-live="polite">
-      {isFetching ? "…" : count} {isFetching ? "" : count === 1 ? "Post" : "Posts"}
+    <span className={cn("inline-flex items-center gap-1 bg-muted rounded-md ring-1 ring-border px-2 py-2 text-xs tabular-nums text-accent", className)} aria-live="polite">
+      {count} {count === 1 ? "Post" : "Posts"}
     </span>
   )
 }

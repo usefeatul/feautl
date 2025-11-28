@@ -5,6 +5,7 @@ import { getWorkspaceBySlug, getWorkspacePosts, getWorkspacePostsCount, normaliz
 import { parseArrayParam } from "@/utils/request-filters"
 
 import RequestList from "@/components/requests/RequestList"
+import PostCountSeed from "@/components/requests/PostCountSeed"
 import RequestPagination from "@/components/requests/RequestPagination"
 import { createPageMetadata } from "@/lib/seo"
 
@@ -81,6 +82,7 @@ export default async function RequestsPage({ params, searchParams }: Props) {
 
   return (
     <section className="space-y-4">
+      <PostCountSeed slug={slug} statuses={statusFilter} boards={boardSlugs} tags={tagSlugs} search={search} count={totalCount} />
       <RequestList items={rows as any} workspaceSlug={slug} />
       <RequestPagination workspaceSlug={slug} page={page} pageSize={pageSize} totalCount={totalCount} />
     </section>

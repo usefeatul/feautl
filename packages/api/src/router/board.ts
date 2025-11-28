@@ -1,4 +1,5 @@
-import { eq, and, sql, inArray } from "drizzle-orm"
+// biome-ignore assist/source/organizeImports: <>
+import { eq, and, sql, inArray, type SQLWrapper } from "drizzle-orm"
 import { z } from "zod"
 import { j, publicProcedure, privateProcedure } from "../jstack"
 import { workspace, board, post, postTag, tag, comment, user, workspaceMember } from "@feedgot/db"
@@ -13,7 +14,7 @@ export function createBoardRouter() {
   return j.router({
     byWorkspaceSlug: publicProcedure
       .input(checkSlugInputSchema)
-      .get(async ({ ctx, input, c }: any) => {
+      .get(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id })
           .from(workspace)
@@ -51,7 +52,7 @@ export function createBoardRouter() {
 
     searchPostsByWorkspaceSlug: publicProcedure
       .input(z.object({ slug: checkSlugInputSchema.shape.slug, q: z.string().min(2).max(128) }))
-      .get(async ({ ctx, input, c }: any) => {
+      .get(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id })
           .from(workspace)
@@ -82,7 +83,7 @@ export function createBoardRouter() {
 
     postsByBoard: publicProcedure
       .input(byBoardInputSchema)
-      .get(async ({ ctx, input, c }: any) => {
+      .get(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id })
           .from(workspace)
@@ -113,7 +114,7 @@ export function createBoardRouter() {
           .from(post)
           .where(eq(post.boardId, b.id))
         const toAvatar = (seed?: string | null) => `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent((seed || 'anonymous').trim() || 'anonymous')}`
-        const withAvatars = postsList.map((p: any) => ({
+        const withAvatars = postsList.map((p: typeof post.$inferSelect) => ({
           ...p,
           authorImage: p.authorImage || toAvatar(p.id || p.slug),
         }))
@@ -122,7 +123,7 @@ export function createBoardRouter() {
 
     postDetail: publicProcedure
       .input(byIdSchema)
-      .get(async ({ ctx, input, c }: any) => {
+      .get(async ({ ctx, input, c }) => {
         const [p] = await ctx.db
           .select({
             id: post.id,
@@ -219,7 +220,7 @@ export function createBoardRouter() {
 
     tagsByWorkspaceSlug: publicProcedure
       .input(checkSlugInputSchema)
-      .get(async ({ ctx, input, c }: any) => {
+      .get(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id })
           .from(workspace)
@@ -255,7 +256,7 @@ export function createBoardRouter() {
           search: z.string().optional(),
         })
       )
-      .get(async ({ ctx, input, c }: any) => {
+      .get(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id })
           .from(workspace)
@@ -268,7 +269,7 @@ export function createBoardRouter() {
         const boardSlugs = (input.search ? [] : (input.boardSlugs || []).map((b: string) => String(b).trim().toLowerCase()).filter(Boolean))
         const tagSlugs = (input.tagSlugs || []).map((t: string) => String(t).trim().toLowerCase()).filter(Boolean)
 
-        const filters: any[] = [eq(board.workspaceId, ws.id), eq(board.isSystem, false)]
+        const filters: SQLWrapper[] = [eq(board.workspaceId, ws.id), eq(board.isSystem, false)]
         if (normalizedStatuses.length > 0) filters.push(inArray(post.roadmapStatus, normalizedStatuses))
         if (boardSlugs.length > 0) filters.push(inArray(board.slug, boardSlugs))
         if ((input.search || '').trim()) {
@@ -284,14 +285,14 @@ export function createBoardRouter() {
             .innerJoin(board, eq(post.boardId, board.id))
             .innerJoin(postTag, eq(postTag.postId, post.id))
             .innerJoin(tag, eq(postTag.tagId, tag.id))
-            .where(and(...filters, inArray(tag.slug, tagSlugs)) as any)
+            .where(and(...filters, inArray(tag.slug, tagSlugs)))
             .limit(1)
         } else {
           ;[row] = await ctx.db
             .select({ count: sql<number>`count(*)` })
             .from(post)
             .innerJoin(board, eq(post.boardId, board.id))
-            .where(and(...filters) as any)
+            .where(and(...filters))
             .limit(1)
         }
 
@@ -301,7 +302,7 @@ export function createBoardRouter() {
 
     updatePostMeta: privateProcedure
       .input(updatePostMetaSchema)
-      .post(async ({ ctx, input, c }: any) => {
+      .post(async ({ ctx, input, c }) => {
         const [p] = await ctx.db
           .select({ id: post.id, boardId: post.boardId })
           .from(post)
@@ -330,12 +331,12 @@ export function createBoardRouter() {
             .from(workspaceMember)
             .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
             .limit(1)
-          const perms = (member?.permissions || {}) as any
+          const perms = (member?.permissions || {}) as Record<string, boolean>
           if (member?.role === "admin" || perms?.canManageBoards || perms?.canModerateAllBoards) allowed = true
         }
         if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
-        const patch: any = {}
+        const patch: Partial<typeof post.$inferSelect> = {}
         if (input.roadmapStatus !== undefined) patch.roadmapStatus = input.roadmapStatus
         if (input.isPinned !== undefined) patch.isPinned = input.isPinned
         if (input.isLocked !== undefined) patch.isLocked = input.isLocked
@@ -349,7 +350,7 @@ export function createBoardRouter() {
 
     updatePostBoard: privateProcedure
       .input(updatePostBoardSchema)
-      .post(async ({ ctx, input, c }: any) => {
+      .post(async ({ ctx, input, c }) => {
         const [p] = await ctx.db
           .select({ id: post.id, boardId: post.boardId })
           .from(post)
@@ -385,7 +386,7 @@ export function createBoardRouter() {
             .from(workspaceMember)
             .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
             .limit(1)
-          const perms = (member?.permissions || {}) as any
+          const perms = (member?.permissions || {}) as Record<string, boolean>
           if (member?.role === "admin" || perms?.canManageBoards || perms?.canModerateAllBoards) allowed = true
         }
         if (!allowed) throw new HTTPException(403, { message: "Forbidden" })

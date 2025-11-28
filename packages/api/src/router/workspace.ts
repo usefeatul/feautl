@@ -60,7 +60,7 @@ export function createWorkspaceRouter() {
       ])
 
       const all = [...owned, ...member]
-      const map = new Map<string, any>()
+      const map = new Map<string, typeof all[0]>()
       for (const w of all) map.set(w.slug, w)
       c.header("Cache-Control", "private, max-age=30, stale-while-revalidate=300")
       return c.superjson({ workspaces: Array.from(map.values()) })

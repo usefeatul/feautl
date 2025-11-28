@@ -81,9 +81,9 @@ export function createTeamRouter() {
           .innerJoin(user, eq(workspaceMember.userId, user.id))
           .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.isActive, true)))
 
-        const members = rawMembers.map((m) => ({ ...m, isOwner: m.userId === ws.ownerId }))
+        const members = rawMembers.map((m: typeof rawMembers[number]) => ({ ...m, isOwner: m.userId === ws.ownerId }))
 
-        if (!members.some((m) => m.userId === ws.ownerId)) {
+        if (!members.some((m: { userId: string }) => m.userId === ws.ownerId)) {
           const [owner] = await ctx.db
             .select({ id: user.id, name: user.name, email: user.email, image: user.image })
             .from(user)
@@ -183,7 +183,7 @@ export function createTeamRouter() {
             backgroundColor: undefined,
             textColor: undefined,
           }
-          await sendWorkspaceInvite(input.email.trim().toLowerCase(), ws.name || "Workspace", url, brand as any)
+          await sendWorkspaceInvite(input.email.trim().toLowerCase(), ws.name || "Workspace", url, brand)
         } catch {}
 
         return c.superjson({ ok: true, token })
@@ -191,7 +191,7 @@ export function createTeamRouter() {
 
     listInvites: privateProcedure
       .input(listInvitesInputSchema)
-      .get(async ({ ctx, input, c }: any) => {
+      .get(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id, ownerId: workspace.ownerId })
           .from(workspace)
@@ -227,7 +227,7 @@ export function createTeamRouter() {
 
     revokeInvite: privateProcedure
       .input(revokeInviteInputSchema)
-      .post(async ({ ctx, input, c }: any) => {
+      .post(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id, ownerId: workspace.ownerId, plan: workspace.plan })
           .from(workspace)
@@ -243,7 +243,7 @@ export function createTeamRouter() {
           .limit(1)
         const allowed = me?.permissions?.canManageMembers || me?.role === "admin" || ws.ownerId === meId
         if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
-        const limits = getPlanLimits(ws.plan as any)
+        const limits = getPlanLimits(ws.plan as "free" | "pro" | "enterprise")
         const [mc] = await ctx.db
           .select({ count: sql<number>`count(*)` })
           .from(workspaceMember)
@@ -257,7 +257,7 @@ export function createTeamRouter() {
 
     updateRole: privateProcedure
       .input(updateMemberRoleInputSchema)
-      .post(async ({ ctx, input, c }: any) => {
+      .post(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id, ownerId: workspace.ownerId })
           .from(workspace)
@@ -285,7 +285,7 @@ export function createTeamRouter() {
 
     removeMember: privateProcedure
       .input(removeMemberInputSchema)
-      .post(async ({ ctx, input, c }: any) => {
+      .post(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id, ownerId: workspace.ownerId })
           .from(workspace)
@@ -323,7 +323,7 @@ export function createTeamRouter() {
 
     acceptInvite: privateProcedure
       .input(acceptInviteInputSchema)
-      .post(async ({ ctx, input, c }: any) => {
+      .post(async ({ ctx, input, c }) => {
         const [inv] = await ctx.db
           .select({ id: workspaceInvite.id, workspaceId: workspaceInvite.workspaceId, email: workspaceInvite.email, role: workspaceInvite.role, expiresAt: workspaceInvite.expiresAt, acceptedAt: workspaceInvite.acceptedAt })
           .from(workspaceInvite)
@@ -347,7 +347,7 @@ export function createTeamRouter() {
             .from(workspace)
             .where(eq(workspace.id, inv.workspaceId))
             .limit(1)
-          const limits = getPlanLimits((wsp?.plan || "free") as any)
+          const limits = getPlanLimits((wsp?.plan || "free") as "free" | "pro" | "enterprise")
           const [mc] = await ctx.db
             .select({ count: sql<number>`count(*)` })
             .from(workspaceMember)
@@ -358,7 +358,7 @@ export function createTeamRouter() {
             workspaceId: inv.workspaceId,
             userId: me.id,
             role: inv.role,
-            permissions: mapPermissions(inv.role as any),
+            permissions: mapPermissions(inv.role),
             joinedAt: new Date(),
           })
         }
@@ -373,7 +373,7 @@ export function createTeamRouter() {
 
     declineInvite: privateProcedure
       .input(acceptInviteInputSchema)
-      .post(async ({ ctx, input, c }: any) => {
+      .post(async ({ ctx, input, c }) => {
         const [inv] = await ctx.db
           .select({ id: workspaceInvite.id, email: workspaceInvite.email, expiresAt: workspaceInvite.expiresAt })
           .from(workspaceInvite)
@@ -391,7 +391,7 @@ export function createTeamRouter() {
 
     inviteByToken: privateProcedure
       .input(acceptInviteInputSchema)
-      .get(async ({ ctx, input, c }: any) => {
+      .get(async ({ ctx, input, c }) => {
         const [inv] = await ctx.db
           .select({ id: workspaceInvite.id, workspaceId: workspaceInvite.workspaceId, email: workspaceInvite.email, role: workspaceInvite.role, expiresAt: workspaceInvite.expiresAt, acceptedAt: workspaceInvite.acceptedAt, invitedBy: workspaceInvite.invitedBy })
           .from(workspaceInvite)
@@ -411,14 +411,14 @@ export function createTeamRouter() {
         const [inviter] = await ctx.db
           .select({ name: user.name, email: user.email })
           .from(user)
-          .where(eq(user.id, inv.invitedBy as any))
+          .where(inv.invitedBy ? eq(user.id, inv.invitedBy) : sql`false`)
           .limit(1)
         return c.superjson({ invite: { workspaceName: ws?.name || "Workspace", workspaceLogo: ws?.logo || null, role: inv.role, invitedByName: inviter?.name || inviter?.email || null } })
       }),
 
     addExisting: privateProcedure
       .input(addExistingMemberInputSchema)
-      .post(async ({ ctx, input, c }: any) => {
+      .post(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id, ownerId: workspace.ownerId })
           .from(workspace)

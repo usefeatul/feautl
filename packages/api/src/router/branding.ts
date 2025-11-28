@@ -10,7 +10,7 @@ export function createBrandingRouter() {
   return j.router({
     byWorkspaceSlug: publicProcedure
       .input(checkSlugInputSchema)
-      .get(async ({ ctx, input, c }: any) => {
+      .get(async ({ ctx, input, c }) => {
         const [row] = await ctx.db
           .select({
             id: brandingConfig.id,
@@ -33,16 +33,16 @@ export function createBrandingRouter() {
 
     update: privateProcedure
       .input(updateBrandingInputSchema)
-      .post(async ({ ctx, input, c }: any) => {
+      .post(async ({ ctx, input, c }) => {
         const [ws] = await ctx.db
           .select({ id: workspace.id, plan: workspace.plan })
           .from(workspace)
           .where(eq(workspace.slug, input.slug))
           .limit(1)
         if (!ws) return c.json({ ok: false })
-        const limits = getPlanLimits(ws.plan as any)
+        const limits = getPlanLimits(ws.plan as "free" | "pro" | "enterprise")
 
-        const update: Record<string, any> = {}
+        const update: Record<string, unknown> = {}
         if (!limits.allowBranding) {
           if (typeof input.logoUrl !== "undefined" || typeof input.primaryColor !== "undefined" || typeof input.showLogo !== "undefined" || typeof input.showWorkspaceName !== "undefined") throw new HTTPException(403, { message: "Branding not available on current plan" })
         }

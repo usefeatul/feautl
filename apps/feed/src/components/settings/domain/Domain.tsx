@@ -83,18 +83,16 @@ export default function DomainSection({ slug }: { slug: string }) {
             </div>
           ) : (
             <div className="flex items-center justify-between rounded-md border p-3">
-              <span className="text-sm text-accent">No custom domain configured</span>
+              <span className="text-sm">{`https://${slug}.feedgot.com`}</span>
               <Button type="button" variant="quiet" onClick={() => setOpen(true)} disabled={loading || !canUse}>Add domain</Button>
             </div>
           )}
 
-          {info?.host ? (
-            <div className="flex items-center justify-start">
-              <Button variant="quiet" asChild>
-                <a href={`https://${info.host}`} target="_blank" rel="noopener noreferrer">Visit</a>
-              </Button>
-            </div>
-          ) : null}
+          <div className="flex items-center justify-start">
+            <Button variant="quiet" asChild>
+              <a href={info?.host ? `https://${info.host}` : `https://${slug}.feedgot.com`} target="_blank" rel="noopener noreferrer">Visit</a>
+            </Button>
+          </div>
         </div>
 
         <div className="space-y-2">
@@ -120,17 +118,6 @@ export default function DomainSection({ slug }: { slug: string }) {
               </Table>
             )}
           </div>
-        </div>
-
-        <div className="pt-2 space-y-2">
-          <div className="text-sm text-accent">Add a custom domain to your workspace.</div>
-          <div className="flex items-center justify-start">
-            <Button type="button" variant="quiet" onClick={() => setOpen(true)} disabled={loading || !canUse || Boolean(info?.host)}>
-              Add domain
-            </Button>
-          </div>
-          {!canUse ? <div className="text-xs text-muted-foreground">Custom domains are available on Starter and Professional plans.</div> : null}
-          <AddDomainDialog open={open} onOpenChange={setOpen} onSave={(v) => handleCreate(v)} />
         </div>
       </div>
     </SectionCard>

@@ -36,7 +36,7 @@ export default function RequestPagination({ workspaceSlug, page, pageSize, total
   }, [workspaceSlug, page, pageSize, totalCount, params, mk])
 
   return (
-    <div className="mt-4 mb-4 flex w-full flex-col items-stretch justify-center gap-2 sm:mb-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+    <div className="mt-2 mb-2 flex w-full flex-col items-stretch justify-center gap-2 sm:mb-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
       <div className="order-2 w-full text-center text-sm text-accent tabular-nums sm:order-1 sm:w-auto sm:text-left" />
 
       <div className="order-1 flex min-w-0 w-full flex-wrap items-center justify-center gap-2 sm:order-2 sm:w-auto sm:justify-start">
@@ -47,7 +47,7 @@ export default function RequestPagination({ workspaceSlug, page, pageSize, total
           <Link prefetch={false} href={prevHref} rel="prev" aria-label="Previous page">Prev</Link>
         </Button>
         <span className="text-xs text-accent tabular-nums">
-          Page {Math.min(page, totalPages)} of {totalPages}
+          Page {Math.min(page, totalPages)} of {totalPages} 
         </span>
         <Button asChild variant="quiet" size="xs" disabled={page >= totalPages || totalCount === 0}>
           <Link prefetch={false} href={nextHref} rel="next" aria-label="Next page">Next</Link>
@@ -69,7 +69,7 @@ export default function RequestPagination({ workspaceSlug, page, pageSize, total
                 prefetch={false}
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={`rounded-md border px-2 py-1 text-xs ${active ? "bg-card text-foreground" : "bg-muted text-accent hover:text-primary"}`}
+                className={`rounded-sm border px-2 py-1 text-xs ${active ? "bg-card text-foreground" : "bg-muted text-accent hover:text-primary"}`}
               >
                 {s}
               </Link>

@@ -26,6 +26,7 @@ const interactive =
         },
         size: {
           default: "h-8 px-2 py-2 has-[>svg]:px-3",
+          xs: "h-7 rounded-md gap-1 px-2 has-[>svg]:px-2 text-xs",
           sm: "h-9 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
           lg: "h-10 rounded-md px-4 has-[>svg]:px-3",
           icon: "size-9",

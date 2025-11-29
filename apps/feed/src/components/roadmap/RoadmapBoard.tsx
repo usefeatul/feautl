@@ -33,12 +33,16 @@ function statusLabel(s: string) {
   return t.charAt(0).toUpperCase() + t.slice(1)
 }
 
-// Droppable and Draggable have been extracted into dedicated components for clarity
 
 export default function RoadmapBoard({ workspaceSlug, items: initialItems }: { workspaceSlug: string; items: Item[] }) {
   const [items, setItems] = React.useState<Item[]>(() => initialItems)
   const [activeId, setActiveId] = React.useState<string | null>(null)
   const [savingId, setSavingId] = React.useState<string | null>(null)
+  const [collapsedByStatus, setCollapsedByStatus] = React.useState<Record<string, boolean>>(() => {
+    const acc: Record<string, boolean> = {}
+    for (const s of STATUSES) acc[s] = false
+    return acc
+  })
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }))
   const queryClient = useQueryClient()
@@ -101,25 +105,36 @@ export default function RoadmapBoard({ workspaceSlug, items: initialItems }: { w
         onDragStart={({ active }) => handleDragStart(String(active.id))}
         onDragEnd={({ over }) => onDragEnd(over?.id as string | undefined)}
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4">
+        <div className="flex flex-col gap-4 md:flex-row md:flex-wrap">
           {STATUSES.map((s) => {
             const itemsForStatus = grouped[s]
             return (
-              <RoadmapColumn key={s} id={s} label={statusLabel(s)} count={itemsForStatus?.length ?? 0}>
-                {(itemsForStatus || []).map((it) => {
-                  const isSaving = savingId === it.id
-                  return (
-                    <RoadmapDraggable key={it.id} id={it.id}>
-                      <div className="flex items-center gap-2 min-w-0">
-                        <div className="flex-1 min-w-0">
-                          <RoadmapRequestItem item={{ id: it.id, title: it.title, slug: it.slug, roadmapStatus: it.roadmapStatus, content: it.content }} workspaceSlug={workspaceSlug} />
+              <div
+                key={s}
+                className={`w-full ${collapsedByStatus[s] ? "md:basis-44 md:grow-0 md:shrink-0" : "md:flex-1 md:min-w-0"}`}
+              >
+                <RoadmapColumn
+                  id={s}
+                  label={statusLabel(s)}
+                  count={itemsForStatus?.length ?? 0}
+                  collapsed={!!collapsedByStatus[s]}
+                  onToggle={(next) => setCollapsedByStatus((prev) => ({ ...prev, [s]: next }))}
+                >
+                  {(itemsForStatus || []).map((it) => {
+                    const isSaving = savingId === it.id
+                    return (
+                      <RoadmapDraggable key={it.id} id={it.id}>
+                        <div className="flex items-center gap-2 min-w-0">
+                          <div className="flex-1 min-w-0">
+                            <RoadmapRequestItem item={{ id: it.id, title: it.title, slug: it.slug, roadmapStatus: it.roadmapStatus, content: it.content }} workspaceSlug={workspaceSlug} />
+                          </div>
+                          {isSaving ? <span className="ml-2 text-[11px] text-accent">Saving…</span> : null}
                         </div>
-                        {isSaving ? <span className="ml-2 text-[11px] text-accent">Saving…</span> : null}
-                      </div>
-                    </RoadmapDraggable>
-                  )
-                })}
-              </RoadmapColumn>
+                      </RoadmapDraggable>
+                    )
+                  })}
+                </RoadmapColumn>
+              </div>
             )
           })}
         </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@feedgot/ui/lib/utils";
 import type { NavItem } from "../../types/nav";
@@ -42,7 +41,6 @@ export default function Sidebar({
         name: string;
         slug: string;
         logo?: string | null;
-        customDomain?: string | null;
       }
     | undefined;
   initialWorkspaces?:
@@ -54,21 +52,37 @@ export default function Sidebar({
   const slug = getSlugFromPath(pathname);
 
   const primaryNav = React.useMemo(() => buildTopNav(slug), [slug]);
-  const { data: wsInfo } = useQuery({
+  const { data: wsInfo } = useQuery<{
+    id: string;
+    name: string;
+    slug: string;
+    logo?: string | null;
+    domain?: string | null;
+    customDomain?: string | null;
+  } | null>({
     queryKey: ["workspace", slug],
     queryFn: async () => {
-      if (!slug) return null as any;
+      if (!slug) return null;
       const res = await client.workspace.bySlug.$get({ slug });
-      const data = await res.json();
-      return (data as any)?.workspace || null;
+      const data = (await res.json()) as {
+        workspace: {
+          id: string;
+          name: string;
+          slug: string;
+          logo?: string | null;
+          domain?: string | null;
+          customDomain?: string | null;
+        } | null;
+      };
+      return data.workspace;
     },
     enabled: !!slug,
     staleTime: 60_000,
     gcTime: 300_000,
     refetchOnMount: false,
-    initialData: initialWorkspace as any,
+    initialData: null,
   });
-  const customDomain = (wsInfo as any)?.customDomain || null;
+  const customDomain = wsInfo?.customDomain ?? null;
   const middleNav = React.useMemo(
     () => buildMiddleNav(slug, customDomain),
     [slug, customDomain]
@@ -76,13 +90,13 @@ export default function Sidebar({
   const [hotkeysActive, setHotkeysActive] = useState(false);
   useSidebarHotkeys(hotkeysActive, middleNav, router);
 
-  const { data: statusCounts } = useQuery({
+  const { data: statusCounts } = useQuery<Record<string, number> | null>({
     queryKey: ["status-counts", slug],
     queryFn: async () => {
-      if (!slug) return null as any;
+      if (!slug) return null;
       const res = await client.workspace.statusCounts.$get({ slug });
-      const data = await res.json();
-      return (data?.counts || null) as Record<string, number> | null;
+      const data = (await res.json()) as { counts?: Record<string, number> };
+      return data?.counts || null;
     },
     enabled: !!slug,
     staleTime: 300_000,
@@ -116,8 +130,8 @@ export default function Sidebar({
         </div>
         <WorkspaceSwitcher
           className="mt-3"
-          initialWorkspace={initialWorkspace as any}
-          initialWorkspaces={initialWorkspaces as any}
+          initialWorkspace={initialWorkspace}
+          initialWorkspaces={initialWorkspaces}
         />
         <Timezone
           className="mt-2"

@@ -56,6 +56,19 @@ export default function DomainSection({ slug }: { slug: string }) {
         toast.error(result.message || "Verify failed");
       } else if (result.status === "verified") {
         toast.success("Domain verified");
+        if (info?.host) {
+          type WsDetails = {
+            id: string;
+            name: string;
+            slug: string;
+            logo?: string | null;
+            domain?: string | null;
+            customDomain?: string | null;
+          } | null;
+          queryClient.setQueryData<WsDetails>(["workspace", slug], (prev) =>
+            prev ? { ...prev, customDomain: info.host } : prev
+          );
+        }
       } else {
         toast.info("Records not found yet. Still pending.");
       }

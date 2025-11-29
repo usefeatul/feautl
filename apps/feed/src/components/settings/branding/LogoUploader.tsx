@@ -10,9 +10,10 @@ type Props = {
   slug: string
   value?: string
   onChange: (url: string) => void
+  disabled?: boolean
 }
 
-export default function LogoUploader({ slug, value = "", onChange }: Props) {
+export default function LogoUploader({ slug, value = "", onChange, disabled = false }: Props) {
   const [preview, setPreview] = React.useState<string>(value || "")
   const [uploading, setUploading] = React.useState(false)
 
@@ -28,9 +29,16 @@ export default function LogoUploader({ slug, value = "", onChange }: Props) {
     "image/svg+xml",
   ], [])
 
-  const pick = () => inputRef.current?.click()
+  const pick = () => {
+    if (disabled) return
+    inputRef.current?.click()
+  }
 
   const onFile = async (file: File) => {
+    if (disabled) {
+      toast.error("Upgrade to change logo")
+      return
+    }
     if (!allowed.includes(file.type)) {
       toast.error("Unsupported file type")
       return
@@ -82,7 +90,7 @@ export default function LogoUploader({ slug, value = "", onChange }: Props) {
 
   return (
     <div
-      className="relative w-8 h-8 rounded-md bg-muted border ring-1 ring-border overflow-hidden cursor-pointer"
+      className={`relative w-8 h-8 rounded-md bg-muted border ring-1 ring-border overflow-hidden ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
       onClick={pick}
       onDrop={onDrop}
       onDragOver={onDragOver}
@@ -95,6 +103,7 @@ export default function LogoUploader({ slug, value = "", onChange }: Props) {
         }
       }}
       aria-label="Upload workspace logo"
+      aria-disabled={disabled}
     >
       {preview ? (
         <Image

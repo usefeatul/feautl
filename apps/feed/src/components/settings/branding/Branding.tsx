@@ -1,117 +1,165 @@
-"use client"
+"use client";
 
-import React from "react"
-import SectionCard from "../global/SectionCard"
-import PlanNotice from "../global/PlanNotice"
-import { LoadingButton } from "@/components/loading-button"
-import { loadBrandingBySlug, saveBranding, updateWorkspaceName } from "./service"
-import { toast } from "sonner"
-import { Switch } from "@feedgot/ui/components/switch"
-import { Badge } from "@feedgot/ui/components/badge"
-import { BRANDING_COLORS, findColorByPrimary, applyBrandPrimary } from "../../../types/colors"
-import ColorPicker from "./ColorPicker"
-import ThemePicker from "./ThemePicker"
-import LogoUploader from "./LogoUploader"
-import { setWorkspaceLogo } from "@/lib/branding-store"
-import { Input } from "@feedgot/ui/components/input"
-import { useQueryClient } from "@tanstack/react-query"
-import { client } from "@feedgot/api/client"
+import React from "react";
+import SectionCard from "../global/SectionCard";
+import PlanNotice from "../global/PlanNotice";
+import { LoadingButton } from "@/components/loading-button";
+import {
+  loadBrandingBySlug,
+  saveBranding,
+  updateWorkspaceName,
+} from "./service";
+import { toast } from "sonner";
+import { Switch } from "@feedgot/ui/components/switch";
+import {
+  BRANDING_COLORS,
+  findColorByPrimary,
+  applyBrandPrimary,
+} from "../../../types/colors";
+import ColorPicker from "./ColorPicker";
+import ThemePicker from "./ThemePicker";
+import LogoUploader from "./LogoUploader";
+import { setWorkspaceLogo } from "@/lib/branding-store";
+import { Input } from "@feedgot/ui/components/input";
+import { useQueryClient } from "@tanstack/react-query";
+import { client } from "@feedgot/api/client";
+import {  getPlanLimits } from "@/lib/plan";
 
 export default function BrandingSection({ slug }: { slug: string }) {
-  const [logoUrl, setLogoUrl] = React.useState("")
-  const [primaryColor, setPrimaryColor] = React.useState("#3b82f6")
-  const [accentColor, setAccentColor] = React.useState("#60a5fa")
-  const [colorKey, setColorKey] = React.useState<string>("blue")
-  const [theme, setTheme] = React.useState<"light" | "dark" | "system">("system")
-  const [hidePoweredBy, setHidePoweredBy] = React.useState<boolean>(false)
-  const [saving, setSaving] = React.useState(false)
-  const [loading, setLoading] = React.useState(true)
-  const [workspaceName, setWorkspaceName] = React.useState("")
-  const originalNameRef = React.useRef<string>("")
-  const queryClient = useQueryClient()
+  const [logoUrl, setLogoUrl] = React.useState("");
+  const [primaryColor, setPrimaryColor] = React.useState("#3b82f6");
+  const [accentColor, setAccentColor] = React.useState("#60a5fa");
+  const [colorKey, setColorKey] = React.useState<string>("blue");
+  const [theme, setTheme] = React.useState<"light" | "dark" | "system">(
+    "system"
+  );
+  const [hidePoweredBy, setHidePoweredBy] = React.useState<boolean>(false);
+  const [saving, setSaving] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [workspaceName, setWorkspaceName] = React.useState("");
+  const originalNameRef = React.useRef<string>("");
+  const queryClient = useQueryClient();
+  const [plan, setPlan] = React.useState<string>("free");
 
   React.useEffect(() => {
-    let mounted = true
+    let mounted = true;
     void (async () => {
       try {
-        const conf = await loadBrandingBySlug(slug)
+        const conf = await loadBrandingBySlug(slug);
         if (mounted && conf) {
-          setLogoUrl(conf.logoUrl || "")
-          const currentPrimary = conf.primaryColor || "#3b82f6"
-          const found = findColorByPrimary(currentPrimary) || BRANDING_COLORS[1]
-          setPrimaryColor(currentPrimary)
-          setAccentColor(conf.accentColor || (found && found.accent) || "#60a5fa")
-          setColorKey(found ? found.key : "blue")
-          if (conf.theme === "light" || conf.theme === "dark" || conf.theme === "system") setTheme(conf.theme)
-          setHidePoweredBy(Boolean(conf.hidePoweredBy))
+          setLogoUrl(conf.logoUrl || "");
+          const currentPrimary = conf.primaryColor || "#3b82f6";
+          const found =
+            findColorByPrimary(currentPrimary) || BRANDING_COLORS[1];
+          setPrimaryColor(currentPrimary);
+          setAccentColor(
+            conf.accentColor || (found && found.accent) || "#60a5fa"
+          );
+          setColorKey(found ? found.key : "blue");
+          if (
+            conf.theme === "light" ||
+            conf.theme === "dark" ||
+            conf.theme === "system"
+          )
+            setTheme(conf.theme);
+          setHidePoweredBy(Boolean(conf.hidePoweredBy));
         }
         try {
-          const res = await client.workspace.bySlug.$get({ slug })
-          const d = await res.json()
-          const n = String((d as { workspace?: { name?: string } })?.workspace?.name || "")
+          const res = await client.workspace.bySlug.$get({ slug });
+          const d = await res.json();
+          const w = (d as { workspace?: { name?: string; plan?: string } })
+            ?.workspace;
+          const n = String(w?.name || "");
           if (mounted) {
-            setWorkspaceName(n)
-            originalNameRef.current = n
+            setWorkspaceName(n);
+            originalNameRef.current = n;
+            setPlan(String(w?.plan || "free"));
           }
         } catch {}
-      } catch (e) {}
-      finally {
-        if (mounted) setLoading(false)
+      } catch (e) {
+      } finally {
+        if (mounted) setLoading(false);
       }
-    })()
-    return () => { mounted = false }
-  }, [slug])
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [slug]);
 
   const handleSave = async () => {
-    if (saving) return
-    setSaving(true)
-    const root = document.documentElement
-    const prevP = getComputedStyle(root).getPropertyValue("--primary").trim()
-    const p = primaryColor.trim()
-    const a = accentColor.trim()
-    applyBrandPrimary(p)
+    if (saving) return;
+    setSaving(true);
+    const root = document.documentElement;
+    const prevP = getComputedStyle(root).getPropertyValue("--primary").trim();
+    const p = primaryColor.trim();
+    const limits = getPlanLimits(plan);
+    const canBranding = limits.allowBranding === true;
+    const canHidePoweredBy = limits.allowHidePoweredBy === true;
+    if (canBranding) applyBrandPrimary(p);
     try {
-      const nameChanged = workspaceName.trim() && workspaceName.trim() !== originalNameRef.current
+      const nameChanged =
+        workspaceName.trim() &&
+        workspaceName.trim() !== originalNameRef.current;
       if (nameChanged) {
-        const r = await updateWorkspaceName(slug, workspaceName.trim())
-        if (!r.ok) throw new Error(r.message || "Update failed")
-        originalNameRef.current = workspaceName.trim()
+        const r = await updateWorkspaceName(slug, workspaceName.trim());
+        if (!r.ok) throw new Error(r.message || "Update failed");
+        originalNameRef.current = workspaceName.trim();
         try {
-          queryClient.setQueryData(["workspace", slug], (prev: any) => prev ? { ...prev, name: workspaceName.trim() } : prev)
+          queryClient.setQueryData(["workspace", slug], (prev: any) =>
+            prev ? { ...prev, name: workspaceName.trim() } : prev
+          );
           queryClient.setQueryData(["workspaces"], (prev: any) => {
-            const list = Array.isArray(prev) ? prev : (prev?.workspaces || [])
-            const next = list.map((w: any) => (w?.slug === slug ? { ...w, name: workspaceName.trim() } : w))
-            return (prev && prev.workspaces) ? { ...prev, workspaces: next } : next
-          })
+            const list = Array.isArray(prev) ? prev : prev?.workspaces || [];
+            const next = list.map((w: any) =>
+              w?.slug === slug ? { ...w, name: workspaceName.trim() } : w
+            );
+            return prev && prev.workspaces
+              ? { ...prev, workspaces: next }
+              : next;
+          });
         } catch {}
       }
-
-      const result = await saveBranding(slug, { logoUrl: logoUrl.trim(), primaryColor: p, accentColor: a, theme, hidePoweredBy })
-      if (!result.ok) throw new Error(result.message || "Update failed")
-      if (logoUrl.trim()) setWorkspaceLogo(slug, logoUrl.trim())
-      toast.success("Settings updated")
+      const brandingInput: any = {};
+      if (canBranding) {
+        if (logoUrl.trim()) brandingInput.logoUrl = logoUrl.trim();
+        brandingInput.primaryColor = p;
+      }
+      brandingInput.theme = theme;
+      if (canHidePoweredBy) brandingInput.hidePoweredBy = hidePoweredBy;
+      const result = await saveBranding(slug, brandingInput);
+      if (!result.ok) throw new Error(result.message || "Update failed");
+      if (logoUrl.trim() && canBranding) setWorkspaceLogo(slug, logoUrl.trim());
+      toast.success("Settings updated");
     } catch (e: any) {
-      applyBrandPrimary(prevP || "#3b82f6")
-      toast.error(e?.message || "Failed to update branding")
+      if (canBranding) applyBrandPrimary(prevP || "#3b82f6");
+      toast.error(e?.message || "Failed to update settings");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   return (
     <SectionCard title="Branding" description="Change your brand settings.">
-      
       <div className="divide-y mt-2">
         <div className="flex items-center justify-between p-4">
           <div className="text-sm">Workspace Name</div>
           <div className="w-full max-w-md flex items-center justify-end">
-            <Input value={workspaceName} onChange={(e) => setWorkspaceName(e.target.value)} className="h-9 w-[220px] text-right" />
+            <Input
+              value={workspaceName}
+              onChange={(e) => setWorkspaceName(e.target.value)}
+              className="h-9 w-[220px] text-right"
+            />
           </div>
         </div>
         <div className="flex items-center justify-between p-4">
           <div className="text-sm">Logo</div>
           <div className="w-full max-w-md flex items-center justify-end">
-            <LogoUploader slug={slug} value={logoUrl} onChange={setLogoUrl} />
+            <LogoUploader
+              slug={slug}
+              value={logoUrl}
+              onChange={setLogoUrl}
+              disabled={!getPlanLimits(plan).allowBranding}
+            />
           </div>
         </div>
         <div className="flex items-center justify-between p-4">
@@ -120,11 +168,12 @@ export default function BrandingSection({ slug }: { slug: string }) {
             <ColorPicker
               valueHex={primaryColor}
               onSelect={(c) => {
-                setColorKey(c.key)
-                setPrimaryColor(c.primary)
-                setAccentColor(c.accent)
-                applyBrandPrimary(c.primary)
+                setColorKey(c.key);
+                setPrimaryColor(c.primary);
+                setAccentColor(c.accent);
+                applyBrandPrimary(c.primary);
               }}
+              disabled={!getPlanLimits(plan).allowBranding}
             />
           </div>
         </div>
@@ -136,24 +185,28 @@ export default function BrandingSection({ slug }: { slug: string }) {
         </div>
 
         <div className="flex items-center justify-between p-4">
-          <div className="text-sm text-muted-foreground">Hide "Powered by" Branding</div>
+          <div className="text-sm text-muted-foreground">
+            Hide "Powered by" Branding
+          </div>
           <div className="w-full max-w-md flex items-center justify-end">
-            <Switch checked={hidePoweredBy} onCheckedChange={(v) => setHidePoweredBy(Boolean(v))} aria-label="Hide Powered by" />
+            <Switch
+              checked={hidePoweredBy}
+              onCheckedChange={(v) => setHidePoweredBy(Boolean(v))}
+              aria-label="Hide Powered by"
+              disabled={!getPlanLimits(plan).allowHidePoweredBy}
+            />
           </div>
         </div>
       </div>
-
-      <div className="p-4">
-        <Badge variant="outline">Changes may be limited depending on plan.</Badge>
-      </div>
-
       <div className="p-4">
         <PlanNotice slug={slug} feature="branding" />
       </div>
 
       <div className="px-4 pb-4">
-        <LoadingButton onClick={handleSave} loading={saving} disabled={loading}>Save</LoadingButton>
+        <LoadingButton onClick={handleSave} loading={saving} disabled={loading}>
+          Save
+        </LoadingButton>
       </div>
     </SectionCard>
-  )
+  );
 }

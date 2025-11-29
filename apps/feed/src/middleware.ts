@@ -16,9 +16,12 @@ export async function middleware(req: NextRequest) {
   const reservedSubdomains = new Set(["www", "app"]) 
 
   if (subdomain && !reservedSubdomains.has(subdomain)) {
-    const url = req.nextUrl.clone()
-    url.pathname = `/subdomain/${subdomain}${pathname === "/" ? "" : pathname}`
-    return NextResponse.rewrite(url)
+    if (pathname === "/") {
+      const url = req.nextUrl.clone()
+      url.pathname = `/${subdomain}/${subdomain}`
+      return NextResponse.rewrite(url)
+    }
+    return NextResponse.next()
   }
 
   if (!isMainDomain && hostNoPort.startsWith("feedback.")) {
@@ -42,7 +45,8 @@ export async function middleware(req: NextRequest) {
       if (targetSlug) {
         if (pathname === "/") {
           const url = req.nextUrl.clone()
-          url.pathname = `/workspaces/${targetSlug}`
+          const label = "feedback"
+          url.pathname = `/${label}/${targetSlug}`
           return NextResponse.rewrite(url)
         }
         return NextResponse.next()

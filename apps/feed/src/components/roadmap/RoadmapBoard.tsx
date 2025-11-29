@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { DndContext, useSensor, useSensors, PointerSensor } from "@dnd-kit/core"
+import { DndContext, useSensor, useSensors, PointerSensor, DragOverlay } from "@dnd-kit/core"
 import { client } from "@feedgot/api/client"
 import { toast } from "sonner"
 import RoadmapRequestItem from "@/components/roadmap/RoadmapRequestItem"
@@ -123,7 +123,7 @@ export default function RoadmapBoard({ workspaceSlug, items: initialItems }: { w
                   {(itemsForStatus || []).map((it) => {
                     const isSaving = savingId === it.id
                     return (
-                      <RoadmapDraggable key={it.id} id={it.id}>
+                      <RoadmapDraggable key={it.id} id={it.id} isDragging={activeId === it.id}>
                         <div className="flex items-center gap-2 min-w-0">
                           <div className="flex-1 min-w-0">
                             <RoadmapRequestItem item={{ id: it.id, title: it.title, slug: it.slug, roadmapStatus: it.roadmapStatus, content: it.content }} workspaceSlug={workspaceSlug} />
@@ -138,6 +138,24 @@ export default function RoadmapBoard({ workspaceSlug, items: initialItems }: { w
             )
           })}
         </div>
+        <DragOverlay dropAnimation={null}>
+          {activeId ? (
+            <div className="rounded-md border bg-background px-3 py-2 shadow-lg pointer-events-none">
+              {(() => {
+                const it = items.find((i) => i.id === activeId)
+                if (!it) return null
+                return (
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="flex-1 min-w-0">
+                      <RoadmapRequestItem item={{ id: it.id, title: it.title, slug: it.slug, roadmapStatus: it.roadmapStatus, content: it.content }} workspaceSlug={workspaceSlug} />
+                    </div>
+                    {savingId === it.id ? <span className="ml-2 text-[11px] text-accent">Saving…</span> : null}
+                  </div>
+                )
+              })()}
+            </div>
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </section>
   )

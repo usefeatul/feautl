@@ -35,18 +35,25 @@ function statusLabel(s: string) {
 }
 
 
-export default function RoadmapBoard({ workspaceSlug, items: initialItems }: { workspaceSlug: string; items: Item[] }) {
+export default function RoadmapBoard({ workspaceSlug, items: initialItems, initialCollapsedByStatus }: { workspaceSlug: string; items: Item[]; initialCollapsedByStatus?: Record<string, boolean> }) {
   const [items, setItems] = React.useState<Item[]>(() => initialItems)
   const [activeId, setActiveId] = React.useState<string | null>(null)
   const [savingId, setSavingId] = React.useState<string | null>(null)
   const [collapsedByStatus, setCollapsedByStatus] = React.useState<Record<string, boolean>>(() => {
     const acc: Record<string, boolean> = {}
-    for (const s of STATUSES) acc[s] = false
+    for (const s of STATUSES) acc[s] = !!initialCollapsedByStatus?.[s]
     return acc
   })
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }))
   const queryClient = useQueryClient()
+
+  React.useEffect(() => {
+    try {
+      const encoded = STATUSES.map((s) => (collapsedByStatus[s] ? "1" : "0")).join("")
+      document.cookie = `rdmpc:${workspaceSlug}=${encoded}; path=/; max-age=31536000`
+    } catch {}
+  }, [collapsedByStatus, workspaceSlug])
 
   React.useEffect(() => {
     try {

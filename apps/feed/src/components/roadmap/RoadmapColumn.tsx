@@ -13,6 +13,7 @@ export default function RoadmapColumn({
   collapsed,
   onToggle,
   children,
+  disableMotion,
 }: {
   id: string
   label: string
@@ -20,6 +21,7 @@ export default function RoadmapColumn({
   collapsed?: boolean
   onToggle?: (next: boolean) => void
   children: React.ReactNode
+  disableMotion?: boolean
 }) {
   const { setNodeRef, isOver } = useDroppable({ id })
 
@@ -28,7 +30,8 @@ export default function RoadmapColumn({
       ref={setNodeRef}
       className={`rounded-md border overflow-hidden transition-all ${isOver ? "border-green-500 ring-2 ring-green-300" : "bg-card"}`}
       layout
-      transition={{ type: "tween", ease: "easeOut", duration: 0.12 }}
+      initial={false}
+      transition={{ type: "tween", ease: "easeOut", duration: disableMotion ? 0 : 0.12 }}
     >
       <div
         className={`${collapsed ? "px-2 py-2 relative flex flex-col items-center gap-2" : "px-3 py-2 flex items-center justify-between"} cursor-pointer`}
@@ -63,10 +66,10 @@ export default function RoadmapColumn({
         {!collapsed ? (
           <motion.ul
             className={`p-3 space-y-2 min-h-24`}
-            initial={{ height: 0, opacity: 0 }}
+            initial={false}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ type: "tween", ease: "easeOut", duration: 0.1 }}
+            transition={{ type: "tween", ease: "easeOut", duration: disableMotion ? 0 : 0.1 }}
           >
             {children}
             {isOver ? (
@@ -76,7 +79,7 @@ export default function RoadmapColumn({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.08 }}
+                transition={{ duration: disableMotion ? 0 : 0.08 }}
               />
             ) : null}
           </motion.ul>

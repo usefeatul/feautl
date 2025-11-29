@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { createPageMetadata } from "@/lib/seo"
 import { getWorkspacePosts } from "@/lib/workspace"
 import RoadmapBoard from "@/components/roadmap/RoadmapBoard"
+import { readInitialCollapsedByStatus } from "@/lib/roadmap"
 
 export const dynamic = "force-dynamic"
 
@@ -22,5 +23,7 @@ export default async function RoadmapPage({ params }: Props) {
 
   const rows = await getWorkspacePosts(slug, { limit: 5000 })
 
-  return <RoadmapBoard workspaceSlug={slug} items={rows as any} />
+  const initialCollapsedByStatus = readInitialCollapsedByStatus(slug)
+
+  return <RoadmapBoard workspaceSlug={slug} items={rows as any} initialCollapsedByStatus={await initialCollapsedByStatus} />
 }

@@ -118,7 +118,6 @@ export default function DomainSection({ slug }: { slug: string }) {
       description="Create a custom domain for your workspace."
     >
       <div className="space-y-6">
-        <PlanNotice slug={slug} feature="domain" plan={plan} />
         <div className="space-y-2">
           {info?.host ? (
             <div className="flex items-center justify-between rounded-md border p-3">
@@ -179,6 +178,8 @@ export default function DomainSection({ slug }: { slug: string }) {
           onSave={(v) => handleCreate(v)}
           saving={createMutation.isPending}
         />
+
+        <PlanNotice slug={slug} feature="domain" plan={plan} />
       </div>
     </SectionCard>
   );

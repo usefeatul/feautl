@@ -3,7 +3,6 @@
 import React from "react"
 import SectionCard from "../global/SectionCard"
 import PlanNotice from "../global/PlanNotice"
-import { Input } from "@feedgot/ui/components/input"
 import { LoadingButton } from "@/components/loading-button"
 import { loadBrandingBySlug, saveBranding } from "./service"
 import { toast } from "sonner"
@@ -71,9 +70,7 @@ export default function BrandingSection({ slug }: { slug: string }) {
 
   return (
     <SectionCard title="Branding" description="Change your brand settings.">
-      <div className="space-y-4">
-        <PlanNotice slug={slug} feature="branding" />
-      </div>
+      
       <div className="divide-y mt-2">
         <div className="flex items-center justify-between p-4">
           <div className="text-sm">Logo</div>
@@ -113,6 +110,10 @@ export default function BrandingSection({ slug }: { slug: string }) {
 
       <div className="p-4">
         <Badge variant="outline">Changes may be limited depending on plan.</Badge>
+      </div>
+
+      <div className="p-4">
+        <PlanNotice slug={slug} feature="branding" />
       </div>
 
       <div className="px-4 pb-4">

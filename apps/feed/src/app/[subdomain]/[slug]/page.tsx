@@ -2,28 +2,13 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { db, workspace } from "@feedgot/db"
 import { eq } from "drizzle-orm"
-import { createPageMetadata } from "@/lib/seo"
-import { getWorkspaceBySlug } from "@/lib/workspace"
+import { createWorkspaceMetadata } from "@/lib/seo"
 
 export const dynamic = "force-dynamic"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const ws = await getWorkspaceBySlug(slug)
-  const title = ws?.name || "Workspace"
-  const baseUrl = ws?.customDomain ? `https://${ws.customDomain}` : `https://${slug}.feedgot.com`
-  const meta = createPageMetadata({
-    title,
-    description: ws?.domain ? `Feedback for ${ws.domain}` : title,
-    path: "/",
-    image: ws?.logo || undefined,
-    absoluteTitle: true,
-    baseUrl,
-  })
-  return {
-    ...meta,
-    ...(ws?.logo ? { icons: { icon: [ws.logo], shortcut: [ws.logo], apple: [ws.logo] } } : {}),
-  }
+  return createWorkspaceMetadata(slug)
 }
 
 export default async function SitePage({ params }: { params: Promise<{ slug: string }> }) {

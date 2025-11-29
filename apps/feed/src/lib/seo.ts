@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { SITE_URL, DEFAULT_OG_IMAGE, DEFAULT_TITLE } from '@/config/seo'
+import { getWorkspaceBySlug } from '@/lib/workspace'
 
 function normalizePath(path?: string) {
   if (!path) return '/'
@@ -73,5 +74,23 @@ export function createArticleMetadata({ title, description, path, image, absolut
       description,
       images: [img],
     },
+  }
+}
+
+export async function createWorkspaceMetadata(slug: string): Promise<Metadata> {
+  const ws = await getWorkspaceBySlug(slug)
+  const title = ws?.name || 'Workspace'
+  const baseUrl = ws?.customDomain ? `https://${ws.customDomain}` : `https://${slug}.feedgot.com`
+  const meta = createPageMetadata({
+    title,
+    description: ws?.domain ? `Feedback for ${ws.domain}` : title,
+    path: '/',
+    image: ws?.logo || undefined,
+    absoluteTitle: true,
+    baseUrl,
+  })
+  return {
+    ...meta,
+    ...(ws?.logo ? { icons: { icon: [ws.logo], shortcut: [ws.logo], apple: [ws.logo] } } : {}),
   }
 }

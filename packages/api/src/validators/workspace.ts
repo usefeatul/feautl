@@ -40,3 +40,8 @@ export const verifyDomainInputSchema = z.object({
   slug: slugSchema,
   checkDns: z.boolean().default(true),
 })
+
+export const updateWorkspaceNameInputSchema = z.object({
+  slug: slugSchema,
+  name: z.string().trim().min(1).max(64),
+})

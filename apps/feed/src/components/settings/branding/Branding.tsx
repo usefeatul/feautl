@@ -4,7 +4,7 @@ import React from "react"
 import SectionCard from "../global/SectionCard"
 import PlanNotice from "../global/PlanNotice"
 import { LoadingButton } from "@/components/loading-button"
-import { loadBrandingBySlug, saveBranding } from "./service"
+import { loadBrandingBySlug, saveBranding, updateWorkspaceName } from "./service"
 import { toast } from "sonner"
 import { Switch } from "@feedgot/ui/components/switch"
 import { Badge } from "@feedgot/ui/components/badge"
@@ -13,6 +13,9 @@ import ColorPicker from "./ColorPicker"
 import ThemePicker from "./ThemePicker"
 import LogoUploader from "./LogoUploader"
 import { setWorkspaceLogo } from "@/lib/branding-store"
+import { Input } from "@feedgot/ui/components/input"
+import { useQueryClient } from "@tanstack/react-query"
+import { client } from "@feedgot/api/client"
 
 export default function BrandingSection({ slug }: { slug: string }) {
   const [logoUrl, setLogoUrl] = React.useState("")
@@ -23,6 +26,9 @@ export default function BrandingSection({ slug }: { slug: string }) {
   const [hidePoweredBy, setHidePoweredBy] = React.useState<boolean>(false)
   const [saving, setSaving] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
+  const [workspaceName, setWorkspaceName] = React.useState("")
+  const originalNameRef = React.useRef<string>("")
+  const queryClient = useQueryClient()
 
   React.useEffect(() => {
     let mounted = true
@@ -39,6 +45,15 @@ export default function BrandingSection({ slug }: { slug: string }) {
           if (conf.theme === "light" || conf.theme === "dark" || conf.theme === "system") setTheme(conf.theme)
           setHidePoweredBy(Boolean(conf.hidePoweredBy))
         }
+        try {
+          const res = await client.workspace.bySlug.$get({ slug })
+          const d = await res.json()
+          const n = String((d as { workspace?: { name?: string } })?.workspace?.name || "")
+          if (mounted) {
+            setWorkspaceName(n)
+            originalNameRef.current = n
+          }
+        } catch {}
       } catch (e) {}
       finally {
         if (mounted) setLoading(false)
@@ -56,10 +71,25 @@ export default function BrandingSection({ slug }: { slug: string }) {
     const a = accentColor.trim()
     applyBrandPrimary(p)
     try {
+      const nameChanged = workspaceName.trim() && workspaceName.trim() !== originalNameRef.current
+      if (nameChanged) {
+        const r = await updateWorkspaceName(slug, workspaceName.trim())
+        if (!r.ok) throw new Error(r.message || "Update failed")
+        originalNameRef.current = workspaceName.trim()
+        try {
+          queryClient.setQueryData(["workspace", slug], (prev: any) => prev ? { ...prev, name: workspaceName.trim() } : prev)
+          queryClient.setQueryData(["workspaces"], (prev: any) => {
+            const list = Array.isArray(prev) ? prev : (prev?.workspaces || [])
+            const next = list.map((w: any) => (w?.slug === slug ? { ...w, name: workspaceName.trim() } : w))
+            return (prev && prev.workspaces) ? { ...prev, workspaces: next } : next
+          })
+        } catch {}
+      }
+
       const result = await saveBranding(slug, { logoUrl: logoUrl.trim(), primaryColor: p, accentColor: a, theme, hidePoweredBy })
       if (!result.ok) throw new Error(result.message || "Update failed")
       if (logoUrl.trim()) setWorkspaceLogo(slug, logoUrl.trim())
-      toast.success("Branding updated")
+      toast.success("Settings updated")
     } catch (e: any) {
       applyBrandPrimary(prevP || "#3b82f6")
       toast.error(e?.message || "Failed to update branding")
@@ -72,6 +102,12 @@ export default function BrandingSection({ slug }: { slug: string }) {
     <SectionCard title="Branding" description="Change your brand settings.">
       
       <div className="divide-y mt-2">
+        <div className="flex items-center justify-between p-4">
+          <div className="text-sm">Workspace Name</div>
+          <div className="w-full max-w-md flex items-center justify-end">
+            <Input value={workspaceName} onChange={(e) => setWorkspaceName(e.target.value)} className="h-9 w-[220px] text-right" />
+          </div>
+        </div>
         <div className="flex items-center justify-between p-4">
           <div className="text-sm">Logo</div>
           <div className="w-full max-w-md flex items-center justify-end">

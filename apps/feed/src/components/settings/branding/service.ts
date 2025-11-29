@@ -28,3 +28,14 @@ export async function getLogoUploadUrl(slug: string, fileName: string, contentTy
   const data = await res.json()
   return { uploadUrl: data.uploadUrl, key: data.key, publicUrl: data.publicUrl }
 }
+
+export async function updateWorkspaceName(slug: string, name: string): Promise<{ ok: boolean; message?: string; name?: string }> {
+  const res = await client.workspace.updateName.$post({ slug, name })
+  let message: string | undefined
+  let data: any
+  try {
+    data = await res.json()
+    message = (data as any)?.message
+  } catch {}
+  return { ok: res.ok, message, name: (data as any)?.name }
+}

@@ -2,7 +2,7 @@ import { HTTPException } from "hono/http-exception"
 import { eq, and, sql } from "drizzle-orm"
 import { j, privateProcedure, publicProcedure } from "../jstack"
 import { workspace, workspaceMember, board, brandingConfig, tag, post, workspaceDomain } from "@feedgot/db"
-import { createWorkspaceInputSchema, checkSlugInputSchema, updateCustomDomainInputSchema, createDomainInputSchema, verifyDomainInputSchema } from "../validators/workspace"
+import { createWorkspaceInputSchema, checkSlugInputSchema, updateCustomDomainInputSchema, createDomainInputSchema, verifyDomainInputSchema, updateWorkspaceNameInputSchema } from "../validators/workspace"
 import { Resolver } from "node:dns/promises"
 import { normalizeStatus } from "../shared/status"
 import { addDomainToProject, removeDomainFromProject } from "../services/vercel"
@@ -367,6 +367,33 @@ export function createWorkspaceRouter() {
           }
           await ctx.db.update(workspace).set({ customDomain: null, updatedAt: new Date() }).where(eq(workspace.id, ws.id))
           return c.superjson({ ok: true })
+        }),
+
+      updateName: privateProcedure
+        .input(updateWorkspaceNameInputSchema)
+        .post(async ({ ctx, input, c }) => {
+          const [ws] = await ctx.db
+            .select({ id: workspace.id, ownerId: workspace.ownerId })
+            .from(workspace)
+            .where(eq(workspace.slug, input.slug))
+            .limit(1)
+          if (!ws) return c.json({ ok: false })
+
+          const meId = ctx.session.user.id
+          let allowed = ws.ownerId === meId
+          if (!allowed) {
+            const [me] = await ctx.db
+              .select({ id: workspaceMember.id, permissions: workspaceMember.permissions })
+              .from(workspaceMember)
+              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
+              .limit(1)
+            allowed = Boolean(me) && Boolean((me as any)?.permissions?.canManageWorkspace === true)
+          }
+          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+
+          const name = input.name.trim()
+          await ctx.db.update(workspace).set({ name, updatedAt: new Date() }).where(eq(workspace.id, ws.id))
+          return c.superjson({ ok: true, name })
         }),
   })
 }

@@ -15,11 +15,26 @@ import {
 import MobileBottomBar from "./MobileBottomBar";
 import MobileDrawerContent from "./MobileDrawerContent";
 
-export default function MobileSidebar({ className = "", initialCounts, initialTimezone, initialServerNow, initialWorkspace, initialWorkspaces }: { className?: string; initialCounts?: Record<string, number>; initialTimezone?: string | null; initialServerNow?: number; initialWorkspace?: { id: string; name: string; slug: string; logo?: string | null } | undefined; initialWorkspaces?: { id: string; name: string; slug: string; logo?: string | null }[] | undefined }) {
+export default function MobileSidebar({ className = "", initialCounts, initialTimezone, initialServerNow, initialWorkspace, initialWorkspaces }: { className?: string; initialCounts?: Record<string, number>; initialTimezone?: string | null; initialServerNow?: number; initialWorkspace?: { id: string; name: string; slug: string; logo?: string | null; customDomain?: string | null } | undefined; initialWorkspaces?: { id: string; name: string; slug: string; logo?: string | null }[] | undefined }) {
   const pathname = usePathname() || "/";
   const slug = getSlugFromPath(pathname);
   const primaryNav = React.useMemo(() => buildTopNav(slug), [slug]);
-  const middleNav = React.useMemo(() => buildMiddleNav(slug), [slug]);
+  const { data: wsInfo } = useQuery({
+    queryKey: ["workspace", slug],
+    queryFn: async () => {
+      if (!slug) return null as any;
+      const res = await client.workspace.bySlug.$get({ slug });
+      const data = await res.json();
+      return (data as any)?.workspace || null;
+    },
+    enabled: !!slug,
+    staleTime: 60_000,
+    gcTime: 300_000,
+    refetchOnMount: false,
+    initialData: initialWorkspace as any,
+  });
+  const customDomain = (wsInfo as any)?.customDomain || null;
+  const middleNav = React.useMemo(() => buildMiddleNav(slug, customDomain), [slug, customDomain]);
   const secondaryNav = buildBottomNav();
   const { data: statusCounts } = useQuery({
     queryKey: ["status-counts", slug],

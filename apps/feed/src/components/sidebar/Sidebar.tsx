@@ -11,23 +11,68 @@ import {
   buildBottomNav,
   getSlugFromPath,
 } from "../../config/nav";
-import { useSidebarHotkeys, getShortcutForLabel } from "../../utils/useSidebarHotkeys";
+import {
+  useSidebarHotkeys,
+  getShortcutForLabel,
+} from "../../utils/useSidebarHotkeys";
 import WorkspaceSwitcher from "./WorkspaceSwitcher";
 import SignOutButton from "@/components/auth/SignOutButton";
 import Timezone from "./Timezone";
 import SidebarItem from "./SidebarItem";
 import SidebarSection from "./SidebarSection";
 import { useQuery } from "@tanstack/react-query";
-import { client } from "@feedgot/api/client"
+import { client } from "@feedgot/api/client";
 const secondaryNav: NavItem[] = buildBottomNav();
 
-export default function Sidebar({ className = "", initialCounts, initialTimezone, initialServerNow, initialWorkspace, initialWorkspaces }: { className?: string; initialCounts?: Record<string, number>; initialTimezone?: string | null; initialServerNow?: number; initialWorkspace?: { id: string; name: string; slug: string; logo?: string | null } | undefined; initialWorkspaces?: { id: string; name: string; slug: string; logo?: string | null }[] | undefined }) {
+export default function Sidebar({
+  className = "",
+  initialCounts,
+  initialTimezone,
+  initialServerNow,
+  initialWorkspace,
+  initialWorkspaces,
+}: {
+  className?: string;
+  initialCounts?: Record<string, number>;
+  initialTimezone?: string | null;
+  initialServerNow?: number;
+  initialWorkspace?:
+    | {
+        id: string;
+        name: string;
+        slug: string;
+        logo?: string | null;
+        customDomain?: string | null;
+      }
+    | undefined;
+  initialWorkspaces?:
+    | { id: string; name: string; slug: string; logo?: string | null }[]
+    | undefined;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const slug = getSlugFromPath(pathname);
 
   const primaryNav = React.useMemo(() => buildTopNav(slug), [slug]);
-  const middleNav = React.useMemo(() => buildMiddleNav(slug), [slug]);
+  const { data: wsInfo } = useQuery({
+    queryKey: ["workspace", slug],
+    queryFn: async () => {
+      if (!slug) return null as any;
+      const res = await client.workspace.bySlug.$get({ slug });
+      const data = await res.json();
+      return (data as any)?.workspace || null;
+    },
+    enabled: !!slug,
+    staleTime: 60_000,
+    gcTime: 300_000,
+    refetchOnMount: false,
+    initialData: initialWorkspace as any,
+  });
+  const customDomain = (wsInfo as any)?.customDomain || null;
+  const middleNav = React.useMemo(
+    () => buildMiddleNav(slug, customDomain),
+    [slug, customDomain]
+  );
   const [hotkeysActive, setHotkeysActive] = useState(false);
   useSidebarHotkeys(hotkeysActive, middleNav, router);
 
@@ -69,18 +114,38 @@ export default function Sidebar({ className = "", initialCounts, initialTimezone
           <img src="/logo.svg" alt="feedback" className="h-6 w-6" />
           <div className="text-md font-semibold">feedgot</div>
         </div>
-        <WorkspaceSwitcher className="mt-3" initialWorkspace={initialWorkspace as any} initialWorkspaces={initialWorkspaces as any} />
-        <Timezone className="mt-2" initialTimezone={initialTimezone} initialServerNow={initialServerNow} />
+        <WorkspaceSwitcher
+          className="mt-3"
+          initialWorkspace={initialWorkspace as any}
+          initialWorkspaces={initialWorkspaces as any}
+        />
+        <Timezone
+          className="mt-2"
+          initialTimezone={initialTimezone}
+          initialServerNow={initialServerNow}
+        />
       </div>
       <SidebarSection title="REQUEST">
         {primaryNav.map((item) => (
-          <SidebarItem key={item.label} item={item} pathname={pathname} count={statusCounts ? statusCounts[statusKey(item.label)] : undefined} />
+          <SidebarItem
+            key={item.label}
+            item={item}
+            pathname={pathname}
+            count={
+              statusCounts ? statusCounts[statusKey(item.label)] : undefined
+            }
+          />
         ))}
       </SidebarSection>
 
       <SidebarSection title="WORKSPACE" className="mt-4">
         {middleNav.map((item) => (
-          <SidebarItem key={item.label} item={item} pathname={pathname} shortcut={getShortcutForLabel(item.label)} />
+          <SidebarItem
+            key={item.label}
+            item={item}
+            pathname={pathname}
+            shortcut={getShortcutForLabel(item.label)}
+          />
         ))}
       </SidebarSection>
 

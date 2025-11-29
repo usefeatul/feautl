@@ -16,8 +16,9 @@ function w(slug: string, p: string) {
   return slug ? `/workspaces/${slug}${p}` : `/workspaces${p}`
 }
 
-function publicBoardUrl(slug: string) {
+function publicBoardUrlForWorkspace(slug: string, customDomain?: string | null) {
   const s = (slug || "").trim()
+  if (customDomain && customDomain.trim()) return `https://${customDomain.trim()}`
   if (!s) return "https://feedgot.com"
   return `https://${s}.feedgot.com`
 }
@@ -43,11 +44,11 @@ export function buildTopNav(slug: string): NavItem[] {
   ]
 }
 
-export function buildMiddleNav(slug: string): NavItem[] {
+export function buildMiddleNav(slug: string, customDomain?: string | null): NavItem[] {
   return [
     { label: "Roadmap", href: w(slug, "/roadmap"), icon: RoadmapIcon },
     { label: "Changelog", href: w(slug, "/changelog"), icon: ChangelogIcon },
-    { label: "My Board", href: publicBoardUrl(slug), icon: BoardIcon, external: true },
+    { label: "My Board", href: publicBoardUrlForWorkspace(slug, customDomain), icon: BoardIcon, external: true },
     { label: "Settings", href: w(slug, "/settings/branding"), icon: SettingIcon },
   ]
 }

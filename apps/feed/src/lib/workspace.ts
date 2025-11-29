@@ -48,9 +48,9 @@ export function normalizeStatus(s: string): string {
   return map[t] || raw
 }
 
-export async function getWorkspaceBySlug(slug: string): Promise<{ id: string; name: string; slug: string; logo?: string | null; domain?: string | null } | null> {
+export async function getWorkspaceBySlug(slug: string): Promise<{ id: string; name: string; slug: string; logo?: string | null; domain?: string | null; customDomain?: string | null } | null> {
   const [ws] = await db
-    .select({ id: workspace.id, name: workspace.name, slug: workspace.slug, logo: workspace.logo, domain: workspace.domain })
+    .select({ id: workspace.id, name: workspace.name, slug: workspace.slug, logo: workspace.logo, domain: workspace.domain, customDomain: workspace.customDomain })
     .from(workspace)
     .where(eq(workspace.slug, slug))
     .limit(1)

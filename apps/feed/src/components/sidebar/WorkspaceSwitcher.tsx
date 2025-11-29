@@ -37,6 +37,7 @@ export default function WorkspaceSwitcher({
   const pathname = usePathname();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const slug = getSlugFromPath(pathname || "");
   const { data: workspaces = [] } = useQuery({
     queryKey: ["workspaces"],
     queryFn: async () => {
@@ -50,37 +51,31 @@ export default function WorkspaceSwitcher({
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
-  const [currentDetails, setCurrentDetails] = React.useState<Ws | null>(initialWorkspace || null);
+  const { data: wsInfo } = useQuery<Ws | null>({
+    queryKey: ["workspace", slug],
+    queryFn: async () => {
+      if (!slug) return null;
+      const res = await client.workspace.bySlug.$get({ slug });
+      const d = await res.json();
+      const w = (d as { workspace?: Ws | null })?.workspace;
+      return (w || null) as Ws | null;
+    },
+    enabled: !!slug,
+    staleTime: 60_000,
+    gcTime: 300_000,
+    refetchOnMount: false,
+    initialData: initialWorkspace || null,
+  });
   const [open, setOpen] = React.useState(false);
-  const slug = getSlugFromPath(pathname || "");
   const liveLogo = useWorkspaceLogo(slug || "");
-
-  React.useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        if (!slug) return;
-        const detailRes = await client.workspace.bySlug.$get({ slug });
-        if (!active) return;
-        const detailData = await detailRes.json();
-        setCurrentDetails(detailData?.workspace || null);
-      } catch {
-        if (!active) return;
-        setCurrentDetails(null);
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, [slug]);
-
+  
   const current = React.useMemo(() => {
     return workspaces.find((w) => w.slug === slug) || null;
   }, [workspaces, slug]);
   const currentLogo: string | null =
-    liveLogo ?? currentDetails?.logo ?? current?.logo ?? null;
+    liveLogo ?? wsInfo?.logo ?? current?.logo ?? null;
   const currentName =
-    currentDetails?.name ?? current?.name ?? (slug || "Current");
+    wsInfo?.name ?? current?.name ?? (slug || "Current");
   const all = workspaces;
 
   const handleSelectWorkspace = React.useCallback(

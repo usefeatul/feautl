@@ -1,12 +1,13 @@
 "use client"
 
 import React from "react"
-import { DndContext, useSensor, useSensors, PointerSensor, useDroppable, useDraggable } from "@dnd-kit/core"
-import { CSS } from "@dnd-kit/utilities"
+import { DndContext, useSensor, useSensors, PointerSensor } from "@dnd-kit/core"
 import { client } from "@feedgot/api/client"
 import { toast } from "sonner"
 import RoadmapRequestItem from "@/components/roadmap/RoadmapRequestItem"
 import { useQueryClient } from "@tanstack/react-query"
+import RoadmapColumn from "@/components/roadmap/RoadmapColumn"
+import RoadmapDraggable from "@/components/roadmap/RoadmapDraggable"
 
 type Item = {
   id: string
@@ -32,25 +33,7 @@ function statusLabel(s: string) {
   return t.charAt(0).toUpperCase() + t.slice(1)
 }
 
-function Droppable({ id, children }: { id: string; children: (ref: (el: any) => void) => React.ReactNode }) {
-  const { setNodeRef } = useDroppable({ id })
-  return children(setNodeRef)
-}
-
-function RoadmapDraggable({ id, children, className = "" }: { id: string; children: React.ReactNode; className?: string }) {
-  const { setNodeRef, listeners, attributes, transform } = useDraggable({ id })
-  return (
-    <li
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      style={{ transform: transform ? CSS.Translate.toString(transform) : undefined }}
-      className={"rounded-md border bg-background px-3 py-2 overflow-hidden " + className}
-    >
-      {children}
-    </li>
-  )
-}
+// Droppable and Draggable have been extracted into dedicated components for clarity
 
 export default function RoadmapBoard({ workspaceSlug, items: initialItems }: { workspaceSlug: string; items: Item[] }) {
   const [items, setItems] = React.useState<Item[]>(() => initialItems)
@@ -122,31 +105,21 @@ export default function RoadmapBoard({ workspaceSlug, items: initialItems }: { w
           {STATUSES.map((s) => {
             const itemsForStatus = grouped[s]
             return (
-              <Droppable key={s} id={s}>
-                {(ref) => (
-              <div ref={ref} className="rounded-md border bg-card">
-                <div className="px-3 py-2 border-b flex items-center justify-between">
-                  <div className="text-sm font-medium">{statusLabel(s)}</div>
-                  <div className="text-xs text-accent tabular-nums">{itemsForStatus?.length ?? 0}</div>
-                </div>
-                <ul className="p-3 space-y-2 min-h-24">
-                  {(itemsForStatus || []).map((it) => {
-                    const isSaving = savingId === it.id
-                    return (
-                      <RoadmapDraggable key={it.id} id={it.id}>
-                        <div className="flex items-center gap-2 min-w-0">
-                          <div className="flex-1 min-w-0">
-                            <RoadmapRequestItem item={{ id: it.id, title: it.title, slug: it.slug, roadmapStatus: it.roadmapStatus, content: it.content }} workspaceSlug={workspaceSlug} />
-                          </div>
-                          {isSaving ? <span className="ml-2 text-[11px] text-accent">Saving…</span> : null}
+              <RoadmapColumn key={s} id={s} label={statusLabel(s)} count={itemsForStatus?.length ?? 0}>
+                {(itemsForStatus || []).map((it) => {
+                  const isSaving = savingId === it.id
+                  return (
+                    <RoadmapDraggable key={it.id} id={it.id}>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className="flex-1 min-w-0">
+                          <RoadmapRequestItem item={{ id: it.id, title: it.title, slug: it.slug, roadmapStatus: it.roadmapStatus, content: it.content }} workspaceSlug={workspaceSlug} />
                         </div>
-                      </RoadmapDraggable>
-                    )
-                  })}
-                </ul>
-              </div>
-                )}
-              </Droppable>
+                        {isSaving ? <span className="ml-2 text-[11px] text-accent">Saving…</span> : null}
+                      </div>
+                    </RoadmapDraggable>
+                  )
+                })}
+              </RoadmapColumn>
             )
           })}
         </div>

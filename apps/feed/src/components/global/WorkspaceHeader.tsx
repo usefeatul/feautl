@@ -29,7 +29,7 @@ export default function WorkspaceHeader() {
   if (!title && !show) return null
 
   return (
-    <div className="mt-3.5">
+    <div className="mt-4 mb-2">
       <div className="flex items-center justify-between">
         {title ? (
           <div className="flex items-center gap-2">

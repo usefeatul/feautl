@@ -129,7 +129,7 @@ export default function DomainSection({ slug }: { slug: string }) {
             </div>
           )}
 
-          <div className="flex items-center justify-start">
+          <div className="flex items-center mt-3 justify-start">
             <a
               href={
                 info?.host

@@ -23,4 +23,5 @@ export const WORKSPACE_TITLES: Record<string, string> = {
   settings: "Settings",
   system: "System",
   requests: "Requests",
+  account: "Account",
 }

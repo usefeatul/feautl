@@ -15,7 +15,7 @@ import {
   getShortcutForLabel,
 } from "../../utils/useSidebarHotkeys";
 import WorkspaceSwitcher from "./WorkspaceSwitcher";
-import SignOutButton from "@/components/auth/SignOutButton";
+import UserDropdown from "@/components/account/UserDropdown";
 import Image from "next/image";
 import Timezone from "./Timezone";
 import SidebarItem from "./SidebarItem";
@@ -168,7 +168,7 @@ export default function Sidebar({
         {secondaryNav.map((item) => (
           <SidebarItem key={item.label} item={item} pathname={pathname} />
         ))}
-        <SignOutButton />
+        <UserDropdown />
       </SidebarSection>
     </aside>
   );

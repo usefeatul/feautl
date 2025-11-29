@@ -9,7 +9,7 @@ import SidebarItem from "./SidebarItem";
 import SidebarSection from "./SidebarSection";
 import WorkspaceSwitcher from "./WorkspaceSwitcher";
 import Timezone from "./Timezone";
-import SignOutButton from "@/components/auth/SignOutButton";
+import UserDropdown from "@/components/account/UserDropdown";
 
 export default function MobileDrawerContent({
   pathname,
@@ -58,7 +58,7 @@ export default function MobileDrawerContent({
           {secondaryNav.map((item) => (
             <SidebarItem key={item.label} item={item} pathname={pathname} />
           ))}
-          <SignOutButton />
+          <UserDropdown />
         </SidebarSection>
       </ScrollArea>
     </DrawerContent>

@@ -39,7 +39,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "**/*.d.ts"
-  ],
+, "../../packages/ui/src/components/cardElements.tsx"  ],
   "exclude": [
     "node_modules"
   ]

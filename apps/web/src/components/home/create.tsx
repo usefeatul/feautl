@@ -10,8 +10,8 @@ import {
   Underline,
 } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@feedgot/ui/components/toggle-group";
-import { cn } from "@/lib/utils";
-import { CardAccent, CardTag, AccentBar } from "./cardElements";
+import { cn } from "@feedgot/ui/lib/utils";
+import { CardAccent, CardTag, AccentBar } from "@feedgot/ui/components/cardElements";
 import { ChartIcon } from "@feedgot/ui/icons/chart";
 import { UsersIcon } from "@feedgot/ui/icons/users";
 import { SetupIcon } from "@feedgot/ui/icons/setup";

@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn } from "@feedgot/ui/lib/utils"; 
 import {
   ToggleGroup,
   ToggleGroupItem,
@@ -19,7 +19,7 @@ import { ChartIcon } from "@feedgot/ui/icons/chart";
 import { UsersIcon } from "@feedgot/ui/icons/users";
 import { SetupIcon } from "@feedgot/ui/icons/setup";
 import { AiIcon } from "@feedgot/ui/icons/ai";
-import { CardAccent, CardTag, AccentBar } from "./cardElements";
+import { CardAccent, CardTag, AccentBar } from "@feedgot/ui/components/cardElements";
 
 export default function FeaturesSection() {
   return (

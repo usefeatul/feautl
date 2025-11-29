@@ -2,7 +2,7 @@ import { Container } from "../global/container";
 import { ChartIcon } from "@feedgot/ui/icons/chart";
 import { LoveIcon } from "@feedgot/ui/icons/love";
 import { SetupIcon } from "@feedgot/ui/icons/setup";
-import { AccentBar } from "./cardElements";
+import { AccentBar } from "@feedgot/ui/components/cardElements";
 
 export default function Listening() {
   return (

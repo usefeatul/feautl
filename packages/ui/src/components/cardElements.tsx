@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@feedgot/ui/lib/utils"; 
 
 export const CardAccent = ({ children }: { children: ReactNode }) => (
   <p className="text-accent mt-1 text-sm sm:text-base">{children}</p>

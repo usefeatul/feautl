@@ -24,13 +24,14 @@ export default function Security() {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   })
-  const currentToken = (meSession as any)?.token || ""
+  const currentToken = String(((meSession as any)?.session?.token || (meSession as any)?.token || ""))
 
   const { data: sessions, isFetching } = useQuery<{ token: string; userAgent?: string | null; ipAddress?: string | null; createdAt?: string; expiresAt?: string }[] | null>({
     queryKey: ["sessions"],
     queryFn: async () => {
       const list = await authClient.listSessions()
-      return (list as any) || []
+      const arr = Array.isArray(list) ? list : ((list as any)?.data || [])
+      return arr
     },
     staleTime: 60_000,
     refetchOnWindowFocus: false,
@@ -61,6 +62,7 @@ export default function Security() {
       if (token && token === currentToken) {
         await authClient.signOut()
         toast.success("Signed out")
+        router.replace(`/auth/sign-in?redirect=${encodeURIComponent(pathname)}`)
       } else {
         await authClient.revokeSession({ token })
         toast.success("Session removed")

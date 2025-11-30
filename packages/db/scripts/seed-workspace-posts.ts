@@ -2,10 +2,10 @@ import 'dotenv/config'
 import { db, post, board, workspace, user } from '../index'
 import { eq, inArray } from 'drizzle-orm'
 
-const WORKSPACE_ID = 'b79a3aff-dde5-4801-b3ca-0a0bb2699122'
-const FEATURE_BOARD_ID = '95e6b631-6588-43c3-a845-43caba020590'
-const BUGS_BOARD_ID = '9aa1f4b1-b201-4ea7-9573-15b47d13e6a6'
-const USER_ID = 'hceLhgm3gq85VRWZb58vAgfOTxUzNrTl'
+const WORKSPACE_ID = '16da3674-3060-414a-a5f9-8f168ceaf336'
+const FEATURE_BOARD_ID = 'a7ccff27-cc5a-4354-8342-6ad90712d3e7'
+const BUGS_BOARD_ID = '0ab08aa1-ad9f-43e3-9e34-7047609d097e'
+const USER_ID = '6B1aIk6VJbwS6LQoKyAElBID9O00kVPQ'
 
 function slugify(s: string) {
   return s

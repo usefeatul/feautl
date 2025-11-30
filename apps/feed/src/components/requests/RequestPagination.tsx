@@ -17,7 +17,7 @@ export default function RequestPagination({ workspaceSlug, page, pageSize, total
   const params = useSearchParams()
   const mk = variant === "workspace" ? buildWorkspaceUrl : buildRequestsUrl
 
-  const sizes = [10, 20, 50, 100]
+  const sizes = [10, 15, 20, 50, 100]
 
   if (totalCount <= pageSize) return null
 

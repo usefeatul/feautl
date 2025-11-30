@@ -75,7 +75,7 @@ export function createBoardRouter() {
           .innerJoin(board, eq(post.boardId, board.id))
           .where(and(eq(board.workspaceId, ws.id), eq(board.isSystem, false), sql`(${post.title} ilike ${wildcard} or ${post.content} ilike ${wildcard})`))
           .orderBy(sql`least(100, ${post.upvotes}) desc`, sql`${post.createdAt} desc`)
-          .limit(20)
+          .limit(15)
 
         c.header("Cache-Control", "public, max-age=5, stale-while-revalidate=60")
         return c.superjson({ posts: rows })

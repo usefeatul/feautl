@@ -19,7 +19,7 @@ export default async function WorkspacePage({ params, searchParams }: Props) {
       sp = await searchParams;
     } catch {}
   }
-  const pageSize = Math.max(Number((sp as any).pageSize) || 20, 1);
+  const pageSize = Math.max(Number((sp as any).pageSize) || 15, 1);
   const page = Math.max(Number((sp as any).page) || 1, 1);
   const offset = (page - 1) * pageSize;
 

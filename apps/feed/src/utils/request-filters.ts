@@ -33,7 +33,7 @@ export function buildRequestsUrl(
   const order = overrides.order || prev.get("order") || "newest"
   const search = overrides.search ?? prev.get("search") ?? ""
   const page = overrides.page != null ? String(overrides.page) : prev.get("page") || "1"
-  const pageSize = overrides.pageSize != null ? String(overrides.pageSize) : prev.get("pageSize") || "20"
+  const pageSize = overrides.pageSize != null ? String(overrides.pageSize) : prev.get("pageSize") || "15"
   return `/workspaces/${slug}/requests?status=${status}&board=${board}&tag=${tag}&order=${order}&search=${search}&page=${page}&pageSize=${pageSize}`
 }
 
@@ -43,6 +43,6 @@ export function buildWorkspaceUrl(
   overrides: Partial<{ page: number; pageSize: number }>
 ): string {
   const page = overrides.page != null ? String(overrides.page) : prev.get("page") || "1"
-  const pageSize = overrides.pageSize != null ? String(overrides.pageSize) : prev.get("pageSize") || "20"
+  const pageSize = overrides.pageSize != null ? String(overrides.pageSize) : prev.get("pageSize") || "15"
   return `/workspaces/${slug}?page=${page}&pageSize=${pageSize}`
 }

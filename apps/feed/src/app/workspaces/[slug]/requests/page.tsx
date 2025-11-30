@@ -55,7 +55,7 @@ export default async function RequestsPage({ params, searchParams }: Props) {
   const tagRaw = parseArrayParam((sp as any).tag)
   const order = typeof (sp as any).order === "string" && (sp as any).order ? (sp as any).order : "newest"
   const search = typeof (sp as any).search === "string" ? (sp as any).search : ""
-  const pageSize = Math.max(Number((sp as any).pageSize) || 20, 1)
+  const pageSize = Math.max(Number((sp as any).pageSize) || 15, 1)
   const page = Math.max(Number((sp as any).page) || 1, 1)
   const offset = (page - 1) * pageSize
 

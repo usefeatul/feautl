@@ -152,7 +152,7 @@ export default function RoadmapBoard({ workspaceSlug, items: initialItems, initi
               className="rounded-md border bg-background px-3 py-2 shadow-lg pointer-events-none"
               initial={{ scale: 0.995, opacity: 0.97 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 260, damping: 26 }}
+              transition={{ type: "spring", stiffness: 180, damping: 32 }}
             >
               {(() => {
                 const it = items.find((i) => i.id === activeId)

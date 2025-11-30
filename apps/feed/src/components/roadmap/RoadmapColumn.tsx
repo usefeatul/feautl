@@ -29,10 +29,10 @@ export default function RoadmapColumn({
   return (
     <motion.div
       ref={setNodeRef}
-      className={`rounded-md border overflow-hidden transition-all ${isOver ? "border-green-300 ring-1 ring-green-200" : "bg-card"}`}
+      className={`rounded-md border overflow-hidden transition-all duration-300 ease-out ${isOver ? "border-green-300 ring-1 ring-green-200" : "bg-card"}`}
       layout
       initial={false}
-      transition={{ type: "tween", ease: "easeOut", duration: disableMotion ? 0 : 0.12 }}
+      transition={{ type: "tween", ease: "easeOut", duration: disableMotion ? 0 : 0.28 }}
     >
       <div
         className={`${collapsed ? "px-2 py-2 relative flex flex-col items-center gap-2" : "px-3 py-2 flex items-center justify-between"} cursor-pointer`}
@@ -70,7 +70,7 @@ export default function RoadmapColumn({
             initial={false}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ type: "tween", ease: "easeOut", duration: disableMotion ? 0 : 0.1 }}
+            transition={{ type: "tween", ease: [0.22, 1, 0.36, 1], duration: disableMotion ? 0 : 0.32 }}
           >
             {children}
             {isOver ? (

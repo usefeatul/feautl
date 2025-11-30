@@ -23,7 +23,7 @@ export default function RoadmapDraggable({ id, children, className = "", isDragg
         (className ? className : "")
       }
       layout
-      transition={{ type: "spring", stiffness: 260, damping: 32 }}
+      transition={{ type: "spring", stiffness: 180, damping: 36 }}
       whileHover={{ scale: isDragging ? 1 : 1.005 }}
     >
       {children}

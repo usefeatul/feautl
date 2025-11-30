@@ -23,8 +23,8 @@ export function MainContent({
   pageSize: number
 }) {
   return (
-    <section className="pb-12">
-      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-8">
+    <section className="pb-16">
+      <div className="lg:grid lg:grid-cols-[minmax(0,1.5fr)_280px] lg:gap-10">
         <div>
           <div className="mb-4 flex items-center justify-between">
             <div className="text-sm font-medium">All Feedback</div>

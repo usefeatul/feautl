@@ -22,10 +22,15 @@ export default async function Layout({
   if (!ws) notFound()
 
   return (
-    <Container>
-      <DomainHeader workspace={ws} subdomain={subdomain} />
-      {children}
-    </Container>
+    <>
+      <div className="bg-muted border-b">
+        <Container maxWidth="5xl">
+          <DomainHeader workspace={ws} subdomain={subdomain} />
+        </Container>
+      </div>
+      <div className="bg-card border-b">
+        <Container maxWidth="5xl" className="pt-8">{children}</Container>
+      </div>
+    </>
   )
 }
-

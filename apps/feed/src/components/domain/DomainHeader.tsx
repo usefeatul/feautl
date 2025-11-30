@@ -1,5 +1,8 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { Button } from "@feedgot/ui/components/button"
 import { cn } from "@feedgot/ui/lib/utils"
 
@@ -12,13 +15,19 @@ type WorkspaceInfo = {
 }
 
 export function DomainHeader({ workspace, subdomain }: { workspace: WorkspaceInfo; subdomain: string }) {
+  const pathname = usePathname() || ""
+  const base = `/${subdomain}/${workspace.slug}`
+  const isFeedback = pathname.startsWith(base) && !pathname.startsWith(`${base}/roadmap`) && !pathname.startsWith(`${base}/changelog`)
+  const isRoadmap = pathname.startsWith(`${base}/roadmap`)
+  const isChangelog = pathname.startsWith(`${base}/changelog`)
+  const itemCls = (active: boolean) => cn("rounded-md border px-3 py-2", active ? "bg-muted" : "border-transparent hover:bg-muted")
   return (
-    <header className={cn("flex items-center gap-6 py-6")}>      
+    <header className={cn("flex items-center gap-6 py-10 sm:py-12")}>      
       <div className="flex items-center gap-3">
         {workspace.logo ? (
-          <Image src={workspace.logo} alt={workspace.name} width={28} height={28} className="rounded-sm object-cover" />
+          <Image src={workspace.logo} alt={workspace.name} width={36} height={36} className="rounded-sm object-cover" />
         ) : (
-          <div className="h-7 w-7 rounded-sm bg-muted flex items-center justify-center text-xs font-semibold">
+          <div className="h-9 w-9 rounded-sm bg-muted flex items-center justify-center text-xs font-semibold">
             {workspace.name?.[0]?.toUpperCase()}
           </div>
         )}
@@ -26,15 +35,15 @@ export function DomainHeader({ workspace, subdomain }: { workspace: WorkspaceInf
       </div>
 
       <nav className="flex-1">
-        <ul className="flex items-center gap-4 text-sm">
+        <ul className="flex items-center gap-3 text-sm">
           <li>
-            <Link href={`/${subdomain}/${workspace.slug}`} className="hover:text-primary">Feedback</Link>
+            <Link href={base} className={itemCls(isFeedback)} aria-current={isFeedback ? "page" : undefined}>Feedback</Link>
           </li>
           <li>
-            <Link href={`/${subdomain}/${workspace.slug}/roadmap`} className="hover:text-primary">Roadmap</Link>
+            <Link href={`${base}/roadmap`} className={itemCls(isRoadmap)} aria-current={isRoadmap ? "page" : undefined}>Roadmap</Link>
           </li>
           <li>
-            <Link href={`/${subdomain}/${workspace.slug}/changelog`} className="hover:text-primary">Changelog</Link>
+            <Link href={`${base}/changelog`} className={itemCls(isChangelog)} aria-current={isChangelog ? "page" : undefined}>Changelog</Link>
           </li>
         </ul>
       </nav>
@@ -50,4 +59,3 @@ export function DomainHeader({ workspace, subdomain }: { workspace: WorkspaceInf
     </header>
   )
 }
-

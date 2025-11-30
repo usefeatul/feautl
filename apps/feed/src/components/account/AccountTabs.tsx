@@ -21,10 +21,10 @@ export default function AccountTabs({ selectedSection, initialUser }: Props) {
   const onValueChange = React.useCallback((v: string) => {
     const s = slugParam || ""
     if (!s) {
-      router.replace(`/workspaces/new`)
+      router.replace(`/workspaces/new`, { scroll: false })
       return
     }
-    router.replace(`/workspaces/${s}/account/${encodeURIComponent(v)}`)
+    router.replace(`/workspaces/${s}/account/${encodeURIComponent(v)}`, { scroll: false })
   }, [router, slugParam])
 
   React.useEffect(() => {
@@ -34,7 +34,7 @@ export default function AccountTabs({ selectedSection, initialUser }: Props) {
         router.replace(`/workspaces/new`)
         return
       }
-      router.replace(`/workspaces/${s}/account/${encodeURIComponent(selected)}`)
+      router.replace(`/workspaces/${s}/account/${encodeURIComponent(selected)}`, { scroll: false })
     }
   }, [paramSection, selected, router, slugParam])
 
@@ -51,7 +51,7 @@ export default function AccountTabs({ selectedSection, initialUser }: Props) {
       <Tabs value={selected} onValueChange={onValueChange} className="space-y-4">
         <TabsList className="w-full">
           {ACCOUNT_SECTIONS.map((item) => (
-            <TabsTrigger key={item.value} value={item.value} className="min-h-[36px] px-3 text-accent">{item.label}</TabsTrigger>
+            <TabsTrigger key={item.value} value={item.value} className=" px-3 text-accent">{item.label}</TabsTrigger>
           ))}
         </TabsList>
 

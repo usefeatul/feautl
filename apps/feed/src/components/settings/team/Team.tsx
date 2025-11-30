@@ -12,7 +12,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import InviteMemberModal from "./InviteMemberModal";
 import MemberRow from "./MemberRow";
 import InvitesList from "./InvitesList";
-import type { Member, Invite } from "./team";
+import type { Member, Invite } from "../../../types/team";
 
  
 
@@ -91,6 +91,7 @@ export default function TeamSection({
   return (
     <SectionCard title="Manage Members" description="Members have access to your workspace.">
       <div className="space-y-6">
+        <PlanNotice slug={slug} feature="team" membersCount={(data.members || []).length} />
         <div className="space-y-2">
           <div className="rounded-md border overflow-hidden">
             <Table>
@@ -119,8 +120,6 @@ export default function TeamSection({
           <Label>Pending Invites</Label>
           <InvitesList slug={slug} invites={data.invites || []} loading={isLoading} onChanged={refresh} />
         </div>
-
-        <PlanNotice slug={slug} feature="team" membersCount={(data.members || []).length} />
 
         <div className="pt-2 space-y-2">
           <div className="text-sm text-accent">Invite a new member to your workspace.</div>

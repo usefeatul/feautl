@@ -49,11 +49,16 @@ export default async function Layout({
             </Container>
           )
         })()}
-        <div className="fixed bottom-0 left-0 right-0 z-30">
-          <div className="mx-auto max-w-5xl px-4 sm:px-8 lg:px-16 xl:px-20 pb-3">
-            <PoweredBy />
-          </div>
-        </div>
+        {/* <div className="fixed bottom-0 left-0 right-0 z-30">
+          {(() => {
+            const maxW = branding.layoutStyle === "compact" ? "4xl" : branding.layoutStyle === "spacious" ? "6xl" : "5xl"
+            return (
+              <Container maxWidth={maxW} className="flex  justify-end items-end">
+                <PoweredBy />
+              </Container>
+            )
+          })()}
+        </div> */}
         </DomainBrandingProvider>
       </SubdomainThemeProvider>
     </>

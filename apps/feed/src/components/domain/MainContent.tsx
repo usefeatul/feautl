@@ -6,7 +6,7 @@ import { DomainSidebar } from "./DomainSidebar";
 import { SortPopover } from "./SortPopover";
 import { SearchAction } from "./SearchAction";
 import { SubmitIdeaCard } from "./SubmitIdeaCard";
-import PostCard from "@/components/posts/PostCard";
+import PostCard from "@/components/domain/PostCard";
 import EmptyDomainPosts from "./EmptyPosts";
 
 type Item = any;

@@ -33,17 +33,19 @@ export async function getBrandingColorsBySlug(slug: string): Promise<{ primary: 
   return { primary }
 }
 
-export async function getBrandingBySlug(slug: string): Promise<{ primary: string; theme: "light" | "dark" | "system"; sidebarPosition?: "left" | "right"; layoutStyle?: "compact" | "comfortable" | "spacious" }> {
+export async function getBrandingBySlug(slug: string): Promise<{ primary: string; theme: "light" | "dark" | "system"; sidebarPosition?: "left" | "right"; layoutStyle?: "compact" | "comfortable" | "spacious"; hidePoweredBy?: boolean }> {
   let primary = "#3b82f6"
   let theme: "light" | "dark" | "system" = "system"
   let sidebarPosition: "left" | "right" | undefined
   let layoutStyle: "compact" | "comfortable" | "spacious" | undefined
+  let hidePoweredBy: boolean | undefined
   const [row] = await db
     .select({
       primaryColor: brandingConfig.primaryColor,
       theme: brandingConfig.theme,
       sidebarPosition: brandingConfig.sidebarPosition,
       layoutStyle: brandingConfig.layoutStyle,
+      hidePoweredBy: brandingConfig.hidePoweredBy,
       wsPrimary: workspace.primaryColor,
       wsTheme: workspace.theme,
     })
@@ -57,7 +59,8 @@ export async function getBrandingBySlug(slug: string): Promise<{ primary: string
   else if (row?.wsTheme) theme = row.wsTheme as any
   if (row?.sidebarPosition === "left" || row?.sidebarPosition === "right") sidebarPosition = row.sidebarPosition as any
   if (row?.layoutStyle === "compact" || row?.layoutStyle === "comfortable" || row?.layoutStyle === "spacious") layoutStyle = row.layoutStyle as any
-  return { primary, theme, sidebarPosition, layoutStyle }
+  hidePoweredBy = Boolean((row as any)?.hidePoweredBy)
+  return { primary, theme, sidebarPosition, layoutStyle, hidePoweredBy }
 }
 
 export async function getSidebarPositionBySlug(slug: string): Promise<"left" | "right"> {

@@ -1,6 +1,6 @@
 import React from "react"
 import { notFound } from "next/navigation"
-import { db, workspace, brandingConfig } from "@feedgot/db"
+import { db, workspace } from "@feedgot/db"
 import { eq } from "drizzle-orm"
 import { Container } from "@/components/global/container"
 import { DomainHeader } from "@/components/domain/DomainHeader"
@@ -28,13 +28,7 @@ export default async function Layout({
   if (!ws) notFound()
 
   const branding = await getBrandingBySlug(subdomain)
-  const [brandingRow] = await db
-    .select({ hidePoweredBy: brandingConfig.hidePoweredBy })
-    .from(workspace)
-    .leftJoin(brandingConfig, eq(brandingConfig.workspaceId, workspace.id))
-    .where(eq(workspace.slug, subdomain))
-    .limit(1)
-  const hidePoweredBy = Boolean((brandingRow as any)?.hidePoweredBy)
+  const hidePoweredBy = Boolean(branding.hidePoweredBy)
   const p = branding.primary
   return (
     <>

@@ -34,7 +34,7 @@ export default async function Layout({
         <style>{`:root{--primary:${p};--ring:${p};--sidebar-primary:${p};}`}</style>
         <BrandVarsEffect primary={p} />
         <div className="fixed inset-0 -z-10 flex flex-col">
-          <div className="bg-muted border-b h-48 sm:h-56" />
+          <div className="bg-background border-b border-2 h-44 sm:h-52" />
           <div className="bg-card border-b flex-1" />
         </div>
         <Container maxWidth="5xl">

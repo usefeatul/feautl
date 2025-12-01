@@ -1,11 +1,13 @@
 import React from "react"
-import RequestList from "@/components/requests/RequestList"
+ 
 import { BoardsDropdown } from "./BoardsDropdown"
 import { PublicRequestPagination } from "./PublicRequestPagination"
 import { DomainSidebar } from "./DomainSidebar"
 import { SortPopover } from "./SortPopover"
 import { SearchAction } from "./SearchAction"
 import { SubmitIdeaCard } from "./SubmitIdeaCard"
+import PostCard from "@/components/posts/PostCard"
+import EmptyRequests from "@/components/requests/EmptyRequests"
 
 type Item = any
 
@@ -50,7 +52,15 @@ export function MainContent({
           <div className="lg:hidden mb-4">
             <SubmitIdeaCard subdomain={subdomain} slug={slug} />
           </div>
-          <RequestList items={items as any} workspaceSlug={slug} linkBase={`/${subdomain}/${slug}`} />
+          {(items as any[]).length === 0 ? (
+            <EmptyRequests workspaceSlug={slug} />
+          ) : (
+            <div className="rounded-md border bg-card divide-y mt-4">
+              {(items as any[]).map((p: any) => (
+                <PostCard key={p.id} item={p} workspaceSlug={slug} linkBase={`/${subdomain}/${slug}`} />
+              ))}
+            </div>
+          )}
           <PublicRequestPagination subdomain={subdomain} slug={slug} page={page} pageSize={pageSize} totalCount={totalCount} />
         </div>
         {sidebarPosition === "right" ? (

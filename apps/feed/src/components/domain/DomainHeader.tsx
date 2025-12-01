@@ -16,10 +16,10 @@ type WorkspaceInfo = {
 
 export function DomainHeader({ workspace, subdomain }: { workspace: WorkspaceInfo; subdomain: string }) {
   const pathname = usePathname() || ""
-  const feedbackBase = `/${subdomain}/${workspace.slug}`
-  const roadmapBase = `/${subdomain}/roadmap`
-  const changelogBase = `/${subdomain}/changelog`
-  const isFeedback = pathname === `/${subdomain}` || pathname.startsWith(feedbackBase)
+  const feedbackBase = `/`
+  const roadmapBase = `/roadmap`
+  const changelogBase = `/changelog`
+  const isFeedback = pathname === "/"
   const isRoadmap = pathname.startsWith(roadmapBase)
   const isChangelog = pathname.startsWith(changelogBase)
   const itemCls = (active: boolean) => cn("rounded-md border px-3 py-2", active ? "bg-muted" : "border-transparent hover:bg-muted")

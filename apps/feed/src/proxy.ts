@@ -21,6 +21,16 @@ export async function proxy(req: NextRequest) {
       url.pathname = `/${subdomain}/${subdomain}`
       return NextResponse.rewrite(url)
     }
+    if (pathname === "/roadmap") {
+      const url = req.nextUrl.clone()
+      url.pathname = `/${subdomain}/roadmap`
+      return NextResponse.rewrite(url)
+    }
+    if (pathname === "/changelog") {
+      const url = req.nextUrl.clone()
+      url.pathname = `/${subdomain}/changelog`
+      return NextResponse.rewrite(url)
+    }
     return NextResponse.next()
   }
 
@@ -101,6 +111,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/workspaces/:path*", "/auth/:path*", "/start"],
+  matcher: ["/", "/roadmap", "/changelog", "/workspaces/:path*", "/auth/:path*", "/start"],
 }
-

@@ -2,10 +2,7 @@ import React from "react"
 import RequestList from "@/components/requests/RequestList"
 import { BoardsDropdown } from "./BoardsDropdown"
 import { PublicRequestPagination } from "./PublicRequestPagination"
-import { SubmitIdeaCard } from "./SubmitIdeaCard"
-import { BoardsList } from "./BoardsList"
-import { SortPopover } from "./SortPopover"
-import { SearchAction } from "./SearchAction"
+import { DomainSidebar } from "./DomainSidebar"
 
 type Item = any
 
@@ -34,16 +31,8 @@ export function MainContent({
           <RequestList items={items as any} workspaceSlug={slug} linkBase={`/${subdomain}/${slug}`} />
           <PublicRequestPagination subdomain={subdomain} slug={slug} page={page} pageSize={pageSize} totalCount={totalCount} />
         </div>
-        <aside className="mt-10 lg:mt-0 space-y-4">
-          <div className="flex items-center justify-end gap-1">
-            <SortPopover subdomain={subdomain} slug={slug} />
-            <SearchAction />
-          </div>
-          <SubmitIdeaCard subdomain={subdomain} slug={slug} />
-          <BoardsList subdomain={subdomain} slug={slug} />
-          <div className="pt-2 text-center">
-            <span className="rounded-md bg-muted px-3 py-1 text-xs text-accent">Powered by UserJot</span>
-          </div>
+        <aside className="mt-10 lg:mt-0">
+          <DomainSidebar subdomain={subdomain} slug={slug} />
         </aside>
       </div>
     </section>

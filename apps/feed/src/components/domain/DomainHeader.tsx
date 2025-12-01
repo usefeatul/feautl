@@ -16,10 +16,12 @@ type WorkspaceInfo = {
 
 export function DomainHeader({ workspace, subdomain }: { workspace: WorkspaceInfo; subdomain: string }) {
   const pathname = usePathname() || ""
-  const base = `/${subdomain}/${workspace.slug}`
-  const isFeedback = pathname.startsWith(base) && !pathname.startsWith(`${base}/roadmap`) && !pathname.startsWith(`${base}/changelog`)
-  const isRoadmap = pathname.startsWith(`${base}/roadmap`)
-  const isChangelog = pathname.startsWith(`${base}/changelog`)
+  const feedbackBase = `/${subdomain}/${workspace.slug}`
+  const roadmapBase = `/${subdomain}/roadmap`
+  const changelogBase = `/${subdomain}/changelog`
+  const isFeedback = pathname === `/${subdomain}` || pathname.startsWith(feedbackBase)
+  const isRoadmap = pathname.startsWith(roadmapBase)
+  const isChangelog = pathname.startsWith(changelogBase)
   const itemCls = (active: boolean) => cn("rounded-md border px-3 py-2", active ? "bg-muted" : "border-transparent hover:bg-muted")
   return (
     <header className={cn("flex items-center gap-1 py-4 sm:py-6")}>      
@@ -38,13 +40,13 @@ export function DomainHeader({ workspace, subdomain }: { workspace: WorkspaceInf
       <nav className="flex-1">
         <ul className="flex items-center gap-3 text-sm">
           <li>
-            <Link href={base} className={itemCls(isFeedback)} aria-current={isFeedback ? "page" : undefined}>Feedback</Link>
+            <Link href={feedbackBase} className={itemCls(isFeedback)} aria-current={isFeedback ? "page" : undefined}>Feedback</Link>
           </li>
           <li>
-            <Link href={`${base}/roadmap`} className={itemCls(isRoadmap)} aria-current={isRoadmap ? "page" : undefined}>Roadmap</Link>
+            <Link href={roadmapBase} className={itemCls(isRoadmap)} aria-current={isRoadmap ? "page" : undefined}>Roadmap</Link>
           </li>
           <li>
-            <Link href={`${base}/changelog`} className={itemCls(isChangelog)} aria-current={isChangelog ? "page" : undefined}>Changelog</Link>
+            <Link href={changelogBase} className={itemCls(isChangelog)} aria-current={isChangelog ? "page" : undefined}>Changelog</Link>
           </li>
         </ul>
       </nav>

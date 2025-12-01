@@ -4,61 +4,16 @@
    - Environments: .env
 
  [37m[1m [22m[39m Creating an optimized production build ...
- [32m[1m✓[22m[39m Compiled successfully in 35.1s
- [37m[1m [22m[39m Skipping validation of types
- [37m[1m [22m[39m Skipping linting
-[?25l [37m[1m [22m[39m Collecting page data  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m.[39m[2K[1G[?25h [37m[1m [22m[39m Collecting page data     [32m[1m✓[22m[39m Collecting page data 
-[?25l [37m[1m [22m[39m Generating static pages (0/114)  [36m[    ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/114)  [36m[=   ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/114)  [36m[==  ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/114)  [36m[=== ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/114)  [36m[ ===][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/114)  [36m[  ==][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/114)  [36m[   =][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/114)  [36m[    ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/114)  [36m[   =][39m[2K[1G[?25h[Error: Dynamic server usage: Route /sitemap.xml couldn't be rendered statically because it used revalidate: 0 fetch https://api.marblecms.com/v1/cme0a08hv0000ji04mioomp3h/posts /sitemap.xml. See more info here: https://nextjs.org/docs/messages/dynamic-server-error] {
-  description: "Route /sitemap.xml couldn't be rendered statically because it used revalidate: 0 fetch https://api.marblecms.com/v1/cme0a08hv0000ji04mioomp3h/posts /sitemap.xml. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
-  digest: 'DYNAMIC_SERVER_USAGE'
-}
-[?25h [32m[1m✓[22m[39m Generating static pages (114/114)
-[?25l [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[?25l [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G[?25h [37m[1m [22m[39m Collecting build traces     [32m[1m✓[22m[39m Collecting build traces 
-[2K[1G[?25h [37m[1m [22m[39m Finalizing page optimization     [32m[1m✓[22m[39m Finalizing page optimization 
+Failed to compile.
 
-[4mRoute (app)[24m                                                                       [4mSize[24m  [4mFirst Load JS[24m  [4m[24m  [4m[24m
-┌ ○ /                                                                          20.6 kB         [37m[1m147 kB[22m[39m
-├ ○ /_not-found                                                                  140 B         [37m[1m102 kB[22m[39m
-├ ○ /alternatives                                                                173 B         [37m[1m106 kB[22m[39m
-├ ● /alternatives/[slug]                                                        7.3 kB         [37m[1m133 kB[22m[39m
-├   ├ /alternatives/userjot
-├   ├ /alternatives/featurebase
-├   ├ /alternatives/nolt
-├   └ [+2 more paths]
-├ ƒ /blog                                                                        173 B         [37m[1m106 kB[22m[39m
-├ ƒ /blog/[slug]                                                               13.7 kB         [37m[1m127 kB[22m[39m
-├ ○ /definitions                                                                 173 B         [37m[1m106 kB[22m[39m
-├ ● /definitions/[term]                                                        19.9 kB         [37m[1m133 kB[22m[39m
-├   ├ /definitions/mrr
-├   ├ /definitions/monthly recurring revenue
-├   ├ /definitions/arr
-├   └ [+46 more paths]
-├ ○ /gdpr                                                                        140 B         [37m[1m102 kB[22m[39m
-├ ○ /pricing                                                                   2.63 kB         [37m[1m123 kB[22m[39m
-├ ○ /privacy                                                                     140 B         [37m[1m102 kB[22m[39m
-├ ○ /robots.txt                                                                  140 B         [37m[1m102 kB[22m[39m
-├ ƒ /sitemap.xml                                                                 140 B         [37m[1m102 kB[22m[39m
-├ ○ /terms                                                                       140 B         [37m[1m102 kB[22m[39m
-├ ○ /tools                                                                       173 B         [37m[1m106 kB[22m[39m
-├ ○ /tools/categories                                                            173 B         [37m[1m106 kB[22m[39m
-├ ● /tools/categories/[category]                                                 161 B         [37m[1m106 kB[22m[39m
-├   ├ /tools/categories/product-feature-analytics
-├   ├ /tools/categories/revenue-growth
-├   ├ /tools/categories/customer-metrics
-├   └ [+3 more paths]
-└ ● /tools/categories/[category]/[tool]                                        43.9 kB         [37m[1m160 kB[22m[39m
-    ├ /tools/categories/product-feature-analytics/feature-adoption-calculator
-    ├ /tools/categories/product-feature-analytics/cohort-analysis
-    ├ /tools/categories/product-feature-analytics/stickiness-calculator
-    └ [+37 more paths]
-+ First Load JS shared by all                                                   [37m[1m102 kB[22m[39m
-  ├ chunks/18-ef38cc2f87045b34.js                                              45.9 kB
-  ├ chunks/87c73c54-24122e7b92478d00.js                                        54.2 kB
-  └ other shared chunks (total)                                                1.93 kB
+./src/components/alternatives/why.tsx
+Module not found: Can't resolve '@/components/home/cardElements'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/app/(site)/alternatives/[slug]/page.tsx
 
 
-○  (Static)   prerendered as static content
-●  (SSG)      prerendered as static HTML (uses [36mgenerateStaticParams[39m)
-ƒ  (Dynamic)  server-rendered on demand
-
-[?25h
+> Build failed because of webpack errors
+[0m[31merror[0m[2m:[0m script [1m"build"[0m exited with code 1[0m

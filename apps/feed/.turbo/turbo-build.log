@@ -1,37 +1,54 @@
 
 [0m[2m[35m$[0m [2m[1mnext build[0m
-   [1m[38;2;173;127;168m▲ Next.js 15.5.2[39m[22m
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   [1m[38;2;173;127;168m▲ Next.js 16.0.5[39m[22m (Turbopack)
    - Environments: .env
 
  [37m[1m [22m[39m Creating an optimized production build ...
- [32m[1m✓[22m[39m Compiled successfully in 20.8s
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ [32m[1m✓[22m[39m Compiled successfully in 6.8s
  [37m[1m [22m[39m Skipping validation of types
- [37m[1m [22m[39m Skipping linting
-[?25l [37m[1m [22m[39m Collecting page data  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m.[39m[2m2025-11-20T12:24:13.133Z[0m [33mWARN[0m [1m[Better Auth]:[0m Social provider github is missing clientId or clientSecret
-[2m2025-11-20T12:24:13.197Z[0m [33mWARN[0m [1m[Better Auth]:[0m Social provider github is missing clientId or clientSecret
-[2K[1G[?25h [37m[1m [22m[39m Collecting page data     [32m[1m✓[22m[39m Collecting page data 
-[?25l [37m[1m [22m[39m Generating static pages (0/12)  [36m[    ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/12)  [36m[=   ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/12)  [36m[==  ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/12)  [36m[=== ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/12)  [36m[ ===][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/12)  [36m[  ==][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/12)  [36m[   =][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/12)  [36m[    ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/12)  [36m[   =][39m[2K[1G [37m[1m [22m[39m Generating static pages (8/12)  [36m[  ==][39m[2K[1G[?25h [32m[1m✓[22m[39m Generating static pages (12/12)
-[?25l [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[?25l [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G[?25h [37m[1m [22m[39m Collecting build traces     [32m[1m✓[22m[39m Collecting build traces 
-[2K[1G[?25h [37m[1m [22m[39m Finalizing page optimization     [32m[1m✓[22m[39m Finalizing page optimization 
+[?25l [37m[1m [22m[39m Collecting page data using 7 workers  [36m.[39m[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[2K[1G [37m[1m [22m[39m Collecting page data using 7 workers  [36m..[39m[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[2K[1G [37m[1m [22m[39m Collecting page data using 7 workers  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting page data using 7 workers  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting page data using 7 workers  [36m..[39m[2K[1G[?25h [37m[1m [22m[39m Collecting page data using 7 workers in 812.1ms     [32m[1m✓[22m[39m Collecting page data using 7 workers in 812.1ms 
+[?25l [37m[1m [22m[39m Generating static pages using 7 workers (0/3)  [36m[    ][39m[2K[1G[?25h[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[?25h [32m[1m✓[22m[39m Generating static pages using 7 workers (3/3) in 315.4ms
+[?25l [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G[?25h [37m[1m [22m[39m Finalizing page optimization in 14.4ms     [32m[1m✓[22m[39m Finalizing page optimization in 14.4ms 
 
-[4mRoute (app)[24m                                 [4mSize[24m  [4mFirst Load JS[24m  [4m[24m  [4m[24m
-┌ ○ /                                      138 B         [37m[1m102 kB[22m[39m
-├ ○ /_not-found                            989 B         [37m[1m103 kB[22m[39m
-├ ƒ /api/[[...route]]                      138 B         [37m[1m102 kB[22m[39m
-├ ƒ /api/auth/[...all]                     138 B         [37m[1m102 kB[22m[39m
-├ ○ /auth/forgot-password                3.36 kB         [37m[1m189 kB[22m[39m
-├ ○ /auth/sign-in                        4.04 kB         [37m[1m189 kB[22m[39m
-├ ○ /auth/sign-up                         4.3 kB         [37m[1m190 kB[22m[39m
-├ ○ /auth/verify                         2.85 kB         [37m[1m188 kB[22m[39m
-├ ○ /dashboard                             138 B         [37m[1m102 kB[22m[39m
-├ ○ /projects/new                        2.46 kB         [37m[1m117 kB[22m[39m
-├ ○ /robots.txt                            138 B         [37m[1m102 kB[22m[39m
-└ ○ /sitemap.xml                           138 B         [37m[1m102 kB[22m[39m
-+ First Load JS shared by all             [37m[1m102 kB[22m[39m
-  ├ chunks/18-ef38cc2f87045b34.js        45.9 kB
-  ├ chunks/87c73c54-24122e7b92478d00.js  54.2 kB
-  └ other shared chunks (total)          1.92 kB
+[4mRoute (app)[24m
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /[subdomain]/[slug]
+├ ƒ /[subdomain]/changelog
+├ ƒ /[subdomain]/roadmap
+├ ƒ /api/[[...route]]
+├ ƒ /api/auth/[...all]
+├ ƒ /auth/forgot-password
+├ ƒ /auth/sign-in
+├ ƒ /auth/sign-up
+├ ƒ /auth/verify
+├ ƒ /invite/[token]
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+├ ƒ /start
+├ ƒ /workspaces/[slug]
+├ ƒ /workspaces/[slug]/account
+├ ƒ /workspaces/[slug]/account/[section]
+├ ƒ /workspaces/[slug]/changelog
+├ ƒ /workspaces/[slug]/requests
+├ ƒ /workspaces/[slug]/requests/[post]
+├ ƒ /workspaces/[slug]/roadmap
+├ ƒ /workspaces/[slug]/settings
+├ ƒ /workspaces/[slug]/settings/[section]
+└ ƒ /workspaces/new
 
+
+ƒ Proxy (Middleware)
 
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand

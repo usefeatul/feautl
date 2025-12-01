@@ -15,6 +15,19 @@ export function BoardsList({ slug, subdomain }: { slug: string; subdomain: strin
 
   React.useEffect(() => {
     let mounted = true
+    const key = `boards:${slug}`
+    try {
+      const raw = typeof window !== "undefined" ? localStorage.getItem(key) : null
+      if (raw) {
+        const cached = JSON.parse(raw)
+        const list = ((cached?.boards || cached?.data) || []) as Board[]
+        const filtered = list.filter((b) => b.slug !== "roadmap" && b.slug !== "changelog")
+        if (mounted) {
+          setBoards(filtered)
+          setLoading(false)
+        }
+      }
+    } catch {}
     ;(async () => {
       try {
         const res = await client.board.byWorkspaceSlug.$get({ slug })
@@ -22,6 +35,9 @@ export function BoardsList({ slug, subdomain }: { slug: string; subdomain: strin
         const list = (data?.boards || []) as Board[]
         const filtered = list.filter((b) => b.slug !== "roadmap" && b.slug !== "changelog")
         if (mounted) setBoards(filtered)
+        try {
+          if (typeof window !== "undefined") localStorage.setItem(key, JSON.stringify({ boards: filtered, ts: Date.now() }))
+        } catch {}
       } finally {
         if (mounted) setLoading(false)
       }

@@ -47,6 +47,7 @@ export function createBoardRouter() {
           })
         )
 
+        c.header("Cache-Control", "public, max-age=30, stale-while-revalidate=300")
         return c.superjson({ boards: withCounts })
       }),
 

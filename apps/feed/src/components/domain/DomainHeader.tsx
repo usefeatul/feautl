@@ -5,6 +5,7 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Button } from "@feedgot/ui/components/button"
 import { cn } from "@feedgot/ui/lib/utils"
+import { MobileBoardsMenu } from "./MobileBoardsMenu"
 
 type WorkspaceInfo = {
   id: string
@@ -24,40 +25,63 @@ export function DomainHeader({ workspace, subdomain }: { workspace: WorkspaceInf
   const isChangelog = pathname.startsWith(changelogBase)
   const itemCls = (active: boolean) => cn("rounded-md border px-3 py-2", active ? "bg-background/50 border-accent/20" : "border-transparent hover:bg-muted")
   return (
-    <header className={cn("flex items-center gap-1 py-3 sm:py-5")}>      
-      <div className="flex items-center gap-1">
-        {workspace.logo ? (
-          <Image src={workspace.logo} alt={workspace.name} width={32} height={32} className="rounded-sm object-cover" />
-        ) : (
-          <div className="h-9 w-9 rounded-sm bg-muted flex items-center justify-center text-md font-semibold">
-            {workspace.name?.[0]?.toUpperCase()}
-          </div>
-        )}
-        <div className="text-md font-medium">{workspace.name}</div>
+    <header className={cn("py-3 sm:py-5")}>      
+      <div className="md:hidden flex items-center justify-between w-full">
+        <MobileBoardsMenu slug={workspace.slug} subdomain={subdomain} />
+        <div className="inline-flex items-center justify-center">
+          {workspace.logo ? (
+            <Image src={workspace.logo} alt={workspace.name} width={32} height={32} className="rounded-sm object-cover" />
+          ) : (
+            <div className="h-9 w-9 rounded-sm bg-muted flex items-center justify-center text-md font-semibold">
+              {workspace.name?.[0]?.toUpperCase()}
+            </div>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <Button asChild size="xs" variant="nav">
+            <Link href="/auth/sign-in">Sign in</Link>
+          </Button>
+          <Button asChild size="xs" variant="nav" className="bg-primary text-primary-foreground hover:bg-primary/90 ring-ring/60 hover:ring-ring">
+            <Link href="/auth/sign-up">Sign up</Link>
+          </Button>
+        </div>
       </div>
-      <span className="mx-2 text-accent" aria-hidden>|</span>
 
-      <nav className="flex-1">
-        <ul className="flex items-center gap-3 text-sm">
-          <li>
-            <Link href={feedbackBase} className={itemCls(isFeedback)} aria-current={isFeedback ? "page" : undefined}>Feedback</Link>
-          </li>
-          <li>
-            <Link href={roadmapBase} className={itemCls(isRoadmap)} aria-current={isRoadmap ? "page" : undefined}>Roadmap</Link>
-          </li>
-          <li>
-            <Link href={changelogBase} className={itemCls(isChangelog)} aria-current={isChangelog ? "page" : undefined}>Changelog</Link>
-          </li>
-        </ul>
-      </nav>
+      <div className="hidden md:flex items-center gap-1 w-full">      
+        <div className="flex items-center gap-1">
+          {workspace.logo ? (
+            <Image src={workspace.logo} alt={workspace.name} width={32} height={32} className="rounded-sm object-cover" />
+          ) : (
+            <div className="h-9 w-9 rounded-sm bg-muted flex items-center justify-center text-md font-semibold">
+              {workspace.name?.[0]?.toUpperCase()}
+            </div>
+          )}
+          <div className="text-md font-medium">{workspace.name}</div>
+        </div>
+        <span className="mx-2 text-accent" aria-hidden>|</span>
 
-      <div className="flex items-center gap-3">
-        <Button asChild size="xs" variant="nav">
-          <Link href="/auth/sign-in">Sign in</Link>
-        </Button>
-        <Button asChild size="xs" variant="nav" className="bg-primary text-primary-foreground hover:bg-primary/90 ring-ring/60 hover:ring-ring">
-          <Link href="/auth/sign-up">Sign up</Link>
-        </Button>
+        <nav className="flex-1">
+          <ul className="flex items-center gap-3 text-sm">
+            <li>
+              <Link href={feedbackBase} className={itemCls(isFeedback)} aria-current={isFeedback ? "page" : undefined}>Feedback</Link>
+            </li>
+            <li>
+              <Link href={roadmapBase} className={itemCls(isRoadmap)} aria-current={isRoadmap ? "page" : undefined}>Roadmap</Link>
+            </li>
+            <li>
+              <Link href={changelogBase} className={itemCls(isChangelog)} aria-current={isChangelog ? "page" : undefined}>Changelog</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <Button asChild size="xs" variant="nav">
+            <Link href="/auth/sign-in">Sign in</Link>
+          </Button>
+          <Button asChild size="xs" variant="nav" className="bg-primary text-primary-foreground hover:bg-primary/90 ring-ring/60 hover:ring-ring">
+            <Link href="/auth/sign-up">Sign up</Link>
+          </Button>
+        </div>
       </div>
     </header>
   )

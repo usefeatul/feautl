@@ -1,7 +1,7 @@
 import { auth } from "@feedgot/auth/auth"
 import { toNextJsHandler } from "better-auth/next-js"
-import { db, workspace } from "@feedgot/db"
-import { eq } from "drizzle-orm"
+import { db, workspace, workspaceDomain } from "@feedgot/db"
+import { eq, and } from "drizzle-orm"
 
 const handler = toNextJsHandler(auth)
 
@@ -29,8 +29,16 @@ async function isTrusted(origin: string): Promise<boolean> {
     const u = new URL(origin)
     const host = u.hostname
     if (!host) return false
-    const [ws] = await db.select({ id: workspace.id }).from(workspace).where(eq(workspace.domain, host)).limit(1)
-    if (ws?.id) return true
+    const [wsByDefaultDomain] = await db.select({ id: workspace.id }).from(workspace).where(eq(workspace.domain, host)).limit(1)
+    if (wsByDefaultDomain?.id) return true
+    const [wsByCustomDomain] = await db.select({ id: workspace.id }).from(workspace).where(eq(workspace.customDomain, host)).limit(1)
+    if (wsByCustomDomain?.id) return true
+    const [verified] = await db
+      .select({ status: workspaceDomain.status })
+      .from(workspaceDomain)
+      .where(and(eq(workspaceDomain.host, host), eq(workspaceDomain.status, "verified")))
+      .limit(1)
+    if (verified?.status === "verified") return true
   } catch {}
   return false
 }

@@ -55,29 +55,6 @@ export function createPageMetadata({ title, description, path, image, absoluteTi
   }
 }
 
-export function createArticleMetadata({ title, description, path, image, absoluteTitle }: BaseMetaArgs): Metadata {
-  const img = image || DEFAULT_OG_IMAGE
-  const canonical = normalizePath(path || '/')
-  const titleProp: Metadata['title'] = absoluteTitle ? { absolute: title } : title
-  return {
-    title: titleProp,
-    description,
-    alternates: { canonical },
-    openGraph: {
-      url: pageUrl(path || '/'),
-      type: 'article',
-      title,
-      description,
-      images: [{ url: img, width: 1200, height: 630, alt: title }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [img],
-    },
-  }
-}
 
 export async function createWorkspaceMetadata(slug: string): Promise<Metadata> {
   const ws = await getWorkspaceBySlug(slug)

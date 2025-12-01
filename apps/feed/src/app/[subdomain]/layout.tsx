@@ -1,13 +1,14 @@
 import React from "react"
 import { notFound } from "next/navigation"
-import { db, workspace } from "@feedgot/db"
+import { db, workspace, brandingConfig } from "@feedgot/db"
 import { eq } from "drizzle-orm"
 import { Container } from "@/components/global/container"
 import { DomainHeader } from "@/components/domain/DomainHeader"
 import BrandVarsEffect from "@/components/global/BrandVarsEffect"
 import { getBrandingBySlug } from "@/lib/workspace"
 import SubdomainThemeProvider from "@/components/domain/SubdomainThemeProvider"
-// import "./domain.css"
+import { DomainBrandingProvider } from "@/components/domain/DomainBrandingProvider"
+import { PoweredBy } from "@/components/domain/PoweredBy"
 
 
 export default async function Layout({
@@ -27,10 +28,18 @@ export default async function Layout({
   if (!ws) notFound()
 
   const branding = await getBrandingBySlug(subdomain)
+  const [brandingRow] = await db
+    .select({ hidePoweredBy: brandingConfig.hidePoweredBy })
+    .from(workspace)
+    .leftJoin(brandingConfig, eq(brandingConfig.workspaceId, workspace.id))
+    .where(eq(workspace.slug, subdomain))
+    .limit(1)
+  const hidePoweredBy = Boolean((brandingRow as any)?.hidePoweredBy)
   const p = branding.primary
   return (
     <>
       <SubdomainThemeProvider theme={branding.theme}>
+        <DomainBrandingProvider hidePoweredBy={hidePoweredBy}>
         <style>{`:root{--primary:${p};--ring:${p};--sidebar-primary:${p};}`}</style>
         <BrandVarsEffect primary={p} />
         <div className="fixed inset-0 -z-10 flex flex-col">
@@ -41,6 +50,10 @@ export default async function Layout({
           <DomainHeader workspace={ws} subdomain={subdomain} />
         </Container>
         <Container maxWidth="5xl" className="mt-4">{children}</Container>
+        <Container maxWidth="5xl" className="mt-6 mb-6">
+          <PoweredBy />
+        </Container>
+        </DomainBrandingProvider>
       </SubdomainThemeProvider>
     </>
   )

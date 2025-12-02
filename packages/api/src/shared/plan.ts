@@ -9,7 +9,6 @@ export type PlanLimits = {
   allowBranding: boolean
   allowHidePoweredBy: boolean
   allowAttachments: boolean
-  maxChangelogModerators: number | null
   maxTags: number | null
   maxChangelogTags: number | null
 }
@@ -22,7 +21,6 @@ const LIMITS: Record<PlanKey, PlanLimits> = {
     allowBranding: false,
     allowHidePoweredBy: false,
     allowAttachments: true,
-    maxChangelogModerators: 1,
     maxTags: 5,
     maxChangelogTags: 5,
   },
@@ -33,7 +31,6 @@ const LIMITS: Record<PlanKey, PlanLimits> = {
     allowBranding: true,
     allowHidePoweredBy: true,
     allowAttachments: true,
-    maxChangelogModerators: 3,
     maxTags: 10,
     maxChangelogTags: 10,
   },
@@ -44,7 +41,6 @@ const LIMITS: Record<PlanKey, PlanLimits> = {
     allowBranding: true,
     allowHidePoweredBy: true,
     allowAttachments: true,
-    maxChangelogModerators: 5,
     maxTags: 20,
     maxChangelogTags: 20,
   },

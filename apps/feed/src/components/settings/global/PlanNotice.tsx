@@ -7,9 +7,9 @@ import { useQuery } from "@tanstack/react-query"
 import { client } from "@feedgot/api/client"
 import { normalizePlan, getPlanLimits, type PlanKey, type PlanLimits } from "@/lib/plan"
 
-type Feature = "branding" | "team" | "domain" | "changelog_team" | "tags" | "changelog_tags"
+type Feature = "branding" | "team" | "domain" | "tags" | "changelog_tags"
 
-function buildMessage(feature: Feature, plan: PlanKey, limits: PlanLimits, counts?: { members?: number; moderators?: number; tags?: number; changelogTags?: number }) {
+function buildMessage(feature: Feature, plan: PlanKey, limits: PlanLimits, counts?: { members?: number; tags?: number; changelogTags?: number }) {
   if (feature === "branding") {
     if (!limits.allowBranding) return { title: "Branding is available on paid plans", detail: "Upgrade to Starter or Professional" }
     if (limits.allowHidePoweredBy) return { title: "Branding unlocked", detail: "You can hide 'Powered by' in this plan" }
@@ -26,13 +26,7 @@ function buildMessage(feature: Feature, plan: PlanKey, limits: PlanLimits, count
     }
     if (limits.maxMembers == null) return { title: "Unlimited members" }
   }
-  if (feature === "changelog_team") {
-    if (typeof limits.maxChangelogModerators === "number") {
-      const used = counts?.moderators ?? 0
-      return { title: `Up to ${limits.maxChangelogModerators} changelog moderators`, detail: `${used} currently assigned` }
-    }
-    if (limits.maxChangelogModerators == null) return { title: "Unlimited changelog moderators" }
-  }
+  
   if (feature === "tags") {
     if (typeof limits.maxTags === "number") {
       const used = counts?.tags ?? 0

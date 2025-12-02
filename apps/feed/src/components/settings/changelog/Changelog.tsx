@@ -13,14 +13,14 @@ import { toast } from "sonner"
 
 export default function ChangelogSection({ slug, initialIsVisible, initialPlan }: { slug: string; initialIsVisible?: boolean; initialPlan?: string }) {
   const queryClient = useQueryClient()
-  const { data = { isVisible: Boolean(initialIsVisible), moderators: [] }, isLoading, refetch } = useQuery({
+  const { data = { isVisible: Boolean(initialIsVisible) }, isLoading, refetch } = useQuery({
     queryKey: ["changelog-settings", slug],
     queryFn: async () => {
       const res = await client.changelog.settings.$get({ slug })
       const d = await res.json()
-      return { isVisible: Boolean((d as any)?.isVisible), moderators: (d as any)?.moderators || [] }
+      return { isVisible: Boolean((d as any)?.isVisible) }
     },
-    initialData: initialIsVisible !== undefined ? { isVisible: Boolean(initialIsVisible), moderators: [] } : undefined,
+    initialData: initialIsVisible !== undefined ? { isVisible: Boolean(initialIsVisible) } : undefined,
     staleTime: 300000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -66,33 +66,7 @@ export default function ChangelogSection({ slug, initialIsVisible, initialPlan }
   }
 
 
-  const handleAddModerator = async (userId: string) => {
-    try {
-      const res = await client.changelog.moderatorsAdd.$post({ slug, userId })
-      if (!res.ok) {
-        const err = (await res.json().catch(() => null)) as { message?: string } | null
-        throw new Error(err?.message || "Add failed")
-      }
-      toast.success("Moderator added")
-      await refetch()
-    } catch (e: unknown) {
-      toast.error((e as { message?: string })?.message || "Failed to add moderator")
-    }
-  }
-
-  const handleRemoveModerator = async (userId: string) => {
-    try {
-      const res = await client.changelog.moderatorsRemove.$post({ slug, userId })
-      if (!res.ok) {
-        const err = (await res.json().catch(() => null)) as { message?: string } | null
-        throw new Error(err?.message || "Remove failed")
-      }
-      toast.success("Moderator removed")
-      await refetch()
-    } catch (e: unknown) {
-      toast.error((e as { message?: string })?.message || "Failed to remove moderator")
-    }
-  }
+  
 
   return (
     <SectionCard title="Changelog" description="Manage product updates and visibility.">
@@ -150,55 +124,7 @@ export default function ChangelogSection({ slug, initialIsVisible, initialPlan }
           <PlanNotice slug={slug} feature="changelog_tags" plan={initialPlan} changelogTagsCount={(tagsData || []).length} />
         </div>
 
-        <div className="p-4 space-y-2">
-          <div className="text-sm">Changelog Moderators</div>
-          <div className="rounded-md border overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="px-4">Name</TableHead>
-                  <TableHead className="px-4">Email</TableHead>
-                  <TableHead className="px-4 w-32 text-center">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {(data.moderators || []).length === 0 && !isLoading ? (
-                  <TableRow>
-                    <TableCell colSpan={3} className="px-4 py-6 text-accent">No moderators</TableCell>
-                  </TableRow>
-                ) : (
-                  (data.moderators || []).map((m: any) => (
-                    <TableRow key={m.id}>
-                      <TableCell className="px-4 text-sm">{m.name || "User"}</TableCell>
-                      <TableCell className="px-4 text-sm text-accent">{m.email || ""}</TableCell>
-                      <TableCell className="px-4 text-center">
-                        <Button type="button" variant="ghost" onClick={() => handleRemoveModerator(m.id)}>Remove</Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
-          <PlanNotice slug={slug} feature="changelog_team" plan={initialPlan} membersCount={undefined} />
-          <div className="flex items-center gap-2">
-            <Input className="h-9 w-[220px]" placeholder="Add moderator by user id" onKeyDown={async (e) => {
-              const v = (e.target as HTMLInputElement).value
-              if (e.key === 'Enter' && v.trim()) {
-                await handleAddModerator(v.trim())
-                ;(e.target as HTMLInputElement).value = ''
-              }
-            }} />
-            <Button type="button" variant="quiet" onClick={async () => {
-              const input = document.querySelector<HTMLInputElement>("input[placeholder='Add moderator by user id']")
-              const v = input?.value || ''
-              if (v.trim()) {
-                await handleAddModerator(v.trim())
-                if (input) input.value = ''
-              }
-            }}>Add Moderator</Button>
-          </div>
-        </div>
+        
       </div>
     </SectionCard>
   )

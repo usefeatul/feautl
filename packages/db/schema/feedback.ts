@@ -83,42 +83,4 @@ export const board = pgTable(
 )
 
 
-export const boardModerator = pgTable(
-  'board_moderator',
-  {
-    id: uuid('id').primaryKey().defaultRandom(),
-    boardId: uuid('board_id')
-      .notNull()
-      .references(() => board.id, { onDelete: 'cascade' }),
-    userId: text('user_id')
-      .notNull()
-      .references(() => user.id, { onDelete: 'cascade' }),
-    permissions: json('permissions')
-      .$type<{
-        canModerate: boolean
-        canEdit: boolean
-        canDelete: boolean
-        canPin: boolean
-        canChangeStatus: boolean
-      }>()
-      .notNull()
-      .default({
-        canModerate: true,
-        canEdit: false,
-        canDelete: false,
-        canPin: true,
-        canChangeStatus: true,
-      }),
-    createdAt: timestamp('created_at', { withTimezone: true })
-      .notNull()
-      .defaultNow(),
-  },
-  (table) => ({
-    boardModeratorUnique: uniqueIndex(
-      'board_moderator_board_user_unique',
-    ).on(table.boardId, table.userId),
-  }),
-)
-
 export type Board = typeof board.$inferSelect
-export type BoardModerator = typeof boardModerator.$inferSelect

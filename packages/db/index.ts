@@ -18,7 +18,6 @@ export const {
   workspaceMember,
   workspaceInvite,
   board,
-  boardModerator,
   post,
   tag,
   postTag,
@@ -31,5 +30,4 @@ export const {
   voteAggregate,
   userVoteHistory,
   brandingConfig,
-  colorPalette,
 } = schema

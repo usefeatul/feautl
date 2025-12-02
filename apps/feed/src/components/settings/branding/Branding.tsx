@@ -27,7 +27,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { client } from "@feedgot/api/client";
 import {  getPlanLimits } from "@/lib/plan";
 
-export default function BrandingSection({ slug }: { slug: string }) {
+export default function BrandingSection({ slug, initialHidePoweredBy }: { slug: string; initialHidePoweredBy?: boolean }) {
   const [logoUrl, setLogoUrl] = React.useState("");
   const [primaryColor, setPrimaryColor] = React.useState("#3b82f6");
   const [accentColor, setAccentColor] = React.useState("#60a5fa");
@@ -35,7 +35,7 @@ export default function BrandingSection({ slug }: { slug: string }) {
   const [theme, setTheme] = React.useState<"light" | "dark" | "system">(
     "system"
   );
-  const [hidePoweredBy, setHidePoweredBy] = React.useState<boolean>(false);
+  const [hidePoweredBy, setHidePoweredBy] = React.useState<boolean>(Boolean(initialHidePoweredBy));
   const [layoutStyle, setLayoutStyle] = React.useState<"compact" | "comfortable" | "spacious">("comfortable");
   const [sidebarPosition, setSidebarPosition] = React.useState<"left" | "right">("left");
   const [saving, setSaving] = React.useState(false);
@@ -66,7 +66,7 @@ export default function BrandingSection({ slug }: { slug: string }) {
             conf.theme === "system"
           )
             setTheme(conf.theme);
-          setHidePoweredBy(Boolean(conf.hidePoweredBy));
+          setHidePoweredBy(typeof initialHidePoweredBy === "boolean" ? Boolean(initialHidePoweredBy) : Boolean(conf.hidePoweredBy));
           if (
             conf.layoutStyle === "compact" ||
             conf.layoutStyle === "comfortable" ||

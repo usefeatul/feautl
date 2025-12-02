@@ -15,11 +15,11 @@ import DataSection from "../data/Data"
 import type { Member, Invite } from "../../../types/team"
 import { SECTIONS } from "../../../config/sections"
 
-type Props = { slug: string; initialTeam?: { members: Member[]; invites: Invite[]; meId: string | null }; selectedSection?: string }
+type Props = { slug: string; initialTeam?: { members: Member[]; invites: Invite[]; meId: string | null }; selectedSection?: string; initialChangelogVisible?: boolean; initialHidePoweredBy?: boolean }
 
 const sections = SECTIONS
 
-export default function SettingsTabs({ slug, initialTeam, selectedSection }: Props) {
+export default function SettingsTabs({ slug, initialTeam, selectedSection, initialChangelogVisible, initialHidePoweredBy }: Props) {
   const router = useRouter()
   const routeParams = useParams()
   const paramSection = typeof routeParams?.section === "string" ? routeParams.section : undefined
@@ -53,7 +53,13 @@ export default function SettingsTabs({ slug, initialTeam, selectedSection }: Pro
 
         {sections.map((s) => (
           <TabsContent key={s.value} value={s.value} className="mt-2">
-            <SectionRenderer slug={slug} section={s.value} initialTeam={initialTeam} />
+            <SectionRenderer
+              slug={slug}
+              section={s.value}
+              initialTeam={initialTeam}
+              initialChangelogVisible={initialChangelogVisible}
+              initialHidePoweredBy={initialHidePoweredBy}
+            />
           </TabsContent>
         ))}
       </Tabs>
@@ -61,16 +67,16 @@ export default function SettingsTabs({ slug, initialTeam, selectedSection }: Pro
   )
 }
 
-function SectionRenderer({ slug, section, initialTeam }: { slug: string; section: string; initialTeam?: { members: Member[]; invites: Invite[]; meId: string | null } }) {
+function SectionRenderer({ slug, section, initialTeam, initialChangelogVisible, initialHidePoweredBy }: { slug: string; section: string; initialTeam?: { members: Member[]; invites: Invite[]; meId: string | null }; initialChangelogVisible?: boolean; initialHidePoweredBy?: boolean }) {
   switch (section) {
     case "branding":
-      return <BrandingSection slug={slug} />
+      return <BrandingSection slug={slug} initialHidePoweredBy={initialHidePoweredBy} />
     case "team":
       return <TeamSection slug={slug} initialMembers={initialTeam?.members} initialInvites={initialTeam?.invites} initialMeId={initialTeam?.meId} />
     case "feedback":
       return <FeedbackSection />
     case "changelog":
-      return <ChangelogSection slug={slug} />
+      return <ChangelogSection slug={slug} initialIsVisible={initialChangelogVisible} />
     case "billing":
       return <BillingSection />
     case "domain":

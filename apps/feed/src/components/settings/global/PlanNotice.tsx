@@ -7,9 +7,9 @@ import { useQuery } from "@tanstack/react-query"
 import { client } from "@feedgot/api/client"
 import { normalizePlan, getPlanLimits, type PlanKey, type PlanLimits } from "@/lib/plan"
 
-type Feature = "branding" | "team" | "domain"
+type Feature = "branding" | "team" | "domain" | "changelog_team" | "tags" | "changelog_tags"
 
-function buildMessage(feature: Feature, plan: PlanKey, limits: PlanLimits, counts?: { members?: number }) {
+function buildMessage(feature: Feature, plan: PlanKey, limits: PlanLimits, counts?: { members?: number; moderators?: number; tags?: number; changelogTags?: number }) {
   if (feature === "branding") {
     if (!limits.allowBranding) return { title: "Branding is available on paid plans", detail: "Upgrade to Starter or Professional" }
     if (limits.allowHidePoweredBy) return { title: "Branding unlocked", detail: "You can hide 'Powered by' in this plan" }
@@ -26,10 +26,31 @@ function buildMessage(feature: Feature, plan: PlanKey, limits: PlanLimits, count
     }
     if (limits.maxMembers == null) return { title: "Unlimited members" }
   }
+  if (feature === "changelog_team") {
+    if (typeof limits.maxChangelogModerators === "number") {
+      const used = counts?.moderators ?? 0
+      return { title: `Up to ${limits.maxChangelogModerators} changelog moderators`, detail: `${used} currently assigned` }
+    }
+    if (limits.maxChangelogModerators == null) return { title: "Unlimited changelog moderators" }
+  }
+  if (feature === "tags") {
+    if (typeof limits.maxTags === "number") {
+      const used = counts?.tags ?? 0
+      return { title: `Up to ${limits.maxTags} tags`, detail: `${used} currently in workspace` }
+    }
+    if (limits.maxTags == null) return { title: "Unlimited tags" }
+  }
+  if (feature === "changelog_tags") {
+    if (typeof limits.maxChangelogTags === "number") {
+      const used = counts?.changelogTags ?? 0
+      return { title: `Up to ${limits.maxChangelogTags} changelog tags`, detail: `${used} currently on changelog` }
+    }
+    if (limits.maxChangelogTags == null) return { title: "Unlimited changelog tags" }
+  }
   return { title: `Your plan: ${plan}` }
 }
 
-export default function PlanNotice({ slug, feature, className, plan: rawPlan, membersCount }: { slug: string; feature: Feature; className?: string; plan?: string; membersCount?: number }) {
+export default function PlanNotice({ slug, feature, className, plan: rawPlan, membersCount, tagsCount, changelogTagsCount }: { slug: string; feature: Feature; className?: string; plan?: string; membersCount?: number; tagsCount?: number; changelogTagsCount?: number }) {
   const { data } = useQuery({
     queryKey: ["workspace-plan", slug],
     queryFn: async () => {
@@ -44,7 +65,7 @@ export default function PlanNotice({ slug, feature, className, plan: rawPlan, me
   })
   const plan = normalizePlan(rawPlan || data || "free")
   const limits = getPlanLimits(plan)
-  const msg = buildMessage(feature, plan, limits, { members: membersCount })
+  const msg = buildMessage(feature, plan, limits, { members: membersCount, tags: tagsCount, changelogTags: changelogTagsCount })
   return (
     <div className={cn("rounded-md border bg-muted text-foreground text-xs sm:text-sm px-2 py-2 flex items-center gap-2", className)}>
       <AccentBar width={6} height={30} className="shrink-0" />
@@ -55,4 +76,3 @@ export default function PlanNotice({ slug, feature, className, plan: rawPlan, me
     </div>
   )
 }
-

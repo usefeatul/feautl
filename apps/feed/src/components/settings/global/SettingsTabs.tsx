@@ -70,7 +70,7 @@ function SectionRenderer({ slug, section, initialTeam }: { slug: string; section
     case "feedback":
       return <FeedbackSection />
     case "changelog":
-      return <ChangelogSection />
+      return <ChangelogSection slug={slug} />
     case "billing":
       return <BillingSection />
     case "domain":

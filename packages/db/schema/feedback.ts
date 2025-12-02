@@ -61,6 +61,16 @@ export const board = pgTable(
         { id: 'completed', name: 'Completed', color: '#10b981', order: 4 },
         { id: 'closed', name: 'Closed', color: '#ef4444', order: 5 },
       ]),
+    changelogTags: json('changelog_tags')
+      .$type<
+        {
+          id: string
+          name: string
+          slug: string
+        }[]
+      >()
+      .notNull()
+      .default([]),
   },
   (table) => ({
     boardSlugWorkspaceUnique: uniqueIndex('board_slug_workspace_unique').on(

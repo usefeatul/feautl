@@ -9,6 +9,9 @@ export type PlanLimits = {
   allowBranding: boolean
   allowHidePoweredBy: boolean
   allowAttachments: boolean
+  maxChangelogModerators: number | null
+  maxTags: number | null
+  maxChangelogTags: number | null
 }
 
 const LIMITS: Record<PlanKey, PlanLimits> = {
@@ -19,6 +22,9 @@ const LIMITS: Record<PlanKey, PlanLimits> = {
     allowBranding: false,
     allowHidePoweredBy: false,
     allowAttachments: true,
+    maxChangelogModerators: 1,
+    maxTags: 5,
+    maxChangelogTags: 5,
   },
   starter: {
     maxMembers: 15,
@@ -27,6 +33,9 @@ const LIMITS: Record<PlanKey, PlanLimits> = {
     allowBranding: true,
     allowHidePoweredBy: true,
     allowAttachments: true,
+    maxChangelogModerators: 3,
+    maxTags: 10,
+    maxChangelogTags: 10,
   },
   professional: {
     maxMembers: null,
@@ -35,6 +44,9 @@ const LIMITS: Record<PlanKey, PlanLimits> = {
     allowBranding: true,
     allowHidePoweredBy: true,
     allowAttachments: true,
+    maxChangelogModerators: 5,
+    maxTags: 20,
+    maxChangelogTags: 20,
   },
 }
 
@@ -48,4 +60,3 @@ export function normalizePlan(raw: string): PlanKey {
 export function getPlanLimits(plan: PlanKey | string): PlanLimits {
   return LIMITS[normalizePlan(String(plan))]
 }
-

@@ -10,7 +10,7 @@ export default function ThemePicker({ value, onSelect, options = ["system", "lig
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button type="button" variant="outline" className="h-9 w-fit min-w-0 justify-between px-2" disabled={disabled}>
+        <Button type="button" variant="nav" className="h-9 w-fit min-w-0 justify-between px-2" disabled={disabled}>
           <span className="text-sm capitalize">{value}</span>
           <DropdownIcon className="opacity-60" size={12} />
         </Button>

@@ -13,6 +13,7 @@ import React from "react";
 import { authClient } from "@feedgot/auth/client";
 import UserDropdown from "@/components/account/UserDropdown";
 import { DomainAuthModal } from "./DomainAuthModal";
+import { client } from "@feedgot/api/client";
 
 type WorkspaceInfo = {
   id: string;
@@ -40,6 +41,7 @@ export function DomainHeader({
   const [authMode, setAuthMode] = React.useState<"sign-in" | "sign-up">("sign-in");
   const [verifying, setVerifying] = React.useState(true);
   const [user, setUser] = React.useState<{ name?: string; email?: string; image?: string | null } | null>(null);
+  const [changelogVisible, setChangelogVisible] = React.useState(true);
   const itemCls = (active: boolean) =>
     cn(
       "rounded-md border px-3 py-2 group",
@@ -58,6 +60,13 @@ export function DomainHeader({
       } finally {
         if (active) setVerifying(false);
       }
+    })();
+    (async () => {
+      try {
+        const res = await client.changelog.visible.$get({ slug: subdomain });
+        const d = await res.json();
+        if (active) setChangelogVisible(Boolean((d as any)?.visible));
+      } catch {}
     })();
     const ch = typeof window !== "undefined" ? new BroadcastChannel("auth") : null;
     ch?.addEventListener("message", async () => {
@@ -170,22 +179,24 @@ export function DomainHeader({
               </Link>
             </li>
             <li>
-              <Link
-                href={changelogBase}
-                className={itemCls(isChangelog)}
-                aria-current={isChangelog ? "page" : undefined}
-              >
-                <span className="inline-flex items-center gap-2">
-                  Changelog
-                  <ChangelogIcon
-                    size={16}
-                    className={cn(
-                      "opacity-90 text-accent rounded-sm p-0.5 group-hover:bg-primary group-hover:text-primary-foreground",
-                      isChangelog ? "bg-primary text-primary-foreground" : ""
-                    )}
-                  />
-                </span>
-              </Link>
+              {changelogVisible ? (
+                <Link
+                  href={changelogBase}
+                  className={itemCls(isChangelog)}
+                  aria-current={isChangelog ? "page" : undefined}
+                >
+                  <span className="inline-flex items-center gap-2">
+                    Changelog
+                    <ChangelogIcon
+                      size={16}
+                      className={cn(
+                        "opacity-90 text-accent rounded-sm p-0.5 group-hover:bg-primary group-hover:text-primary-foreground",
+                        isChangelog ? "bg-primary text-primary-foreground" : ""
+                      )}
+                    />
+                  </span>
+                </Link>
+              ) : null}
             </li>
           </ul>
         </nav>

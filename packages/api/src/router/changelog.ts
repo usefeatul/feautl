@@ -9,6 +9,24 @@ const bySlugSchema = z.object({ slug: z.string().min(2).max(64) })
 
 export function createChangelogRouter() {
   return j.router({
+    visible: publicProcedure
+      .input(bySlugSchema)
+      .get(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.superjson({ visible: false })
+        const [b] = await ctx.db
+          .select({ id: board.id, isVisible: board.isVisible, isPublic: board.isPublic })
+          .from(board)
+          .where(and(eq(board.workspaceId, ws.id), eq(board.systemType, "changelog")))
+          .limit(1)
+        const v = Boolean(b?.isVisible) && Boolean(b?.isPublic)
+        c.header("Cache-Control", "public, max-age=30, stale-while-revalidate=120")
+        return c.superjson({ visible: v })
+      }),
     settings: privateProcedure
       .input(bySlugSchema)
       .get(async ({ ctx, input, c }) => {

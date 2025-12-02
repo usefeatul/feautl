@@ -84,15 +84,15 @@ export const auth = betterAuth({
   trustedOrigins: buildTrustedOrigins,
 
   advanced: {
-    useSecureCookies: true,
+    useSecureCookies: process.env.NODE_ENV === "production",
     crossSubDomainCookies: {
-      enabled: Boolean(process.env.AUTH_COOKIE_DOMAIN),
+      enabled: process.env.NODE_ENV === "production" && Boolean(process.env.AUTH_COOKIE_DOMAIN),
       domain: process.env.AUTH_COOKIE_DOMAIN as string,
     },
     cookies: {
       session_token: {
         attributes: {
-          sameSite: "none",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         },
       },
     },

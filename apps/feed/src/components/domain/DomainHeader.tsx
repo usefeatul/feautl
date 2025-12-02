@@ -94,9 +94,7 @@ export function DomainHeader({
           )}
         </div>
         <div className="flex items-center gap-2 justify-self-end">
-          {verifying ? (
-            <div className="h-7 w-20 rounded-md bg-muted animate-pulse" />
-          ) : user ? (
+          {user ? (
             <div className="flex items-center gap-2">
               <Button asChild size="xs" variant="nav">
                 <Link href={dashboardUrl}>Dashboard</Link>
@@ -193,9 +191,7 @@ export function DomainHeader({
         </nav>
 
         <div className="flex items-center gap-3">
-          {verifying ? (
-            <div className="h-8 w-28 rounded-md bg-muted animate-pulse" />
-          ) : user ? (
+          {user ? (
             <>
               <Button asChild size="xs" variant="nav">
                 <Link href={dashboardUrl}>Dashboard</Link>

@@ -28,7 +28,7 @@ import { client } from "@feedgot/api/client";
 import { useCanEditBranding } from "@/hooks/useWorkspaceAccess";
 import {  getPlanLimits } from "@/lib/plan";
 
-export default function BrandingSection({ slug, initialHidePoweredBy, initialPlan }: { slug: string; initialHidePoweredBy?: boolean; initialPlan?: string }) {
+export default function BrandingSection({ slug, initialHidePoweredBy, initialPlan, initialConfig, initialWorkspaceName }: { slug: string; initialHidePoweredBy?: boolean; initialPlan?: string; initialConfig?: any; initialWorkspaceName?: string }) {
   const [logoUrl, setLogoUrl] = React.useState("");
   const [primaryColor, setPrimaryColor] = React.useState("#3b82f6");
   const [accentColor, setAccentColor] = React.useState("#60a5fa");
@@ -51,45 +51,53 @@ export default function BrandingSection({ slug, initialHidePoweredBy, initialPla
     let mounted = true;
     void (async () => {
       try {
-        const conf = await loadBrandingBySlug(slug);
-        if (mounted && conf) {
-          setLogoUrl(conf.logoUrl || "");
-          const currentPrimary = conf.primaryColor || "#3b82f6";
-          const found =
-            findColorByPrimary(currentPrimary) || BRANDING_COLORS[1];
+        const conf0 = initialConfig || null
+        if (mounted && conf0) {
+          setLogoUrl(conf0.logoUrl || "");
+          const currentPrimary = conf0.primaryColor || "#3b82f6";
+          const found = findColorByPrimary(currentPrimary) || BRANDING_COLORS[1];
           setPrimaryColor(currentPrimary);
-          setAccentColor(
-            conf.accentColor || (found && found.accent) || "#60a5fa"
-          );
+          setAccentColor(conf0.accentColor || (found && found.accent) || "#60a5fa");
           setColorKey(found ? found.key : "blue");
-          if (
-            conf.theme === "light" ||
-            conf.theme === "dark" ||
-            conf.theme === "system"
-          )
-            setTheme(conf.theme);
-          setHidePoweredBy(typeof initialHidePoweredBy === "boolean" ? Boolean(initialHidePoweredBy) : Boolean(conf.hidePoweredBy));
-          if (
-            conf.layoutStyle === "compact" ||
-            conf.layoutStyle === "comfortable" ||
-            conf.layoutStyle === "spacious"
-          )
-            setLayoutStyle(conf.layoutStyle);
-          if (conf.sidebarPosition === "left" || conf.sidebarPosition === "right")
-            setSidebarPosition(conf.sidebarPosition);
+          if (conf0.theme === "light" || conf0.theme === "dark" || conf0.theme === "system") setTheme(conf0.theme);
+          setHidePoweredBy(typeof initialHidePoweredBy === "boolean" ? Boolean(initialHidePoweredBy) : Boolean(conf0.hidePoweredBy));
+          if (conf0.layoutStyle === "compact" || conf0.layoutStyle === "comfortable" || conf0.layoutStyle === "spacious") setLayoutStyle(conf0.layoutStyle);
+          if (conf0.sidebarPosition === "left" || conf0.sidebarPosition === "right") setSidebarPosition(conf0.sidebarPosition);
+        } else {
+          const conf = await loadBrandingBySlug(slug);
+          if (mounted && conf) {
+            setLogoUrl(conf.logoUrl || "");
+            const currentPrimary = conf.primaryColor || "#3b82f6";
+            const found = findColorByPrimary(currentPrimary) || BRANDING_COLORS[1];
+            setPrimaryColor(currentPrimary);
+            setAccentColor(conf.accentColor || (found && found.accent) || "#60a5fa");
+            setColorKey(found ? found.key : "blue");
+            if (conf.theme === "light" || conf.theme === "dark" || conf.theme === "system") setTheme(conf.theme);
+            setHidePoweredBy(typeof initialHidePoweredBy === "boolean" ? Boolean(initialHidePoweredBy) : Boolean(conf.hidePoweredBy));
+            if (conf.layoutStyle === "compact" || conf.layoutStyle === "comfortable" || conf.layoutStyle === "spacious") setLayoutStyle(conf.layoutStyle);
+            if (conf.sidebarPosition === "left" || conf.sidebarPosition === "right") setSidebarPosition(conf.sidebarPosition);
+          }
         }
-        try {
-          const res = await client.workspace.bySlug.$get({ slug });
-          const d = await res.json();
-          const w = (d as { workspace?: { name?: string; plan?: string } })
-            ?.workspace;
-          const n = String(w?.name || "");
+        if (typeof initialWorkspaceName === "string" && initialWorkspaceName) {
+          const n = String(initialWorkspaceName || "")
           if (mounted) {
             setWorkspaceName(n);
             originalNameRef.current = n;
-            setPlan(String(w?.plan || "free"));
+            setPlan(String(initialPlan || "free"));
           }
-        } catch {}
+        } else {
+          try {
+            const res = await client.workspace.bySlug.$get({ slug });
+            const d = await res.json();
+            const w = (d as { workspace?: { name?: string; plan?: string } })?.workspace;
+            const n = String(w?.name || "");
+            if (mounted) {
+              setWorkspaceName(n);
+              originalNameRef.current = n;
+              setPlan(String(w?.plan || "free"));
+            }
+          } catch {}
+        }
         
       } catch (e) {
       } finally {

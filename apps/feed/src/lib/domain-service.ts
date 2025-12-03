@@ -13,7 +13,7 @@ async function safeJson<T = unknown>(res: Response): Promise<T | null> {
   }
 }
 
-export function useDomain(slug: string) {
+export function useDomain(slug: string, initial?: { info: DomainInfo | null; plan: string; defaultDomain: string }) {
   return useQuery({
     queryKey: ["domain", slug],
     queryFn: async () => {
@@ -25,10 +25,12 @@ export function useDomain(slug: string) {
         defaultDomain: (data?.defaultDomain || "") as string,
       };
     },
+    initialData: initial,
     staleTime: 300000,
     gcTime: 300000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 }
 

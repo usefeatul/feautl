@@ -30,10 +30,12 @@ export default function ChangelogSection({
   slug,
   initialIsVisible,
   initialPlan,
+  initialTags,
 }: {
   slug: string;
   initialIsVisible?: boolean;
   initialPlan?: string;
+  initialTags?: any[];
 }) {
   const queryClient = useQueryClient();
   const {
@@ -56,20 +58,18 @@ export default function ChangelogSection({
     refetchOnReconnect: false,
   });
 
-  const {
-    data: tagsData = [],
-    isLoading: tagsLoading,
-    refetch: refetchTags,
-  } = useQuery({
+  const { data: tagsData = [], isLoading: tagsLoading, refetch: refetchTags } = useQuery({
     queryKey: ["changelog-tags", slug],
     queryFn: async () => {
       const res = await client.changelog.tagsList.$get({ slug });
       const d = await res.json();
       return (d as any)?.tags || [];
     },
+    initialData: Array.isArray(initialTags) ? initialTags : undefined,
     staleTime: 300000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 
   const visible = Boolean((data as any)?.isVisible);

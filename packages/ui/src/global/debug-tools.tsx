@@ -293,7 +293,7 @@ export function DebugTools() {
       <div className="rounded-md border bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-2 py-1 shadow-sm">
         <div className="flex items-center gap-1">
           <Button
-            size="sm"
+            size="xs"
             variant={showGrid ? "quiet" : "outline"}
             onClick={() => setShowGrid((v) => !v)}
             aria-pressed={showGrid}
@@ -302,7 +302,7 @@ export function DebugTools() {
             Grid
           </Button>
           <Button
-            size="sm"
+            size="xs"
             variant={showOutline ? "quiet" : "outline"}
             onClick={() => setShowOutline((v) => !v)}
             aria-pressed={showOutline}
@@ -311,7 +311,7 @@ export function DebugTools() {
             Outline
           </Button>
           <Button
-            size="sm"
+            size="xs"
             variant="quiet"
             onClick={analyze}
             aria-label="Analyze layout for UX issues"
@@ -319,10 +319,10 @@ export function DebugTools() {
             Scan
           </Button>
           {showAnalysis && (
-            <div className="ml-2 flex items-center gap-1">
-              <span className="px-2 py-0.5 rounded-md border text-[11px] bg-red-500/10 border-red-200 text-red-600">{counts.error}</span>
-              <span className="px-2 py-0.5 rounded-md border text-[11px] bg-orange-400/10 border-orange-200 text-orange-600">{counts.warn}</span>
-              <span className="px-2 py-0.5 rounded-md border text-[11px] bg-blue-500/10 border-blue-200 text-blue-600">{counts.info}</span>
+            <div className="ml-2 flex items-center gap-3">
+              <span className="px-2 py-1 rounded-md border text-[11px] bg-red-500/10 border-red-500 text-red-600">{counts.error}</span>
+              <span className="px-2 py-1 rounded-md border text-[11px] bg-orange-400/10 border-orange-500 text-orange-600">{counts.warn}</span>
+              <span className="px-2 py-1 rounded-md border text-[11px] bg-blue-500/10 border-blue-500 text-blue-600">{counts.info}</span>
             </div>
           )}
         </div>
@@ -339,8 +339,8 @@ export function DebugTools() {
               ))}
             </ul>
             <div className="mt-1 flex gap-1">
-              <Button size="sm" variant="quiet" onClick={copyReport} aria-label="Copy analysis report">Copy</Button>
-              <Button size="sm" variant="quiet" onClick={resetAll} aria-label="Reset debug toggles">Reset</Button>
+              <Button size="xs" variant="nav" onClick={copyReport} aria-label="Copy analysis report">Copy</Button>
+              <Button size="xs" variant="nav" onClick={resetAll} aria-label="Reset debug toggles">Reset</Button>
             </div>
           </div>
         )}

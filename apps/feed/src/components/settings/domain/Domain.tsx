@@ -14,9 +14,9 @@ import AddDomainDialog from "./AddDomainDialog";
 import { ArrowIcon } from "@feedgot/ui/icons/arrow";
 import { normalizePlan } from "@/lib/plan";
 import { useCanEditDomain } from "@/hooks/useWorkspaceAccess";
-export default function DomainSection({ slug, initialPlan }: { slug: string; initialPlan?: string }) {
+export default function DomainSection({ slug, initialPlan, initialInfo, initialDefaultDomain }: { slug: string; initialPlan?: string; initialInfo?: DomainInfo; initialDefaultDomain?: string }) {
   const [open, setOpen] = React.useState(false);
-  const { data, isLoading } = useDomain(slug);
+  const { data, isLoading } = useDomain(slug, initialInfo !== undefined || initialDefaultDomain !== undefined || initialPlan !== undefined ? { info: (initialInfo || null) as DomainInfo, plan: String(initialPlan || "free"), defaultDomain: String(initialDefaultDomain || "") } : undefined);
   const plan = normalizePlan(data?.plan || "free");
   const info = (data?.info || null) as DomainInfo;
   const canUse = plan === "starter" || plan === "professional";

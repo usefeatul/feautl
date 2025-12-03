@@ -15,11 +15,23 @@ import DataSection from "../data/Data"
 import type { Member, Invite } from "../../../types/team"
 import { SECTIONS } from "../../../config/sections"
 
-type Props = { slug: string; initialTeam?: { members: Member[]; invites: Invite[]; meId: string | null }; selectedSection?: string; initialChangelogVisible?: boolean; initialHidePoweredBy?: boolean; initialPlan?: string }
+type Props = {
+  slug: string;
+  initialTeam?: { members: Member[]; invites: Invite[]; meId: string | null };
+  selectedSection?: string;
+  initialChangelogVisible?: boolean;
+  initialChangelogTags?: any[];
+  initialHidePoweredBy?: boolean;
+  initialPlan?: string;
+  initialBrandingConfig?: any;
+  initialWorkspaceName?: string;
+  initialDomainInfo?: any;
+  initialDefaultDomain?: string;
+}
 
 const sections = SECTIONS
 
-export default function SettingsTabs({ slug, initialTeam, selectedSection, initialChangelogVisible, initialHidePoweredBy, initialPlan }: Props) {
+export default function SettingsTabs({ slug, initialTeam, selectedSection, initialChangelogVisible, initialChangelogTags, initialHidePoweredBy, initialPlan, initialBrandingConfig, initialWorkspaceName, initialDomainInfo, initialDefaultDomain }: Props) {
   const router = useRouter()
   const routeParams = useParams()
   const paramSection = typeof routeParams?.section === "string" ? routeParams.section : undefined
@@ -58,8 +70,13 @@ export default function SettingsTabs({ slug, initialTeam, selectedSection, initi
               section={s.value}
               initialTeam={initialTeam}
               initialChangelogVisible={initialChangelogVisible}
+              initialChangelogTags={initialChangelogTags}
               initialHidePoweredBy={initialHidePoweredBy}
               initialPlan={initialPlan}
+              initialBrandingConfig={initialBrandingConfig}
+              initialWorkspaceName={initialWorkspaceName}
+              initialDomainInfo={initialDomainInfo}
+              initialDefaultDomain={initialDefaultDomain}
             />
           </TabsContent>
         ))}
@@ -68,20 +85,20 @@ export default function SettingsTabs({ slug, initialTeam, selectedSection, initi
   )
 }
 
-function SectionRenderer({ slug, section, initialTeam, initialChangelogVisible, initialHidePoweredBy, initialPlan }: { slug: string; section: string; initialTeam?: { members: Member[]; invites: Invite[]; meId: string | null }; initialChangelogVisible?: boolean; initialHidePoweredBy?: boolean; initialPlan?: string }) {
+function SectionRenderer({ slug, section, initialTeam, initialChangelogVisible, initialChangelogTags, initialHidePoweredBy, initialPlan, initialBrandingConfig, initialWorkspaceName, initialDomainInfo, initialDefaultDomain }: { slug: string; section: string; initialTeam?: { members: Member[]; invites: Invite[]; meId: string | null }; initialChangelogVisible?: boolean; initialChangelogTags?: any[]; initialHidePoweredBy?: boolean; initialPlan?: string; initialBrandingConfig?: any; initialWorkspaceName?: string; initialDomainInfo?: any; initialDefaultDomain?: string }) {
   switch (section) {
     case "branding":
-      return <BrandingSection slug={slug} initialHidePoweredBy={initialHidePoweredBy} initialPlan={initialPlan} />
+      return <BrandingSection slug={slug} initialHidePoweredBy={initialHidePoweredBy} initialPlan={initialPlan} initialConfig={initialBrandingConfig} initialWorkspaceName={initialWorkspaceName} />
     case "team":
       return <TeamSection slug={slug} initialMembers={initialTeam?.members} initialInvites={initialTeam?.invites} initialMeId={initialTeam?.meId} initialPlan={initialPlan} />
     case "feedback":
       return <FeedbackSection />
     case "changelog":
-      return <ChangelogSection slug={slug} initialIsVisible={initialChangelogVisible} initialPlan={initialPlan} />
+      return <ChangelogSection slug={slug} initialIsVisible={initialChangelogVisible} initialPlan={initialPlan} initialTags={initialChangelogTags} />
     case "billing":
       return <BillingSection />
     case "domain":
-      return <DomainSection slug={slug} initialPlan={initialPlan} />
+      return <DomainSection slug={slug} initialPlan={initialPlan} initialInfo={initialDomainInfo} initialDefaultDomain={initialDefaultDomain} />
     case "integrations":
       return <IntegrationsSection />
     case "sso":

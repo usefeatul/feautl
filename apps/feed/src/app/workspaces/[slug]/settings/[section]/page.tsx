@@ -47,11 +47,12 @@ export default async function SettingsSectionPage({ params }: Props) {
       initialWorkspaceName = String((ws as any)?.name || "")
       wsOwnerId = String((ws as any)?.ownerId || "")
       const [b] = await db
-        .select({ isVisible: board.isVisible, isPublic: board.isPublic })
+        .select({ isVisible: board.isVisible, isPublic: board.isPublic, changelogTags: board.changelogTags })
         .from(board)
         .where(and(eq(board.workspaceId, ws.id), eq(board.systemType, "changelog" as any)))
         .limit(1)
       initialChangelogVisible = Boolean(b?.isVisible)
+      initialChangelogTags = Array.isArray((b as any)?.changelogTags) ? (b as any)?.changelogTags : []
       const [br] = await db
         .select({ hidePoweredBy: brandingConfig.hidePoweredBy })
         .from(brandingConfig)
@@ -100,11 +101,7 @@ export default async function SettingsSectionPage({ params }: Props) {
       }
     }
   } catch {}
-  try {
-    const resTags = await client.changelog.tagsList.$get({ slug })
-    const dTags = await resTags.json()
-    initialChangelogTags = (dTags as any)?.tags || []
-  } catch {}
+  
   try {
     const resDomain = await client.workspace.domainInfo.$get({ slug })
     const dDomain = await resDomain.json()

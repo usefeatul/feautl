@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic"
+export const revalidate = 30
 
 import type { Metadata } from "next"
 import DomainPageLayout from "@/components/subdomain/DomainPageLayout"

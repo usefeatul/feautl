@@ -4,7 +4,7 @@ import { getWorkspacePosts } from "@/lib/workspace"
 import RoadmapBoard from "@/components/roadmap/RoadmapBoard"
 import { readInitialCollapsedByStatus } from "@/lib/roadmap.server"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 30
 
 type Props = { params: Promise<{ slug: string }> }
 

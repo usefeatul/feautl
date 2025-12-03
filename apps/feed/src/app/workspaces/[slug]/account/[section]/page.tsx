@@ -5,7 +5,7 @@ import { getAccountSectionMeta } from "@/config/account-sections"
 import { getServerSession, listServerSessions } from "@feedgot/auth/session"
 import { redirect } from "next/navigation"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 30
 
 type Props = { params: Promise<{ slug: string; section: string }> }
 

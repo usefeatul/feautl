@@ -10,7 +10,7 @@ import { SITE_URL } from "@/config/seo"
 import { buildBlogPostingSchema, buildBlogBreadcrumbSchema } from "@/lib/structured-data"
 import Script from "next/script"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 30
 
 
 

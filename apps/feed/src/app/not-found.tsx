@@ -3,7 +3,7 @@ import { findFirstAccessibleWorkspaceSlug } from "@/lib/workspace"
 import NotFoundWorkspaceLink from "@/components/global/NotFoundWorkspaceLink"
 
 
-export const dynamic = "force-dynamic"
+export const revalidate = 30
 
 
 export default async function NotFound() {

@@ -8,7 +8,7 @@ import { getServerSession } from "@feedgot/auth/session"
 import { redirect } from "next/navigation"
 import UnauthorizedWorkspace from "@/components/global/Unauthorized"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 30
 
 export default async function WorkspaceLayout({ children, params }: { children: React.ReactNode; params: Promise<{ slug: string }> }) {
   const { slug } = await params

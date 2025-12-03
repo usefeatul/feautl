@@ -3,7 +3,7 @@ import RequestList from "@/components/requests/RequestList";
 import RequestPagination from "@/components/requests/RequestPagination";
 
 import { notFound } from "next/navigation";
-export const dynamic = "force-dynamic";
+export const revalidate = 30;
 
 type SearchParams = { page?: string | string[] };
 type Props = { params: Promise<{ slug: string }>; searchParams?: Promise<SearchParams> };

@@ -9,7 +9,7 @@ import PostCountSeed from "@/components/requests/PostCountSeed"
 import RequestPagination from "@/components/requests/RequestPagination"
 import { createPageMetadata } from "@/lib/seo"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 30
 
 type SearchParams = {
   status?: string | string[]

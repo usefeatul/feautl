@@ -3,7 +3,7 @@ import { db, workspace, board, post } from "@feedgot/db"
 import { eq, and, sql } from "drizzle-orm"
 import RequestDetail from "@/components/requests/RequestDetail"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 30
 
 type Props = { params: Promise<{ subdomain: string; post: string }> }
 

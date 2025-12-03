@@ -5,7 +5,7 @@ import { BlogCard } from "@/components/blog/blog-card"
 import type { MarblePostListResponse } from "@/types/marble"
 import { createPageMetadata } from "@/lib/seo"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 30
 
 export const metadata: Metadata = createPageMetadata({
   title: "Blog - Product leadership, feedback, and building in public",

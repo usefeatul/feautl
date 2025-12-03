@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Invite from "@/components/invite/Invite"
 import { createPageMetadata } from "@/lib/seo"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 30
 
 type Props = { params: Promise<{ token: string }> }
 

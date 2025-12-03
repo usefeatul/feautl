@@ -1,10 +1,8 @@
 import type { Metadata } from "next"
 import SettingsServer from "@/components/settings/global/SettingsServer"
-import { db, workspace, board, brandingConfig, workspaceMember, workspaceInvite, user, workspaceDomain } from "@feedgot/db"
-import { and, eq } from "drizzle-orm"
 import { createPageMetadata } from "@/lib/seo"
 import { getSectionMeta } from "@/config/sections"
-import { getBrandingBySlug } from "@/lib/workspace"
+import { getSettingsInitialData } from "@/lib/workspace"
 import { getServerSession } from "@feedgot/auth/session"
 
 export const dynamic = "force-dynamic"
@@ -21,94 +19,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     indexable: false,
   })
 }
-
 export default async function SettingsSectionPage({ params }: Props) {
   const { slug, section } = await params
   const session = await getServerSession()
-  let initialChangelogVisible: boolean | undefined
-  let initialHidePoweredBy: boolean | undefined
-  let initialPlan: string | undefined
-  let initialWorkspaceName: string | undefined
-  let initialTeam: { members: any[]; invites: any[]; meId: string | null } | undefined
-  let initialChangelogTags: any[] | undefined
-  let initialDomainInfo: any | undefined
-  let initialDefaultDomain: string | undefined
-  let initialBrandingConfig: any | undefined
-  let wsOwnerId: string | undefined
-  try {
-    const [ws] = await db
-      .select({ id: workspace.id, plan: workspace.plan, name: workspace.name, logo: workspace.logo, ownerId: workspace.ownerId, domain: workspace.domain })
-      .from(workspace)
-      .where(eq(workspace.slug, slug))
-      .limit(1)
-    if (ws?.id) {
-      initialPlan = String((ws as any)?.plan || "free")
-      initialWorkspaceName = String((ws as any)?.name || "")
-      wsOwnerId = String((ws as any)?.ownerId || "")
-      const [b] = await db
-        .select({ isVisible: board.isVisible, isPublic: board.isPublic, changelogTags: board.changelogTags })
-        .from(board)
-        .where(and(eq(board.workspaceId, ws.id), eq(board.systemType, "changelog" as any)))
-        .limit(1)
-      initialChangelogVisible = Boolean(b?.isVisible)
-      initialChangelogTags = Array.isArray((b as any)?.changelogTags) ? (b as any)?.changelogTags : []
-      const [br] = await db
-        .select({ hidePoweredBy: brandingConfig.hidePoweredBy })
-        .from(brandingConfig)
-        .where(eq(brandingConfig.workspaceId, ws.id))
-        .limit(1)
-      initialHidePoweredBy = Boolean((br as any)?.hidePoweredBy)
-      const branding = await getBrandingBySlug(slug)
-      initialBrandingConfig = {
-        logoUrl: (ws as any)?.logo || undefined,
-        primaryColor: branding.primary,
-        theme: branding.theme,
-        layoutStyle: branding.layoutStyle,
-        sidebarPosition: branding.sidebarPosition,
-        hidePoweredBy: branding.hidePoweredBy,
-      }
-
-      const members = await db
-        .select({
-          userId: workspaceMember.userId,
-          role: workspaceMember.role,
-          joinedAt: workspaceMember.joinedAt,
-          isActive: workspaceMember.isActive,
-          name: user.name,
-          email: user.email,
-          image: user.image,
-        })
-        .from(workspaceMember)
-        .innerJoin(user, eq(user.id, workspaceMember.userId))
-        .where(eq(workspaceMember.workspaceId, ws.id))
-      const invites = await db
-        .select({
-          id: workspaceInvite.id,
-          email: workspaceInvite.email,
-          role: workspaceInvite.role,
-          invitedBy: workspaceInvite.invitedBy,
-          expiresAt: workspaceInvite.expiresAt,
-          acceptedAt: workspaceInvite.acceptedAt,
-          createdAt: workspaceInvite.createdAt,
-        })
-        .from(workspaceInvite)
-        .where(eq(workspaceInvite.workspaceId, ws.id))
-      initialTeam = {
-        members: members.map((m) => ({ ...m, isOwner: String(wsOwnerId || "") === String(m.userId || "") })),
-        invites,
-        meId: session?.user?.id || null,
-      }
-
-      const [d] = await db
-        .select({ id: workspaceDomain.id, host: workspaceDomain.host, cnameName: workspaceDomain.cnameName, cnameTarget: workspaceDomain.cnameTarget, txtName: workspaceDomain.txtName, txtValue: workspaceDomain.txtValue, status: workspaceDomain.status })
-        .from(workspaceDomain)
-        .where(eq(workspaceDomain.workspaceId, ws.id))
-        .limit(1)
-      initialDomainInfo = d || null
-      initialDefaultDomain = String((ws as any)?.domain || "")
-    }
-  } catch {}
-  
+  const {
+    initialPlan,
+    initialWorkspaceName,
+    initialTeam,
+    initialChangelogVisible,
+    initialChangelogTags,
+    initialHidePoweredBy,
+    initialBrandingConfig,
+    initialDomainInfo,
+    initialDefaultDomain,
+  } = await getSettingsInitialData(slug, session?.user?.id)
   
   return (
     <SettingsServer

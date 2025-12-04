@@ -260,8 +260,8 @@ export default function CommentItem({
                   Save
                 </Button>
                 <Button
-                  size="sm"
-                  variant="ghost"
+                  size="xs"
+                  variant="nav"
                   onClick={() => {
                     setIsEditing(false)
                     setEditContent(comment.content)
@@ -322,7 +322,7 @@ export default function CommentItem({
             )}
 
             <CommentActions
-              isAuthor={isAuthor}
+              isAuthor={!!isAuthor}
               onEdit={() => setIsEditing(true)}
               onDelete={() => setShowDeleteDialog(true)}
               onReport={handleReport}

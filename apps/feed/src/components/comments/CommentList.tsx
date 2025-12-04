@@ -1,46 +1,54 @@
-"use client"
+"use client";
 
-import React from "react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { client } from "@feedgot/api/client"
-import CommentForm from "./CommentForm"
-import CommentThread from "./CommentThread"
-import { Loader2 } from "lucide-react"
-import { useSession } from "@feedgot/auth/client"
+import React from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { client } from "@feedgot/api/client";
+import CommentForm from "./CommentForm";
+import CommentThread from "./CommentThread";
+import { useSession } from "@feedgot/auth/client";
 
 interface CommentListProps {
-  postId: string
-  initialCount?: number
+  postId: string;
+  initialCount?: number;
 }
 
-export default function CommentList({ postId, initialCount = 0 }: CommentListProps) {
-  const queryClient = useQueryClient()
-  const { data: session } = useSession() as any
-  const currentUserId = session?.user?.id || null
+export default function CommentList({
+  postId,
+  initialCount = 0,
+}: CommentListProps) {
+  const queryClient = useQueryClient();
+  const { data: session } = useSession() as any;
+  const currentUserId = session?.user?.id || null;
 
-  const queryKey = ["comments", postId]
+  const queryKey = ["comments", postId];
 
   const {
     data: commentsData,
     isLoading,
+    isFetching,
     refetch,
   } = useQuery({
     queryKey,
     queryFn: async () => {
-      const res = await client.comment.list.$get({ postId })
+      const res = await client.comment.list.$get({ postId });
       if (!res.ok) {
-        throw new Error("Failed to fetch comments")
+        throw new Error("Failed to fetch comments");
       }
-      return await res.json()
+      return await res.json();
     },
     staleTime: 30_000,
     gcTime: 300_000,
-  })
+    placeholderData: (previousData) => previousData,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 
-  const comments = commentsData?.comments || []
-  const commentCount = comments.length
+  const comments = commentsData?.comments || [];
+  const commentCount = comments.length;
 
   const handleCommentSuccess = () => {
+    // Optimistically refetch in background without showing loading state
+    // The query will update with placeholderData keeping old data visible
     refetch()
   }
 
@@ -58,20 +66,28 @@ export default function CommentList({ postId, initialCount = 0 }: CommentListPro
       </div>
 
       {/* Comments List */}
-      {isLoading ? (
-        <div className="flex items-center justify-center py-8">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        </div>
-      ) : commentCount === 0 ? (
+      {commentCount === 0 && !isLoading ? (
         <div className="rounded-md border bg-card p-6 text-center">
-          <p className="text-sm text-muted-foreground">No comments yet. Be the first to comment!</p>
+          <p className="text-sm text-muted-foreground">
+            No comments yet. Be the first to comment!
+          </p>
         </div>
       ) : (
-        <div className="space-y-4">
-          <CommentThread comments={comments} currentUserId={currentUserId} onUpdate={handleCommentSuccess} />
+        <div className="space-y-4 relative">
+          {isFetching && comments.length > 0 && (
+            <div className="absolute top-0 right-0">
+              <div className="h-1 w-1 rounded-full bg-muted-foreground/30 animate-pulse" />
+            </div>
+          )}
+          {comments.length > 0 && (
+            <CommentThread
+              comments={comments}
+              currentUserId={currentUserId}
+              onUpdate={handleCommentSuccess}
+            />
+          )}
         </div>
       )}
     </div>
-  )
+  );
 }
-

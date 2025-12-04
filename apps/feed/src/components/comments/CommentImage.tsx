@@ -45,7 +45,7 @@ export default function CommentImage({ url, alt, className, size = "small" }: Co
         }}
         aria-label="Click to view full size image"
       >
-        <div className="relative aspect-video w-full h-full min-h-[60px]">
+        <div className="relative aspect-video w-full h-full min-h-[60px] bg-muted">
           <Image
             src={url}
             alt={alt}

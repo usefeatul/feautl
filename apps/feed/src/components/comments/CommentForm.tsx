@@ -9,6 +9,7 @@ import { Loader2, Image as ImageIcon, X } from "lucide-react"
 import { getCommentImageUploadUrl } from "@/lib/comment-service"
 import { cn } from "@feedgot/ui/lib/utils"
 import CommentImage from "./CommentImage"
+import ClosedIcon from "@feedgot/ui/icons/closed"
 
 interface CommentFormProps {
   postId: string
@@ -147,7 +148,7 @@ export default function CommentForm({
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder={placeholder}
-        className="min-h-[80px] resize-none text-sm shadow-none"
+        className="min-h-[60px] resize-none text-sm shadow-none"
         autoFocus={autoFocus}
         disabled={isPending || uploadingImage}
       />
@@ -168,7 +169,8 @@ export default function CommentForm({
               disabled={isPending || uploadingImage}
               aria-label="Remove image"
             >
-              <X className="h-3 w-3" />
+
+              <ClosedIcon className="h-3 w-3" />
             </button>
           </div>
         </div>
@@ -186,8 +188,8 @@ export default function CommentForm({
           />
           <Button
             type="button"
-            size="sm"
-            variant="ghost"
+            size="xs"
+            variant="nav"
             className="h-8 w-8 p-0"
             onClick={() => fileInputRef.current?.click()}
             disabled={isPending || uploadingImage || !!uploadedImage}
@@ -204,7 +206,8 @@ export default function CommentForm({
         <div className="flex items-center gap-2">
           <Button
             type="submit"
-            size="sm"
+            size="xs"
+            variant="quiet"
             disabled={(!content.trim() && !uploadedImage) || isPending || uploadingImage}
           >
             {isPending && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
@@ -213,8 +216,8 @@ export default function CommentForm({
           {onCancel && (
             <Button
               type="button"
-              size="sm"
-              variant="ghost"
+              size="xs"
+              variant="nav"
               onClick={onCancel}
               disabled={isPending || uploadingImage}
             >

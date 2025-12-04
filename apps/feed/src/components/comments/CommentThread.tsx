@@ -59,7 +59,11 @@ export default function CommentThread({ comments, currentUserId, onUpdate }: Com
     // Sort replies by date (oldest first for natural conversation flow)
     const sortReplies = (node: CommentData & { replies: CommentData[] }) => {
       node.replies.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-      node.replies.forEach(sortReplies)
+      node.replies.forEach((reply) => {
+        if ('replies' in reply && Array.isArray(reply.replies)) {
+          sortReplies(reply as CommentData & { replies: CommentData[] })
+        }
+      })
     }
     rootComments.forEach(sortReplies)
 
@@ -86,8 +90,8 @@ export default function CommentThread({ comments, currentUserId, onUpdate }: Com
           onToggleCollapse={() => toggleCollapse(comment.id)}
         />
         {hasReplies && !isCollapsed && (
-          <div className="ml-8 space-y-4 border-l-2 border-border pl-4">
-            {comment.replies.map((reply) => renderComment(reply, depth + 1))}
+          <div className="ml-6 space-y-3 pl-4 border-l border-border/50">
+            {comment.replies.map((reply) => renderComment(reply as CommentData & { replies: CommentData[] }, depth + 1))}
           </div>
         )}
       </div>
@@ -97,7 +101,7 @@ export default function CommentThread({ comments, currentUserId, onUpdate }: Com
   const commentTree = buildCommentTree(comments)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {commentTree.map((comment) => renderComment(comment, 0))}
     </div>
   )

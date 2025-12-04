@@ -213,44 +213,41 @@ export default function CommentItem({
   }
 
   return (
-    <div className="flex gap-3">
-      <Avatar className="h-8 w-8 flex-shrink-0">
+    <div className="flex gap-2.5">
+      <Avatar className="h-7 w-7 flex-shrink-0 mt-0.5">
         <AvatarImage src={comment.authorImage} alt={comment.authorName} />
         <AvatarFallback className="text-xs">{initials}</AvatarFallback>
       </Avatar>
 
-      <div className="flex-1 space-y-2">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
+      <div className="flex-1 min-w-0">
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="text-sm font-medium">{comment.authorName}</span>
+            <span className="text-xs text-muted-foreground">{relativeTime(comment.createdAt)}</span>
+            {comment.isEdited && (
+              <span className="text-xs text-muted-foreground">(edited)</span>
+            )}
+            {comment.isPinned && (
+              <span className="text-xs text-primary">Pinned</span>
+            )}
             {hasReplies && onToggleCollapse && (
               <button
                 onClick={onToggleCollapse}
-                className="inline-flex items-center justify-center w-5 h-5 rounded hover:bg-muted transition-colors"
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 aria-label={isCollapsed ? "Expand replies" : "Collapse replies"}
               >
                 {isCollapsed ? (
-                  <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+                  <>
+                    <ChevronDown className="h-3 w-3" />
+                    <span>{comment.replyCount}</span>
+                  </>
                 ) : (
-                  <ChevronUp className="h-3.5 w-3.5 text-muted-foreground" />
+                  <>
+                    <ChevronUp className="h-3 w-3" />
+                    <span>{comment.replyCount}</span>
+                  </>
                 )}
               </button>
-            )}
-            <span className="text-sm font-medium">{comment.authorName}</span>
-            <span className="text-xs text-muted-foreground">·</span>
-            <span className="text-xs text-muted-foreground">{relativeTime(comment.createdAt)}</span>
-            {comment.isEdited && (
-              <>
-                <span className="text-xs text-muted-foreground">·</span>
-                <span className="text-xs text-muted-foreground">edited</span>
-              </>
-            )}
-            {comment.isPinned && (
-              <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded">Pinned</span>
-            )}
-            {hasReplies && (
-              <span className="text-xs text-muted-foreground">
-                {comment.replyCount} {comment.replyCount === 1 ? "reply" : "replies"}
-              </span>
             )}
           </div>
 
@@ -283,13 +280,13 @@ export default function CommentItem({
           ) : (
             <>
               {comment.content && (
-                <p className="text-sm text-foreground whitespace-pre-wrap break-words mb-2">
+                <p className="text-sm text-foreground whitespace-pre-wrap break-words leading-relaxed">
                   {comment.content}
                 </p>
               )}
               {/* Display images from metadata */}
               {comment.metadata?.attachments && comment.metadata.attachments.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mt-2">
+                <div className="flex flex-wrap gap-1.5 mt-1.5">
                   {comment.metadata.attachments
                     .filter((att) => att.type.startsWith("image/"))
                     .map((att, idx) => (
@@ -307,34 +304,33 @@ export default function CommentItem({
         </div>
 
         {!isEditing && (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4 mt-2">
             <button
               onClick={handleUpvote}
               disabled={isPending}
               className={cn(
-                "inline-flex items-center gap-1 text-xs hover:text-red-500 transition-colors",
-                hasVoted ? "text-red-500" : "text-muted-foreground"
+                "inline-flex items-center gap-1 text-xs transition-colors",
+                hasVoted ? "text-red-500" : "text-muted-foreground hover:text-foreground"
               )}
             >
               <Heart className={cn("h-3.5 w-3.5", hasVoted && "fill-current")} />
-              <span className="tabular-nums">{upvotes}</span>
+              {upvotes > 0 && <span className="tabular-nums">{upvotes}</span>}
             </button>
 
             {canReply && (
               <button
                 onClick={() => setShowReplyForm(!showReplyForm)}
-                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
-                <MessageSquare className="h-3.5 w-3.5" />
                 Reply
               </button>
             )}
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                  <MoreHorizontal className="h-3.5 w-3.5" />
-                </Button>
+                <button className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+                  <MoreHorizontal className="h-4 w-4" />
+                </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {isAuthor && (
@@ -384,7 +380,7 @@ export default function CommentItem({
         </AlertDialog>
 
         {showReplyForm && (
-          <div className="pt-2">
+          <div className="pt-3 mt-2 border-t border-border/50">
             <CommentForm
               postId={comment.postId}
               parentId={comment.id}

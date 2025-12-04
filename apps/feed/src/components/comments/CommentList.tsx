@@ -61,7 +61,7 @@ export default function CommentList({
       </div>
 
       {/* Comment Form */}
-      <div className="rounded-md border bg-card p-3">
+      <div className="rounded-md border bg-card p-3.5">
         <CommentForm postId={postId} onSuccess={handleCommentSuccess} />
       </div>
 

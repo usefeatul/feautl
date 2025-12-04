@@ -90,7 +90,7 @@ export default function CommentThread({ comments, currentUserId, onUpdate }: Com
           onToggleCollapse={() => toggleCollapse(comment.id)}
         />
         {hasReplies && !isCollapsed && (
-          <div className="ml-6 space-y-3 pl-4 border-l-2 border-border">
+          <div className="ml-5 mt-3 space-y-3 pl-4 border-l-2 border-border/60">
             {comment.replies.map((reply) => renderComment(reply as CommentData & { replies: CommentData[] }, depth + 1))}
           </div>
         )}

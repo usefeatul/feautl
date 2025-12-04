@@ -1,6 +1,8 @@
 import { eq, and, sql, desc } from "drizzle-orm"
 import { j, privateProcedure, publicProcedure } from "../jstack"
 import { comment, commentReaction, commentReport, post, board, user } from "@feedgot/db"
+import { auth } from "@feedgot/auth"
+import { headers } from "next/headers"
 import {
   createCommentInputSchema,
   updateCommentInputSchema,
@@ -71,18 +73,25 @@ export function createCommentRouter() {
 
         // Get user's upvoted comments if authenticated
         let userUpvotes: Set<string> = new Set()
-        const session = (ctx as any).session
-        if (session?.user?.id) {
-          const upvotes = await ctx.db
-            .select({ commentId: commentReaction.commentId })
-            .from(commentReaction)
-            .where(
-              and(
-                eq(commentReaction.userId, session.user.id),
-                eq(commentReaction.type, "like")
+        try {
+          const session = await auth.api.getSession({
+            headers: (c as any)?.req?.raw?.headers || (await headers()),
+          })
+          if (session?.user?.id) {
+            const upvotes = await ctx.db
+              .select({ commentId: commentReaction.commentId })
+              .from(commentReaction)
+              .where(
+                and(
+                  eq(commentReaction.userId, session.user.id),
+                  eq(commentReaction.type, "like")
+                )
               )
-            )
-          userUpvotes = new Set(upvotes.map((v: { commentId: string }) => v.commentId))
+            userUpvotes = new Set(upvotes.map((v: { commentId: string }) => v.commentId))
+          }
+        } catch {
+          // Session not available, user is not authenticated
+          // This is fine for public endpoints
         }
 
         // Format comments with avatar and hasVoted

@@ -82,6 +82,12 @@ export default function CommentItem({
   const isAuthor = currentUserId && comment.authorId === currentUserId
   const canReply = depth < 3 // Limit nesting to 3 levels
 
+  // Sync state with prop changes (e.g., on page refresh)
+  React.useEffect(() => {
+    setUpvotes(comment.upvotes)
+    setHasVoted(comment.hasVoted || false)
+  }, [comment.upvotes, comment.hasVoted])
+
   const handleUpvote = () => {
     const previousUpvotes = upvotes
     const previousHasVoted = hasVoted
@@ -208,7 +214,7 @@ export default function CommentItem({
   }
 
   return (
-    <div className="flex gap-2.5">
+    <div className={cn("flex gap-2.5", depth > 0 && "py-1.5")}>
       <Avatar className="h-7 w-7 flex-shrink-0 mt-0.5">
         <AvatarImage src={comment.authorImage} alt={comment.authorName} />
         <AvatarFallback className="text-xs">{initials}</AvatarFallback>
@@ -354,19 +360,21 @@ export default function CommentItem({
         </AlertDialog>
 
         {showReplyForm && (
-          <div className="pt-3 mt-2 border-t border-border/50">
-            <CommentForm
-              postId={comment.postId}
-              parentId={comment.id}
-              onSuccess={() => {
-                setShowReplyForm(false)
-                onReplySuccess?.()
-              }}
-              onCancel={() => setShowReplyForm(false)}
-              placeholder="Write a reply..."
-              autoFocus
-              buttonText="Reply"
-            />
+          <div className="mt-3 pt-3 border-t border-border">
+            <div className="rounded-md bg-muted/50 p-3">
+              <CommentForm
+                postId={comment.postId}
+                parentId={comment.id}
+                onSuccess={() => {
+                  setShowReplyForm(false)
+                  onReplySuccess?.()
+                }}
+                onCancel={() => setShowReplyForm(false)}
+                placeholder="Write a reply..."
+                autoFocus
+                buttonText="Reply"
+              />
+            </div>
           </div>
         )}
       </div>

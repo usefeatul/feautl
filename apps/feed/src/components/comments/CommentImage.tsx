@@ -58,7 +58,7 @@ export default function CommentImage({ url, alt, className, size = "small" }: Co
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-4xl w-[95vw] p-0">
+        <DialogContent className="max-w-4xl w-full p-0">
           <DialogHeader className="sr-only">
             <DialogTitle>{alt}</DialogTitle>
           </DialogHeader>

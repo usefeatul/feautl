@@ -143,12 +143,12 @@ export default function CommentForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form onSubmit={handleSubmit} className="space-y-2.5">
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder={placeholder}
-        className="min-h-[60px] resize-none text-sm shadow-none"
+        className="min-h-[60px] resize-none text-sm shadow-none bg-background"
         autoFocus={autoFocus}
         disabled={isPending || uploadingImage}
       />
@@ -207,7 +207,7 @@ export default function CommentForm({
           <Button
             type="submit"
             size="xs"
-            variant="quiet"
+            variant="nav"
             disabled={(!content.trim() && !uploadedImage) || isPending || uploadingImage}
           >
             {isPending && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}

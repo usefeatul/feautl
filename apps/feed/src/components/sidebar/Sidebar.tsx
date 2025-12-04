@@ -71,13 +71,13 @@ export default function Sidebar({
       onFocus={() => setHotkeysActive(true)}
       onBlur={() => setHotkeysActive(false)}
       className={cn(
-        "mt-1 hidden md:flex md:h-screen w-full md:w-60 flex-col bg-background",
-        "md:sticky md:top-4",
+        "hidden md:flex w-full md:w-60 flex-col bg-background",
+        "md:sticky md:top-2 md:h-[calc(100vh-1rem)] md:overflow-hidden",
         className
       )}
     >
       <div className="p-2">
-        <div className="group flex items-center gap-2 rounded-md px-2 py-2">
+        <div className="group flex items-center gap-2 rounded-md px-1  py-1">
           <Image
             src="/logo.svg"
             alt="feedback"
@@ -89,7 +89,7 @@ export default function Sidebar({
           <div className="text-md font-semibold">feedgot</div>
         </div>
         <WorkspaceSwitcher
-          className="mt-3"
+          className="mt-5.5"
           initialWorkspace={initialWorkspace}
           initialWorkspaces={initialWorkspaces}
         />

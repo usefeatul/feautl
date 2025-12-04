@@ -51,8 +51,8 @@ export default function WorkspaceSwitcher({
     <div className={cn(className)}>
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger className="w-full cursor-pointer">
-          <div className="group flex items-center gap-2 rounded-sm px-2 py-2 text-md text-accent hover:bg-muted cursor-pointer">
-            <div className={cn("relative w-6 h-6 rounded-sm border ring-1 ring-border overflow-hidden", currentLogo ? "bg-transparent" : "bg-muted")}>
+          <div className="group flex items-center gap-2 rounded-sm px-1.5 py-1.5 text-md text-accent hover:bg-muted cursor-pointer">
+            <div className={cn("relative size-6 rounded-sm border ring-1 ring-border overflow-hidden", currentLogo ? "bg-transparent" : "bg-muted")}>
               {currentLogo ? (
                 <Image
                   src={currentLogo}

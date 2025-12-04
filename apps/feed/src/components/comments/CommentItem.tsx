@@ -233,6 +233,7 @@ export default function CommentItem({
             <div className="opacity-0 group-hover:opacity-100 transition-opacity">
               <CommentActions
                 commentId={comment.id}
+                postId={comment.postId}
                 isAuthor={!!isAuthor}
                 canDelete={canDelete}
                 onEdit={() => setIsEditing(true)}
@@ -261,6 +262,8 @@ export default function CommentItem({
           </div>
         )}
       </div>
-    </div>
+      </div>
+
+    
   );
 }

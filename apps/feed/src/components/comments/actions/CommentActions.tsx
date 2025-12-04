@@ -15,6 +15,7 @@ import CommentEditAction from "./CommentEditAction"
 
 interface CommentActionsProps {
   commentId: string
+  postId: string
   isAuthor: boolean
   canDelete?: boolean
   onEdit?: () => void
@@ -23,6 +24,7 @@ interface CommentActionsProps {
 
 export default function CommentActions({
   commentId,
+  postId,
   isAuthor,
   canDelete = false,
   onEdit,
@@ -49,8 +51,9 @@ export default function CommentActions({
               )}
               {canDelete && (
                 <CommentDeleteAction 
-                  commentId={commentId} 
-                  onSuccess={onDeleteSuccess} 
+                  commentId={commentId}
+                  postId={postId}
+                  onSuccess={onDeleteSuccess}
                   onCloseMenu={() => setOpen(false)} 
                 />
               )}
@@ -59,7 +62,8 @@ export default function CommentActions({
             <>
               {canDelete && (
                 <CommentDeleteAction 
-                  commentId={commentId} 
+                  commentId={commentId}
+                  postId={postId}
                   onSuccess={onDeleteSuccess} 
                   onCloseMenu={() => setOpen(false)} 
                 />

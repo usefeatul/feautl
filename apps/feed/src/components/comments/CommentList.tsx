@@ -60,11 +60,11 @@ export default function CommentList({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium">
           Comments {commentCount > 0 && `(${commentCount})`}
         </h2>
-      </div>
+      </div> */}
 
       {/* Comment Form */}
       <div className="rounded-md border bg-card p-3.5">
@@ -74,17 +74,12 @@ export default function CommentList({
       {/* Comments List */}
       {commentCount === 0 && !isLoading ? (
         <div className="rounded-md border bg-card p-6 text-center">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-accent">
             No comments yet. Be the first to comment!
           </p>
         </div>
       ) : (
         <div className="space-y-4 relative">
-          {isFetching && comments.length > 0 && (
-            <div className="absolute top-0 right-0">
-              <div className="h-1 w-1 rounded-full bg-muted-foreground/30 animate-pulse" />
-            </div>
-          )}
           {comments.length > 0 && (
             <CommentThread
               comments={comments}

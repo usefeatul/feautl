@@ -8,11 +8,12 @@ import { PopoverListItem } from "@feedgot/ui/components/popover"
 
 interface CommentDeleteActionProps {
   commentId: string
+  postId: string
   onSuccess?: () => void
   onCloseMenu?: () => void
 }
 
-export default function CommentDeleteAction({ commentId, onSuccess, onCloseMenu }: CommentDeleteActionProps) {
+export default function CommentDeleteAction({ commentId, postId, onSuccess, onCloseMenu }: CommentDeleteActionProps) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isPending, startTransition] = useTransition()
 
@@ -27,6 +28,11 @@ export default function CommentDeleteAction({ commentId, onSuccess, onCloseMenu 
         const res = await client.comment.delete.$post({ commentId })
         if (res.ok) {
           toast.success("Comment deleted")
+          try {
+            window.dispatchEvent(
+              new CustomEvent("comment:deleted", { detail: { postId } })
+            )
+          } catch {}
           onSuccess?.()
         } else {
           toast.error("Failed to delete comment")

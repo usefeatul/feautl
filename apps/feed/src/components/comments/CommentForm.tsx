@@ -126,6 +126,13 @@ export default function CommentForm({
           setContent("")
           setUploadedImage(null)
           toast.success(parentId ? "Reply posted" : "Comment posted")
+          try {
+            window.dispatchEvent(
+              new CustomEvent("comment:created", {
+                detail: { postId, parentId: parentId || null },
+              })
+            )
+          } catch {}
           onSuccess?.()
         } else if (res.status === 401) {
           toast.error("Please sign in to comment")
@@ -229,4 +236,3 @@ export default function CommentForm({
     </form>
   )
 }
-

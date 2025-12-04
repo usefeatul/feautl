@@ -3,6 +3,7 @@
 import React from "react"
 import StatusIcon from "./StatusIcon"
 import { CommentsIcon } from "@feedgot/ui/icons/comments"
+import CommentCounter from "../comments/CommentCounter"
 import StatusPicker from "./meta/StatusPicker"
 import FlagsPicker from "./meta/FlagsPicker"
 import BoardPicker from "./meta/BoardPicker"
@@ -44,18 +45,15 @@ export default function RequestDetail({ post, workspaceSlug, readonly = false, i
         <article className="space-y-4">
           <div className="flex items-center justify-between gap-3">
             <h1 className="text-xl font-semibold">{post.title}</h1>
-            <div className="flex items-center gap-3 text-xs text-accent">
-              <UpvoteButton postId={post.id} upvotes={post.upvotes} hasVoted={post.hasVoted} className="text-xs" activeBg />
-              <span className="inline-flex items-center gap-1.5">
-                <CommentsIcon aria-hidden className="w-4 h-4" />
-                <span className="tabular-nums">{post.commentCount}</span>
-              </span>
-            </div>
           </div>
           {post.image ? (
             <img src={post.image} alt="" className="w-48 h-36 rounded-md object-cover border" />
           ) : null}
-          {post.content ? <div className="prose dark:prose-invert text-sm">{post.content}</div> : null}
+          {post.content ? <div className="prose dark:prose-invert text-sm text-accent">{post.content}</div> : null}
+          <div className="flex items-center justify-end gap-3 text-xs text-accent">
+            <UpvoteButton postId={post.id} upvotes={post.upvotes} hasVoted={post.hasVoted} className="text-xs" activeBg />
+            <CommentCounter postId={post.id} initialCount={post.commentCount} />
+          </div>
           <div className="mt-6">
             <CommentList postId={post.id} initialCount={post.commentCount} workspaceSlug={workspaceSlug} initialComments={initialComments} />
           </div>

@@ -6,19 +6,36 @@ import { client } from "@feedgot/api/client"
 import { toast } from "sonner"
 import { cn } from "@feedgot/ui/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
+import { useQuery } from "@tanstack/react-query"
 
 interface CommentVoteProps {
   commentId: string
+  postId: string
   initialUpvotes: number
   initialHasVoted: boolean
 }
 
-export default function CommentVote({ commentId, initialUpvotes, initialHasVoted }: CommentVoteProps) {
+export default function CommentVote({ commentId, postId, initialUpvotes, initialHasVoted }: CommentVoteProps) {
   const [upvotes, setUpvotes] = useState(initialUpvotes)
   const [hasVoted, setHasVoted] = useState(initialHasVoted)
   const [isPending, startTransition] = useTransition()
   const [burstId, setBurstId] = useState(0)
   const prevVotedRef = React.useRef<boolean>(initialHasVoted)
+
+  const { data: commentsData } = useQuery({
+    queryKey: ["comments", postId],
+    enabled: false,
+    queryFn: async () => {
+      const res = await client.comment.list.$get({ postId })
+      if (!res.ok) throw new Error("Failed to fetch comments")
+      return await res.json()
+    },
+    staleTime: 30_000,
+    gcTime: 300_000,
+    placeholderData: (previousData) => previousData,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  }) as any
 
   React.useEffect(() => {
     setUpvotes(initialUpvotes)
@@ -27,15 +44,33 @@ export default function CommentVote({ commentId, initialUpvotes, initialHasVoted
   }, [initialUpvotes, initialHasVoted])
 
   React.useEffect(() => {
-    try {
-      if (!initialHasVoted) {
-        const cached = typeof window !== "undefined" ? window.localStorage.getItem(`comment_vote:${commentId}`) : null
-        if (cached === "1") {
-          setHasVoted(true)
-        }
-      }
-    } catch {}
-  }, [commentId, initialHasVoted])
+    const target = commentsData?.comments?.find((c: any) => c.id === commentId)
+    if (target) {
+      setUpvotes(target.upvotes)
+      setHasVoted(!!target.hasVoted)
+    }
+  }, [commentsData, commentId])
+
+  const { data: statusData } = useQuery({
+    queryKey: ["comment-vote-status", commentId],
+    enabled: !initialHasVoted,
+    queryFn: async () => {
+      const res = await client.comment.list.$get({ postId })
+      if (!res.ok) return null
+      const json = await res.json()
+      const found = json?.comments?.find((c: any) => c.id === commentId)
+      return found ? { upvotes: found.upvotes, hasVoted: !!found.hasVoted } : null
+    },
+    staleTime: 30_000,
+  }) as any
+
+  React.useEffect(() => {
+    if (statusData) {
+      setUpvotes(statusData.upvotes)
+      setHasVoted(statusData.hasVoted)
+    }
+  }, [statusData])
+
 
   const handleUpvote = () => {
     const previousUpvotes = upvotes
@@ -46,11 +81,6 @@ export default function CommentVote({ commentId, initialUpvotes, initialHasVoted
     setHasVoted(nextHasVoted)
     setUpvotes(nextUpvotes)
 
-    try {
-      const key = `comment_vote:${commentId}`
-      if (nextHasVoted) window.localStorage.setItem(key, "1")
-      else window.localStorage.removeItem(key)
-    } catch {}
 
     if (nextHasVoted) {
       setBurstId((id) => id + 1)

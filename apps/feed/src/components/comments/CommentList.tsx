@@ -44,8 +44,8 @@ export default function CommentList({
     staleTime: 30_000,
     gcTime: 300_000,
     placeholderData: (previousData) => previousData,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
     initialData: initialComments ? { comments: initialComments } : undefined,
   });
 

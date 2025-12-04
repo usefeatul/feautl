@@ -220,6 +220,7 @@ export default function CommentItem({
           <div className="flex items-center gap-4 mt-2">
             <CommentVote
               commentId={comment.id}
+              postId={comment.postId}
               initialUpvotes={comment.upvotes}
               initialHasVoted={comment.hasVoted || false}
             />

@@ -41,7 +41,6 @@ export default async function RequestDetailPage({ params }: Props) {
   if (!p) return notFound()
 
   const hasVoted = await readHasVotedForPost(p.id)
-  console.log(`[workspaces/[slug]/requests/[post]/page.tsx] Post ${p.id} (${p.title?.substring(0, 30)}...): hasVoted=${hasVoted}`)
 
   return <RequestDetail post={{ ...p, hasVoted } as any} workspaceSlug={slug} />
 }

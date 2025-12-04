@@ -47,14 +47,8 @@ export default async function SitePage({
   })
 
   const items = await Promise.all(
-    (rows as any[]).map(async (r) => {
-      const hasVoted = await readHasVotedForPost(r.id)
-      const item = { ...r, hasVoted }
-      console.log(`[subdomain/[slug]/page.tsx] Post ${r.id} (${r.title?.substring(0, 30)}...): hasVoted=${hasVoted}`)
-      return item
-    })
+    (rows as any[]).map(async (r) => ({ ...r, hasVoted: await readHasVotedForPost(r.id) }))
   )
-  console.log(`[subdomain/[slug]/page.tsx] Total items with hasVoted:`, items.filter(i => i.hasVoted).length, 'out of', items.length)
 
   const totalCount = await getWorkspacePostsCount(slug, {
     boardSlugs: boardSlug ? [boardSlug] : undefined,

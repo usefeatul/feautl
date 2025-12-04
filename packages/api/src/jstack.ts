@@ -23,18 +23,4 @@ const authMiddleware = j.middleware(async ({ next, c }) => {
 })
 
 export const publicProcedure = j.procedure.use(databaseMiddleware)
-
-// Optional auth middleware - provides session if available, but doesn't throw if missing
-const optionalAuthMiddleware = j.middleware(async ({ next, c }) => {
-  try {
-    const session = await auth.api.getSession({
-      headers: (c as any)?.req?.raw?.headers || (await headers()),
-    })
-    return await next({ session: session as any })
-  } catch {
-    return await next({ session: null })
-  }
-})
-
-export const optionalAuthProcedure = publicProcedure.use(optionalAuthMiddleware)
 export const privateProcedure = publicProcedure.use(authMiddleware)

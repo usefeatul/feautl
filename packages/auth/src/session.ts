@@ -5,41 +5,11 @@ import { eq, desc } from "drizzle-orm";
 
 export async function getServerSession() {
   try {
-    const headersList = await headers()
-    const cookieHeader = headersList.get('cookie')
-    const hostHeader = headersList.get('host')
-    const originHeader = headersList.get('origin')
-    const refererHeader = headersList.get('referer')
-    
-    console.log(`[getServerSession] Host: ${hostHeader}, Origin: ${originHeader}, Referer: ${refererHeader}`)
-    console.log(`[getServerSession] Cookie header exists: ${!!cookieHeader}, length: ${cookieHeader?.length || 0}`)
-    console.log(`[getServerSession] Full cookie header: ${cookieHeader || 'none'}`)
-    
-    // Convert Next.js headers to a format better-auth expects
-    const headersObj: Record<string, string> = {}
-    headersList.forEach((value, key) => {
-      headersObj[key] = value
-    })
-    
-    // Ensure cookie header is properly set
-    if (cookieHeader) {
-      headersObj['cookie'] = cookieHeader
-    }
-    
-    // Add host header if missing (better-auth might need it)
-    if (hostHeader && !headersObj['host']) {
-      headersObj['host'] = hostHeader
-    }
-    
-    console.log(`[getServerSession] Cookie names in header:`, cookieHeader ? cookieHeader.split(';').map(c => c.split('=')[0]?.trim()).filter(Boolean) : [])
-    
     const session = await auth.api.getSession({
-      headers: headersObj as any,
+      headers: await headers(),
     });
-    console.log(`[getServerSession] Session retrieved: ${!!session}, userId: ${(session as any)?.user?.id || 'none'}`)
     return session;
-  } catch (error) {
-    console.log(`[getServerSession] Error getting session:`, error)
+  } catch {
     return null;
   }
 }

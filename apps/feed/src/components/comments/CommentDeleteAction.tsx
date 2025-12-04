@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useTransition } from "react"
-import { Trash2 } from "lucide-react"
+import { TrashIcon } from "@feedgot/ui/icons/trash"
 import { client } from "@feedgot/api/client"
 import { toast } from "sonner"
 import { PopoverListItem } from "@feedgot/ui/components/popover"
@@ -46,7 +46,7 @@ export default function CommentDeleteAction({ commentId, onSuccess, onCloseMenu 
       className="text-destructive"
       disabled={isDeleting || isPending}
     >
-      <Trash2 className="h-3.5 w-3.5 flex-shrink-0" />
+      <TrashIcon className="h-3.5 w-3.5 flex-shrink-0" />
       <span className="text-sm">{isDeleting ? "Deleting..." : "Delete"}</span>
     </PopoverListItem>
   )

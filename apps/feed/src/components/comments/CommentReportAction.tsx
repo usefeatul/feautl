@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useTransition } from "react"
-import { Flag } from "lucide-react"
+import { FlagIcon } from "@feedgot/ui/icons/flag"
 import { client } from "@feedgot/api/client"
 import { toast } from "sonner"
 import { PopoverListItem } from "@feedgot/ui/components/popover"
@@ -41,7 +41,7 @@ export default function CommentReportAction({ commentId, onCloseMenu }: CommentR
 
   return (
     <PopoverListItem onClick={handleReport} disabled={isPending}>
-      <Flag className="h-3.5 w-3.5 flex-shrink-0" />
+      <FlagIcon className="h-3.5 w-3.5 flex-shrink-0" />
       <span className="text-sm">Report</span>
     </PopoverListItem>
   )

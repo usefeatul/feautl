@@ -31,6 +31,7 @@ function PostCardBase({ item }: { item: RequestItemData }) {
               upvotes={item.upvotes} 
               hasVoted={item.hasVoted} 
               className="text-xs hover:text-red-500/80"
+              activeBg
             />
             <span className="inline-flex items-center gap-1">
               <CommentsIcon aria-hidden className="w-3 h-3" />

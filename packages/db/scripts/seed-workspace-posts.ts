@@ -2,10 +2,10 @@ import 'dotenv/config'
 import { db, post, board, workspace, user } from '../index'
 import { eq, inArray } from 'drizzle-orm'
 
-const WORKSPACE_ID = '6687b17b-4c31-4588-bfdb-01aeb0e6b929'
-const FEATURE_BOARD_ID = '9a6408db-263e-4252-a6c0-1716f77cbc37'
-const BUGS_BOARD_ID = '76c827ad-4efb-4fad-982a-503a4d08dd56'
-const USER_ID = 'TtlKtIIbnDeVxFVaAQar7dX7rxTj3Hge'
+const WORKSPACE_ID = '94415b4d-f9c2-4c59-8d78-ed9e50b9a0be'
+const FEATURE_BOARD_ID = '2c58685f-8828-4fdc-b61f-5c9a74fb9358'
+const BUGS_BOARD_ID = 'b6f31d7f-d429-4093-a86c-0c8ad4cac2cc'
+const USER_ID = '53z3cHpC2DJneIgT0zBeh3IxVDVYs751'
 
 function slugify(s: string) {
   return s
@@ -96,15 +96,15 @@ async function main() {
     return rows
   }
 
-  const featureRows = makeRows(featureBoard, 440, 'feature')
-  const bugRows = makeRows(bugBoard, 300, 'bug')
+  const featureRows = makeRows(featureBoard, 10, 'feature')
+  const bugRows = makeRows(bugBoard, 10, 'bug')
 
   await db.insert(post).values(featureRows)
   await db.insert(post).values(bugRows)
 }
 
 main()
-  .then(() => { console.log('Inserted 40 posts (20 per board)') })
+  .then(() => { console.log('Inserted 20 posts (10 per board)') })
   .catch((err) => { console.error(err); process.exit(1) })
 function randomAvatarUrl(seed?: string | null, style: 'identicon' | 'avataaars' = 'avataaars') {
   const s = encodeURIComponent((seed || 'anonymous').trim() || 'anonymous')

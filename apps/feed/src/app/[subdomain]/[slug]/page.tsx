@@ -4,6 +4,7 @@ import { db, workspace } from "@feedgot/db"
 import { eq } from "drizzle-orm"
 import { createWorkspaceSectionMetadata } from "@/lib/seo"
 import { getWorkspacePosts, getWorkspacePostsCount, getSidebarPositionBySlug, getWorkspaceBoards } from "@/lib/workspace"
+import { readHasVotedForPost } from "@/lib/vote.server"
 import { MainContent } from "@/components/subdomain/MainContent"
 
 export const revalidate = 60
@@ -43,6 +44,10 @@ export default async function SitePage({
     boardSlugs: boardSlug ? [boardSlug] : undefined,
   })
 
+  const items = await Promise.all(
+    (rows as any[]).map(async (r) => ({ ...r, hasVoted: await readHasVotedForPost(r.id) }))
+  )
+
   const totalCount = await getWorkspacePostsCount(slug, {
     boardSlugs: boardSlug ? [boardSlug] : undefined,
   })
@@ -52,7 +57,7 @@ export default async function SitePage({
     <MainContent
       subdomain={subdomain}
       slug={slug}
-      items={rows as any}
+      items={items as any}
       totalCount={totalCount}
       page={page}
       pageSize={PAGE_SIZE}

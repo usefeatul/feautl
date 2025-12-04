@@ -14,6 +14,7 @@ import { AccountIcon } from "@feedgot/ui/icons/account"
 import { PlusIcon } from "@feedgot/ui/icons/plus"
 import { LogoutIcon } from "@feedgot/ui/icons/logout"
 import { useTheme } from "next-themes"
+//
 
 type User = { name?: string; email?: string; image?: string | null } | null
 
@@ -32,7 +33,21 @@ export default function SubdomainUserDropdown({
   const { theme = "system", setTheme } = useTheme()
   const [open, setOpen] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
-  const user = initialUser ?? null
+  const [user, setUser] = React.useState<User>(initialUser ?? null)
+
+  React.useEffect(() => {
+    let active = true
+    ;(async () => {
+      try {
+        if (initialUser?.image) return
+        const s = await authClient.getSession()
+        if (!active) return
+        const u = (s as any)?.data?.user || null
+        if (u?.image) setUser(u)
+      } catch {}
+    })()
+    return () => { active = false }
+  }, [initialUser?.image])
 
   const d = getDisplayUser(user || undefined)
   const initials = getInitials(d.name || "U")
@@ -117,7 +132,7 @@ export default function SubdomainUserDropdown({
             <PlusIcon className="w-[18px] h-[18px] text-foreground/80 transition-colors group-hover:text-primary" />
             <span className="transition-colors group-hover:text-foreground">Create project</span>
           </DropdownMenuItem>
-          {initialUser ? (
+          {user ? (
             <DropdownMenuItem onSelect={onSignOut} className="px-2 py-2 rounded-sm flex items-center gap-2 group" aria-disabled={loading}>
               <LogoutIcon className="w-[18px] h-[18px] text-foreground/80 group-hover:text-red-500 transition-colors" />
               <span>Sign out</span>

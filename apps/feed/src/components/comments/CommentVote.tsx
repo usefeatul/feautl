@@ -52,8 +52,8 @@ export default function CommentVote({ commentId, postId, initialUpvotes, initial
   }, [commentsData, commentId])
 
   const { data: statusData } = useQuery({
-    queryKey: ["comment-vote-status", commentId],
-    enabled: !initialHasVoted,
+    queryKey: ["comment-vote-status", postId, commentId],
+    enabled: true,
     queryFn: async () => {
       const res = await client.comment.list.$get({ postId })
       if (!res.ok) return null
@@ -61,7 +61,10 @@ export default function CommentVote({ commentId, postId, initialUpvotes, initial
       const found = json?.comments?.find((c: any) => c.id === commentId)
       return found ? { upvotes: found.upvotes, hasVoted: !!found.hasVoted } : null
     },
-    staleTime: 30_000,
+    staleTime: 10_000,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    gcTime: 300_000,
   }) as any
 
   React.useEffect(() => {

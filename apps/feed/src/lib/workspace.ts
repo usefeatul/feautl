@@ -223,7 +223,7 @@ export async function getWorkspacePosts(
     statuses?: string[];
     boardSlugs?: string[];
     tagSlugs?: string[];
-    order?: "newest" | "oldest";
+    order?: "newest" | "oldest" | "likes";
     search?: string;
     limit?: number;
     offset?: number;
@@ -242,8 +242,8 @@ export async function getWorkspacePosts(
   const tagSlugs = (opts?.tagSlugs || [])
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
-  const order =
-    opts?.order === "oldest" ? asc(post.createdAt) : desc(post.createdAt);
+  const orderParam = String(opts?.order || "newest").toLowerCase();
+  const order = orderParam === "oldest" ? asc(post.createdAt) : orderParam === "likes" ? desc(post.upvotes) : desc(post.createdAt);
   const search = (opts?.search || "").trim();
   const lim = Math.min(Math.max(Number(opts?.limit ?? 50), 1), 5000);
   const off = Math.max(Number(opts?.offset ?? 0), 0);

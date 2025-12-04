@@ -96,8 +96,8 @@ async function main() {
     return rows
   }
 
-  const featureRows = makeRows(featureBoard, 10, 'feature')
-  const bugRows = makeRows(bugBoard, 10, 'bug')
+  const featureRows = makeRows(featureBoard, 5, 'feature')
+  const bugRows = makeRows(bugBoard, 5, 'bug')
 
   await db.insert(post).values(featureRows)
   await db.insert(post).values(bugRows)

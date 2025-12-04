@@ -16,40 +16,48 @@ function toPlain(s?: string | null): string {
   return s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()
 }
 
-function PostCardBase({ item }: { item: RequestItemData }) {
+function PostCardBase({ item, onVoteChange }: { item: RequestItemData; onVoteChange?: (id: string, upvotes: number, hasVoted: boolean) => void }) {
   const href = `/p/${item.slug}`
   return (
-    <div className="py-6 px-6 min-h-[140px]">
-      <div className="flex items-start gap-3">
-        <Link href={href} className="text-lg font-semibold text-foreground hover:text-primary flex-1">
+    <div className="py-6 px-6">
+      <div className="inline-flex items-center gap-2">
+        <StatusIcon status={item.roadmapStatus || undefined} className="size-5 text-foreground/80" />
+        <span className="text-sm text-accent">{statusLabel(String(item.roadmapStatus || "pending"))}</span>
+      </div>
+      <div className="mt-2">
+        <Link href={href} className="text-lg font-semibold text-foreground hover:text-primary">
           {item.title}
         </Link>
-        <div className="ml-auto flex items-center gap-3 text-xs text-accent">
-          <div className="inline-flex items-center gap-2 bg-muted rounded-md ring-1 ring-border px-2 py-1">
-            <UpvoteButton 
-              postId={item.id} 
-              upvotes={item.upvotes} 
-              hasVoted={item.hasVoted} 
-              className="text-xs hover:text-red-500/80"
-              activeBg
-            />
-          </div>
-          <div className="inline-flex items-center gap-1 bg-muted rounded-md ring-1 ring-border px-2 py-1">
-            <CommentsIcon aria-hidden className="w-3 h-3" />
-            <span className="tabular-nums">{item.commentCount}</span>
-          </div>
-          <Avatar className="size-6 px-1 py-1 bg-muted ring-1 ring-border rounded-md">
-            <AvatarImage src={!item.isAnonymous ? (item.authorImage || randomAvatarUrl(item.id || item.slug)) : randomAvatarUrl(item.id || item.slug)} alt={item.isAnonymous ? "Anonymous" : (item.authorName || "Anonymous")} />
-            <AvatarFallback>{getInitials(item.isAnonymous ? "Anonymous" : (item.authorName || "Anonymous"))}</AvatarFallback>
-          </Avatar>
-        </div>
       </div>
       {item.content ? (
         <p className="mt-3 text-sm text-accent break-words whitespace-normal line-clamp-2">{toPlain(item.content)}</p>
       ) : null}
-      <div className="mt-3 inline-flex items-center gap-2">
-        <StatusIcon status={item.roadmapStatus || undefined} className="w-[18px] h-[18px] text-foreground/80" />
-        <span className="text-sm text-accent">{statusLabel(String(item.roadmapStatus || "pending"))}</span>
+      <div className="mt-3 flex items-center justify-between">
+        <div className="inline-flex items-center gap-2">
+          <Avatar className="size-6 bg-card border border-border rounded-full">
+            <AvatarImage src={!item.isAnonymous ? (item.authorImage || randomAvatarUrl(item.id || item.slug)) : randomAvatarUrl(item.id || item.slug)} alt={item.isAnonymous ? "Anonymous" : (item.authorName || "Anonymous")} />
+            <AvatarFallback>{getInitials(item.isAnonymous ? "Anonymous" : (item.authorName || "Anonymous"))}</AvatarFallback>
+          </Avatar>
+          <span className="text-xs text-accent whitespace-nowrap mt-2  max-w-[180px] truncate">
+            {item.isAnonymous ? "Anonymous" : (item.authorName || "Anonymous")}
+          </span>
+        </div>
+        <div className="flex items-center gap-3 text-xs text-accent">
+          <div className="inline-flex items-center gap-2 ">
+            <UpvoteButton
+              postId={item.id}
+              upvotes={item.upvotes}
+              hasVoted={item.hasVoted}
+              className="text-xs hover:text-red-500/80"
+              activeBg
+              onChange={(v) => onVoteChange?.(item.id, v.upvotes, v.hasVoted)}
+            />
+          </div>
+          <Link href={href} aria-label="View comments" className="inline-flex items-center gap-1">
+            <CommentsIcon aria-hidden className="size-4" />
+            <span className="tabular-nums">{item.commentCount}</span>
+          </Link>
+        </div>
       </div>
     </div>
   )

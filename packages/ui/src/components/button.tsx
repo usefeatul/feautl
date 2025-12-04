@@ -20,7 +20,7 @@ import { cn } from "@feedgot/ui/lib/utils"
             cn("hover:bg-muted hover:text-accent-foreground ring-border/50 hover:ring-accent/60 dark:hover:bg-muted/50"),
           link: "text-primary underline-offset-4 hover:underline bg-transparent",
           quiet: cn("bg-primary text-primary-foreground hover:bg-primary/70"),
-          nav: cn("border bg-card text-foreground border-muted hover:bg-muted hover:text-accent-foreground hover:border-accent/20"),
+          nav: cn("border bg-card text-foreground border-muted hover:bg-muted hover:text-accent-foreground hover:border-accent/20 dark:bg-black/40"),
         },
         size: {
           default: "h-8 px-2 py-2 rounded-sm has-[>svg]:px-3",

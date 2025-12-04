@@ -1,4 +1,7 @@
+"use client"
+
 import React from "react";
+import { useSearchParams } from "next/navigation";
 
 import { BoardsDropdown } from "./BoardsDropdown";
 import { PublicRequestPagination } from "./PublicRequestPagination";
@@ -30,6 +33,21 @@ export function MainContent({
   sidebarPosition?: "left" | "right";
   initialBoards?: Array<{ id: string; name: string; slug: string; postCount?: number }>;
 }) {
+  const search = useSearchParams();
+  const [listItems, setListItems] = React.useState<Item[]>(items || []);
+  React.useEffect(() => {
+    setListItems(items || []);
+  }, [items]);
+  const orderParam = String(search.get("order") || "likes").toLowerCase();
+  const handleVoteChange = React.useCallback((id: string, upvotes: number, hasVoted: boolean) => {
+    setListItems((prev: any[]) => {
+      const next = prev.map((p) => (p.id === id ? { ...p, upvotes, hasVoted } : p));
+      if (orderParam === "likes") {
+        next.sort((a, b) => (Number(b.upvotes || 0) - Number(a.upvotes || 0)) || new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+      }
+      return next;
+    });
+  }, [orderParam]);
   return (
     <section>
       <div
@@ -75,8 +93,8 @@ export function MainContent({
               <EmptyDomainPosts subdomain={subdomain} slug={slug} />
             ) : (
               <div className="divide-y">
-                {(items as any[]).map((p: any) => (
-                  <PostCard key={p.id} item={p} />
+                {(listItems as any[]).map((p: any) => (
+                  <PostCard key={p.id} item={p} onVoteChange={handleVoteChange} />
                 ))}
               </div>
             )}

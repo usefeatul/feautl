@@ -9,10 +9,11 @@ import { ChevronDown, ArrowDownAZ } from "lucide-react"
 export function SortPopover({ slug, subdomain }: { slug: string; subdomain: string }) {
   const router = useRouter()
   const search = useSearchParams()
-  const order = (search.get("order") === "oldest" ? "oldest" : "newest") as "newest" | "oldest"
+  const orderParam = String(search.get("order") || "likes").toLowerCase()
+  const order = (orderParam === "oldest" ? "oldest" : orderParam === "likes" ? "likes" : "newest") as "newest" | "oldest" | "likes"
   const [open, setOpen] = React.useState(false)
 
-  function go(nextOrder: "newest" | "oldest") {
+  function go(nextOrder: "newest" | "oldest" | "likes") {
     const base = `/`
     const u = new URL(base, "http://dummy")
     const pageParam = search.get("page")
@@ -25,12 +26,12 @@ export function SortPopover({ slug, subdomain }: { slug: string; subdomain: stri
     router.push(`${base}${q ? `?${q}` : ""}`)
   }
 
-  const label = order === "newest" ? "Newest" : "Oldest"
+  const label = order === "newest" ? "Newest" : order === "oldest" ? "Oldest" : "Most liked"
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button type="button" variant="nav" className="h-8 justify-start gap-2 dark:bg-black/40" aria-label="Sort" >
+        <Button type="button" variant="nav" className="h-8 justify-start gap-2" aria-label="Sort" >
           <ArrowDownAZ className="size-4" />
           <span className="truncate">{label}</span>
           <ChevronDown className="size-4 ml-auto" />
@@ -43,6 +44,9 @@ export function SortPopover({ slug, subdomain }: { slug: string; subdomain: stri
           </PopoverListItem>
           <PopoverListItem onClick={() => go("oldest")}> 
             <span className="text-sm">Oldest</span>
+          </PopoverListItem>
+          <PopoverListItem onClick={() => go("likes")}> 
+            <span className="text-sm">Most liked</span>
           </PopoverListItem>
         </PopoverList>
       </PopoverContent>

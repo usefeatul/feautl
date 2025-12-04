@@ -13,6 +13,7 @@ interface UpvoteButtonProps {
   hasVoted?: boolean;
   className?: string;
   activeBg?: boolean;
+  onChange?: (v: { upvotes: number; hasVoted: boolean }) => void;
 }
 
 export function UpvoteButton({
@@ -21,6 +22,7 @@ export function UpvoteButton({
   hasVoted: initialHasVoted,
   className,
   activeBg = false,
+  onChange,
 }: UpvoteButtonProps) {
   const [upvotes, setUpvotes] = useState(initialUpvotes);
   const [hasVoted, setHasVoted] = useState(initialHasVoted || false);
@@ -33,8 +35,11 @@ export function UpvoteButton({
     // Optimistic update
     const previousUpvotes = upvotes;
     const previousHasVoted = hasVoted;
-    setHasVoted(!hasVoted);
-    setUpvotes(hasVoted ? upvotes - 1 : upvotes + 1);
+    const nextHasVoted = !hasVoted;
+    const nextUpvotes = nextHasVoted ? upvotes + 1 : upvotes - 1;
+    setHasVoted(nextHasVoted);
+    setUpvotes(nextUpvotes);
+    if (onChange) onChange({ upvotes: nextUpvotes, hasVoted: nextHasVoted });
     iconControls.start({ y: [0, -8, 0], scale: [1, 1.25, 1], transition: { duration: 0.35, times: [0, 0.5, 1], ease: "easeOut" } });
     startTransition(async () => {
       try {
@@ -43,14 +48,17 @@ export function UpvoteButton({
           const data = await res.json();
           setUpvotes(data.upvotes);
           setHasVoted(data.hasVoted);
+          if (onChange) onChange({ upvotes: data.upvotes, hasVoted: data.hasVoted });
         } else {
           setUpvotes(previousUpvotes);
           setHasVoted(previousHasVoted);
+          if (onChange) onChange({ upvotes: previousUpvotes, hasVoted: previousHasVoted });
           if (res.status === 401) toast.error("Please sign in to vote");
         }
       } catch (error) {
         setUpvotes(previousUpvotes);
         setHasVoted(previousHasVoted);
+        if (onChange) onChange({ upvotes: previousUpvotes, hasVoted: previousHasVoted });
         console.error("Failed to vote:", error);
       }
     });
@@ -70,16 +78,15 @@ export function UpvoteButton({
       <motion.span
         className={cn(
           "inline-flex items-center gap-1 px-1.5 py-0.5 rounded",
-          hasVoted && activeBg ? "bg-red-100" : "",
-          "group-hover:bg-red-500"
+          "group-hover:text-red-500"
         )}
       >
         <motion.span animate={iconControls} initial={{ y: 0, scale: 1 }}>
           <LoveIcon
             className={cn(
-              "w-3 h-3 transition-colors",
+              "size-4 transition-colors opacity-100",
               hasVoted
-                ? "fill-current text-red-600 group-hover:text-white"
+                ? "fill-current text-red-500 group-hover:text-white"
                 : "text-muted-foreground group-hover:text-white"
             )}
           />

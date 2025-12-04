@@ -7,4 +7,11 @@ export const getUploadUrlInputSchema = z.object({
   folder: z.string().optional(),
 })
 
+export const getCommentImageUploadUrlInputSchema = z.object({
+  postId: z.string().uuid(),
+  fileName: z.string().min(1),
+  contentType: z.string().min(1),
+})
+
 export type GetUploadUrlInput = z.infer<typeof getUploadUrlInputSchema>
+export type GetCommentImageUploadUrlInput = z.infer<typeof getCommentImageUploadUrlInputSchema>

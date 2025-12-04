@@ -9,6 +9,7 @@ const routerImports = {
   changelog: () => import("./router/changelog").then((m) => m.createChangelogRouter()),
   reservation: () => import("./router/reservation").then((m) => m.createReservationRouter()),
   post: () => import("./router/post").then((m) => m.createPostRouter()),
+  comment: () => import("./router/comment").then((m) => m.createCommentRouter()),
 }
 
 const api = j
@@ -26,6 +27,7 @@ const appRouter = j.mergeRouters(api, {
   changelog: routerImports.changelog,
   reservation: routerImports.reservation,
   post: routerImports.post,
+  comment: routerImports.comment,
 })
 
 export type AppRouter = typeof appRouter

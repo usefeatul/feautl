@@ -7,6 +7,7 @@ import StatusPicker from "./meta/StatusPicker"
 import FlagsPicker from "./meta/FlagsPicker"
 import BoardPicker from "./meta/BoardPicker"
 import { UpvoteButton } from "../global/UpvoteButton"
+import CommentList from "../comments/CommentList"
 
 export type RequestDetailData = {
   id: string
@@ -54,12 +55,8 @@ export default function RequestDetail({ post, workspaceSlug, readonly = false }:
             <img src={post.image} alt="" className="w-48 h-36 rounded-md object-cover border" />
           ) : null}
           {post.content ? <div className="prose dark:prose-invert text-sm">{post.content}</div> : null}
-          <div className="rounded-md border bg-card p-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-medium">Comments</h2>
-              <span className="text-xs text-accent">{post.commentCount}</span>
-            </div>
-            <div className="mt-2 text-xs text-accent">No comments yet.</div>
+          <div className="mt-6">
+            <CommentList postId={post.id} initialCount={post.commentCount} />
           </div>
         </article>
         <aside className="space-y-4">

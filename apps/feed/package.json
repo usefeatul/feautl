@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev --turbopack ",
+    "dev": "next dev --turbopack --hostname app.feedgot.localhost",
     "lint": "next lint",
     "start": "next start"
   },

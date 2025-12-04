@@ -18,6 +18,9 @@ function toPlain(s?: string | null): string {
 
 function PostCardBase({ item, onVoteChange }: { item: RequestItemData; onVoteChange?: (id: string, upvotes: number, hasVoted: boolean) => void }) {
   const href = `/p/${item.slug}`
+  React.useEffect(() => {
+    console.log(`[PostCard] Post ${item.id} (${item.title?.substring(0, 30)}...): hasVoted=${item.hasVoted}, upvotes=${item.upvotes}`)
+  }, [item.id, item.hasVoted, item.upvotes])
   return (
     <div className="py-6 px-6">
       <div className="inline-flex items-center gap-2">

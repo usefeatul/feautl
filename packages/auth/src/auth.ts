@@ -44,13 +44,14 @@ export const auth = betterAuth({
 
   advanced: {
     crossSubDomainCookies: {
-      enabled: process.env.AUTH_COOKIE_DOMAIN !== "localhost",
+      enabled: process.env.AUTH_COOKIE_DOMAIN !== "localhost" && !!process.env.AUTH_COOKIE_DOMAIN,
       domain: process.env.AUTH_COOKIE_DOMAIN,
     },
-    useSecureCookies: true,
+    // Only use secure cookies in production (HTTPS required)
+    useSecureCookies: process.env.NODE_ENV === "production",
     defaultCookieAttributes: {
-      sameSite: "none",
-      secure: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
     },
   },
 

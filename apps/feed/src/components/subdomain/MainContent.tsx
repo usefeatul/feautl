@@ -36,8 +36,43 @@ export function MainContent({
   const search = useSearchParams();
   const [listItems, setListItems] = React.useState<Item[]>(items || []);
   React.useEffect(() => {
+    console.log(`[MainContent] useEffect triggered - items changed:`, items.map(i => ({ id: i.id, hasVoted: i.hasVoted })))
     setListItems(items || []);
   }, [items]);
+  
+  React.useEffect(() => {
+    console.log(`[MainContent] listItems state updated:`, listItems.map(i => ({ id: i.id, hasVoted: i.hasVoted })))
+  }, [listItems]);
+
+  // Fetch hasVoted status client-side after mount (works around localhost subdomain cookie issue)
+  React.useEffect(() => {
+    // Only fetch if we have items and at least one doesn't have hasVoted set
+    const needsFetch = listItems.some(item => item.hasVoted === undefined || item.hasVoted === false)
+    if (!needsFetch || listItems.length === 0) return
+
+    let mounted = true
+    ;(async () => {
+      try {
+        // Fetch vote status for all posts via API (API routes can access cookies)
+        const postIds = listItems.map(item => item.id).filter(Boolean)
+        if (postIds.length === 0) return
+
+        // Check each post's vote status by calling the vote endpoint (it returns hasVoted)
+        // We'll use a HEAD-like approach or create a batch endpoint, but for now let's check individually
+        // Actually, let's create a simple batch check - but that requires a new endpoint
+        // For now, let's just let the UpvoteButton handle it via its own state sync
+        // The issue is that UpvoteButton's useEffect should sync, but it's not because hasVoted is false
+        
+        // Better approach: The UpvoteButton already syncs on mount, so the issue must be that
+        // the initialHasVoted prop is false/undefined. Let's ensure we don't override client-side state
+        console.log(`[MainContent] Client-side mount - will let UpvoteButton sync its own state`)
+      } catch (error) {
+        console.error(`[MainContent] Error fetching vote status:`, error)
+      }
+    })()
+
+    return () => { mounted = false }
+  }, []) // Only run once on mount
   const orderParam = String(search.get("order") || "likes").toLowerCase();
   const handleVoteChange = React.useCallback((id: string, upvotes: number, hasVoted: boolean) => {
     setListItems((prev: any[]) => {

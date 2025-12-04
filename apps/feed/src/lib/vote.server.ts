@@ -5,11 +5,17 @@ import { getServerSession } from "@feedgot/auth"
 export async function readHasVotedForPost(postId: string): Promise<boolean> {
   const session = await getServerSession()
   const userId = String((session as any)?.user?.id || "")
-  if (!userId) return false
+  console.log(`[readHasVotedForPost] Post ${postId}: session exists=${!!session}, userId=${userId || 'none'}`)
+  if (!userId) {
+    console.log(`[readHasVotedForPost] Post ${postId}: No userId, returning false`)
+    return false
+  }
   const [v] = await db
     .select({ id: vote.id })
     .from(vote)
     .where(and(eq(vote.postId, postId), eq(vote.userId, userId)))
     .limit(1)
-  return Boolean(v?.id)
+  const hasVoted = Boolean(v?.id)
+  console.log(`[readHasVotedForPost] Post ${postId}: Found vote=${hasVoted}`)
+  return hasVoted
 }

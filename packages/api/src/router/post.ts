@@ -1,11 +1,31 @@
 import { eq, and, sql } from "drizzle-orm"
-import { j, privateProcedure } from "../jstack"
+import { j, privateProcedure, optionalAuthProcedure } from "../jstack"
 import { vote, post } from "@feedgot/db"
 import { byIdSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
 
 export function createPostRouter() {
   return j.router({
+    hasVoted: optionalAuthProcedure
+      .input(byIdSchema)
+      .get(async ({ ctx, input, c }) => {
+        const { postId } = input
+        const userId = (ctx.session as any)?.user?.id
+
+        // If no user session, return false
+        if (!userId) {
+          return c.json({ hasVoted: false })
+        }
+
+        const [existingVote] = await ctx.db
+          .select({ id: vote.id })
+          .from(vote)
+          .where(and(eq(vote.postId, postId), eq(vote.userId, userId)))
+          .limit(1)
+
+        return c.json({ hasVoted: Boolean(existingVote?.id) })
+      }),
+
     vote: privateProcedure
       .input(byIdSchema)
       .post(async ({ ctx, input, c }) => {

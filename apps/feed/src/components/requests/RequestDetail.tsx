@@ -27,6 +27,10 @@ export type RequestDetailData = {
 }
 
 export default function RequestDetail({ post, workspaceSlug, readonly = false }: { post: RequestDetailData; workspaceSlug: string; readonly?: boolean }) {
+  React.useEffect(() => {
+    console.log(`[RequestDetail] Post ${post.id} (${post.title?.substring(0, 30)}...): hasVoted=${post.hasVoted}, upvotes=${post.upvotes}`)
+  }, [post.id, post.hasVoted, post.upvotes])
+  
   const date = new Date(post.publishedAt ?? post.createdAt)
   const formatted = new Intl.DateTimeFormat(undefined, { month: "short", day: "2-digit" }).format(date)
   const [meta, setMeta] = React.useState({

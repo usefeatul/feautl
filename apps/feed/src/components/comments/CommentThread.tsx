@@ -3,6 +3,8 @@
 import React, { useState } from "react"
 import CommentItem, { CommentData } from "./CommentItem"
 
+import { cn } from "@feedgot/ui/lib/utils"
+
 interface CommentThreadProps {
   comments: CommentData[]
   currentUserId?: string | null
@@ -79,7 +81,7 @@ export default function CommentThread({ comments, currentUserId, onUpdate, works
     const hasReplies = comment.replies.length > 0
 
     return (
-      <div key={comment.id} className="space-y-4">
+      <div key={comment.id} className={cn("space-y-3", depth === 0 && "py-4 border-b border-border/40 last:border-0")}>
         <CommentItem
           comment={comment}
           currentUserId={currentUserId}
@@ -92,7 +94,7 @@ export default function CommentThread({ comments, currentUserId, onUpdate, works
           workspaceSlug={workspaceSlug}
         />
         {hasReplies && !isCollapsed && (
-          <div className="ml-5 mt-3 space-y-3 pl-4 border-l-2 border-border/60">
+          <div className="ml-4 pl-4 mt-2 space-y-4 border-l border-border/60">
             {comment.replies.map((reply) => renderComment(reply as CommentData & { replies: CommentData[] }, depth + 1))}
           </div>
         )}

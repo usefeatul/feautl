@@ -210,63 +210,60 @@ export default function CommentItem({
   }
 
   return (
-    <div className={cn("flex gap-2.5", depth > 0 && "py-1.5")}>
-      <div className="relative flex-shrink-0 mt-0.5">
-        <Avatar className="size-7 relative overflow-visible">
+    <div className={cn("flex gap-3 group", depth > 0 && "mt-2")}>
+      <div className="relative flex-shrink-0">
+        <Avatar className="size-8 relative overflow-visible">
           <AvatarImage src={comment.authorImage} alt={comment.authorName} />
-          <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+          <AvatarFallback className="text-xs bg-muted text-muted-foreground">{initials}</AvatarFallback>
           <RoleBadge role={comment.role} isOwner={comment.isOwner} />
         </Avatar>
       </div>
 
-      <div className="flex-1 min-w-0">
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-sm font-medium">{comment.authorName}</span>
-            <span className="text-xs text-muted-foreground">{relativeTime(comment.createdAt)}</span>
+      <div className="flex-1 min-w-0 pt-1">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 flex-wrap leading-none">
+            <span className="text-sm font-semibold text-foreground">{comment.authorName}</span>
+            <span className="text-xs text-muted-foreground/60">{relativeTime(comment.createdAt)}</span>
             {comment.isEdited && (
-              <span className="text-xs text-muted-foreground">(edited)</span>
+              <span className="text-xs text-muted-foreground/60">(edited)</span>
             )}
             {comment.isPinned && (
-              <span className="text-xs text-primary">Pinned</span>
+              <span className="text-xs text-primary font-medium">Pinned</span>
             )}
             {hasReplies && onToggleCollapse && (
               <button
                 onClick={onToggleCollapse}
-                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground/60 hover:text-foreground transition-colors ml-auto sm:ml-0"
                 aria-label={isCollapsed ? "Expand replies" : "Collapse replies"}
               >
                 {isCollapsed ? (
                   <>
                     <ChevronDown className="h-3 w-3" />
-                    <span>{comment.replyCount}</span>
+                    <span className="font-medium">{comment.replyCount} replies</span>
                   </>
                 ) : (
-                  <>
-                    <ChevronUp className="h-3 w-3" />
-                    <span>{comment.replyCount}</span>
-                  </>
+                  <ChevronUp className="h-3 w-3" />
                 )}
               </button>
             )}
           </div>
 
           {isEditing ? (
-            <div className="space-y-2">
+            <div className="space-y-2 mt-2">
               <Textarea
                 value={editContent}
                 onChange={(e) => setEditContent(e.target.value)}
-                className="min-h-[60px] resize-none text-sm"
+                className="min-h-[80px] resize-none text-sm bg-transparent border-muted focus:border-primary transition-colors"
                 disabled={isPending}
               />
               <div className="flex items-center gap-2">
-                <Button size="xs" variant="nav" onClick={handleEdit} disabled={!editContent.trim() || isPending}>
+                <Button size="sm" onClick={handleEdit} disabled={!editContent.trim() || isPending}>
                   {isPending && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
                   Save
                 </Button>
                 <Button
-                  size="xs"
-                  variant="nav"
+                  size="sm"
+                  variant="ghost"
                   onClick={() => {
                     setIsEditing(false)
                     setEditContent(comment.content)
@@ -280,13 +277,13 @@ export default function CommentItem({
           ) : (
             <>
               {comment.content && (
-                <p className="text-sm text-foreground whitespace-pre-wrap break-words leading-relaxed">
+                <div className="text-[15px] text-foreground/90 whitespace-pre-wrap break-words leading-7 font-normal">
                   {comment.content}
-                </p>
+                </div>
               )}
               {/* Display images from metadata */}
               {comment.metadata?.attachments && comment.metadata.attachments.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mt-1.5">
+                <div className="flex flex-wrap gap-2 mt-2">
                   {comment.metadata.attachments
                     .filter((att) => att.type.startsWith("image/"))
                     .map((att, idx) => (
@@ -309,36 +306,39 @@ export default function CommentItem({
               onClick={handleUpvote}
               disabled={isPending}
               className={cn(
-                "inline-flex items-center gap-1 text-xs transition-colors cursor-pointer",
-                hasVoted ? "text-red-500" : "text-muted-foreground hover:text-foreground"
+                "inline-flex items-center gap-1.5 text-xs transition-colors cursor-pointer group/vote",
+                hasVoted ? "text-red-500" : "text-muted-foreground/70 hover:text-red-500/80"
               )}
             >
-              <Heart className={cn("h-3.5 w-3.5", hasVoted && "fill-current")} />
-              {upvotes > 0 && <span className="tabular-nums">{upvotes}</span>}
+              <Heart className={cn("h-3.5 w-3.5", hasVoted ? "fill-current" : "group-hover/vote:scale-110 transition-transform")} />
+              {upvotes > 0 && <span className="tabular-nums font-medium">{upvotes}</span>}
             </button>
 
             {canReply && (
               <button
                 onClick={() => setShowReplyForm(!showReplyForm)}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/70 hover:text-foreground transition-colors cursor-pointer font-medium"
               >
+                <MessageSquare className="h-3.5 w-3.5" />
                 Reply
               </button>
             )}
 
-            <CommentActions
-              isAuthor={!!isAuthor}
-              canDelete={canDelete}
-              onEdit={() => setIsEditing(true)}
-              onDelete={handleDelete}
-              onReport={handleReport}
-            />
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+              <CommentActions
+                isAuthor={!!isAuthor}
+                canDelete={canDelete}
+                onEdit={() => setIsEditing(true)}
+                onDelete={handleDelete}
+                onReport={handleReport}
+              />
+            </div>
           </div>
         )}
 
         {showReplyForm && (
-          <div className="mt-3 pt-3 border-t border-border">
-            <div className="rounded-md bg-muted/50 p-3">
+          <div className="mt-3 pt-2">
+            <div className="pl-1">
               <CommentForm
                 postId={comment.postId}
                 parentId={comment.id}

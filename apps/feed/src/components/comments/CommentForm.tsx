@@ -5,11 +5,12 @@ import { Textarea } from "@feedgot/ui/components/textarea"
 import { Button } from "@feedgot/ui/components/button"
 import { client } from "@feedgot/api/client"
 import { toast } from "sonner"
-import { Loader2, Image as ImageIcon, X } from "lucide-react"
+import { LoaderIcon } from "@feedgot/ui/icons/loader"
+import { ImageIcon  } from "@feedgot/ui/icons/image"
 import { getCommentImageUploadUrl } from "@/lib/comment-service"
-import { cn } from "@feedgot/ui/lib/utils"
 import CommentImage from "./CommentImage"
-import ClosedIcon from "@feedgot/ui/icons/closed"
+import { XMarkIcon } from "@feedgot/ui/icons/xmark"
+
 
 interface CommentFormProps {
   postId: string
@@ -172,12 +173,12 @@ export default function CommentForm({
             <button
               type="button"
               onClick={handleRemoveImage}
-              className="absolute -top-1 -right-1 rounded-full bg-destructive text-destructive-foreground p-0.5 hover:bg-destructive/90 transition-colors shadow-sm z-10 cursor-pointer"
+              className="absolute -top-1 -right-1 rounded-xl bg-destructive text-destructive-foreground p-0.5 hover:bg-destructive/90 transition-colors shadow-sm z-10 cursor-pointer"
               disabled={isPending || uploadingImage}
               aria-label="Remove image"
             >
 
-              <ClosedIcon className="h-3 w-3" />
+              <XMarkIcon className="size-3" />
             </button>
           </div>
         </div>
@@ -196,16 +197,16 @@ export default function CommentForm({
           <Button
             type="button"
             size="xs"
-            variant="nav"
-            className="h-8 w-8 p-0"
+            variant="ghost"
+            className="h-8 w-8 p-0 rounded-full"
             onClick={() => fileInputRef.current?.click()}
             disabled={isPending || uploadingImage || !!uploadedImage}
             aria-label="Add image"
           >
             {uploadingImage ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <LoaderIcon className="h-4 w-4 animate-spin" />
             ) : (
-              <ImageIcon className="h-4 w-4" />
+              <ImageIcon className="size-4" />
             )}
           </Button>
         </div>
@@ -217,7 +218,7 @@ export default function CommentForm({
             variant="nav"
             disabled={(!content.trim() && !uploadedImage) || isPending || uploadingImage}
           >
-            {isPending && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
+            {isPending && <LoaderIcon className="mr-2 h-3 w-3 animate-spin" />}
             {buttonText}
           </Button>
           {onCancel && (

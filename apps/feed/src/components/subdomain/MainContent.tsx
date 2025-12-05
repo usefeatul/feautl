@@ -53,8 +53,12 @@ export function MainContent({
       <div
         className={
           sidebarPosition === "left"
-            ? "lg:grid lg:grid-cols-[250px_minmax(0,1.5fr)] lg:gap-6"
-            : "lg:grid lg:grid-cols-[minmax(0,1.5fr)_250px] lg:gap-6"
+            // ? "lg:grid lg:grid-cols-[250px_minmax(0,1.5fr)] lg:gap-6"
+            // : "lg:grid lg:grid-cols-[minmax(0,1.5fr)_250px] lg:gap-6"
+
+
+                ? "grid md:grid-cols-[0.3fr_0.7fr] gap-6 mb-6"
+            : "grid md:grid-cols-[0.7fr_0.3fr] gap-6 mb-6"
         }
       >
         {sidebarPosition === "left" ? (

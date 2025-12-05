@@ -8,6 +8,7 @@ import BoardPicker from "../requests/meta/BoardPicker"
 import StatusPicker from "../requests/meta/StatusPicker"
 import FlagsPicker from "../requests/meta/FlagsPicker"
 import StatusIcon from "../requests/StatusIcon"
+import { PoweredBy } from "./PoweredBy"
 
 export type PostSidebarProps = {
   post: {
@@ -121,6 +122,7 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
           )}
         </div>
       </div>
+      <PoweredBy />
     </aside>
   )
 }

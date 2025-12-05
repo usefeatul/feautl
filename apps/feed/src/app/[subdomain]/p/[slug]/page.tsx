@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
-import { db, workspace, board, post } from "@feedgot/db"
+import { db, workspace, board, post, user } from "@feedgot/db"
 import { eq, and, sql } from "drizzle-orm"
-import RequestDetail from "@/components/requests/RequestDetail"
+import SubdomainRequestDetail from "@/components/subdomain/SubdomainRequestDetail"
 import { client } from "@feedgot/api/client"
 import { readHasVotedForPost } from "@/lib/vote.server"
 import { readInitialCollapsedCommentIds } from "@/lib/comments.server"
@@ -35,9 +35,15 @@ export default async function PublicRequestDetailPage({ params }: Props) {
       createdAt: post.createdAt,
       boardName: board.name,
       boardSlug: board.slug,
+      author: {
+        name: user.name,
+        image: user.image,
+        email: user.email,
+      },
     })
     .from(post)
     .innerJoin(board, eq(post.boardId, board.id))
+    .leftJoin(user, eq(post.authorId, user.id))
     .where(and(eq(board.workspaceId, ws.id), sql`(board.system_type is null or board.system_type not in ('roadmap','changelog'))`, eq(post.slug, postSlug)))
     .limit(1)
   if (!p) return notFound()
@@ -48,5 +54,5 @@ export default async function PublicRequestDetailPage({ params }: Props) {
   const initialComments = Array.isArray((commentsJson as any)?.comments) ? (commentsJson as any).comments : []
   const initialCollapsedIds = await readInitialCollapsedCommentIds(p.id)
 
-  return <RequestDetail post={{ ...p, hasVoted } as any} workspaceSlug={subdomain} readonly initialComments={initialComments as any} initialCollapsedIds={initialCollapsedIds} />
+  return <SubdomainRequestDetail post={{ ...p, hasVoted } as any} workspaceSlug={subdomain} initialComments={initialComments as any} initialCollapsedIds={initialCollapsedIds} />
 }

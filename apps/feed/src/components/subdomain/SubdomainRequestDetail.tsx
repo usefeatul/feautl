@@ -1,0 +1,134 @@
+"use client"
+
+import React from "react"
+import RequestNavigation from "../requests/RequestNavigation"
+import { useRequestNavigation } from "@/hooks/useRequestNavigation"
+import { UpvoteButton } from "../global/UpvoteButton"
+import CommentList from "../comments/CommentList"
+import type { CommentData } from "../comments/CommentItem"
+import PostSidebar from "./PostSidebar"
+import StatusIcon from "@/components/requests/StatusIcon"
+import { statusLabel } from "@/lib/roadmap"
+import { Avatar, AvatarImage, AvatarFallback } from "@feedgot/ui/components/avatar"
+import { getInitials, getDisplayUser } from "@/utils/user-utils"
+import { randomAvatarUrl } from "@/utils/avatar"
+
+export type SubdomainRequestDetailData = {
+  id: string
+  title: string
+  content: string | null
+  image: string | null
+  upvotes: number
+  commentCount: number
+  roadmapStatus: string | null
+  isFeatured?: boolean
+  isLocked?: boolean
+  isPinned?: boolean
+  publishedAt: string | null
+  createdAt: string
+  boardName: string
+  boardSlug: string
+  hasVoted?: boolean
+  author?: {
+    name: string | null
+    image: string | null
+    email: string | null
+  } | null
+}
+
+export default function SubdomainRequestDetail({
+  post,
+  workspaceSlug,
+  initialComments,
+  initialCollapsedIds,
+  navigation,
+}: {
+  post: SubdomainRequestDetailData
+  workspaceSlug: string
+  initialComments?: CommentData[]
+  initialCollapsedIds?: string[]
+  navigation?: { prev: { slug: string; title: string } | null; next: { slug: string; title: string } | null }
+}) {
+  const { prevHref, nextHref } = useRequestNavigation(workspaceSlug, navigation)
+  const displayAuthor = getDisplayUser(
+    post.author
+      ? {
+          name: post.author.name ?? undefined,
+          image: post.author.image ?? undefined,
+          email: post.author.email ?? undefined,
+        }
+      : undefined
+  )
+
+  return (
+    <section className="mt-4 md:mt-6">
+      <div className="grid md:grid-cols-[0.7fr_0.3fr] gap-6">
+        {/* Main Content */}
+        <div className="space-y-6">
+          <div className="rounded-lg border bg-card p-6 shadow-sm">
+            {/* Status */}
+            <div className="inline-flex items-center gap-2 mb-4">
+              <StatusIcon status={post.roadmapStatus || undefined} className="size-5 text-foreground/80" />
+              <span className="text-sm text-accent">{statusLabel(String(post.roadmapStatus || "pending"))}</span>
+            </div>
+
+            {/* Title & Navigation */}
+            <div className="flex items-start justify-between gap-3 mb-4">
+              <h1 className="text-xl font-semibold">{post.title}</h1>
+              <RequestNavigation prev={navigation?.prev} next={navigation?.next} prevHref={prevHref} nextHref={nextHref} />
+            </div>
+
+            {/* Image */}
+            {post.image ? (
+              <img src={post.image} alt="" className="w-48 h-36 rounded-md object-cover border mb-4" />
+            ) : null}
+
+            {/* Content */}
+            {post.content ? (
+              <div className="prose dark:prose-invert text-sm text-accent mb-6">{post.content}</div>
+            ) : null}
+
+            {/* Footer: Author & Upvotes */}
+            <div className="flex items-center justify-between pt-2">
+              <div className="inline-flex items-center gap-2">
+                <Avatar className="size-6 bg-background border border-border rounded-full relative overflow-visible">
+                  <AvatarImage
+                    src={displayAuthor.image || randomAvatarUrl(post.id)}
+                    alt={displayAuthor.name}
+                  />
+                  <AvatarFallback>{getInitials(displayAuthor.name)}</AvatarFallback>
+                </Avatar>
+                <span className="text-xs text-accent whitespace-nowrap mt-2 max-w-[180px] truncate">
+                  {displayAuthor.name}
+                </span>
+              </div>
+              <div className="flex items-center gap-3 text-xs text-accent">
+                <UpvoteButton
+                  postId={post.id}
+                  upvotes={post.upvotes}
+                  hasVoted={post.hasVoted}
+                  className="text-xs hover:text-red-500/80"
+                  activeBg
+                />
+              </div>
+            </div>
+            
+            {/* Comments */}
+            <div className="mt-6 pt-6 border-t">
+              <CommentList
+                postId={post.id}
+                initialCount={post.commentCount}
+                workspaceSlug={workspaceSlug}
+                initialComments={initialComments}
+                initialCollapsedIds={initialCollapsedIds}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Post Sidebar */}
+        <PostSidebar post={post} workspaceSlug={workspaceSlug} />
+      </div>
+    </section>
+  )
+}

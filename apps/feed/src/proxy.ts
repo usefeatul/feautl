@@ -13,6 +13,8 @@ export const config = {
     "/workspaces/:path*",
     "/auth/:path*",
     "/start",
+    "/notifications",
+    "/reserve",
     "/p/:path*", // Added to support post detail pages
   ],
 }

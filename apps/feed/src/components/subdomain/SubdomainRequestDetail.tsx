@@ -70,18 +70,6 @@ export default function SubdomainRequestDetail({
 
   return (
     <section className="mt-4 md:mt-6">
-      {/* Header Row: Back Button & Title */}
-      <div className="mb-6 flex items-center gap-3">
-        <Link
-          href="/"
-          className="inline-flex items-center justify-center rounded-md border bg-card text-foreground border-muted hover:bg-muted hover:text-accent-foreground hover:border-accent/20 dark:bg-black/40 dark:hover:bg-black/50 p-2 transition-colors"
-          aria-label="Back to board"
-        >
-          <ChevronLeft className="size-4" />
-        </Link>
-        <h1 className="text-xl font-semibold text-foreground">Submission</h1>
-      </div>
-
       <div
         className={
           sidebarPosition === "left"
@@ -90,12 +78,22 @@ export default function SubdomainRequestDetail({
         }
       >
         {/* Left Sidebar */}
-        {sidebarPosition === "left" ? (
-          <PostSidebar post={post} workspaceSlug={workspaceSlug} />
-        ) : null}
+        {sidebarPosition === "left" ? <PostSidebar post={post} workspaceSlug={workspaceSlug} /> : null}
 
         {/* Main Content */}
         <div className="space-y-6">
+          {/* Header Row: Back Button & Title */}
+          <div className={`flex items-center gap-3 ${sidebarPosition === "left" ? "justify-end" : ""}`}>
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center rounded-md border bg-card text-foreground border-muted hover:bg-muted hover:text-accent-foreground hover:border-accent/20 dark:bg-black/40 dark:hover:bg-black/50 p-2 transition-colors"
+              aria-label="Back to board"
+            >
+              <ChevronLeft className="size-4" />
+            </Link>
+            <h1 className="text-xl font-semibold text-foreground">Submission</h1>
+          </div>
+
           <div className="rounded-lg border bg-card p-6 shadow-sm">
             {/* Status */}
             <div className="inline-flex items-center gap-2 mb-4">

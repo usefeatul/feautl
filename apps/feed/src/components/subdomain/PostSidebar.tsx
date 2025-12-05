@@ -6,6 +6,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@feedgot/ui/components/avat
 import { getDisplayUser, getInitials } from "@/utils/user-utils"
 import BoardPicker from "../requests/meta/BoardPicker"
 import StatusPicker from "../requests/meta/StatusPicker"
+import FlagsPicker from "../requests/meta/FlagsPicker"
 import StatusIcon from "../requests/StatusIcon"
 
 export type PostSidebarProps = {
@@ -95,6 +96,28 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
               {meta.roadmapStatus && <StatusIcon status={meta.roadmapStatus} className="size-3" />}
               <span className="text-xs font-medium capitalize">{meta.roadmapStatus || "Open"}</span>
             </div>
+          )}
+        </div>
+
+        {/* Flags */}
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-xs text-accent">Flags</span>
+          {canEdit ? (
+            <FlagsPicker
+              postId={post.id}
+              value={meta}
+              onChange={(v) => setMeta((m) => ({ ...m, ...v }))}
+            />
+          ) : (
+            <span className="text-xs font-medium capitalize">
+              {[
+                meta.isPinned ? "pinned" : null,
+                meta.isLocked ? "locked" : null,
+                meta.isFeatured ? "featured" : null,
+              ]
+                .filter(Boolean)
+                .join(", ") || "None"}
+            </span>
           )}
         </div>
       </div>

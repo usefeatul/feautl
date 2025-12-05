@@ -79,10 +79,14 @@ export default function SubdomainRequestDetail({
         }
       >
         {/* Left Spacer for Sidebar */}
-        {sidebarPosition === "left" ? <div className="hidden md:block" /> : null}
+        {sidebarPosition === "left" ? (
+          <div className="hidden md:block" />
+        ) : null}
 
         {/* Header Content */}
-        <div className={`flex items-center gap-3 ${sidebarPosition === "left" ? "justify-end" : ""}`}>
+        <div
+          className={`flex items-center gap-3 ${sidebarPosition === "left" ? "justify-end" : ""}`}
+        >
           <Link
             href="/"
             className="inline-flex items-center justify-center rounded-md border bg-card text-foreground border-muted hover:bg-muted hover:text-accent-foreground hover:border-accent/20 dark:bg-black/40 dark:hover:bg-black/50 p-2 transition-colors"
@@ -94,7 +98,9 @@ export default function SubdomainRequestDetail({
         </div>
 
         {/* Right Spacer for Sidebar */}
-        {sidebarPosition === "right" ? <div className="hidden md:block" /> : null}
+        {sidebarPosition === "right" ? (
+          <div className="hidden md:block" />
+        ) : null}
       </div>
 
       {/* Main Content Grid */}
@@ -152,7 +158,9 @@ export default function SubdomainRequestDetail({
                   src={displayAuthor.image || randomAvatarUrl(post.id)}
                   alt={displayAuthor.name}
                 />
-                <AvatarFallback>{getInitials(displayAuthor.name)}</AvatarFallback>
+                <AvatarFallback>
+                  {getInitials(displayAuthor.name)}
+                </AvatarFallback>
               </Avatar>
               <span className="text-xs text-accent whitespace-nowrap mt-2 max-w-[180px] truncate">
                 {displayAuthor.name}

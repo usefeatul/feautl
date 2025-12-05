@@ -9,6 +9,7 @@ import { MobileBoardsMenu } from "./MobileBoardsMenu";
 import { CommentsIcon } from "@feedgot/ui/icons/comments";
 import { RoadmapIcon } from "@feedgot/ui/icons/roadmap";
 import { ChangelogIcon } from "@feedgot/ui/icons/changelog";
+import { HomeIcon } from "@feedgot/ui/icons/home";
 import React from "react";
 import SubdomainUserDropdown from "@/components/subdomain/SubdomainUserDropdown";
 import { client } from "@feedgot/api/client";
@@ -97,8 +98,14 @@ export function DomainHeader({
         </div>
         <div className="flex items-center gap-2 justify-self-end">
           <NotificationsBell />
-          <Button asChild size="xs" variant="nav">
-            <Link href={dashboardUrl}>Dashboard</Link>
+          <Button asChild size="xs" variant="nav" aria-label="Dashboard">
+            <Link href={dashboardUrl} className="group inline-flex items-center">
+              <HomeIcon
+                className={cn(
+                  "opacity-90 text-accent rounded-sm size-5.5 p-0.5 group-hover:bg-primary group-hover:text-primary-foreground"
+                )}
+              />
+            </Link>
           </Button>
           <SubdomainUserDropdown
             workspace={workspace}

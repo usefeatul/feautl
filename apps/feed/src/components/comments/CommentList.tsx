@@ -62,7 +62,7 @@ export default function CommentList({
   return (
     <div className="space-y-4">
       <div className="rounded-md border bg-card p-3.5">
-        <CommentForm postId={postId} onSuccess={handleCommentSuccess} />
+        <CommentForm postId={postId} onSuccess={handleCommentSuccess} workspaceSlug={workspaceSlug} />
       </div>
       {commentCount === 0 && !isLoading ? (
         <div className="rounded-md border bg-card p-6 text-center">

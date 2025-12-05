@@ -1,6 +1,6 @@
 import { eq, and, sql, desc, or, isNull } from "drizzle-orm"
 import { j, privateProcedure, publicProcedure } from "../jstack"
-import { comment, commentReaction, commentReport, post, board, user, workspace, workspaceMember } from "@feedgot/db"
+import { comment, commentReaction, commentReport, commentMention, post, board, user, workspace, workspaceMember } from "@feedgot/db"
 import { auth } from "@feedgot/auth"
 import { headers } from "next/headers"
 import {
@@ -145,9 +145,11 @@ export function createCommentRouter() {
             isLocked: post.isLocked,
             boardId: board.id,
             allowComments: board.allowComments,
+            workspaceId: workspace.id,
           })
           .from(post)
           .innerJoin(board, eq(post.boardId, board.id))
+          .innerJoin(workspace, eq(board.workspaceId, workspace.id))
           .where(eq(post.id, postId))
           .limit(1)
 
@@ -213,6 +215,48 @@ export function createCommentRouter() {
             metadata: metadata || null,
           })
           .returning()
+
+        // Parse mentions and persist
+        try {
+          const rawMentions = Array.from((content.match(/@([A-Za-z0-9._-]{2,})/g) || [])).map((m) => m.slice(1))
+          const uniqueNames = Array.from(new Set(rawMentions.map((n) => n.trim().toLowerCase()).filter(Boolean)))
+
+          if (uniqueNames.length > 0) {
+            const members = await ctx.db
+              .select({ userId: workspaceMember.userId, name: user.name })
+              .from(workspaceMember)
+              .innerJoin(user, eq(workspaceMember.userId, user.id))
+              .where(and(eq(workspaceMember.workspaceId, targetPost.workspaceId), eq(workspaceMember.isActive, true)))
+
+            const nameToUserId = new Map<string, string>()
+            for (const m of members) {
+              const nm = (m.name || "").trim().toLowerCase()
+              if (nm) nameToUserId.set(nm, m.userId)
+            }
+
+            const validUserIds: string[] = []
+            const validNames: string[] = []
+            for (const nm of uniqueNames) {
+              const uid = nameToUserId.get(nm)
+              if (uid) {
+                validUserIds.push(uid)
+                validNames.push(nm)
+              }
+            }
+
+            if (validUserIds.length > 0) {
+              await ctx.db.insert(commentMention).values(
+                validUserIds.map((uid) => ({ commentId: newComment.id, mentionedUserId: uid, mentionedBy: userId }))
+              )
+
+              const nextMeta = {
+                ...(newComment.metadata || {}),
+                mentions: validNames,
+              } as any
+              await ctx.db.update(comment).set({ metadata: nextMeta }).where(eq(comment.id, newComment.id))
+            }
+          }
+        } catch {}
 
         // Update post comment count
         await ctx.db

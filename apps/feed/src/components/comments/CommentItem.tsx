@@ -112,6 +112,29 @@ export default function CommentItem({
 
   const initials = getInitials(comment.authorName);
 
+  const renderContent = () => {
+    const text = comment.content || ""
+    const mentions = (comment.metadata?.mentions || []).map((m) => (m || "").toLowerCase())
+    if (!text || mentions.length === 0) return text
+    const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    const pattern = new RegExp(`@(${mentions.map(esc).join("|")})\\b`, "gi")
+    const parts: React.ReactNode[] = []
+    let lastIndex = 0
+    let m: RegExpExecArray | null
+    while ((m = pattern.exec(text))) {
+      if (m.index > lastIndex) parts.push(text.slice(lastIndex, m.index))
+      const matched = m[0]
+      parts.push(
+        <span key={`m-${m.index}`} className="text-primary font-medium">
+          {matched}
+        </span>
+      )
+      lastIndex = m.index + matched.length
+    }
+    if (lastIndex < text.length) parts.push(text.slice(lastIndex))
+    return parts
+  }
+
   return (
     <div className={cn("flex gap-3 group", depth > 0 && "mt-2")}>
       <div className="relative flex-shrink-0">
@@ -184,7 +207,7 @@ export default function CommentItem({
             <>
               {comment.content && (
                 <div className="text-[15px] text-foreground/90 whitespace-pre-wrap break-words leading-7 font-normal">
-                  {comment.content}
+                  {renderContent()}
                 </div>
               )}
               {/* Display images from metadata */}
@@ -243,6 +266,7 @@ export default function CommentItem({
               <CommentForm
                 postId={comment.postId}
                 parentId={comment.id}
+                workspaceSlug={workspaceSlug}
                 onSuccess={() => {
                   setShowReplyForm(false);
                   onReplySuccess?.();

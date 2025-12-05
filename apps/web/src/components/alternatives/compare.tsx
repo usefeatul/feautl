@@ -2,7 +2,7 @@ import { Container } from "@/components/global/container";
 import type { Alternative } from "@/config/alternatives";
 import { StatusIcon } from "./status-icon";
 import { SquareIcon } from "@feedgot/ui/icons/square";
-import { AccentBar } from "@/components/home/cardElements";
+// import { AccentBar } from "@feedgot/ui/components/cardElements";
 
 
 export default function Compare({ alt }: { alt: Alternative }) {

@@ -1,6 +1,6 @@
 import { Container } from "@/components/global/container";
 import type { Alternative } from "@/config/alternatives";
-import { AccentBar } from "@/components/home/cardElements";
+import { AccentBar } from "@feedgot/ui/components/cardElements";
 import { ShieldIcon } from "@feedgot/ui/icons/shield";
 import { SetupIcon } from "@feedgot/ui/icons/setup";
 import { FeatherIcon } from "@feedgot/ui/icons/feather";

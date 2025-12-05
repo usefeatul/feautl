@@ -1,6 +1,6 @@
 import { Card } from "@feedgot/ui/components/card";
 import { Container } from "../global/container";
-import LoveIcon from "@feedgot/ui/icons/love";
+  import { LoveIcon } from "@feedgot/ui/icons/love";
 import FaceIcon from "@feedgot/ui/icons/face";
 import FoundedIcon from "@feedgot/ui/icons/founded";
 

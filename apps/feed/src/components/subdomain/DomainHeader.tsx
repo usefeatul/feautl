@@ -38,11 +38,6 @@ export function DomainHeader({
   const isFeedback = pathname === "/" || pathname.startsWith("/board") || pathname.startsWith("/p/");
   const isRoadmap = pathname.startsWith(roadmapBase);
   const isChangelog = pathname.startsWith(changelogBase);
-  const [authOpen, setAuthOpen] = React.useState(false);
-  const [authMode, setAuthMode] = React.useState<"sign-in" | "sign-up">(
-    "sign-in"
-  );
-  const [verifying] = React.useState(false);
   const [user] = React.useState<{
     name?: string;
     email?: string;

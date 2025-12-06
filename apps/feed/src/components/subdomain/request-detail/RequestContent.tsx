@@ -1,6 +1,7 @@
 import React from "react";
 import { UpvoteButton } from "../../global/UpvoteButton";
 import CommentList from "../../comments/CommentList";
+import CommentCounter from "../../comments/CommentCounter";
 import type { CommentData } from "../../comments/CommentItem";
 import StatusIcon from "@/components/requests/StatusIcon";
 import { statusLabel } from "@/lib/roadmap";
@@ -93,6 +94,11 @@ export function RequestContent({
             hasVoted={post.hasVoted}
             className="text-xs hover:text-red-500/80"
             activeBg
+          />
+          <CommentCounter
+            postId={post.id}
+            initialCount={post.commentCount}
+            className="hover:text-foreground transition-colors"
           />
         </div>
       </div>

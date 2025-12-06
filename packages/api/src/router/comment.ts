@@ -152,11 +152,22 @@ export function createCommentRouter() {
       }),
 
     // Create a new comment
-    create: privateProcedure
+    create: publicProcedure
       .input(createCommentInputSchema)
       .post(async ({ ctx, input, c }) => {
         const { postId, content, parentId, metadata } = input;
-        const userId = ctx.session.user.id;
+        
+        let userId: string | null = null;
+        try {
+          const session = await auth.api.getSession({
+            headers: (c as any)?.req?.raw?.headers || (await headers()),
+          });
+          if (session?.user?.id) {
+            userId = session.user.id;
+          }
+        } catch {
+          // User is not authenticated
+        }
 
         // Check if post exists and comments are allowed
         const [targetPost] = await ctx.db
@@ -187,12 +198,22 @@ export function createCommentRouter() {
           throw new HTTPException(403, { message: "This post is locked" });
         }
 
-        // Get user info
-        const [author] = await ctx.db
-          .select({ name: user.name, email: user.email })
-          .from(user)
-          .where(eq(user.id, userId))
-          .limit(1);
+        // Get user info if authenticated
+        let authorName: string | null = null;
+        let authorEmail: string | null = null;
+
+        if (userId) {
+          const [author] = await ctx.db
+            .select({ name: user.name, email: user.email })
+            .from(user)
+            .where(eq(user.id, userId))
+            .limit(1);
+            
+          authorName = author?.name || null;
+          authorEmail = author?.email || null;
+        } else {
+          authorName = "Anonymous";
+        }
 
         let depth = 0;
         if (parentId) {
@@ -238,17 +259,18 @@ export function createCommentRouter() {
             parentId: parentId || null,
             content,
             authorId: userId,
-            authorName: author?.name || null,
-            authorEmail: author?.email || null,
+            authorName,
+            authorEmail,
             depth,
             status: "published",
             metadata: metadata || null,
+            isAnonymous: !userId,
           })
           .returning();
 
-        // Parse mentions and persist
+        // Parse mentions and persist (only if authenticated)
         try {
-          if (content.includes("@")) {
+          if (userId && content.includes("@")) {
             const members = await ctx.db
               .select({ userId: workspaceMember.userId, name: user.name })
               .from(workspaceMember)
@@ -307,7 +329,7 @@ export function createCommentRouter() {
                   validUserIds.map((uid) => ({
                     commentId: newComment.id,
                     mentionedUserId: uid,
-                    mentionedBy: userId,
+                    mentionedBy: userId!,
                   }))
                 );
 

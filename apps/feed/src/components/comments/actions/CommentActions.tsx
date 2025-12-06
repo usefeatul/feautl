@@ -13,6 +13,7 @@ import CommentDeleteAction from "./CommentDeleteAction"
 import CommentReportAction from "./CommentReportAction"
 import CommentEditAction from "./CommentEditAction"
 import CommentPinAction from "./CommentPinAction"
+import CommentReportDialog from "./CommentReportDialog"
 
 interface CommentActionsProps {
   commentId: string
@@ -36,59 +37,70 @@ export default function CommentActions({
   onDeleteSuccess,
 }: CommentActionsProps) {
   const [open, setOpen] = React.useState(false)
+  const [showReportDialog, setShowReportDialog] = React.useState(false)
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <button
-          className="text-xs text-muted-foreground/60 hover:text-foreground transition-colors"
-          aria-label="More options"
-        >
-          <MoreVertical className="h-3.5 w-3.5" />
-        </button>
-      </PopoverTrigger>
-      <PopoverContent align="end" list>
-        <PopoverList>
-          {canPin && (
-            <CommentPinAction
-              commentId={commentId}
-              isPinned={isPinned}
-              onSuccess={onDeleteSuccess}
-              onCloseMenu={() => setOpen(false)}
-            />
-          )}
-          {isAuthor ? (
-            <>
-              {onEdit && (
-                <CommentEditAction onEdit={onEdit} onCloseMenu={() => setOpen(false)} />
-              )}
-              {canDelete && (
-                <CommentDeleteAction 
-                  commentId={commentId}
-                  postId={postId}
-                  onSuccess={onDeleteSuccess}
-                  onCloseMenu={() => setOpen(false)} 
-                />
-              )}
-            </>
-          ) : (
-            <>
-              {canDelete && (
-                <CommentDeleteAction 
-                  commentId={commentId}
-                  postId={postId}
-                  onSuccess={onDeleteSuccess} 
-                  onCloseMenu={() => setOpen(false)} 
-                />
-              )}
-              <CommentReportAction 
-                commentId={commentId} 
-                onCloseMenu={() => setOpen(false)} 
+    <>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <button
+            className="text-xs text-muted-foreground/60 hover:text-foreground transition-colors"
+            aria-label="More options"
+          >
+            <MoreVertical className="h-3.5 w-3.5" />
+          </button>
+        </PopoverTrigger>
+        <PopoverContent align="end" list>
+          <PopoverList>
+            {canPin && (
+              <CommentPinAction
+                commentId={commentId}
+                isPinned={isPinned}
+                onSuccess={onDeleteSuccess}
+                onCloseMenu={() => setOpen(false)}
               />
-            </>
-          )}
-        </PopoverList>
-      </PopoverContent>
-    </Popover>
+            )}
+            {isAuthor ? (
+              <>
+                {onEdit && (
+                  <CommentEditAction onEdit={onEdit} onCloseMenu={() => setOpen(false)} />
+                )}
+                {canDelete && (
+                  <CommentDeleteAction 
+                    commentId={commentId}
+                    postId={postId}
+                    onSuccess={onDeleteSuccess}
+                    onCloseMenu={() => setOpen(false)} 
+                  />
+                )}
+              </>
+            ) : (
+              <>
+                {canDelete && (
+                  <CommentDeleteAction 
+                    commentId={commentId}
+                    postId={postId}
+                    onSuccess={onDeleteSuccess} 
+                    onCloseMenu={() => setOpen(false)} 
+                  />
+                )}
+                <CommentReportAction 
+                  onClick={() => {
+                    setOpen(false)
+                    setShowReportDialog(true)
+                  }}
+                />
+              </>
+            )}
+          </PopoverList>
+        </PopoverContent>
+      </Popover>
+      
+      <CommentReportDialog 
+        open={showReportDialog} 
+        onOpenChange={setShowReportDialog} 
+        commentId={commentId} 
+      />
+    </>
   )
 }

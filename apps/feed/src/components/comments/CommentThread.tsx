@@ -3,7 +3,7 @@ import type { CommentData } from "../comments/types";
 
 import AnimatedReplies from "./AnimatedReplies"
 import CommentItem from "./CommentItem";
-import { getCookie, setCookie } from "@/lib/comments"
+import { updateCommentCollapseState } from "@/lib/comments.actions"
 
 interface CommentThreadProps {
   postId: string
@@ -26,31 +26,22 @@ export default function CommentThread({
     new Set(initialCollapsedIds)
   )
 
-  const storageKey = `feedgot_c_col_${postId}`
-
-  React.useEffect(() => {
-    try {
-      const raw = getCookie(storageKey)
-      if (raw) {
-        const parsed = JSON.parse(raw)
-        if (Array.isArray(parsed)) {
-          setCollapsedIds(new Set(parsed))
-        }
-      }
-    } catch {}
-  }, [postId])
-
-  const toggleCollapse = (commentId: string) => {
+  const toggleCollapse = async (commentId: string) => {
     const next = new Set(collapsedIds)
-    if (next.has(commentId)) {
-      next.delete(commentId)
-    } else {
+    const isCollapsed = !next.has(commentId)
+    
+    if (isCollapsed) {
       next.add(commentId)
+    } else {
+      next.delete(commentId)
     }
     setCollapsedIds(next)
+    
     try {
-      setCookie(storageKey, JSON.stringify(Array.from(next)), 365)
-    } catch {}
+      await updateCommentCollapseState(postId, commentId, isCollapsed)
+    } catch (error) {
+      console.error("Failed to update collapse state cookie", error)
+    }
   }
 
   const rootComments = comments.filter((c) => !c.parentId)

@@ -1,18 +1,17 @@
 "use client"
 
-import React, { useState, useTransition, useRef, useMemo } from "react"
+import React, { useState, useRef } from "react"
 import MentionList from "./MentionList"
 import { Textarea } from "@feedgot/ui/components/textarea"
 import { Button } from "@feedgot/ui/components/button"
-import { client } from "@feedgot/api/client"
-import { toast } from "sonner"
 import { LoaderIcon } from "@feedgot/ui/icons/loader"
-import { ImageIcon  } from "@feedgot/ui/icons/image"
-import { getCommentImageUploadUrl } from "@/lib/comment-service"
+import { ImageIcon } from "@feedgot/ui/icons/image"
 import CommentImage from "./CommentImage"
 import { XMarkIcon } from "@feedgot/ui/icons/xmark"
-import { useSession } from "@feedgot/auth/client"
 
+import { useImageUpload } from "../../hooks/useImageUpload"
+import { useMentions } from "../../hooks/useMentions"
+import { useCommentSubmit } from "../../hooks/useCommentSubmit"
 
 interface CommentFormProps {
   postId: string
@@ -36,258 +35,69 @@ export default function CommentForm({
   workspaceSlug,
 }: CommentFormProps) {
   const [content, setContent] = useState("")
-  const [isPending, startTransition] = useTransition()
-  const [uploadedImage, setUploadedImage] = useState<{ url: string; name: string; type: string } | null>(null)
-  const [uploadingImage, setUploadingImage] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  const [mentionOpen, setMentionOpen] = useState(false)
-  const [mentionQuery, setMentionQuery] = useState("")
-  const [mentionIndex, setMentionIndex] = useState(0)
-  const [members, setMembers] = useState<Array<{ id: string; name: string; image?: string | null; email?: string | null }>>([])
-  const { data: session } = useSession() 
+  const {
+    uploadedImage,
+    uploadingImage,
+    fileInputRef,
+    setUploadedImage,
+    handleFileSelect,
+    handleRemoveImage,
+    ALLOWED_IMAGE_TYPES,
+  } = useImageUpload(postId)
 
-  const filteredCandidates = useMemo(() => {
-    const q = (mentionQuery || "").trim().toLowerCase()
-    return members
-      .map((m: any) => ({ userId: m.userId || m.id, name: m.name || "", email: m.email || null, image: m.image || null }))
-      .filter((m) => (m.name || "").toLowerCase().includes(q))
-  }, [members, mentionQuery])
+  const {
+    mentionOpen,
+    mentionIndex,
+    filteredCandidates,
+    checkForMention,
+    handleKeyDown,
+    insertMention,
+  } = useMentions(workspaceSlug, content, setContent, textareaRef)
 
-  const insertMention = (name: string) => {
-    const el = textareaRef.current
-    if (!el) return
-    const caret = el.selectionStart || content.length
-    const upto = content.slice(0, caret)
-    const at = upto.lastIndexOf("@")
-    if (at < 0) return
-    const before = content.slice(0, at)
-    const afterCaret = content.slice(caret)
-    const nextContent = `${before}@${name} ${afterCaret}`
-    setContent(nextContent)
-    setMentionOpen(false)
-    setMentionQuery("")
-    setMentionIndex(0)
-    // Reset caret to after inserted mention
-    setTimeout(() => {
-      const pos = before.length + 1 + name.length + 1
-      try {
-        el.focus()
-        el.setSelectionRange(pos, pos)
-      } catch {}
-    }, 0)
-  }
-
-  const allowedImageTypes = ["image/png", "image/jpeg", "image/webp", "image/gif"]
-  const maxImageSize = 5 * 1024 * 1024 // 5MB
-
-  const handleImageUpload = async (file: File) => {
-    if (!allowedImageTypes.includes(file.type)) {
-      toast.error("Unsupported file type. Please use PNG, JPEG, WebP, or GIF.")
-      return
-    }
-    if (file.size > maxImageSize) {
-      toast.error("Image too large. Maximum size is 5MB.")
-      return
-    }
-
-    setUploadingImage(true)
-    const toastId = toast.loading("Uploading image...")
-
-    try {
-      const { uploadUrl, publicUrl } = await getCommentImageUploadUrl(
-        postId,
-        file.name,
-        file.type
-      )
-
-      const res = await fetch(uploadUrl, {
-        method: "PUT",
-        headers: { "Content-Type": file.type },
-        body: file,
-      })
-
-      if (!res.ok) {
-        throw new Error("Upload failed")
-      }
-
-      setUploadedImage({
-        url: publicUrl,
-        name: file.name,
-        type: file.type,
-      })
-      toast.success("Image uploaded", { id: toastId })
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to upload image", { id: toastId })
-    } finally {
-      setUploadingImage(false)
-    }
-  }
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      handleImageUpload(file)
-    }
-    // Reset input so same file can be selected again
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""
-    }
-  }
-
-  const handleRemoveImage = () => {
+  const resetForm = () => {
+    setContent("")
     setUploadedImage(null)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if ((!content.trim() && !uploadedImage) || isPending) return
-
-    startTransition(async () => {
-      try {
-        const metadata = uploadedImage
-          ? {
-              attachments: [
-                {
-                  name: uploadedImage.name,
-                  url: uploadedImage.url,
-                  type: uploadedImage.type,
-                },
-              ],
-            }
-          : undefined
-
-        const res = await client.comment.create.$post({
-          postId,
-          content: content.trim() || "",
-          ...(parentId ? { parentId } : {}),
-          ...(metadata ? { metadata } : {}),
-        })
-
-        if (res.ok) {
-          setContent("")
-          setUploadedImage(null)
-          toast.success(parentId ? "Reply posted" : "Comment posted")
-          try {
-            window.dispatchEvent(
-              new CustomEvent("comment:created", {
-                detail: { postId, parentId: parentId || null },
-              })
-            )
-          } catch {}
-          onSuccess?.()
-        } else if (res.status === 401) {
-          toast.error("Please sign in to comment")
-        } else if (res.status === 403) {
-          const data = await res.json()
-          toast.error((data as any)?.message || "Comments are disabled")
-        } else {
-          toast.error("Failed to post comment")
-        }
-      } catch (error) {
-        console.error("Failed to post comment:", error)
-        toast.error("Failed to post comment")
-      }
-    })
-  }
+  const { isPending, handleSubmit } = useCommentSubmit({
+    postId,
+    parentId,
+    onSuccess,
+    resetForm,
+  })
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2.5">
+    <form
+      onSubmit={(e) => handleSubmit(e, content, uploadedImage)}
+      className="space-y-2.5"
+    >
       <div className="relative">
-      <Textarea
-        ref={textareaRef}
-        value={content}
-        onChange={(e) => {
-          const next = e.target.value
-          setContent(next)
-          if (!workspaceSlug) return
-          const caret = e.target.selectionStart || next.length
-          const upto = next.slice(0, caret)
-          const at = upto.lastIndexOf("@")
-          if (at >= 0) {
-            // Check if user is logged in
-            if (!session?.user) {
-              // Only show toast if they just typed the @
-              if (next.slice(at).length === 1 && next[at] === "@") {
-                 toast.error("Please sign in to mention users")
-              }
-              // Don't open mention list
-              setMentionOpen(false)
-              return
-            }
-
-            const after = next.slice(at + 1, caret)
-            const valid = /^[A-Za-z0-9._\-\s]*$/.test(after)
-            const beforeChar = upto[at - 1]
-            const boundary = !beforeChar || /\s|[().,;:!?\[\]{}]/.test(beforeChar)
-            if (boundary && valid) {
-              setMentionQuery(after)
-              setMentionOpen(true)
-              setMentionIndex(0)
-              if (members.length === 0) {
-                client.team.membersByWorkspaceSlug
-                  .$get({ slug: workspaceSlug })
-                  .then(async (res) => {
-                    if (res.ok) {
-                      const data = await res.json()
-                      setMembers((data as any)?.members || [])
-                    } else if (res.status === 403) {
-                      toast.error("You must be a member of this workspace to mention users")
-                      setMentionOpen(false)
-                    } else if (res.status === 401) {
-                      toast.error("Please sign in to mention users")
-                      setMentionOpen(false)
-                    }
-                  })
-                  .catch((err) => {
-                    // Check if error response is available
-                    if (err?.status === 403 || err?.response?.status === 403) {
-                      toast.error("You must be a member of this workspace to mention users")
-                      setMentionOpen(false)
-                    } else if (err?.status === 401 || err?.response?.status === 401) {
-                      toast.error("Please sign in to mention users")
-                      setMentionOpen(false)
-                    }
-                  })
-              }
-            } else {
-              setMentionOpen(false)
-            }
-          } else {
-            setMentionOpen(false)
-          }
-        }}
-        placeholder={placeholder}
-        className="min-h-[60px] resize-none text-sm shadow-none bg-background placeholder:text-accent border-none focus-visible:ring-0"
-        autoFocus={autoFocus}
-        disabled={isPending || uploadingImage}
-        onKeyDown={(e) => {
-          if (!mentionOpen) return
-          if (e.key === "ArrowDown") {
-            e.preventDefault()
-            setMentionIndex((i) => Math.min(i + 1, filteredCandidates.length - 1))
-          } else if (e.key === "ArrowUp") {
-            e.preventDefault()
-            setMentionIndex((i) => Math.max(i - 1, 0))
-          } else if (e.key === "Enter" || e.key === "Tab") {
-            e.preventDefault()
-            const sel = filteredCandidates[mentionIndex]
-            if (sel) insertMention(sel.name || "")
-          } else if (e.key === "Escape") {
-            setMentionOpen(false)
-          }
-        }}
-      />
-
-      {mentionOpen && filteredCandidates.length > 0 && textareaRef.current && (
-        <MentionList
-          candidates={filteredCandidates.map((m) => ({ id: m.userId, name: m.name || "", image: m.image, email: m.email }))}
-          selectedIndex={mentionIndex}
-          onSelect={(user) => insertMention(user.name)}
-          className="left-2 top-full mt-1"
+        <Textarea
+          ref={textareaRef}
+          value={content}
+          onChange={(e) => {
+            const next = e.target.value
+            setContent(next)
+            const caret = e.target.selectionStart || next.length
+            checkForMention(next, caret)
+          }}
+          placeholder={placeholder}
+          className="min-h-[60px] resize-none text-sm shadow-none bg-background placeholder:text-accent border-none focus-visible:ring-0"
+          autoFocus={autoFocus}
+          disabled={isPending || uploadingImage}
+          onKeyDown={handleKeyDown}
         />
-      )}
+
+        {mentionOpen && filteredCandidates.length > 0 && textareaRef.current && (
+          <MentionList
+            candidates={filteredCandidates.map(u => ({ id: u.userId, ...u }))}
+            selectedIndex={mentionIndex}
+            onSelect={(user) => insertMention(user.name)}
+            className="left-2 top-full mt-1"
+          />
+        )}
       </div>
 
       {/* Image Preview */}
@@ -302,11 +112,10 @@ export default function CommentForm({
             <button
               type="button"
               onClick={handleRemoveImage}
-              className="absolute -top-1 -right-1 rounded-xl bg-destructive text-destructive-foreground p-0.5 hover:bg-destructive/90 transition-colors  z-10 cursor-pointer"
+              className="absolute -top-1 -right-1 rounded-xl bg-destructive text-destructive-foreground p-0.5 hover:bg-destructive/90 transition-colors z-10 cursor-pointer"
               disabled={isPending || uploadingImage}
               aria-label="Remove image"
             >
-
               <XMarkIcon className="size-3" />
             </button>
           </div>
@@ -318,7 +127,7 @@ export default function CommentForm({
           <input
             ref={fileInputRef}
             type="file"
-            accept={allowedImageTypes.join(",")}
+            accept={ALLOWED_IMAGE_TYPES.join(",")}
             onChange={handleFileSelect}
             className="hidden"
             disabled={isPending || uploadingImage}
@@ -345,7 +154,9 @@ export default function CommentForm({
             type="submit"
             size="xs"
             variant="nav"
-            disabled={(!content.trim() && !uploadedImage) || isPending || uploadingImage}
+            disabled={
+              (!content.trim() && !uploadedImage) || isPending || uploadingImage
+            }
           >
             {isPending && <LoaderIcon className="mr-2 h-3 w-3 animate-spin" />}
             {buttonText}

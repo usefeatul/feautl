@@ -1,11 +1,8 @@
-"use client"
+import React from "react"
+import type { CommentData } from "../comments/types";
 
-import React, { useEffect, useMemo, useState } from "react"
-import CommentItem, { CommentData } from "./CommentItem"
-
-import { cn } from "@feedgot/ui/lib/utils"
 import AnimatedReplies from "./AnimatedReplies"
-import { encodeCollapsedIds } from "@/lib/comments"
+import CommentItem from "./CommentItem";
 
 interface CommentThreadProps {
   postId: string
@@ -16,108 +13,116 @@ interface CommentThreadProps {
   initialCollapsedIds?: string[]
 }
 
-export default function CommentThread({ postId, comments, currentUserId, onUpdate, workspaceSlug, initialCollapsedIds }: CommentThreadProps) {
-  const [collapsedComments, setCollapsedComments] = useState<Set<string>>(() => new Set(initialCollapsedIds || []))
+export default function CommentThread({
+  postId,
+  comments,
+  currentUserId,
+  onUpdate,
+  workspaceSlug,
+  initialCollapsedIds = [],
+}: CommentThreadProps) {
+  const [collapsedIds, setCollapsedIds] = React.useState<Set<string>>(
+    new Set(initialCollapsedIds)
+  )
 
   const toggleCollapse = (commentId: string) => {
-    setCollapsedComments((prev) => {
-      const next = new Set(prev)
-      if (next.has(commentId)) {
-        next.delete(commentId)
-      } else {
-        next.add(commentId)
-      }
-      return next
-    })
-  }
-
-  useEffect(() => {
-    try {
-      const encoded = encodeCollapsedIds(collapsedComments)
-      document.cookie = `cmc:${postId}=${encoded}; path=/; max-age=31536000`
-    } catch {}
-  }, [collapsedComments, postId])
-  // Build a tree structure from flat comments list
-  const buildCommentTree = (comments: CommentData[]) => {
-    const commentMap = new Map<string, CommentData & { replies: CommentData[] }>()
-    const rootComments: (CommentData & { replies: CommentData[] })[] = []
-
-    // First pass: create map of all comments
-    comments.forEach((comment) => {
-      commentMap.set(comment.id, { ...comment, replies: [] })
-    })
-
-    // Second pass: build tree structure
-    comments.forEach((comment) => {
-      const node = commentMap.get(comment.id)!
-      if (comment.parentId) {
-        const parent = commentMap.get(comment.parentId)
-        if (parent) {
-          parent.replies.push(node)
-        } else {
-          // Parent not found, treat as root
-          rootComments.push(node)
-        }
-      } else {
-        rootComments.push(node)
-      }
-    })
-
-    // Sort root comments: pinned first, then by date
-    rootComments.sort((a, b) => {
-      if (a.isPinned && !b.isPinned) return -1
-      if (!a.isPinned && b.isPinned) return 1
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    })
-
-    // Sort replies by date (oldest first for natural conversation flow)
-    const sortReplies = (node: CommentData & { replies: CommentData[] }) => {
-      node.replies.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-      node.replies.forEach((reply) => {
-        if ('replies' in reply && Array.isArray(reply.replies)) {
-          sortReplies(reply as CommentData & { replies: CommentData[] })
-        }
-      })
+    const next = new Set(collapsedIds)
+    if (next.has(commentId)) {
+      next.delete(commentId)
+    } else {
+      next.add(commentId)
     }
-    rootComments.forEach(sortReplies)
-
-    return rootComments
+    setCollapsedIds(next)
   }
 
-  const renderComment = (
-    comment: CommentData & { replies: CommentData[] },
-    depth: number = 0
-  ): React.ReactNode => {
-    const isCollapsed = collapsedComments.has(comment.id)
-    const hasReplies = comment.replies.length > 0
+  const rootComments = comments.filter((c) => !c.parentId)
 
-    return (
-      <div key={comment.id} className={cn(depth === 0 && "py-4 border-b border-border/40 last:border-0")}>
-        <CommentItem
-          comment={comment}
-          currentUserId={currentUserId}
-          onReplySuccess={onUpdate}
-          onUpdate={onUpdate}
-          depth={depth}
-          hasReplies={hasReplies}
-          isCollapsed={isCollapsed}
-          onToggleCollapse={() => toggleCollapse(comment.id)}
-          workspaceSlug={workspaceSlug}
-        />
-        {hasReplies ? (
-          <AnimatedReplies isOpen={!isCollapsed} className="ml-4 pl-4 mt-3 pt-2 space-y-4 border-l border-border/60">
-            {comment.replies.map((reply) => renderComment(reply as CommentData & { replies: CommentData[] }, depth + 1))}
-          </AnimatedReplies>
-        ) : null}
-      </div>
-    )
+  const getReplies = (parentId: string) => {
+    return comments
+      .filter((c) => c.parentId === parentId)
+      .sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      )
   }
-
-  const commentTree = buildCommentTree(comments)
 
   return (
-    <div className="space-y-4">
-      {commentTree.map((comment) => renderComment(comment, 0))}
+    <div className="space-y-6">
+      {rootComments.map((comment) => (
+        <ThreadItem
+          key={comment.id}
+          comment={comment}
+          getReplies={getReplies}
+          currentUserId={currentUserId}
+          onUpdate={onUpdate}
+          collapsedIds={collapsedIds}
+          onToggleCollapse={toggleCollapse}
+          workspaceSlug={workspaceSlug}
+        />
+      ))}
+    </div>
+  )
+}
+
+interface ThreadItemProps {
+  comment: CommentData
+  getReplies: (parentId: string) => CommentData[]
+  currentUserId?: string | null
+  onUpdate?: () => void
+  depth?: number
+  collapsedIds: Set<string>
+  onToggleCollapse: (id: string) => void
+  workspaceSlug?: string
+}
+
+function ThreadItem({
+  comment,
+  getReplies,
+  currentUserId,
+  onUpdate,
+  depth = 0,
+  collapsedIds,
+  onToggleCollapse,
+  workspaceSlug,
+}: ThreadItemProps) {
+  const replies = getReplies(comment.id)
+  const isCollapsed = collapsedIds.has(comment.id)
+
+  return (
+    <div className="group/thread">
+      <CommentItem
+        comment={comment}
+        currentUserId={currentUserId}
+        onUpdate={onUpdate}
+        depth={depth}
+        hasReplies={replies.length > 0}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={() => onToggleCollapse(comment.id)}
+        workspaceSlug={workspaceSlug}
+      />
+      {replies.length > 0 && (
+        <AnimatedReplies isOpen={!isCollapsed}>
+          <div className="relative pl-6 mt-2">
+            {/* Thread line */}
+            <div className="absolute left-[11px] top-0 bottom-0 w-px bg-border/40 group-hover/thread:bg-border/60 transition-colors" />
+            <div className="space-y-3">
+              {replies.map((reply) => (
+                <ThreadItem
+                  key={reply.id}
+                  comment={reply}
+                  getReplies={getReplies}
+                  currentUserId={currentUserId}
+                  onUpdate={onUpdate}
+                  depth={depth + 1}
+                  collapsedIds={collapsedIds}
+                  onToggleCollapse={onToggleCollapse}
+                  workspaceSlug={workspaceSlug}
+                />
+              ))}
+            </div>
+          </div>
+        </AnimatedReplies>
+      )}
     </div>
   )
 }

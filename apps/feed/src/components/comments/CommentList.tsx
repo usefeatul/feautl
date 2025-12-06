@@ -1,21 +1,19 @@
-"use client";
-
-import React from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { client } from "@feedgot/api/client";
-import CommentForm from "./CommentForm";
-import CommentThread from "./CommentThread";
-import { useSession } from "@feedgot/auth/client";
-import type { CommentData } from "./CommentItem";
-import { getBrowserFingerprint } from "@/utils/fingerprint";
-import { useEffect, useState } from "react";
+import React from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { client } from "@feedgot/api/client"
+import CommentForm from "./CommentForm"
+import CommentThread from "./CommentThread"
+import { useSession } from "@feedgot/auth/client"
+import type { CommentData } from "./types"
+import { getBrowserFingerprint } from "@/utils/fingerprint"
+import { useEffect, useState } from "react"
 
 interface CommentListProps {
-  postId: string;
-  initialCount?: number;
-  workspaceSlug?: string;
-  initialComments?: CommentData[];
-  initialCollapsedIds?: string[];
+  postId: string
+  initialCount?: number
+  workspaceSlug?: string
+  initialComments?: CommentData[]
+  initialCollapsedIds?: string[]
 }
 
 export default function CommentList({
@@ -26,15 +24,15 @@ export default function CommentList({
   initialCollapsedIds,
 }: CommentListProps) {
   // const queryClient = useQueryClient();
-  const { data: session } = useSession() as any;
-  const currentUserId = session?.user?.id || null;
-  const [fingerprint, setFingerprint] = useState<string | null>(null);
+  const { data: session } = useSession() as any
+  const currentUserId = session?.user?.id || null
+  const [fingerprint, setFingerprint] = useState<string | null>(null)
 
   useEffect(() => {
-    getBrowserFingerprint().then(setFingerprint);
-  }, []);
+    getBrowserFingerprint().then(setFingerprint)
+  }, [])
 
-  const queryKey = ["comments", postId];
+  const queryKey = ["comments", postId]
 
   const {
     data: commentsData,
@@ -44,14 +42,14 @@ export default function CommentList({
   } = useQuery({
     queryKey,
     queryFn: async () => {
-      const res = await client.comment.list.$get({ 
+      const res = await client.comment.list.$get({
         postId,
-        fingerprint: fingerprint || undefined 
-      });
+        fingerprint: fingerprint || undefined,
+      })
       if (!res.ok) {
-        throw new Error("Failed to fetch comments");
+        throw new Error("Failed to fetch comments")
       }
-      return await res.json();
+      return await res.json()
     },
     staleTime: 30_000,
     gcTime: 300_000,
@@ -59,20 +57,23 @@ export default function CommentList({
     refetchOnMount: true,
     refetchOnWindowFocus: true,
     initialData: initialComments ? { comments: initialComments } : undefined,
-  });
+  })
 
-  const comments = commentsData?.comments || [];
-  const commentCount = comments.length;
+  const comments = commentsData?.comments || []
+  const commentCount = comments.length
 
   const handleCommentSuccess = () => {
-
     refetch()
   }
 
   return (
     <div className="space-y-4">
       <div className="rounded-md border bg-card p-3.5">
-        <CommentForm postId={postId} onSuccess={handleCommentSuccess} workspaceSlug={workspaceSlug} />
+        <CommentForm
+          postId={postId}
+          onSuccess={handleCommentSuccess}
+          workspaceSlug={workspaceSlug}
+        />
       </div>
       {commentCount === 0 && !isLoading ? (
         <div className="rounded-md border bg-card p-6 text-center">
@@ -95,5 +96,5 @@ export default function CommentList({
         </div>
       )}
     </div>
-  );
+  )
 }

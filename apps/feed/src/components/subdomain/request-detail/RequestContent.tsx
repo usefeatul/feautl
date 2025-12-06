@@ -2,7 +2,7 @@ import React from "react";
 import { UpvoteButton } from "../../global/UpvoteButton";
 import CommentList from "../../comments/CommentList";
 import CommentCounter from "../../comments/CommentCounter";
-import type { CommentData } from "../../comments/CommentItem";
+import type { CommentData } from "../../comments/types";
 import StatusIcon from "@/components/requests/StatusIcon";
 import { statusLabel } from "@/lib/roadmap";
 import {

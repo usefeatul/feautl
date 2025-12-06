@@ -8,7 +8,6 @@ import { LoaderIcon } from "@feedgot/ui/icons/loader"
 import { ImageIcon } from "@feedgot/ui/icons/image"
 import CommentImage from "./CommentImage"
 import { XMarkIcon } from "@feedgot/ui/icons/xmark"
-
 import { useImageUpload } from "../../hooks/useImageUpload"
 import { useMentions } from "../../hooks/useMentions"
 import { useCommentSubmit } from "../../hooks/useCommentSubmit"

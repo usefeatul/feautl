@@ -1,23 +1,27 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import Image from "next/image"
+import React, { useState } from "react";
+import Image from "next/image";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@feedgot/ui/components/dialog"
-import { cn } from "@feedgot/ui/lib/utils"
+} from "@feedgot/ui/components/dialog";
+import { cn } from "@feedgot/ui/lib/utils";
 
 interface CommentImageProps {
-  url: string
-  alt: string
-  className?: string
+  url: string;
+  alt: string;
+  className?: string;
 }
 
-export default function CommentImage({ url, alt, className }: CommentImageProps) {
-  const [isOpen, setIsOpen] = useState(false)
+export default function CommentImage({
+  url,
+  alt,
+  className,
+}: CommentImageProps) {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -31,8 +35,8 @@ export default function CommentImage({ url, alt, className }: CommentImageProps)
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault()
-            setIsOpen(true)
+            e.preventDefault();
+            setIsOpen(true);
           }
         }}
         aria-label="Click to view full size image"
@@ -64,6 +68,5 @@ export default function CommentImage({ url, alt, className }: CommentImageProps)
         </DialogContent>
       </Dialog>
     </>
-  )
+  );
 }
-

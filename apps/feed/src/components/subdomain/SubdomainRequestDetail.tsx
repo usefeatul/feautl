@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { CommentData } from "../comments/CommentItem";
+import type { CommentData } from "../comments/types";
 import PostSidebar from "./PostSidebar";
 import { useDomainBranding } from "./DomainBrandingProvider";
 import { SubdomainRequestDetailData } from "./request-detail/types";
@@ -27,7 +27,7 @@ export default function SubdomainRequestDetail({
   const { sidebarPosition = "right" } = useDomainBranding();
 
   return (
-    <section className="mt-4 md:mt-6 mb-8">
+    <section className="mt-4 md:mt-6 mb-">
       <RequestHeader sidebarPosition={sidebarPosition} />
 
       {/* Main Content Grid */}

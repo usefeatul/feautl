@@ -460,6 +460,7 @@ export function createCommentRouter() {
             id: comment.id,
             authorId: comment.authorId,
             postId: comment.postId,
+            parentId: comment.parentId,
           })
           .from(comment)
           .where(eq(comment.id, commentId))
@@ -499,20 +500,24 @@ export function createCommentRouter() {
           });
         }
 
-        // Soft delete - set status to deleted
-        await ctx.db
-          .update(comment)
-          .set({
-            status: "deleted",
-            content: "[deleted]",
-          })
-          .where(eq(comment.id, commentId));
+        // Hard delete
+        await ctx.db.delete(comment).where(eq(comment.id, commentId));
 
-        // Update post comment count
+        // Recalculate post comment count
+        const [{ count }] = await ctx.db
+          .select({ count: sql<number>`count(*)` })
+          .from(comment)
+          .where(
+            and(
+              eq(comment.postId, existingComment.postId),
+              eq(comment.status, "published")
+            )
+          );
+
         await ctx.db
           .update(post)
           .set({
-            commentCount: sql`greatest(0, ${post.commentCount} - 1)`,
+            commentCount: count,
           })
           .where(eq(post.id, existingComment.postId));
 

@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import { ReplyIcon } from "@feedgot/ui/icons/reply"
 import { cn } from "@feedgot/ui/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -43,7 +42,6 @@ export default function CommentReplyButton({ onClick, isActive, className }: Com
             transition={{ duration: 0.15, ease: "easeOut" }}
             className="flex items-center gap-1.5"
           >
-            <ReplyIcon className="h-3.5 w-3.5" />
             Reply
           </motion.span>
         )}

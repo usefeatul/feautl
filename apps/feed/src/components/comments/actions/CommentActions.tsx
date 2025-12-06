@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { MoreHorizontal } from "lucide-react"
+import { MoreVertical } from "lucide-react"
 import {
   Popover,
   PopoverTrigger,
@@ -44,7 +44,7 @@ export default function CommentActions({
           className="text-xs text-muted-foreground/60 hover:text-foreground transition-colors"
           aria-label="More options"
         >
-          <MoreHorizontal className="h-3.5 w-3.5" />
+          <MoreVertical className="h-3.5 w-3.5" />
         </button>
       </PopoverTrigger>
       <PopoverContent align="end" list>

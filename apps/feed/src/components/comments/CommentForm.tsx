@@ -46,7 +46,7 @@ export default function CommentForm({
   const [mentionQuery, setMentionQuery] = useState("")
   const [mentionIndex, setMentionIndex] = useState(0)
   const [members, setMembers] = useState<Array<{ id: string; name: string; image?: string | null; email?: string | null }>>([])
-  const { data: session } = useSession() as any
+  const { data: session } = useSession() 
 
   const filteredCandidates = useMemo(() => {
     const q = (mentionQuery || "").trim().toLowerCase()
@@ -226,14 +226,30 @@ export default function CommentForm({
               setMentionOpen(true)
               setMentionIndex(0)
               if (members.length === 0) {
-                try {
-                  client.team.membersByWorkspaceSlug.$get({ slug: workspaceSlug }).then(async (res) => {
+                client.team.membersByWorkspaceSlug
+                  .$get({ slug: workspaceSlug })
+                  .then(async (res) => {
                     if (res.ok) {
                       const data = await res.json()
                       setMembers((data as any)?.members || [])
+                    } else if (res.status === 403) {
+                      toast.error("You must be a member of this workspace to mention users")
+                      setMentionOpen(false)
+                    } else if (res.status === 401) {
+                      toast.error("Please sign in to mention users")
+                      setMentionOpen(false)
                     }
                   })
-                } catch {}
+                  .catch((err) => {
+                    // Check if error response is available
+                    if (err?.status === 403 || err?.response?.status === 403) {
+                      toast.error("You must be a member of this workspace to mention users")
+                      setMentionOpen(false)
+                    } else if (err?.status === 401 || err?.response?.status === 401) {
+                      toast.error("Please sign in to mention users")
+                      setMentionOpen(false)
+                    }
+                  })
               }
             } else {
               setMentionOpen(false)

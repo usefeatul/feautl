@@ -15,6 +15,7 @@ export const config = {
     "/start",
     "/notifications",
     "/reserve",
-    "/p/:path*", // Added to support post detail pages
+    "/board/:path*",
+    "/p/:path*", 
   ],
 }

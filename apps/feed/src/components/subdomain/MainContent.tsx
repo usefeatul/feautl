@@ -23,6 +23,8 @@ export function MainContent({
   pageSize,
   sidebarPosition = "right",
   initialBoards,
+  selectedBoard,
+  linkPrefix,
 }: {
   subdomain: string;
   slug: string;
@@ -32,6 +34,8 @@ export function MainContent({
   pageSize: number;
   sidebarPosition?: "left" | "right";
   initialBoards?: Array<{ id: string; name: string; slug: string; postCount?: number }>;
+  selectedBoard?: string;
+  linkPrefix?: string;
 }) {
   const search = useSearchParams();
   const [listItems, setListItems] = React.useState<Item[]>(items || []);
@@ -63,7 +67,7 @@ export function MainContent({
       >
         {sidebarPosition === "left" ? (
           <aside className="hidden lg:block mt-10 lg:mt-0">
-            <DomainSidebar subdomain={subdomain} slug={slug} initialBoards={initialBoards} />
+            <DomainSidebar subdomain={subdomain} slug={slug} initialBoards={initialBoards} selectedBoard={selectedBoard} />
           </aside>
         ) : null}
         <div>
@@ -74,11 +78,11 @@ export function MainContent({
                   <SortPopover subdomain={subdomain} slug={slug} />
                   <SearchAction />
                 </span>
-                <BoardsDropdown slug={slug} subdomain={subdomain} initialBoards={initialBoards} />
+                <BoardsDropdown slug={slug} subdomain={subdomain} initialBoards={initialBoards} selectedBoard={selectedBoard} />
               </div>
             ) : (
               <div className="lg:hidden flex items-center justify-between gap-2">
-                <BoardsDropdown slug={slug} subdomain={subdomain} initialBoards={initialBoards} />
+                <BoardsDropdown slug={slug} subdomain={subdomain} initialBoards={initialBoards} selectedBoard={selectedBoard} />
                 <span className="inline-flex items-center gap-1">
                   <SortPopover subdomain={subdomain} slug={slug} />
                   <SearchAction />
@@ -86,7 +90,7 @@ export function MainContent({
               </div>
             )}
             <div className={sidebarPosition === "left" ? "hidden lg:flex items-center justify-end" : "hidden lg:flex items-center justify-start"}>
-              <BoardsDropdown slug={slug} subdomain={subdomain} initialBoards={initialBoards} />
+              <BoardsDropdown slug={slug} subdomain={subdomain} initialBoards={initialBoards} selectedBoard={selectedBoard} />
             </div>
           </div>
           <div className="lg:hidden mb-4">
@@ -98,7 +102,7 @@ export function MainContent({
             ) : (
               <div className="divide-y">
                 {(listItems as any[]).map((p: any) => (
-                  <PostCard key={p.id} item={p} onVoteChange={handleVoteChange} />
+                  <PostCard key={p.id} item={p} onVoteChange={handleVoteChange} linkPrefix={linkPrefix} />
                 ))}
               </div>
             )}

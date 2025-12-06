@@ -14,6 +14,7 @@ export default function SubdomainRequestDetail({
   initialComments,
   initialCollapsedIds,
   navigation,
+  backLink,
 }: {
   post: SubdomainRequestDetailData;
   workspaceSlug: string;
@@ -23,12 +24,13 @@ export default function SubdomainRequestDetail({
     prev: { slug: string; title: string } | null;
     next: { slug: string; title: string } | null;
   };
+  backLink?: string;
 }) {
   const { sidebarPosition = "right" } = useDomainBranding();
 
   return (
     <section className="mt-4 md:mt-6 mb-">
-      <RequestHeader sidebarPosition={sidebarPosition} />
+      <RequestHeader sidebarPosition={sidebarPosition} backLink={backLink} />
 
       {/* Main Content Grid */}
       <div

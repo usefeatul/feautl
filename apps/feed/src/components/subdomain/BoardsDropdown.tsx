@@ -9,10 +9,10 @@ import { client } from "@feedgot/api/client"
 
 type Board = { id: string; name: string; slug: string; type?: string | null }
 
-export function BoardsDropdown({ slug, subdomain, initialBoards }: { slug: string; subdomain: string; initialBoards?: Board[] }) {
+export function BoardsDropdown({ slug, subdomain, initialBoards, selectedBoard }: { slug: string; subdomain: string; initialBoards?: Board[]; selectedBoard?: string }) {
   const router = useRouter()
   const search = useSearchParams()
-  const selected = search.get("board") || "__all__"
+  const selected = selectedBoard || search.get("board") || "__all__"
   const [open, setOpen] = React.useState(false)
   function sortBoards(list: Board[]) {
     return [...list].sort((a, b) => a.name.localeCompare(b.name))
@@ -61,10 +61,12 @@ export function BoardsDropdown({ slug, subdomain, initialBoards }: { slug: strin
   const label = selected === "__all__" ? "All Feedback" : boards.find((b) => b.slug === selected)?.name || "Select board"
 
   function go(value: string) {
-    const base = `/`
-    const next = value === "__all__" ? base : `${base}?board=${encodeURIComponent(value)}`
     setOpen(false)
-    router.push(next)
+    if (value === "__all__") {
+      router.push("/")
+    } else {
+      router.push(`/board/${value}`)
+    }
   }
 
   return (

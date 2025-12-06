@@ -6,10 +6,10 @@ import { client } from "@feedgot/api/client"
 
 type Board = { id: string; name: string; slug: string; postCount?: number }
 
-export function BoardsList({ slug, subdomain, initialBoards }: { slug: string; subdomain: string; initialBoards?: Board[] }) {
+export function BoardsList({ slug, subdomain, initialBoards, selectedBoard }: { slug: string; subdomain: string; initialBoards?: Board[]; selectedBoard?: string }) {
   const router = useRouter()
   const search = useSearchParams()
-  const current = search.get("board") || "__all__"
+  const current = selectedBoard || search.get("board") || "__all__"
   function sortBoards(list: Board[]) {
     return [...list].sort((a, b) => a.name.localeCompare(b.name))
   }
@@ -56,9 +56,11 @@ export function BoardsList({ slug, subdomain, initialBoards }: { slug: string; s
   const total = boards.reduce((sum, b) => sum + (Number(b.postCount) || 0), 0)
 
   function go(value: string) {
-    const base = `/`
-    const url = value === "__all__" ? base : `${base}?board=${encodeURIComponent(value)}`
-    router.push(url)
+    if (value === "__all__") {
+      router.push("/")
+    } else {
+      router.push(`/board/${value}`)
+    }
   }
 
   const Item = ({ active, label, count, onClick }: { active?: boolean; label: string; count?: number; onClick?: () => void }) => (

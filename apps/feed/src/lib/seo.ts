@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { SITE_URL, DEFAULT_OG_IMAGE, DEFAULT_TITLE } from '@/config/seo'
 import { getWorkspaceBySlug, getBoardByWorkspaceSlug } from '@/lib/workspace'
+import { db, workspace, board, post } from "@feedgot/db"
+import { eq, and } from "drizzle-orm"
 
 function normalizePath(path?: string) {
   if (!path) return '/'
@@ -75,12 +77,48 @@ export async function createWorkspaceMetadata(slug: string): Promise<Metadata> {
   }
 }
 
+export async function createPostMetadata(subdomain: string, postSlug: string, pathPrefix: string = '/p'): Promise<Metadata> {
+  const ws = await getWorkspaceBySlug(subdomain)
+  if (!ws) return {}
+
+  const [p] = await db
+    .select({ title: post.title, content: post.content, image: post.image })
+    .from(post)
+    .innerJoin(board, eq(post.boardId, board.id))
+    .where(and(eq(board.workspaceId, ws.id), eq(post.slug, postSlug)))
+    .limit(1)
+
+  if (!p) return {}
+
+  const title = `${p.title} - ${ws.name || subdomain}`
+  // Simple strip tags
+  const plainText = p.content ? p.content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() : ''
+  const description = plainText.slice(0, 160) || title
+  const baseUrl = ws.customDomain ? `https://${ws.customDomain}` : `https://${subdomain}.feedgot.com`
+  const path = `${pathPrefix}/${postSlug}`
+
+  const meta = createPageMetadata({
+    title,
+    description,
+    path,
+    image: p.image || ws.logo || undefined,
+    absoluteTitle: true,
+    baseUrl,
+    includeBrand: false,
+  })
+
+  return {
+    ...meta,
+    ...(ws.logo ? { icons: { icon: [ws.logo], shortcut: [ws.logo], apple: [ws.logo] } } : {}),
+  }
+}
+
 export async function createWorkspaceSectionMetadata(slug: string, section: 'feedback' | 'roadmap' | 'changelog', opts?: { boardSlug?: string }): Promise<Metadata> {
   const ws = await getWorkspaceBySlug(slug)
   const name = ws?.name || slug
   const baseUrl = ws?.customDomain ? `https://${ws.customDomain}` : `https://${slug}.feedgot.com`
   const path = section === 'feedback'
-    ? (opts?.boardSlug ? `/?board=${encodeURIComponent(opts.boardSlug)}` : '/')
+    ? (opts?.boardSlug ? `/board/${opts.boardSlug}` : '/')
     : section === 'roadmap'
     ? '/roadmap'
     : '/changelog'

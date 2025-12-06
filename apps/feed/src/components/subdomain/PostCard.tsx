@@ -17,8 +17,8 @@ function toPlain(s?: string | null): string {
   return s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()
 }
 
-function PostCardBase({ item, onVoteChange }: { item: RequestItemData; onVoteChange?: (id: string, upvotes: number, hasVoted: boolean) => void }) {
-  const href = `/p/${item.slug}`
+function PostCardBase({ item, onVoteChange, linkPrefix = "/p" }: { item: RequestItemData; onVoteChange?: (id: string, upvotes: number, hasVoted: boolean) => void; linkPrefix?: string }) {
+  const href = `${linkPrefix}/${item.slug}`
   return (
     <div className="py-6 px-6">
       <div className="inline-flex items-center gap-2">

@@ -38,6 +38,11 @@ export function rewriteSubdomain(req: NextRequest, ctx: ReturnType<typeof getHos
       url.pathname = `/${subdomain}${pathname}`
       return NextResponse.rewrite(url)
     }
+    if (pathname.startsWith("/board/")) {
+      const url = req.nextUrl.clone()
+      url.pathname = `/${subdomain}${pathname}`
+      return NextResponse.rewrite(url)
+    }
     return NextResponse.next()
   }
   return null

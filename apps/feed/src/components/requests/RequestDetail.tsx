@@ -10,7 +10,7 @@ import FlagsPicker from "./meta/FlagsPicker"
 import BoardPicker from "./meta/BoardPicker"
 import { UpvoteButton } from "../global/UpvoteButton"
 import CommentList from "../comments/CommentList"
-import type { CommentData } from "../comments/types";
+import type { CommentData } from "../../types/comment";
 
 
 export type RequestDetailData = {

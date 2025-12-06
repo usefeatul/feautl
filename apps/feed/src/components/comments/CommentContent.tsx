@@ -1,6 +1,6 @@
 import React from "react"
-import CommentImage from "../CommentImage"
-import { CommentData } from "../types"
+import CommentImage from "./CommentImage"
+import { CommentData } from "../../types/comment"
 
 interface CommentContentProps {
   content: string

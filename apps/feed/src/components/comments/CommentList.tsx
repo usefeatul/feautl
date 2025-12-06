@@ -4,7 +4,7 @@ import { client } from "@feedgot/api/client"
 import CommentForm from "./CommentForm"
 import CommentThread from "./CommentThread"
 import { useSession } from "@feedgot/auth/client"
-import type { CommentData } from "./types"
+import type { CommentData } from "../../types/comment"
 import { getBrowserFingerprint } from "@/utils/fingerprint"
 import { useEffect, useState } from "react"
 

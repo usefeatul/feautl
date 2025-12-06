@@ -11,14 +11,12 @@ import CommentForm from "./CommentForm"
 import RoleBadge from "./RoleBadge"
 import { useWorkspaceRole } from "@/hooks/useWorkspaceAccess"
 import { getInitials } from "@/utils/user-utils"
-
-// Refactored components
-import CommentHeader from "./item/CommentHeader"
-import CommentContent from "./item/CommentContent"
-import CommentEditor from "./item/CommentEditor"
-import CommentFooter from "./item/CommentFooter"
-import { useCommentEdit } from "./hooks/useCommentEdit"
-import { CommentData } from "./types"
+import CommentHeader from "./CommentHeader"
+import CommentContent from "./CommentContent"
+import CommentEditor from "./CommentEditor"
+import CommentFooter from "./CommentFooter"
+import { useCommentEdit } from "../../hooks/useCommentEdit"
+import { CommentData } from "../../types/comment"
 
 interface CommentItemProps {
   comment: CommentData

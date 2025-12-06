@@ -1,9 +1,9 @@
 import React from "react"
 import { relativeTime } from "@/lib/time"
-import PinnedBadge from "../PinnedBadge"
-import CommentCollapseToggle from "../CommentCollapseToggle"
-import CommentActions from "../actions/CommentActions"
-import { CommentData } from "../types"
+import PinnedBadge from "./PinnedBadge"
+import CommentCollapseToggle from "./CommentCollapseToggle"
+import CommentActions from "./actions/CommentActions"
+import { CommentData } from "../../types/comment"
 
 interface CommentHeaderProps {
   comment: CommentData

@@ -1,5 +1,5 @@
 import React from "react"
-import type { CommentData } from "../comments/types";
+import type { CommentData } from "../../types/comment";
 
 import AnimatedReplies from "./AnimatedReplies"
 import CommentItem from "./CommentItem";

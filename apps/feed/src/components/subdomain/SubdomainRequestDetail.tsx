@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { CommentData } from "../comments/types";
+import type { CommentData } from "../../types/comment";
 import PostSidebar from "./PostSidebar";
 import { useDomainBranding } from "./DomainBrandingProvider";
 import { SubdomainRequestDetailData } from "./request-detail/types";

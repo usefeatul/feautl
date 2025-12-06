@@ -92,7 +92,7 @@ export default function CommentThread({ postId, comments, currentUserId, onUpdat
     const hasReplies = comment.replies.length > 0
 
     return (
-      <div key={comment.id} className={cn("space-y-3", depth === 0 && "py-4 border-b border-border/40 last:border-0")}>
+      <div key={comment.id} className={cn(depth === 0 && "py-4 border-b border-border/40 last:border-0")}>
         <CommentItem
           comment={comment}
           currentUserId={currentUserId}
@@ -105,7 +105,7 @@ export default function CommentThread({ postId, comments, currentUserId, onUpdat
           workspaceSlug={workspaceSlug}
         />
         {hasReplies ? (
-          <AnimatedReplies isOpen={!isCollapsed} className="ml-4 pl-4 pt-2 space-y-4 border-l border-border/60">
+          <AnimatedReplies isOpen={!isCollapsed} className="ml-4 pl-4 mt-3 pt-2 space-y-4 border-l border-border/60">
             {comment.replies.map((reply) => renderComment(reply as CommentData & { replies: CommentData[] }, depth + 1))}
           </AnimatedReplies>
         ) : null}

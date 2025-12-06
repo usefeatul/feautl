@@ -78,7 +78,7 @@ export default async function RoadmapPage({
               {(items || []).map((it) => (
                 <DomainRoadmapItem
                   key={it.id}
-                  item={{ id: it.id, title: it.title, slug: it.slug, roadmapStatus: it.roadmapStatus, content: it.content }}
+                  item={{ id: it.id, title: it.title, slug: it.slug, roadmapStatus: it.roadmapStatus, content: it.content, boardSlug: it.boardSlug }}
                 />
               ))}
             </div>

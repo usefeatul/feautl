@@ -50,15 +50,15 @@ export default function CommentImage({ url, alt, className }: CommentImageProps)
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-4xl w-auto p-0 bg-transparent border-none shadow-none ring-0 outline-none">
+        <DialogContent className="w-fit max-w-[75vw] p-0 bg-transparent border-none shadow-none ring-0 outline-none">
           <DialogHeader className="sr-only">
             <DialogTitle>{alt}</DialogTitle>
           </DialogHeader>
-          <div className="relative w-full h-auto max-h-[85vh] flex items-center justify-center">
+          <div className="relative flex items-center justify-center">
             <img
               src={url}
               alt={alt}
-              className="max-w-full max-h-[85vh] object-contain rounded-md"
+              className="max-w-[75vw] max-h-[75vh] w-auto h-auto object-contain rounded-md"
             />
           </div>
         </DialogContent>

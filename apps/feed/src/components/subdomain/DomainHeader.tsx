@@ -35,7 +35,7 @@ export function DomainHeader({
   const feedbackBase = `/`;
   const roadmapBase = `/roadmap`;
   const changelogBase = `/changelog`;
-  const isFeedback = pathname === "/";
+  const isFeedback = pathname === "/" || pathname.startsWith("/board") || pathname.startsWith("/p/");
   const isRoadmap = pathname.startsWith(roadmapBase);
   const isChangelog = pathname.startsWith(changelogBase);
   const [authOpen, setAuthOpen] = React.useState(false);

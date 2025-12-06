@@ -7,6 +7,7 @@ import { toast } from "sonner"
 import { cn } from "@feedgot/ui/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import { useQuery } from "@tanstack/react-query"
+import { getBrowserFingerprint } from "@/utils/fingerprint"
 
 interface CommentVoteProps {
   commentId: string
@@ -21,6 +22,11 @@ export default function CommentVote({ commentId, postId, initialUpvotes, initial
   const [isPending, startTransition] = useTransition()
   const [burstId, setBurstId] = useState(0)
   const prevVotedRef = React.useRef<boolean>(initialHasVoted)
+  const [visitorId, setVisitorId] = useState<string | null>(null)
+
+  React.useEffect(() => {
+    getBrowserFingerprint().then(setVisitorId)
+  }, [])
 
   const { data: commentsData } = useQuery({
     queryKey: ["comments", postId],
@@ -94,7 +100,10 @@ export default function CommentVote({ commentId, postId, initialUpvotes, initial
 
     startTransition(async () => {
       try {
-        const res = await client.comment.upvote.$post({ commentId })
+        const res = await client.comment.upvote.$post({ 
+          commentId,
+          fingerprint: visitorId || undefined 
+        })
         if (res.ok) {
           const data = await res.json()
           setUpvotes(data.upvotes)

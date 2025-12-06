@@ -39,10 +39,12 @@ export const deleteCommentInputSchema = z.object({
 
 export const listCommentsInputSchema = z.object({
   postId: z.string().uuid(),
+  fingerprint: z.string().optional(),
 })
 
 export const upvoteCommentInputSchema = z.object({
   commentId: z.string().uuid(),
+  fingerprint: z.string().optional(),
 })
 
 export const reportCommentInputSchema = z.object({

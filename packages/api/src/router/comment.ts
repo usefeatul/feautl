@@ -32,7 +32,7 @@ export function createCommentRouter() {
     list: publicProcedure
       .input(listCommentsInputSchema)
       .get(async ({ ctx, input, c }) => {
-        const { postId } = input;
+        const { postId, fingerprint } = input;
 
         // Check if post exists and get board/workspace settings
         const [targetPost] = await ctx.db
@@ -105,27 +105,67 @@ export function createCommentRouter() {
 
         // Get user's upvoted comments if authenticated
         let userUpvotes: Set<string> = new Set();
+        let userId: string | null = null;
         try {
           const session = await auth.api.getSession({
             headers: (c as any)?.req?.raw?.headers || (await headers()),
           });
           if (session?.user?.id) {
+            userId = session.user.id;
             const upvotes = await ctx.db
               .select({ commentId: commentReaction.commentId })
               .from(commentReaction)
               .where(
                 and(
-                  eq(commentReaction.userId, session.user.id),
+                  eq(commentReaction.userId, userId),
                   eq(commentReaction.type, "like")
                 )
               );
-            userUpvotes = new Set(
-              upvotes.map((v: { commentId: string }) => v.commentId)
+            upvotes.forEach((v: { commentId: string }) =>
+              userUpvotes.add(v.commentId)
             );
           }
         } catch {
           // Session not available, user is not authenticated
-          // This is fine for public endpoints
+        }
+
+        // If not authenticated, check for anonymous upvotes
+        if (!userId) {
+          const forwardedFor = (c as any)?.req?.header("x-forwarded-for");
+          const ipAddress = forwardedFor
+            ? forwardedFor.split(",")[0]
+            : "127.0.0.1";
+
+          const conditions = [
+            isNull(commentReaction.userId),
+            eq(commentReaction.type, "like"),
+          ];
+
+          if (fingerprint) {
+            // If fingerprint provided, match fingerprint OR (no fingerprint AND ip match)
+            // Actually, the logic in upvote is: check fingerprint first, then IP if not found.
+            // For list, we want to find ANY vote that belongs to this user.
+            // So we get votes where fingerprint matches OR (ip matches and fingerprint is null)
+            // OR just simply: fingerprint matches OR ip matches (if we want to be generous and show votes from same IP)
+            // Let's stick to: fingerprint matches OR (ip matches)
+            conditions.push(
+              or(
+                eq(commentReaction.fingerprint, fingerprint),
+                eq(commentReaction.ipAddress, ipAddress)
+              ) as any
+            );
+          } else {
+            conditions.push(eq(commentReaction.ipAddress, ipAddress));
+          }
+
+          const anonymousUpvotes = await ctx.db
+            .select({ commentId: commentReaction.commentId })
+            .from(commentReaction)
+            .where(and(...conditions));
+
+          anonymousUpvotes.forEach((v: { commentId: string }) =>
+            userUpvotes.add(v.commentId)
+          );
         }
 
         // Format comments with avatar and hasVoted
@@ -156,7 +196,7 @@ export function createCommentRouter() {
       .input(createCommentInputSchema)
       .post(async ({ ctx, input, c }) => {
         const { postId, content, parentId, metadata } = input;
-        
+
         let userId: string | null = null;
         try {
           const session = await auth.api.getSession({
@@ -208,7 +248,7 @@ export function createCommentRouter() {
             .from(user)
             .where(eq(user.id, userId))
             .limit(1);
-            
+
           authorName = author?.name || null;
           authorEmail = author?.email || null;
         } else {
@@ -323,15 +363,13 @@ export function createCommentRouter() {
             }
 
             if (validUserIds.length > 0) {
-              await ctx.db
-                .insert(commentMention)
-                .values(
-                  validUserIds.map((uid) => ({
-                    commentId: newComment.id,
-                    mentionedUserId: uid,
-                    mentionedBy: userId!,
-                  }))
-                );
+              await ctx.db.insert(commentMention).values(
+                validUserIds.map((uid) => ({
+                  commentId: newComment.id,
+                  mentionedUserId: uid,
+                  mentionedBy: userId!,
+                }))
+              );
 
               const nextMeta = {
                 ...(newComment.metadata || {}),
@@ -477,11 +515,28 @@ export function createCommentRouter() {
       }),
 
     // Upvote/unvote a comment
-    upvote: privateProcedure
+    upvote: publicProcedure
       .input(upvoteCommentInputSchema)
       .post(async ({ ctx, input, c }) => {
-        const { commentId } = input;
-        const userId = ctx.session.user.id;
+        const { commentId, fingerprint } = input;
+
+        let userId: string | null = null;
+        try {
+          const session = await auth.api.getSession({
+            headers: (c as any)?.req?.raw?.headers || (await headers()),
+          });
+          if (session?.user?.id) {
+            userId = session.user.id;
+          }
+        } catch {
+          // User is not authenticated
+        }
+
+        // Get IP address for anonymous tracking
+        const forwardedFor = (c as any)?.req?.header("x-forwarded-for");
+        const ipAddress = forwardedFor
+          ? forwardedFor.split(",")[0]
+          : "127.0.0.1";
 
         // Check if comment exists
         const [targetComment] = await ctx.db
@@ -495,17 +550,59 @@ export function createCommentRouter() {
         }
 
         // Check if user already upvoted
-        const [existingReaction] = await ctx.db
-          .select()
-          .from(commentReaction)
-          .where(
-            and(
-              eq(commentReaction.commentId, commentId),
-              eq(commentReaction.userId, userId),
-              eq(commentReaction.type, "like")
+        let existingReaction;
+
+        if (userId) {
+          [existingReaction] = await ctx.db
+            .select()
+            .from(commentReaction)
+            .where(
+              and(
+                eq(commentReaction.commentId, commentId),
+                eq(commentReaction.userId, userId),
+                eq(commentReaction.type, "like")
+              )
             )
-          )
-          .limit(1);
+            .limit(1);
+        } else {
+          // Check by fingerprint or IP for anonymous users
+          // Prioritize fingerprint if available
+          if (fingerprint) {
+            [existingReaction] = await ctx.db
+              .select()
+              .from(commentReaction)
+              .where(
+                and(
+                  eq(commentReaction.commentId, commentId),
+                  isNull(commentReaction.userId),
+                  eq(commentReaction.fingerprint, fingerprint),
+                  eq(commentReaction.type, "like")
+                )
+              )
+              .limit(1);
+          }
+
+          // If no fingerprint match (or no fingerprint provided), check IP
+          // But only if we didn't find one by fingerprint already
+          if (!existingReaction) {
+            [existingReaction] = await ctx.db
+              .select()
+              .from(commentReaction)
+              .where(
+                and(
+                  eq(commentReaction.commentId, commentId),
+                  isNull(commentReaction.userId),
+                  eq(commentReaction.ipAddress, ipAddress),
+                  // If we are checking by IP, we should ideally ensure the record DOES NOT have a fingerprint
+                  // to avoid mixing fingerprint users with non-fingerprint users on same IP.
+                  // However, for simplicity and migration, we just check IP matching.
+                  // A stricter check would be: isNull(commentReaction.fingerprint) if the client sends fingerprints now.
+                  eq(commentReaction.type, "like")
+                )
+              )
+              .limit(1);
+          }
+        }
 
         if (existingReaction) {
           // Remove upvote
@@ -529,7 +626,9 @@ export function createCommentRouter() {
           // Add upvote
           await ctx.db.insert(commentReaction).values({
             commentId,
-            userId,
+            userId: userId || null,
+            ipAddress: userId ? null : ipAddress,
+            fingerprint: userId ? null : fingerprint || null,
             type: "like",
           });
 

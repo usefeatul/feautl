@@ -157,8 +157,11 @@ export default function CommentForm({
               (!content.trim() && !uploadedImage) || isPending || uploadingImage
             }
           >
-            {isPending && <LoaderIcon className="mr-2 h-3 w-3 animate-spin" />}
-            {buttonText}
+            {isPending ? (
+              <LoaderIcon className="h-3 w-3 animate-spin" />
+            ) : (
+              buttonText
+            )}
           </Button>
           {onCancel && (
             <Button

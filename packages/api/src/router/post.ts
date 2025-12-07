@@ -1,16 +1,31 @@
-import { eq, and, sql } from "drizzle-orm"
-import { j, privateProcedure } from "../jstack"
+import { eq, and, sql, isNull } from "drizzle-orm"
+import { j, publicProcedure } from "../jstack"
 import { vote, post } from "@feedgot/db"
-import { byIdSchema } from "../validators/post"
+import { votePostSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
+import { auth } from "@feedgot/auth"
+import { headers } from "next/headers"
 
 export function createPostRouter() {
   return j.router({
-    vote: privateProcedure
-      .input(byIdSchema)
+    vote: publicProcedure
+      .input(votePostSchema)
       .post(async ({ ctx, input, c }) => {
-        const { postId } = input
-        const userId = ctx.session.user.id
+        const { postId, fingerprint } = input
+        
+        let userId: string | null = null
+        try {
+          const session = await auth.api.getSession({
+            headers: (c as any)?.req?.raw?.headers || (await headers()),
+          })
+          if (session?.user?.id) {
+            userId = session.user.id
+          }
+        } catch {}
+
+        if (!userId && !fingerprint) {
+             throw new HTTPException(400, { message: "Missing identification" })
+        }
 
         // Check if post exists
         const [targetPost] = await ctx.db
@@ -23,11 +38,21 @@ export function createPostRouter() {
           throw new HTTPException(404, { message: "Post not found" })
         }
 
-        const [existingVote] = await ctx.db
-          .select()
-          .from(vote)
-          .where(and(eq(vote.postId, postId), eq(vote.userId, userId)))
-          .limit(1)
+        let existingVote
+        
+        if (userId) {
+             [existingVote] = await ctx.db
+            .select()
+            .from(vote)
+            .where(and(eq(vote.postId, postId), eq(vote.userId, userId)))
+            .limit(1)
+        } else if (fingerprint) {
+             [existingVote] = await ctx.db
+            .select()
+            .from(vote)
+            .where(and(eq(vote.postId, postId), isNull(vote.userId), eq(vote.fingerprint, fingerprint)))
+            .limit(1)
+        }
 
         if (existingVote) {
           // Remove vote
@@ -46,7 +71,8 @@ export function createPostRouter() {
           // Add vote
           await ctx.db.insert(vote).values({
             postId,
-            userId,
+            userId: userId || null,
+            fingerprint: userId ? null : fingerprint || null,
             type: 'upvote'
           })
 
@@ -60,6 +86,42 @@ export function createPostRouter() {
 
           return c.superjson({ upvotes: updatedPost?.upvotes || 0, hasVoted: true })
         }
-      })
+      }),
+
+    getVoteStatus: publicProcedure
+      .input(votePostSchema)
+      .get(async ({ ctx, input, c }) => {
+        const { postId, fingerprint } = input
+        
+        let userId: string | null = null
+        try {
+          const session = await auth.api.getSession({
+            headers: (c as any)?.req?.raw?.headers || (await headers()),
+          })
+          if (session?.user?.id) {
+            userId = session.user.id
+          }
+        } catch {}
+
+        let hasVoted = false
+        
+        if (userId) {
+             const [existing] = await ctx.db
+            .select({ id: vote.id })
+            .from(vote)
+            .where(and(eq(vote.postId, postId), eq(vote.userId, userId)))
+            .limit(1)
+            hasVoted = !!existing
+        } else if (fingerprint) {
+             const [existing] = await ctx.db
+            .select({ id: vote.id })
+            .from(vote)
+            .where(and(eq(vote.postId, postId), isNull(vote.userId), eq(vote.fingerprint, fingerprint)))
+            .limit(1)
+            hasVoted = !!existing
+        }
+        
+        return c.superjson({ hasVoted })
+      }),
   })
 }

@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { fingerprintSchema } from "./shared"
 
 const attachmentSchema = z.object({
   name: z.string(),
@@ -17,7 +18,7 @@ export const createCommentInputSchema = z.object({
   content: z.string().max(5000).default(""),
   parentId: z.string().uuid().optional(),
   metadata: metadataSchema.optional(),
-  fingerprint: z.string().optional(),
+  fingerprint: fingerprintSchema,
 }).refine(
   (data) => {
     const hasContent = data.content.trim().length > 0
@@ -40,13 +41,13 @@ export const deleteCommentInputSchema = z.object({
 
 export const listCommentsInputSchema = z.object({
   postId: z.string().uuid(),
-  fingerprint: z.string().optional(),
+  fingerprint: fingerprintSchema,
 })
 
 export const voteCommentInputSchema = z.object({
   commentId: z.string().uuid(),
   voteType: z.enum(["upvote", "downvote"]),
-  fingerprint: z.string().optional(),
+  fingerprint: fingerprintSchema,
 })
 
 export const reportCommentInputSchema = z.object({

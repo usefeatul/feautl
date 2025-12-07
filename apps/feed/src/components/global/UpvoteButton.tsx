@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart } from "lucide-react";
 import { cn } from "@feedgot/ui/lib/utils";
 import { client } from "@feedgot/api/client";
 import { toast } from "sonner";
+import { getBrowserFingerprint } from "@/utils/fingerprint";
+import { useQuery } from "@tanstack/react-query";
 
 interface UpvoteButtonProps {
   postId: string;
@@ -27,6 +29,28 @@ export function UpvoteButton({
   const [upvotes, setUpvotes] = useState(initialUpvotes);
   const [hasVoted, setHasVoted] = useState(initialHasVoted || false);
   const [isPending, startTransition] = useTransition();
+  const [fingerprint, setFingerprint] = useState<string | null>(null);
+
+  useEffect(() => {
+    getBrowserFingerprint().then(setFingerprint);
+  }, []);
+
+  const { data: statusData } = useQuery({
+    queryKey: ["post-vote-status", postId, fingerprint],
+    enabled: !!fingerprint,
+    queryFn: async () => {
+      const res = await client.post.getVoteStatus.$get({ postId, fingerprint: fingerprint! });
+      if (!res.ok) return null;
+      return await res.json();
+    },
+    staleTime: 10_000,
+  });
+
+  useEffect(() => {
+    if (statusData) {
+      setHasVoted(statusData.hasVoted);
+    }
+  }, [statusData]);
 
   const handleVote = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -41,7 +65,10 @@ export function UpvoteButton({
     if (onChange) onChange({ upvotes: nextUpvotes, hasVoted: nextHasVoted });
     startTransition(async () => {
       try {
-        const res = await client.post.vote.$post({ postId });
+        const res = await client.post.vote.$post({ 
+          postId,
+          fingerprint: fingerprint || undefined
+        });
         if (res.ok) {
           const data = await res.json();
           setUpvotes(data.upvotes);

@@ -11,6 +11,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { post } from "./post";
 import { user } from "./auth";
+import { fingerprintColumn } from "./shared";
 
 export const comment = pgTable(
   "comment",
@@ -70,7 +71,7 @@ export const commentReaction = pgTable(
     type: text("type", {
       enum: ["upvote", "downvote"],
     }).notNull(),
-    fingerprint: text("fingerprint"),
+    ...fingerprintColumn,
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({

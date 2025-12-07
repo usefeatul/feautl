@@ -2,6 +2,7 @@ import { pgTable, text, timestamp, boolean, integer, json, uuid, uniqueIndex } f
 import { post } from './post'
 import { comment } from './comment'
 import { user } from './auth'
+import { fingerprintColumn } from './shared'
 
 export const vote = pgTable(
   'vote',
@@ -14,7 +15,7 @@ export const vote = pgTable(
       .references(() => user.id, { onDelete: 'cascade' }),
     ipAddress: text('ip_address'),
     userAgent: text('user_agent'),
-    fingerprint: text('fingerprint'),
+    ...fingerprintColumn,
     type: text('type', { enum: ['upvote'] }).notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),

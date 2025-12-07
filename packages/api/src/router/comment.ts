@@ -171,13 +171,24 @@ export function createCommentRouter() {
           let avatarSeed = c.authorName || c.authorEmail || c.authorId;
           
           if (c.isAnonymous) {
+            // Generate a composite seed using both IP and fingerprint (if available).
+            // This ensures that:
+            // 1. If IP changes (e.g. VPN), the hash changes -> new avatar.
+            // 2. If IP is same but device/fingerprint changes, the hash changes -> new avatar.
+            // 3. If both are same, the hash is consistent -> same avatar.
+            const parts: string[] = [];
+            
+            if (c.ipAddress) {
+              parts.push(c.ipAddress);
+            }
+            
             if (c.metadata?.fingerprint) {
-              // Use fingerprint if available (already a hash)
-              avatarSeed = c.metadata.fingerprint;
-            } else if (c.ipAddress) {
-              // Fallback to hashed IP
+              parts.push(c.metadata.fingerprint);
+            }
+            
+            if (parts.length > 0) {
               avatarSeed = createHash("sha256")
-                .update(c.ipAddress)
+                .update(parts.join("|"))
                 .digest("hex");
             }
           }

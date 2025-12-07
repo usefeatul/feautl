@@ -16,6 +16,5 @@ export const config = {
     "/notifications",
     "/reserve",
     "/board/:path*",
-    "/p/:path*", 
   ],
 }

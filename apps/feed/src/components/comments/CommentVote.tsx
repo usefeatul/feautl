@@ -58,10 +58,10 @@ export default function CommentVote({ commentId, postId, initialUpvotes, initial
   }, [commentsData, commentId])
 
   const { data: statusData } = useQuery({
-    queryKey: ["comment-vote-status", postId, commentId],
-    enabled: true,
+    queryKey: ["comment-vote-status", postId, commentId, visitorId],
+    enabled: !!visitorId,
     queryFn: async () => {
-      const res = await client.comment.list.$get({ postId })
+      const res = await client.comment.list.$get({ postId, fingerprint: visitorId || undefined })
       if (!res.ok) return null
       const json = await res.json()
       const found = json?.comments?.find((c: any) => c.id === commentId)

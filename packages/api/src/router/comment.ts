@@ -34,8 +34,6 @@ export function createCommentRouter() {
       .input(listCommentsInputSchema)
       .get(async ({ ctx, input, c }) => {
         const { postId, fingerprint } = input;
-
-        // Check if post exists and get board/workspace settings
         const [targetPost] = await ctx.db
           .select({
             postId: post.id,

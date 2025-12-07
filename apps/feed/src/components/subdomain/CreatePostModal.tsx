@@ -12,6 +12,7 @@ import { PostContent } from "../post/PostContent"
 import { PostFooter } from "../post/PostFooter"
 import { useCreatePostData } from "../../hooks/useCreatePostData"
 import { usePostSubmission } from "../../hooks/usePostSubmission"
+import { usePostImageUpload } from "../../hooks/usePostImageUpload"
 
 interface CreatePostModalProps {
   open: boolean
@@ -33,6 +34,16 @@ export default function CreatePostModal({
   })
 
   const {
+    uploadedImage,
+    uploadingImage,
+    fileInputRef,
+    setUploadedImage,
+    handleFileSelect,
+    handleRemoveImage,
+    ALLOWED_IMAGE_TYPES,
+  } = usePostImageUpload(workspaceSlug)
+
+  const {
     title,
     setTitle,
     content,
@@ -41,12 +52,15 @@ export default function CreatePostModal({
     submitPost
   } = usePostSubmission({
     workspaceSlug,
-    onSuccess: () => onOpenChange(false)
+    onSuccess: () => {
+      onOpenChange(false)
+      setUploadedImage(null)
+    }
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await submitPost(selectedBoard, user)
+    await submitPost(selectedBoard, user, uploadedImage?.url)
   }
 
   const initials = user?.name ? getInitials(user.name) : "?"
@@ -70,11 +84,19 @@ export default function CreatePostModal({
             setTitle={setTitle}
             content={content}
             setContent={setContent}
+            uploadedImage={uploadedImage}
+            uploadingImage={uploadingImage}
+            handleRemoveImage={handleRemoveImage}
           />
 
           <PostFooter
             isPending={isPending}
-            disabled={!title || !content || !selectedBoard || isPending}
+            disabled={!title || !content || !selectedBoard || isPending || uploadingImage}
+            uploadedImage={uploadedImage}
+            uploadingImage={uploadingImage}
+            fileInputRef={fileInputRef}
+            handleFileSelect={handleFileSelect}
+            ALLOWED_IMAGE_TYPES={ALLOWED_IMAGE_TYPES}
           />
         </form>
       </DialogContent>

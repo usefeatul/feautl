@@ -123,18 +123,20 @@ export default function CommentItem({
         {showReplyForm && (
           <div className="mt-3 pt-2">
             <div className="pl-1">
-              <CommentForm
-                postId={comment.postId}
-                parentId={comment.id}
-                workspaceSlug={workspaceSlug}
-                onSuccess={() => {
-                  setShowReplyForm(false)
-                  onReplySuccess?.()
-                }}
-                placeholder="Write a reply..."
-                autoFocus
-                buttonText="Reply"
-              />
+              <div className="rounded-md border bg-card p-3.5">
+                <CommentForm
+                  postId={comment.postId}
+                  parentId={comment.id}
+                  workspaceSlug={workspaceSlug}
+                  onSuccess={() => {
+                    setShowReplyForm(false)
+                    onReplySuccess?.()
+                  }}
+                  placeholder="Write a reply..."
+                  autoFocus
+                  buttonText="Reply"
+                />
+              </div>
             </div>
           </div>
         )}

@@ -15,6 +15,7 @@ import { getBrowserFingerprint } from "@/utils/fingerprint"
 import { Avatar, AvatarImage, AvatarFallback } from "@feedgot/ui/components/avatar"
 import { getInitials } from "@/utils/user-utils"
 import { LoaderIcon } from "@feedgot/ui/icons/loader"
+import { XMarkIcon } from "@feedgot/ui/icons/xmark"
 import { ChevronRight, ChevronsUpDown, ImageIcon } from "lucide-react"
 import {
   Popover,
@@ -123,11 +124,11 @@ export default function CreatePostModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] p-0 gap-0 overflow-hidden border-none shadow-2xl">
+      <DialogContent className="sm:max-w-[600px] p-0 gap-0 overflow-hidden border-none shadow-2xl top-[20%] translate-y-[-20%]">
         <form onSubmit={handleSubmit} className="flex flex-col h-full">
             
             {/* Header Area */}
-            <div className="flex items-center gap-2 p-4 md:p-6 pb-2">
+            <div className="flex items-center gap-2 p-3 md:p-4 pb-1">
                 {/* User Avatar */}
                 <Avatar className="size-6">
                     {user?.image ? (
@@ -168,34 +169,45 @@ export default function CreatePostModal({
                     </PopoverList>
                   </PopoverContent>
                 </Popover>
+
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="ml-auto h-6 w-6 rounded-sm text-muted-foreground hover:text-foreground"
+                    onClick={() => onOpenChange(false)}
+                >
+                    <XMarkIcon size={12} />
+                </Button>
             </div>
 
             {/* Content Area */}
-            <div className="px-4 md:px-6 space-y-2">
+            <div className="px-3 md:px-4 flex flex-col">
                 <Input
+                    variant="plain"
                     placeholder="Submission title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
                     maxLength={128}
-                    className="border-none shadow-none text-lg md:text-xl font-semibold px-0 h-auto placeholder:text-muted-foreground/50 focus-visible:ring-0"
+                    className="text-lg md:text-xl font-semibold h-auto py-2"
                 />
                 <Textarea
+                    variant="plain"
                     placeholder="Add details"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    className="border-none shadow-none resize-none min-h-[150px] px-0 text-base placeholder:text-muted-foreground/50 focus-visible:ring-0"
+                    className="resize-none min-h-[80px] py-2 text-base"
                     required
                 />
             </div>
 
             {/* Footer Area */}
-            <div className="flex items-center justify-between p-4 md:p-6 pt-2">
+            <div className="flex items-center justify-between p-3 md:p-4 bg-muted">
                 <Button 
                     type="button" 
                     variant="ghost" 
                     size="icon" 
-                    className="text-muted-foreground hover:text-foreground rounded-full"
+                    className="text-muted-foreground hover:text-foreground rounded-full hover:bg-background"
                     onClick={() => toast.info("Image upload coming soon!")}
                 >
                     <ImageIcon className="size-5" />
@@ -203,8 +215,9 @@ export default function CreatePostModal({
 
                 <Button 
                     type="submit" 
+                    variant="quiet"
                     disabled={!title || !content || !selectedBoard || isPending}
-                    className="bg-foreground text-background hover:bg-foreground/90 rounded-lg px-6"
+                    className=" text-primary-foreground px-6"
                 >
                     {isPending && <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />}
                     {isPending ? "Creating..." : "Create"}

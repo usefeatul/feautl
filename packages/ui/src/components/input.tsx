@@ -1,18 +1,29 @@
 import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@feedgot/ui/lib/utils"
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+const inputVariants = cva(
+  "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground flex h-9 w-full min-w-0 rounded-md px-3 py-1 text-base transition-[color,box-shadow] file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm outline-none",
+  {
+    variants: {
+      variant: {
+        default: "border-input bg-muted border focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[1px] dark:bg-input/20 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+        plain: "bg-transparent border-none shadow-none focus-visible:ring-0 px-0",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+function Input({ className, type, variant, ...props }: React.ComponentProps<"input"> & VariantProps<typeof inputVariants>) {
   return (
     <input
       type={type}
       data-slot="input"
-      className={cn(
-        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/20 border-input flex h-9 w-full min-w-0 rounded-md border bg-muted px-3 py-1 text-base transition-[color,box-shadow] file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm outline-none",
-        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[1px]",
-        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-        className
-      )}
+      className={cn(inputVariants({ variant, className }))}
       {...props}
     />
   )

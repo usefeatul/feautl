@@ -60,7 +60,7 @@ export async function rewriteFeedback(req: NextRequest, ctx: { pathname: string;
           url.pathname = `/${targetSlug}/changelog`
           return NextResponse.rewrite(url)
         }
-        if (pathname.startsWith("/board/") || pathname.startsWith("/p/")) {
+        if (pathname.startsWith("/board/")) {
           const url = req.nextUrl.clone()
           url.pathname = `/${targetSlug}${pathname}`
           return NextResponse.rewrite(url)

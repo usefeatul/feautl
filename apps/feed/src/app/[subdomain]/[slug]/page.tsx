@@ -65,6 +65,7 @@ export default async function SitePage({
       pageSize={PAGE_SIZE}
       sidebarPosition={sidebarPosition}
       initialBoards={initialBoards as any}
+      linkPrefix="/board/p"
     />
   )
 }

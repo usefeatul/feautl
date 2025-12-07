@@ -1,11 +1,13 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Dialog, DialogContent } from "@feedgot/ui/components/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@feedgot/ui/components/dialog"
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 import { PostHeader } from "./PostHeader"
 import { PostContent } from "./PostContent"
 import { PostFooter } from "./PostFooter"
 import { usePostSubmission } from "@/hooks/usePostSubmission"
+import { usePostImageUpload } from "@/hooks/usePostImageUpload"
 import { client } from "@feedgot/api/client"
 import { useRouter } from "next/navigation"
 
@@ -25,6 +27,16 @@ export function CreatePostModal({
   const [selectedBoard, setSelectedBoard] = useState<any>(null)
 
   const {
+    uploadedImage,
+    uploadingImage,
+    fileInputRef,
+    setUploadedImage,
+    handleFileSelect,
+    handleRemoveImage,
+    ALLOWED_IMAGE_TYPES,
+  } = usePostImageUpload(workspaceSlug)
+
+  const {
     title,
     setTitle,
     content,
@@ -35,6 +47,7 @@ export function CreatePostModal({
     workspaceSlug,
     onSuccess: () => {
       onOpenChange(false)
+      setUploadedImage(null)
     },
     onCreated: (post) => {
         router.push(`/workspaces/${workspaceSlug}/requests/${post.slug}`)
@@ -59,12 +72,15 @@ export function CreatePostModal({
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault()
-    submitPost(selectedBoard, user)
+    submitPost(selectedBoard, user, uploadedImage?.url)
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] p-0 gap-0 overflow-hidden border-none shadow-2xl top-[20%] translate-y-[-20%]">
+        <VisuallyHidden>
+          <DialogTitle>Create Post</DialogTitle>
+        </VisuallyHidden>
         <form onSubmit={handleSubmit}>
           <PostHeader
             user={user || null}
@@ -79,8 +95,14 @@ export function CreatePostModal({
             setTitle={setTitle}
             content={content}
             setContent={setContent}
+            uploadedImage={uploadedImage}
+            uploadingImage={uploadingImage}
+            fileInputRef={fileInputRef}
+            handleFileSelect={handleFileSelect}
+            handleRemoveImage={handleRemoveImage}
+            ALLOWED_IMAGE_TYPES={ALLOWED_IMAGE_TYPES}
           />
-          <PostFooter isPending={isPending} disabled={!title || !content || !selectedBoard || isPending} />
+          <PostFooter isPending={isPending} disabled={!title || !content || !selectedBoard || isPending || uploadingImage} />
         </form>
       </DialogContent>
     </Dialog>

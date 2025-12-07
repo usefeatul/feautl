@@ -13,17 +13,7 @@ export interface PostFooterProps {
 
 export function PostFooter({ isPending, disabled }: PostFooterProps) {
   return (
-    <div className="flex items-center justify-between p-3 md:p-4 bg-muted dark:bg-black/50">
-      <Button
-        type="button"
-        variant="nav"
-        size="icon"
-        className="text-muted-foreground hover:text-foreground rounded-md hover:bg-background"
-        onClick={() => toast.info("Image upload coming soon!")}
-      >
-        <ImageIcon className="size-6" />
-      </Button>
-
+    <div className="flex items-center justify-end p-3 md:p-4 bg-muted dark:bg-black/50">
       <Button
         type="submit"
         variant="default"

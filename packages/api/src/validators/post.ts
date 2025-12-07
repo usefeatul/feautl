@@ -24,6 +24,7 @@ export const votePostSchema = z.object({
 export const createPostSchema = z.object({
   title: z.string().min(1).max(128),
   content: z.string().min(1),
+  image: z.string().url().optional(),
   workspaceSlug: z.string().min(1),
   boardSlug: z.string().min(1),
   fingerprint: fingerprintSchema.optional(),

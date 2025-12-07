@@ -11,7 +11,7 @@ export function createPostRouter() {
     create: publicProcedure
       .input(createPostSchema)
       .post(async ({ ctx, input, c }) => {
-        const { title, content, workspaceSlug, boardSlug, fingerprint } = input
+        const { title, content, image, workspaceSlug, boardSlug, fingerprint } = input
 
         let userId: string | null = null
         try {
@@ -59,6 +59,7 @@ export function createPostRouter() {
             boardId: b.id,
             title,
             content,
+            image,
             slug,
             authorId: userId || null,
             isAnonymous: !userId,

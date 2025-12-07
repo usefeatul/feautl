@@ -27,5 +27,8 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "@radix-ui/react-visually-hidden": "^1.2.4"
   }
 }

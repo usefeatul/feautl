@@ -13,5 +13,13 @@ export const getCommentImageUploadUrlInputSchema = z.object({
   contentType: z.string().min(1),
 })
 
+export const getPostImageUploadUrlInputSchema = z.object({
+  workspaceSlug: z.string().min(1),
+  boardSlug: z.string().min(1).optional(),
+  fileName: z.string().min(1),
+  contentType: z.string().min(1),
+})
+
 export type GetUploadUrlInput = z.infer<typeof getUploadUrlInputSchema>
 export type GetCommentImageUploadUrlInput = z.infer<typeof getCommentImageUploadUrlInputSchema>
+export type GetPostImageUploadUrlInput = z.infer<typeof getPostImageUploadUrlInputSchema>

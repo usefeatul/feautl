@@ -14,8 +14,9 @@ export default function CommentReplyButton({ onClick, isActive, className }: Com
   return (
     <button
       onClick={onClick}
+      type="button"
       className={cn(
-        "inline-flex items-center justify-center gap-1.5 text-xs transition-colors cursor-pointer font-medium min-w-[70px]",
+        "inline-flex items-center justify-center gap-1.5 text-xs py-2 px-2 transition-colors cursor-pointer font-medium min-w-[70px]",
         className
       )}
       aria-label={isActive ? "Cancel reply" : "Reply to comment"}

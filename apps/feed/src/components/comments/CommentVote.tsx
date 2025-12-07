@@ -142,8 +142,9 @@ export default function CommentVote({
   }
 
   return (
-    <div className="flex items-center gap-1 bg-muted/30 rounded-full p-1 border border-border/50">
+    <div className="flex items-center gap-1 bg-muted/30 rounded-full p-0.5 px-1 border border-border/50 h-[30px]">
       <button
+        type="button"
         onClick={() => handleVote("upvote")}
         disabled={isPending}
         className={cn(
@@ -152,7 +153,7 @@ export default function CommentVote({
         )}
         title="Upvote"
       >
-        <ThumbsUp className={cn("h-3.5 w-3.5", userVote === "upvote" && "fill-current")} />
+        <ThumbsUp className={cn("size-3.5", userVote === "upvote" && "fill-current")} />
         <AnimatePresence initial={false} mode="popLayout">
           {upvotes > 0 && (
             <motion.span
@@ -171,6 +172,7 @@ export default function CommentVote({
       <div className="w-px h-3 bg-border/50" />
 
       <button
+        type="button"
         onClick={() => handleVote("downvote")}
         disabled={isPending}
         className={cn(
@@ -179,7 +181,7 @@ export default function CommentVote({
         )}
         title="Downvote"
       >
-        <ThumbsDown className={cn("h-3.5 w-3.5", userVote === "downvote" && "fill-current")} />
+        <ThumbsDown className={cn("size-3.5", userVote === "downvote" && "fill-current")} />
         <AnimatePresence initial={false} mode="popLayout">
           {downvotes > 0 && (
             <motion.span

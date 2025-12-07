@@ -1,9 +1,9 @@
 
-function setCookie(name: string, value: string, days: number) {
+function setCookie(name: string, value: string, days?: number) {
   let expires = "";
-  if (days) {
+  if (typeof days === "number" && days > 0) {
     const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     expires = "; expires=" + date.toUTCString();
   }
   document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Lax";
@@ -11,11 +11,11 @@ function setCookie(name: string, value: string, days: number) {
 
 function getCookie(name: string) {
   const nameEQ = name + "=";
-  const ca = document.cookie.split(';');
+  const ca = document.cookie.split(";");
   for (let i = 0; i < ca.length; i++) {
     let c = ca[i];
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    while (c && c.charAt(0) === " ") c = c.substring(1, c.length);
+    if (c && c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
   }
   return null;
 }
@@ -23,40 +23,26 @@ function getCookie(name: string) {
 export async function getBrowserFingerprint(): Promise<string> {
   if (typeof window === "undefined") return "";
 
-  const COOKIE_NAME = "visitor_id";
+  const COOKIE_NAME = "anon_session_id";
   const existing = getCookie(COOKIE_NAME);
   if (existing) return existing;
 
-  const components = [
-    navigator.userAgent,
-    navigator.language,
-    Intl.DateTimeFormat().resolvedOptions().timeZone,
-    screen.width,
-    screen.height,
-    screen.colorDepth,
-    navigator.hardwareConcurrency,
-    (navigator as any).deviceMemory,
-  ].map(c => String(c ?? ""));
-
-  const str = components.join("|");
-
-  let fingerprint = "";
-
-  // Use SHA-256 for a deterministic hash
+  let id = "";
   try {
-    const msgBuffer = new TextEncoder().encode(str);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    fingerprint = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    id = (crypto as any).randomUUID ? (crypto as any).randomUUID() : "";
   } catch {
-    // Fallback for non-secure contexts or older browsers (simple DJB2 variant)
-    let hash = 5381;
-    for (let i = 0; i < str.length; i++) {
-      hash = ((hash << 5) + hash) + str.charCodeAt(i); /* hash * 33 + c */
+    id = "";
+  }
+  if (!id) {
+    const arr = new Uint8Array(16);
+    try {
+      crypto.getRandomValues(arr);
+    } catch {
+      for (let i = 0; i < arr.length; i++) arr[i] = Math.floor(Math.random() * 256);
     }
-    fingerprint = (hash >>> 0).toString(16);
+    id = Array.from(arr).map((b) => b.toString(16).padStart(2, "0")).join("");
   }
 
-  setCookie(COOKIE_NAME, fingerprint, 365);
-  return fingerprint;
+  setCookie(COOKIE_NAME, id);
+  return id;
 }

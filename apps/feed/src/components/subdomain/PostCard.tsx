@@ -2,7 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
-import { UpvoteButton } from "@/components/global/UpvoteButton"
+import { UpvoteButton } from "@/components/upvote/UpvoteButton"
 import { CommentsIcon } from "@feedgot/ui/icons/comments"
 import type { RequestItemData } from "@/components/requests/RequestItem"
 import StatusIcon from "@/components/requests/StatusIcon"

@@ -8,7 +8,7 @@ import CommentCounter from "../comments/CommentCounter"
 import StatusPicker from "./meta/StatusPicker"
 import FlagsPicker from "./meta/FlagsPicker"
 import BoardPicker from "./meta/BoardPicker"
-import { UpvoteButton } from "../global/UpvoteButton"
+import { UpvoteButton } from "../upvote/UpvoteButton"
 import CommentList from "../comments/CommentList"
 import type { CommentData } from "../../types/comment";
 

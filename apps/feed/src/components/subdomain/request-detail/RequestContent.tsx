@@ -1,5 +1,5 @@
 import React from "react";
-import { UpvoteButton } from "../../global/UpvoteButton";
+import { UpvoteButton } from "../../upvote/UpvoteButton";
 import CommentList from "../../comments/CommentList";
 import CommentCounter from "../../comments/CommentCounter";
 import type { CommentData } from "../../../types/comment";

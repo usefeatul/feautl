@@ -4,6 +4,7 @@ import { useState, useTransition } from "react"
 import { client } from "@feedgot/api/client"
 import { toast } from "sonner"
 import { getBrowserFingerprint } from "@/utils/fingerprint"
+import { useRouter } from "next/navigation"
 
 interface UsePostSubmissionProps {
   workspaceSlug: string
@@ -14,6 +15,7 @@ export function usePostSubmission({ workspaceSlug, onSuccess }: UsePostSubmissio
   const [isPending, startTransition] = useTransition()
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
+  const router = useRouter()
 
   const submitPost = async (selectedBoard: { slug: string } | null, user: any) => {
     if (!title || !content || !selectedBoard) return
@@ -31,12 +33,12 @@ export function usePostSubmission({ workspaceSlug, onSuccess }: UsePostSubmissio
         })
 
         if (res.ok) {
+          const data = await res.json()
           toast.success("Post submitted successfully")
           setTitle("")
           setContent("")
           onSuccess()
-          // Refresh the page to show the new post
-          window.location.reload()
+          router.push(`/board/p/${data.post.slug}`)
         } else {
           const err = await res.json()
           if (res.status === 401) {

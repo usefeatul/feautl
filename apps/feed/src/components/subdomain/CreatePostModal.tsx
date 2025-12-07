@@ -7,11 +7,11 @@ import {
   DialogTitle,
 } from "@feedgot/ui/components/dialog"
 import { getInitials } from "@/utils/user-utils"
-import { PostHeader } from "./post/PostHeader"
-import { PostContent } from "./post/PostContent"
-import { PostFooter } from "./post/PostFooter"
-import { useCreatePostData } from "./post/useCreatePostData"
-import { usePostSubmission } from "./post/usePostSubmission"
+import { PostHeader } from "../post/PostHeader"
+import { PostContent } from "../post/PostContent"
+import { PostFooter } from "../post/PostFooter"
+import { useCreatePostData } from "../../hooks/useCreatePostData"
+import { usePostSubmission } from "../../hooks/usePostSubmission"
 
 interface CreatePostModalProps {
   open: boolean

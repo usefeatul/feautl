@@ -52,13 +52,13 @@ export function PostContent({
       
       {/* Image Preview */}
       {uploadedImage && (
-        <div className="relative inline-block w-fit">
+        <div className="relative inline-block w-fit mb-4">
           <div className="relative">
              {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={uploadedImage.url}
               alt={uploadedImage.name}
-              className="max-w-full h-auto max-h-48 rounded-md border"
+              className="max-w-full h-auto max-h-24 rounded-md border ring-1 ring-border"
             />
             <button
               type="button"

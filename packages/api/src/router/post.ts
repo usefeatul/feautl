@@ -1,7 +1,7 @@
 import { eq, and, sql, isNull } from "drizzle-orm"
 import { j, publicProcedure } from "../jstack"
 import { vote, post, workspace, board, postTag } from "@feedgot/db"
-import { votePostSchema, createPostSchema } from "../validators/post"
+import { votePostSchema, createPostSchema, updatePostSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
 import { auth } from "@feedgot/auth"
 import { headers } from "next/headers"
@@ -89,6 +89,98 @@ export function createPostRouter() {
         await ctx.db.update(post).set({ upvotes: 1 }).where(eq(post.id, newPost.id))
 
         return c.superjson({ post: newPost })
+      }),
+
+    update: publicProcedure
+      .input(updatePostSchema)
+      .post(async ({ ctx, input, c }) => {
+        const { postId, title, content, image, boardSlug, roadmapStatus, tags } = input
+
+        let userId: string | null = null
+        try {
+          const session = await auth.api.getSession({
+            headers: (c as any)?.req?.raw?.headers || (await headers()),
+          })
+          if (session?.user?.id) {
+            userId = session.user.id
+          }
+        } catch {}
+
+        if (!userId) {
+          throw new HTTPException(401, { message: "Unauthorized" })
+        }
+
+        // Get existing post
+        const [existingPost] = await ctx.db
+          .select()
+          .from(post)
+          .where(eq(post.id, postId))
+          .limit(1)
+
+        if (!existingPost) {
+          throw new HTTPException(404, { message: "Post not found" })
+        }
+
+        // Check ownership (simple check for now)
+        if (existingPost.authorId !== userId) {
+          // TODO: Check if admin/member of workspace
+           throw new HTTPException(403, { message: "You don't have permission to edit this post" })
+        }
+
+        // Resolve Board if changing
+        let boardId = existingPost.boardId
+        if (boardSlug) {
+           // First get the workspaceId from the current board of the post
+           const [currentBoard] = await ctx.db
+             .select({ workspaceId: board.workspaceId })
+             .from(board)
+             .where(eq(board.id, existingPost.boardId))
+             .limit(1)
+
+           if (currentBoard) {
+             const [b] = await ctx.db
+              .select({ id: board.id })
+              .from(board)
+              .where(and(
+                eq(board.workspaceId, currentBoard.workspaceId), 
+                eq(board.slug, boardSlug)
+              ))
+              .limit(1)
+             if (b) boardId = b.id
+           }
+        }
+
+        // Update Post
+        const [updatedPost] = await ctx.db
+            .update(post)
+            .set({
+                title: title ?? existingPost.title,
+                content: content ?? existingPost.content,
+                image: image !== undefined ? image : existingPost.image,
+                boardId,
+                roadmapStatus: roadmapStatus ?? existingPost.roadmapStatus,
+                updatedAt: new Date() // Manual update since defaultNow() is only for insert usually
+            })
+            .where(eq(post.id, postId))
+            .returning()
+
+        // Update tags if provided
+        if (tags) {
+            // Delete existing tags
+            await ctx.db.delete(postTag).where(eq(postTag.postId, postId))
+            
+            // Insert new tags
+            if (tags.length > 0) {
+                await ctx.db.insert(postTag).values(
+                    tags.map((tagId) => ({
+                        postId,
+                        tagId,
+                    }))
+                )
+            }
+        }
+
+        return c.superjson({ post: updatedPost })
       }),
 
     vote: publicProcedure

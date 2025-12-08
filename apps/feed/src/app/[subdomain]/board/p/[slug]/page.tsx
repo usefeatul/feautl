@@ -8,7 +8,7 @@ import { readHasVotedForPost } from "@/lib/vote.server"
 import { readInitialCollapsedCommentIds } from "@/lib/comments.server"
 import { createPostMetadata } from "@/lib/seo"
 
-export const revalidate = 30
+export const revalidate = 0
 
 type Props = { params: Promise<{ subdomain: string; slug: string }> }
 

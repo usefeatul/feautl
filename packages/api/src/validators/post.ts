@@ -31,3 +31,13 @@ export const createPostSchema = z.object({
   roadmapStatus: z.string().min(1).max(64).optional(),
   tags: z.array(z.string().uuid()).optional(),
 })
+
+export const updatePostSchema = z.object({
+  postId: z.string().uuid(),
+  title: z.string().min(1).max(128).optional(),
+  content: z.string().min(1).optional(),
+  image: z.string().url().optional().nullable(),
+  boardSlug: z.string().min(1).optional(),
+  roadmapStatus: z.string().min(1).max(64).optional(),
+  tags: z.array(z.string().uuid()).optional(),
+})

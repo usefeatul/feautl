@@ -4,7 +4,7 @@ import React from "react";
 import type { CommentData } from "../../types/comment";
 import PostSidebar from "./PostSidebar";
 import { useDomainBranding } from "./DomainBrandingProvider";
-import { SubdomainRequestDetailData } from "./request-detail/types";
+import { SubdomainRequestDetailData } from "../../types/subdomain";
 import { RequestHeader } from "./request-detail/RequestHeader";
 import { RequestContent } from "./request-detail/RequestContent";
 

@@ -5,12 +5,12 @@ import { Edit2 } from "lucide-react";
 import { PopoverListItem } from "@feedgot/ui/components/popover";
 
 interface RequestEditActionProps {
-  postId: string;
+  onClick: () => void;
 }
 
-export function RequestEditAction({ postId }: RequestEditActionProps) {
+export function RequestEditAction({ onClick }: RequestEditActionProps) {
   return (
-    <PopoverListItem onClick={() => {}}>
+    <PopoverListItem onClick={onClick}>
       <span className="text-sm">Edit</span>
       <Edit2 className="ml-auto size-4 text-muted-foreground" />
     </PopoverListItem>

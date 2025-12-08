@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { MoreVertical } from "lucide-react";
 import {
   Popover,
@@ -13,28 +13,42 @@ import { RequestEditAction } from "./actions/RequestEditAction";
 import { RequestShareAction } from "./actions/RequestShareAction";
 import { RequestReportAction } from "./actions/RequestReportAction";
 import { RequestDeleteAction } from "./actions/RequestDeleteAction";
+import EditPostModal from "./EditPostModal";
+import { SubdomainRequestDetailData } from "./types";
 
 interface RequestActionsProps {
-  postId: string;
+  post: SubdomainRequestDetailData;
+  workspaceSlug: string;
 }
 
-export function RequestActions({ postId }: RequestActionsProps) {
+export function RequestActions({ post, workspaceSlug }: RequestActionsProps) {
+  const [editOpen, setEditOpen] = useState(false);
+
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
-          <MoreVertical className="size-4" />
-          <span className="sr-only">More options</span>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent align="end" className="w-40">
-        <PopoverList>
-          <RequestEditAction postId={postId} />
-          <RequestShareAction postId={postId} />
-          <RequestReportAction postId={postId} />
-          <RequestDeleteAction postId={postId} />
-        </PopoverList>
-      </PopoverContent>
-    </Popover>
+    <>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
+            <MoreVertical className="size-4" />
+            <span className="sr-only">More options</span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent align="end" className="w-40">
+          <PopoverList>
+            <RequestEditAction onClick={() => setEditOpen(true)} />
+            <RequestShareAction postId={post.id} />
+            <RequestReportAction postId={post.id} />
+            <RequestDeleteAction postId={post.id} />
+          </PopoverList>
+        </PopoverContent>
+      </Popover>
+
+      <EditPostModal
+        open={editOpen}
+        onOpenChange={setEditOpen}
+        workspaceSlug={workspaceSlug}
+        post={post}
+      />
+    </>
   );
 }

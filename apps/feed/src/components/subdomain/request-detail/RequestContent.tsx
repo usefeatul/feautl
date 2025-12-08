@@ -12,7 +12,7 @@ import {
 } from "@feedgot/ui/components/avatar";
 import { getInitials, getDisplayUser } from "@/utils/user-utils";
 import { randomAvatarUrl } from "@/utils/avatar";
-import { SubdomainRequestDetailData } from "./types";
+import { SubdomainRequestDetailData } from "../../../types/subdomain";
 import ContentImage from "@/components/global/ContentImage";
 import { RequestActions } from "./RequestActions";
 
@@ -52,7 +52,7 @@ export function RequestContent({
             {statusLabel(String(post.roadmapStatus || "pending"))}
           </span>
         </div>
-        <RequestActions postId={post.id} />
+        <RequestActions post={post} workspaceSlug={workspaceSlug} />
       </div>
 
       {/* Post Title */}

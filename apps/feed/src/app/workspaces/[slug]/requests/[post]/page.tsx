@@ -8,7 +8,7 @@ import { getPostNavigation, normalizeStatus } from "@/lib/workspace"
 import { readInitialCollapsedCommentIds } from "@/lib/comments.server"
 import { parseArrayParam } from "@/utils/request-filters"
 
-export const revalidate = 30
+export const revalidate = 0
 
 type Props = { params: Promise<{ slug: string; post: string }>; searchParams?: Promise<Record<string, string | string[] | undefined>> }
 

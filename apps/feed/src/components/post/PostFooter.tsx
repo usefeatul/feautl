@@ -14,6 +14,7 @@ export interface PostFooterProps {
   fileInputRef: React.RefObject<HTMLInputElement | null>
   handleFileSelect: (e: React.ChangeEvent<HTMLInputElement>) => void
   ALLOWED_IMAGE_TYPES: string[]
+  submitLabel?: string
 }
 
 export function PostFooter({ 
@@ -23,7 +24,8 @@ export function PostFooter({
   uploadingImage, 
   fileInputRef, 
   handleFileSelect,
-  ALLOWED_IMAGE_TYPES 
+  ALLOWED_IMAGE_TYPES,
+  submitLabel = "Create"
 }: PostFooterProps) {
   return (
     <div className="flex items-center justify-between p-3 md:p-4 bg-muted dark:bg-black/50">
@@ -60,7 +62,7 @@ export function PostFooter({
         className="bg-primary text-primary-foreground hover:bg-primary/90 px-6"
       >
         {isPending && <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />}
-        {isPending ? "Creating..." : "Create"}
+        {isPending ? (submitLabel === "Create" ? "Creating..." : "Saving...") : submitLabel}
       </Button>
     </div>
   )

@@ -34,7 +34,7 @@ export default function NotificationsPanel({ notifications, markRead, onMarkAllR
 
   return (
     <motion.div
-      className="z-50 w-[20rem] max-w-[90vw] max-h-[36rem] overflow-y-auto rounded-sm border bg-popover p-2 text-popover-foreground shadow-md"
+      className="z-50  max-w-[90vw] max-h-[36rem] overflow-y-auto rounded-sm border bg-popover p-2 text-popover-foreground shadow-md"
       role="dialog"
       aria-label="Notifications"
       initial={{ opacity: 0, y: -6, scale: 0.98 }}

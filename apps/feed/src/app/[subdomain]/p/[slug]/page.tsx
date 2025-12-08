@@ -6,7 +6,7 @@ import { client } from "@feedgot/api/client"
 import { readHasVotedForPost } from "@/lib/vote.server"
 import { readInitialCollapsedCommentIds } from "@/lib/comments.server"
 
-export const revalidate = 30
+export const revalidate = 0
 
 type Props = { params: Promise<{ subdomain: string; slug: string }> }
 

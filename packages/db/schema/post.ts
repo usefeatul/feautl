@@ -16,9 +16,6 @@ export const post = pgTable(
     slug: text('slug').notNull(),
     authorId: text('author_id')
       .references(() => user.id, { onDelete: 'set null' }),
-    authorName: text('author_name'),
-    authorEmail: text('author_email'),
-    authorImage: text('author_image'),
     isAnonymous: boolean('is_anonymous').default(false),
     status: text('status', {
       enum: ['draft', 'published', 'archived', 'spam', 'pending_approval'],

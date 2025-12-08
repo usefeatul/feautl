@@ -297,13 +297,14 @@ export async function getWorkspacePosts(
       createdAt: post.createdAt,
       boardSlug: board.slug,
       boardName: board.name,
-      authorImage: post.authorImage,
-      authorName: post.authorName,
+      authorImage: user.image,
+      authorName: user.name,
       isAnonymous: post.isAnonymous,
       authorId: post.authorId,
     })
     .from(post)
     .innerJoin(board, eq(post.boardId, board.id))
+    .leftJoin(user, eq(post.authorId, user.id))
     .where(and(...filters) as any)
     .orderBy(order)
     .limit(lim)

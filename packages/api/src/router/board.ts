@@ -452,7 +452,8 @@ export function createBoardRouter() {
               slug: post.slug,
               content: post.content,
               image: post.image,
-              authorImage: post.authorImage,
+              authorImage: user.image,
+              authorName: user.name,
               authorId: post.authorId,
               commentCount: post.commentCount,
               upvotes: post.upvotes,
@@ -466,6 +467,7 @@ export function createBoardRouter() {
             .leftJoin(vote, and(eq(vote.postId, post.id), eq(vote.userId, userId)))
             .leftJoin(board, eq(post.boardId, board.id))
             .leftJoin(workspace, eq(board.workspaceId, workspace.id))
+            .leftJoin(user, eq(post.authorId, user.id))
             .leftJoin(workspaceMember, and(
               eq(workspaceMember.workspaceId, workspace.id),
               eq(workspaceMember.userId, post.authorId),
@@ -480,7 +482,8 @@ export function createBoardRouter() {
               slug: post.slug,
               content: post.content,
               image: post.image,
-              authorImage: post.authorImage,
+              authorImage: user.image,
+              authorName: user.name,
               authorId: post.authorId,
               commentCount: post.commentCount,
               upvotes: post.upvotes,
@@ -493,6 +496,7 @@ export function createBoardRouter() {
             .from(post)
             .leftJoin(board, eq(post.boardId, board.id))
             .leftJoin(workspace, eq(board.workspaceId, workspace.id))
+            .leftJoin(user, eq(post.authorId, user.id))
             .leftJoin(workspaceMember, and(
               eq(workspaceMember.workspaceId, workspace.id),
               eq(workspaceMember.userId, post.authorId),
@@ -538,9 +542,9 @@ export function createBoardRouter() {
                 createdAt: post.createdAt,
                 updatedAt: post.updatedAt,
                 authorId: post.authorId,
-                authorName: post.authorName,
-                authorEmail: post.authorEmail,
-                authorImage: post.authorImage,
+                authorName: user.name,
+                authorEmail: user.email,
+                authorImage: user.image,
                 isAnonymous: post.isAnonymous,
                 status: post.status,
                 roadmapStatus: post.roadmapStatus,
@@ -559,6 +563,7 @@ export function createBoardRouter() {
             .leftJoin(vote, and(eq(vote.postId, post.id), eq(vote.userId, userId)))
             .leftJoin(board, eq(post.boardId, board.id))
             .leftJoin(workspace, eq(board.workspaceId, workspace.id))
+            .leftJoin(user, eq(post.authorId, user.id))
             .leftJoin(workspaceMember, and(
               eq(workspaceMember.workspaceId, workspace.id),
               eq(workspaceMember.userId, post.authorId),
@@ -585,9 +590,9 @@ export function createBoardRouter() {
                 createdAt: post.createdAt,
                 updatedAt: post.updatedAt,
                 authorId: post.authorId,
-                authorName: post.authorName,
-                authorEmail: post.authorEmail,
-                authorImage: post.authorImage,
+                authorName: user.name,
+                authorEmail: user.email,
+                authorImage: user.image,
                 isAnonymous: post.isAnonymous,
                 status: post.status,
                 roadmapStatus: post.roadmapStatus,
@@ -605,6 +610,7 @@ export function createBoardRouter() {
             .from(post)
             .leftJoin(board, eq(post.boardId, board.id))
             .leftJoin(workspace, eq(board.workspaceId, workspace.id))
+            .leftJoin(user, eq(post.authorId, user.id))
             .leftJoin(workspaceMember, and(
               eq(workspaceMember.workspaceId, workspace.id),
               eq(workspaceMember.userId, post.authorId),

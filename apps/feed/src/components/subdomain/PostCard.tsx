@@ -37,13 +37,13 @@ function PostCardBase({ item, onVoteChange, linkPrefix = "/p" }: { item: Request
         <div className="inline-flex items-center gap-2">
           <div className="relative">
             <Avatar className="size-6 bg-background border border-border rounded-full relative overflow-visible">
-              <AvatarImage src={!item.isAnonymous ? (item.authorImage || randomAvatarUrl(item.id || item.slug)) : randomAvatarUrl(item.id || item.slug)} alt={item.isAnonymous ? "Anonymous" : (item.authorName || "Anonymous")} />
-              <AvatarFallback>{getInitials(item.isAnonymous ? "Anonymous" : (item.authorName || "Anonymous"))}</AvatarFallback>
+              <AvatarImage src={!item.isAnonymous ? (item.authorImage || randomAvatarUrl(item.id || item.slug)) : randomAvatarUrl(item.id || item.slug)} alt={item.isAnonymous ? "Guest" : (item.authorName || "Guest")} />
+              <AvatarFallback>{getInitials(item.isAnonymous ? "Guest" : (item.authorName || "Guest"))}</AvatarFallback>
               <RoleBadge role={item.role} isOwner={item.isOwner} />
             </Avatar>
           </div>
           <span className="text-xs text-accent whitespace-nowrap mt-2  max-w-[180px] truncate">
-            {item.isAnonymous ? "Anonymous" : (item.authorName || "Anonymous")}
+            {item.isAnonymous ? "Guest" : (item.authorName || "Guest")}
           </span>
         </div>
         <div className="flex items-center gap-3 text-xs text-accent">

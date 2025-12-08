@@ -8,6 +8,7 @@ import { HTTPException } from "hono/http-exception"
 import { byBoardInputSchema, boardSlugSchema } from "../validators/board"
 import { checkSlugInputSchema } from "../validators/workspace"
 import { normalizePlan, getPlanLimits } from "../shared/plan"
+import { createHash } from "crypto"
 
 
 
@@ -462,6 +463,7 @@ export function createBoardRouter() {
               hasVoted: sql<boolean>`CASE WHEN ${vote.id} IS NOT NULL THEN true ELSE false END`,
               memberRole: workspaceMember.role,
               workspaceOwnerId: workspace.ownerId,
+              metadata: post.metadata,
             })
             .from(post)
             .leftJoin(vote, and(eq(vote.postId, post.id), eq(vote.userId, userId)))
@@ -492,6 +494,7 @@ export function createBoardRouter() {
               hasVoted: sql<boolean>`false`,
               memberRole: workspaceMember.role,
               workspaceOwnerId: workspace.ownerId,
+              metadata: post.metadata,
             })
             .from(post)
             .leftJoin(board, eq(post.boardId, board.id))
@@ -508,9 +511,15 @@ export function createBoardRouter() {
         const toAvatar = (seed?: string | null) => `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent((seed || 'anonymous').trim() || 'anonymous')}`
         const withAvatars = postsList.map((p: any) => {
           const isOwner = p.workspaceOwnerId === p.authorId
+          
+          let avatarSeed = p.authorImage ? null : (p.id || p.slug)
+          if (!p.authorImage && p.metadata?.fingerprint) {
+            avatarSeed = createHash("sha256").update(p.metadata.fingerprint).digest("hex")
+          }
+
           return {
-          ...p,
-          authorImage: p.authorImage || toAvatar(p.id || p.slug),
+            ...p,
+            authorImage: p.authorImage || toAvatar(avatarSeed),
             role: isOwner ? null : (p.memberRole || null),
             isOwner: Boolean(isOwner),
           }
@@ -684,7 +693,13 @@ export function createBoardRouter() {
         }
 
         const toAvatar = (seed?: string | null) => `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent((seed || 'anonymous').trim() || 'anonymous')}`
-        const postWithAvatar = { ...formattedPost, authorImage: formattedPost.authorImage || toAvatar(formattedPost.id || formattedPost.slug) }
+        
+        let avatarSeed = formattedPost.authorImage ? null : (formattedPost.id || formattedPost.slug)
+        if (!formattedPost.authorImage && formattedPost.metadata?.fingerprint) {
+            avatarSeed = createHash("sha256").update(formattedPost.metadata.fingerprint).digest("hex")
+        }
+
+        const postWithAvatar = { ...formattedPost, authorImage: formattedPost.authorImage || toAvatar(avatarSeed) }
         return c.superjson({ post: postWithAvatar, board: b || null, tags: tagsList, comments: commentsList, author })
       }),
 

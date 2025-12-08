@@ -19,4 +19,5 @@ export type SubdomainRequestDetailData = {
     image: string | null;
     email: string | null;
   } | null;
+  metadata?: Record<string, any> | null;
 };

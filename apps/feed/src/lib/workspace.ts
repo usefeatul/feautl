@@ -13,6 +13,7 @@ import {
 } from "@feedgot/db";
 import { randomAvatarUrl } from "@/utils/avatar";
 import { eq, and, inArray, desc, asc, sql } from "drizzle-orm";
+import { createHash } from "crypto";
 
 export async function findFirstAccessibleWorkspaceSlug(
   userId: string
@@ -301,6 +302,7 @@ export async function getWorkspacePosts(
       authorName: user.name,
       isAnonymous: post.isAnonymous,
       authorId: post.authorId,
+      metadata: post.metadata,
     })
     .from(post)
     .innerJoin(board, eq(post.boardId, board.id))
@@ -310,12 +312,19 @@ export async function getWorkspacePosts(
     .limit(lim)
     .offset(off);
 
-  const withAvatars = rows.map((r) => ({
-    ...r,
-    authorImage: !r.isAnonymous
-      ? r.authorImage || randomAvatarUrl(r.id || r.slug)
-      : randomAvatarUrl(r.id || r.slug),
-  }));
+  const withAvatars = rows.map((r) => {
+    let avatarSeed = r.id || r.slug
+    if (r.isAnonymous && (r.metadata as any)?.fingerprint) {
+      avatarSeed = createHash("sha256").update((r.metadata as any).fingerprint).digest("hex")
+    }
+
+    return {
+      ...r,
+      authorImage: !r.isAnonymous
+        ? r.authorImage || randomAvatarUrl(r.id || r.slug)
+        : randomAvatarUrl(avatarSeed),
+    }
+  });
 
   return withAvatars;
 }

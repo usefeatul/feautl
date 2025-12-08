@@ -5,6 +5,8 @@ import SubdomainRequestDetail from "@/components/subdomain/SubdomainRequestDetai
 import { client } from "@feedgot/api/client"
 import { readHasVotedForPost } from "@/lib/vote.server"
 import { readInitialCollapsedCommentIds } from "@/lib/comments.server"
+import { createHash } from "crypto"
+import { randomAvatarUrl } from "@/utils/avatar"
 
 export const revalidate = 0
 
@@ -35,6 +37,7 @@ export default async function PublicRequestDetailPage({ params }: Props) {
       createdAt: post.createdAt,
       boardName: board.name,
       boardSlug: board.slug,
+      metadata: post.metadata,
       author: {
         name: user.name,
         image: user.image,
@@ -47,6 +50,18 @@ export default async function PublicRequestDetailPage({ params }: Props) {
     .where(and(eq(board.workspaceId, ws.id), sql`(board.system_type is null or board.system_type not in ('roadmap','changelog'))`, eq(post.slug, postSlug)))
     .limit(1)
   if (!p) return notFound()
+
+  if ((!p.author || !p.author.name) && (p.metadata as any)?.fingerprint) {
+    const avatarSeed = createHash("sha256").update((p.metadata as any).fingerprint).digest("hex")
+    if (!p.author) {
+      // @ts-ignore
+      p.author = { name: "Guest", image: null, email: null }
+    }
+    // @ts-ignore
+    p.author!.image = randomAvatarUrl(avatarSeed)
+    // @ts-ignore
+    p.author!.name = "Guest"
+  }
 
   const hasVoted = await readHasVotedForPost(p.id)
   const commentsRes = await client.comment.list.$get({ postId: p.id })

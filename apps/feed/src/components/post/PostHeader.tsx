@@ -17,6 +17,7 @@ import {
 } from "@feedgot/ui/components/popover";
 import { cn } from "@feedgot/ui/lib/utils";
 import { TagIcon } from "@feedgot/ui/icons/tag";
+import { ChevronIcon } from "@feedgot/ui/icons/chevron";
 
 const STATUSES = ["pending", "review", "planned", "progress", "completed", "closed"] as const;
 
@@ -63,6 +64,8 @@ export function PostHeader({
           <AvatarFallback className="text-[10px]">{initials}</AvatarFallback>
         )}
       </Avatar>
+
+      <ChevronIcon className="text-accent rotate-[-90deg]" size={12} />
 
       {/* Board Selector */}
       <Popover open={boardsOpen} onOpenChange={setBoardsOpen}>

@@ -1,7 +1,7 @@
-import appRouter from "@feedgot/api";
-import { handle } from "hono/vercel";
+import { app } from "@feedgot/api/elysia";
 import { withCors, handlePreflight } from "@feedgot/auth/trust";
-const handler = handle(appRouter.handler);
+
+const handler = (req: Request) => app.handle(req);
 
 export const OPTIONS = handlePreflight;
 

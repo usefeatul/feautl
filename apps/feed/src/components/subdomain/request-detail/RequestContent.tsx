@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 import { UpvoteButton } from "../../upvote/UpvoteButton";
 import CommentList from "../../comments/CommentList";
 import CommentCounter from "../../comments/CommentCounter";
@@ -13,6 +13,7 @@ import {
 import { getInitials, getDisplayUser } from "@/utils/user-utils";
 import { randomAvatarUrl } from "@/utils/avatar";
 import { SubdomainRequestDetailData } from "./types";
+import CommentImage from "@/components/comments/CommentImage";
 
 interface RequestContentProps {
   post: SubdomainRequestDetailData;
@@ -57,10 +58,10 @@ export function RequestContent({
 
       {/* Image */}
       {post.image ? (
-        <img
-          src={post.image}
-          alt=""
-          className="w-48 h-36 rounded-md object-cover border mb-4"
+        <CommentImage
+          url={post.image}
+          alt={post.title}
+          className="w-48 h-36 mb-4"
         />
       ) : null}
 

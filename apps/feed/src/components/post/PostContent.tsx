@@ -4,6 +4,7 @@ import React from "react"
 import { Input } from "@feedgot/ui/components/input"
 import { Textarea } from "@feedgot/ui/components/textarea"
 import { XMarkIcon } from "@feedgot/ui/icons/xmark"
+import ContentImage from "@/components/global/ContentImage"
 
 export interface UploadedImage {
   url: string
@@ -52,18 +53,17 @@ export function PostContent({
       
       {/* Image Preview */}
       {uploadedImage && (
-        <div className="relative inline-block w-fit mb-4">
+        <div className="relative inline-block w-fit mb-2">
           <div className="relative">
-             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={uploadedImage.url}
+            <ContentImage
+              url={uploadedImage.url}
               alt={uploadedImage.name}
-              className="max-w-full h-auto max-h-24 rounded-md border ring-1 ring-border"
+              className="w-40 ring-1 ring-border"
             />
             <button
               type="button"
               onClick={handleRemoveImage}
-              className="absolute -top-2 -right-2 rounded-full bg-destructive text-destructive-foreground p-1 hover:bg-destructive/90 transition-colors shadow-sm"
+              className="absolute -top-2 -right-2 cursor-pointer rounded-full bg-destructive text-destructive-foreground p-1 hover:bg-destructive/90 transition-colors shadow-sm z-10"
               disabled={uploadingImage}
               aria-label="Remove image"
             >

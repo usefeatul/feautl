@@ -4,12 +4,14 @@ import React from "react"
 import { useWorkspaceRole } from "@/hooks/useWorkspaceAccess"
 import { Avatar, AvatarImage, AvatarFallback } from "@feedgot/ui/components/avatar"
 import { getDisplayUser, getInitials } from "@/utils/user-utils"
+import { relativeTime } from "@/lib/time"
 import BoardPicker from "../requests/meta/BoardPicker"
 import StatusPicker from "../requests/meta/StatusPicker"
 import FlagsPicker from "../requests/meta/FlagsPicker"
 import StatusIcon from "../requests/StatusIcon"
 import { PoweredBy } from "./PoweredBy"
 import RoleBadge from "../comments/RoleBadge"
+
 
 export type PostSidebarProps = {
   post: {
@@ -34,9 +36,6 @@ export type PostSidebarProps = {
 }
 
 export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
-  const date = new Date(post.publishedAt ?? post.createdAt)
-  const formatted = new Intl.DateTimeFormat(undefined, { month: "short", day: "2-digit" }).format(date)
-
   // Permission check: Only owner (creator) can edit
   const { isOwner } = useWorkspaceRole(workspaceSlug)
   const canEdit = isOwner
@@ -59,80 +58,83 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
       : undefined
   )
   const authorInitials = getInitials(displayAuthor.name)
+  
+  const timeLabel = relativeTime(post.publishedAt ?? post.createdAt)
 
   return (
     <aside className="space-y-4">
-      <div className="rounded-md bg-card p-3 space-y-4 border">
-        {/* Author */}
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-accent">Author</span>
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <Avatar className="size-6 relative overflow-visible">
-                {displayAuthor.image ? (
-                  <AvatarImage src={displayAuthor.image} alt={displayAuthor.name} />
-                ) : (
-                  <AvatarFallback className="text-xs bg-muted text-muted-foreground">{authorInitials}</AvatarFallback>
-                )}
-                <RoleBadge role={post.role} isOwner={post.isOwner} />
-              </Avatar>
-            </div>
-            <span className="text-xs font-medium">{displayAuthor.name}</span>
+      <div className="rounded-xl bg-card p-4 border">
+        {/* Header: User & Time */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="relative">
+            <Avatar className="size-10 relative overflow-visible">
+              {displayAuthor.image ? (
+                <AvatarImage src={displayAuthor.image} alt={displayAuthor.name} />
+              ) : (
+                <AvatarFallback className="text-xs bg-muted text-muted-foreground">{authorInitials}</AvatarFallback>
+              )}
+              <RoleBadge role={post.role} isOwner={post.isOwner} className="-bottom-1 -right-1" />
+            </Avatar>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold text-foreground">{displayAuthor.name}</span>
+            <span className="text-xs text-muted-foreground">{timeLabel}</span>
           </div>
         </div>
 
-        {/* Date */}
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-accent">Date</span>
-          <span className="text-xs text-accent">{formatted}</span>
-        </div>
+        {/* Properties */}
+        <div className="space-y-5">
+          {/* Board */}
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground font-medium">Board</span>
+            {canEdit ? (
+              <BoardPicker workspaceSlug={workspaceSlug} postId={post.id} value={board} onChange={setBoard} />
+            ) : (
+              <div className="h-6 px-2.5 rounded-sm border text-xs font-medium flex items-center">
+                {board.name}
+              </div>
+            )}
+          </div>
 
-        {/* Board */}
-        <div className="flex items-center justify-between gap-4">
-          <span className="text-xs text-accent">Board</span>
-          {canEdit ? (
-            <BoardPicker workspaceSlug={workspaceSlug} postId={post.id} value={board} onChange={setBoard} />
-          ) : (
-            <span className="text-xs font-medium">{board.name}</span>
-          )}
-        </div>
+          {/* Status */}
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground font-medium">Status</span>
+            {canEdit ? (
+              <StatusPicker
+                postId={post.id}
+                value={meta.roadmapStatus}
+                onChange={(v) => setMeta((m) => ({ ...m, roadmapStatus: v }))}
+              />
+            ) : (
+              <div className="h-8 px-2 pl-1.5 rounded-md text-xs border font-medium flex items-center capitalize">
+                <StatusIcon status={meta.roadmapStatus || "pending"} className="size-4 mr-2" />
+                {meta.roadmapStatus || "Open"}
+              </div>
+            )}
+          </div>
 
-        {/* Status */}
-        <div className="flex items-center justify-between gap-4">
-          <span className="text-xs text-accent">Status</span>
-          {canEdit ? (
-            <StatusPicker
-              postId={post.id}
-              value={meta.roadmapStatus}
-              onChange={(v) => setMeta((m) => ({ ...m, roadmapStatus: v }))}
-            />
-          ) : (
-            <div className="flex items-center gap-1.5">
-              {meta.roadmapStatus && <StatusIcon status={meta.roadmapStatus} className="size-3" />}
-              <span className="text-xs font-medium capitalize">{meta.roadmapStatus || "Open"}</span>
-            </div>
-          )}
-        </div>
-
-        {/* Flags */}
-        <div className="flex items-center justify-between gap-4">
-          <span className="text-xs text-accent">Flags</span>
-          {canEdit ? (
-            <FlagsPicker
-              postId={post.id}
-              value={meta}
-              onChange={(v) => setMeta((m) => ({ ...m, ...v }))}
-            />
-          ) : (
-            <span className="text-xs font-medium capitalize">
-              {[
-                meta.isPinned ? "pinned" : null,
-                meta.isLocked ? "locked" : null,
-                meta.isFeatured ? "featured" : null,
-              ]
-                .filter(Boolean)
-                .join(", ") || "None"}
-            </span>
+          {/* Flags */}
+          {(canEdit || meta.isPinned || meta.isLocked || meta.isFeatured) && (
+             <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground font-medium">Flags</span>
+                {canEdit ? (
+                  <FlagsPicker
+                    postId={post.id}
+                    value={meta}
+                    onChange={(v) => setMeta((m) => ({ ...m, ...v }))}
+                  />
+                ) : (
+                  <div className="flex gap-1 ">
+                    {[
+                      meta.isPinned ? "Pinned" : null,
+                      meta.isLocked ? "Locked" : null,
+                      meta.isFeatured ? "Featured" : null,
+                    ].filter(Boolean).map(f => (
+                       <span key={f} className="text-xs bg-muted px-1.5 py-0.5 rounded-sm  border text-muted-foreground border">{f}</span>
+                    ))}
+                  </div>
+                )}
+             </div>
           )}
         </div>
       </div>

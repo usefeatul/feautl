@@ -29,7 +29,7 @@ export default function FlagsPicker({ postId, value, onChange }: { postId: strin
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button type="button" variant="ghost" size="sm" className="h-7 px-2">
+        <Button type="button" variant="nav" size="sm" className="h-7 px-2">
           <span className="rounded-md  px-2 py-0.5 capitalize">{label}</span>
           <DropdownIcon className="ml-1 opacity-60" size={12} />
         </Button>

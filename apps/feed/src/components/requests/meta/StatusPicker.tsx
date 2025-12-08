@@ -8,10 +8,12 @@ import { client } from "@feedgot/api/client"
 import { usePathname } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
 import { getSlugFromPath } from "@/config/nav"
+import { cn } from "@feedgot/ui/lib/utils"
+import StatusIcon from "../StatusIcon"
 
 const STATUSES = ["pending", "review", "planned", "progress", "completed", "closed"] as const
 
-export default function StatusPicker({ postId, value, onChange }: { postId: string; value?: string; onChange: (v: string) => void }) {
+export default function StatusPicker({ postId, value, onChange, className }: { postId: string; value?: string; onChange: (v: string) => void; className?: string }) {
   const [open, setOpen] = React.useState(false)
   const [saving, setSaving] = React.useState(false)
   const pathname = usePathname() || "/"
@@ -50,9 +52,18 @@ export default function StatusPicker({ postId, value, onChange }: { postId: stri
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button type="button" variant="ghost" size="sm" className="h-7 px-2">
-          <span className="rounded-md  px-2 py-0.5 capitalize">{value || "pending"}</span>
-          <DropdownIcon className="ml-1 opacity-60" size={12} />
+        <Button
+          type="button"
+          variant="nav"
+          size="sm"
+          className={cn(
+            "h-8 px-2 pl-1.5 rounded-md text-xs font-medium transition-colors hover:bg-muted",
+            className
+          )}
+        >
+          <StatusIcon status={value || "pending"} className="size-4 mr-2" />
+          <span className="capitalize">{value || "pending"}</span>
+          <DropdownIcon className="ml-1.5 opacity-60" size={12} />
         </Button>
       </PopoverTrigger>
       <PopoverContent list className="min-w-0 w-fit">

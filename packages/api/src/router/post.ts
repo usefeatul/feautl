@@ -1,7 +1,7 @@
 import { eq, and, sql, isNull } from "drizzle-orm"
 import { j, publicProcedure } from "../jstack"
 import { vote, post, workspace, board, postTag } from "@feedgot/db"
-import { votePostSchema, createPostSchema, updatePostSchema } from "../validators/post"
+import { votePostSchema, createPostSchema, updatePostSchema, byIdSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
 import { auth } from "@feedgot/auth"
 import { headers } from "next/headers"
@@ -181,6 +181,47 @@ export function createPostRouter() {
         }
 
         return c.superjson({ post: updatedPost })
+      }),
+
+    delete: publicProcedure
+      .input(byIdSchema)
+      .post(async ({ ctx, input, c }) => {
+        const { postId } = input
+
+        let userId: string | null = null
+        try {
+          const session = await auth.api.getSession({
+            headers: (c as any)?.req?.raw?.headers || (await headers()),
+          })
+          if (session?.user?.id) {
+            userId = session.user.id
+          }
+        } catch {}
+
+        if (!userId) {
+          throw new HTTPException(401, { message: "Unauthorized" })
+        }
+
+        // Get existing post
+        const [existingPost] = await ctx.db
+          .select()
+          .from(post)
+          .where(eq(post.id, postId))
+          .limit(1)
+
+        if (!existingPost) {
+          throw new HTTPException(404, { message: "Post not found" })
+        }
+
+        // Check ownership (simple check for now)
+        if (existingPost.authorId !== userId) {
+          // TODO: Check if admin/member of workspace
+           throw new HTTPException(403, { message: "You don't have permission to delete this post" })
+        }
+
+        await ctx.db.delete(post).where(eq(post.id, postId))
+
+        return c.superjson({ success: true })
       }),
 
     vote: publicProcedure

@@ -76,7 +76,7 @@ export default function CommentList({
         />
       </div>
       {commentCount === 0 && !isLoading ? (
-        <div className="rounded-md border bg-card p-6 text-center">
+        <div className="p-6 text-center">
           <p className="text-sm text-accent">
             No comments yet. Be the first to comment!
           </p>

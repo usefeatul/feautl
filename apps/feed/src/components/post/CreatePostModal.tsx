@@ -69,7 +69,9 @@ export function CreatePostModal({
       client.board.byWorkspaceSlug.$get({ slug: workspaceSlug }).then(async (res) => {
         if (res.ok) {
            const data = await res.json()
-           const b = (data.boards || []).map((x: any) => ({ id: x.id, name: x.name, slug: x.slug }))
+           const b = (data.boards || [])
+             .filter((x: any) => !['roadmap', 'changelog'].includes(x.slug))
+             .map((x: any) => ({ id: x.id, name: x.name, slug: x.slug }))
            setBoards(b)
            if (b.length > 0 && !selectedBoard) {
              setSelectedBoard(b[0])

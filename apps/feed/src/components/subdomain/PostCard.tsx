@@ -10,6 +10,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@feedgot/ui/components/avat
 import { getInitials } from "@/utils/user-utils"
 import { randomAvatarUrl } from "@/utils/avatar"
 import { statusLabel } from "@/lib/roadmap"
+import { relativeTime } from "@/lib/time"
 import RoleBadge from "@/components/comments/RoleBadge"
 
 function toPlain(s?: string | null): string {
@@ -34,7 +35,7 @@ function PostCardBase({ item, onVoteChange, linkPrefix = "/p" }: { item: Request
         <p className="mt-3 text-sm text-accent  whitespace-normal line-clamp-2">{toPlain(item.content)}</p>
       ) : null}
       <div className="mt-3 flex items-center justify-between">
-        <div className="inline-flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <div className="relative">
             <Avatar className="size-8 relative overflow-visible">
               <AvatarImage src={item.authorImage || randomAvatarUrl(item.id || item.slug)} alt={item.isAnonymous ? "Guest" : (item.authorName || "Guest")} />
@@ -42,9 +43,14 @@ function PostCardBase({ item, onVoteChange, linkPrefix = "/p" }: { item: Request
               <RoleBadge role={item.role} isOwner={item.isOwner} />
             </Avatar>
           </div>
-          <span className="text-xs text-accent whitespace-nowrap mt-2  max-w-[180px] truncate">
-            {item.isAnonymous ? "Guest" : (item.authorName || "Guest")}
-          </span>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-xs font-medium text-foreground whitespace-nowrap max-w-[180px] truncate">
+              {item.isAnonymous ? "Guest" : (item.authorName || "Guest")}
+            </span>
+            <span className="text-[11px] text-muted-foreground leading-tight">
+              {relativeTime(item.publishedAt ?? item.createdAt)}
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-3 text-xs text-accent">
           <div className="inline-flex items-center gap-2 ">

@@ -14,7 +14,7 @@ export function InviteWorkspaceEmail({ workspaceName, inviteUrl, brand }: { work
   const ctaUrl = inviteUrl
   const psText = "If you did not expect this invitation, you may safely ignore this email."
   const signatureName = (brand?.name || "Feedgot") + " Team"
-  const addressLines = ["267 Kentlands Boulevard PMB #5123", "Gaithersburg, MD 20878, United States"]
+
   return (
     <BrandedEmail
       eyebrow={eyebrow}
@@ -26,7 +26,6 @@ export function InviteWorkspaceEmail({ workspaceName, inviteUrl, brand }: { work
       ctaUrl={ctaUrl}
       psText={psText}
       signatureName={signatureName}
-      addressLines={addressLines}
       brand={brand}
     />
   )

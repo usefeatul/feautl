@@ -25,7 +25,6 @@ export function VerifyEmail({ otp, type, brand }: { otp: string; type: VerifyTyp
   const ctaUrl = type === "forget-password" ? "https://feedgot.com/reset" : "https://feedgot.com/dashboard"
   const psText = "If you require assistance, please reply to this message and our support team will respond promptly."
   const signatureName = "Feedgot Support"
-  const addressLines = ["267 Kentlands Boulevard PMB #5123", "Gaithersburg, MD 20878, United States"]
   return (
     <BrandedEmail
       eyebrow={eyebrow}
@@ -39,7 +38,6 @@ export function VerifyEmail({ otp, type, brand }: { otp: string; type: VerifyTyp
       ctaUrl={ctaUrl}
       psText={psText}
       signatureName={signatureName}
-      addressLines={addressLines}
       brand={brand}
     />
   )

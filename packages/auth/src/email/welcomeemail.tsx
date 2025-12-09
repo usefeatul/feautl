@@ -15,7 +15,6 @@ export function WelcomeEmail({ name, brand }: { name?: string; brand?: Brand }) 
   const ctaUrl = "https://feedgot.com/dashboard"
   const psText = "Should you need help getting started, simply reply to this email and our team will be happy to assist."
   const signatureName = brand?.name ? `${brand.name} Support` : "Feedgot Support"
-  const addressLines = ["267 Kentlands Boulevard PMB #5123", "Gaithersburg, MD 20878, United States"]
   return (
     <BrandedEmail
       eyebrow={eyebrow}
@@ -27,7 +26,6 @@ export function WelcomeEmail({ name, brand }: { name?: string; brand?: Brand }) 
       ctaUrl={ctaUrl}
       psText={psText}
       signatureName={signatureName}
-      addressLines={addressLines}
       brand={brand}
     />
   )

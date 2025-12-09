@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React, { useCallback, useEffect } from "react";
-import { Button } from "@feedgot/ui/components/button";
+import { Button } from "@oreilla/ui/components/button";
 
 type HotkeyLinkProps = {
   hotkey?: string;

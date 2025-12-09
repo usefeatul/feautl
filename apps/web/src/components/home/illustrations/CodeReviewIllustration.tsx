@@ -1,4 +1,4 @@
-import { Card } from '@feedgot/ui/components/card'
+import { Card } from '@oreilla/ui/components/card'
 import { Signature, Play } from 'lucide-react'
 
 const MESCHAC_AVATAR = 'https://avatars.githubusercontent.com/u/47919550?v=4'

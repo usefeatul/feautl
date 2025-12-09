@@ -1,9 +1,9 @@
 import { jstack } from "jstack"
-import { auth } from "@feedgot/auth/auth"
+import { auth } from "@oreilla/auth/auth"
 import { HTTPException } from "hono/http-exception"
 import { headers } from "next/headers"
 
-import { db } from "@feedgot/db"
+import { db } from "@oreilla/db"
 
 
 export const j = jstack.init()

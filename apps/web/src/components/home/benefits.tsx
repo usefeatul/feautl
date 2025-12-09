@@ -1,13 +1,13 @@
 import { Container } from "../global/container";
-import { UsersIcon } from "@feedgot/ui/icons/users";
-import { FreeIcon } from "@feedgot/ui/icons/free";
-import { SetupIcon } from "@feedgot/ui/icons/setup";
-import { FeatherIcon } from "@feedgot/ui/icons/feather";
-import { ShieldIcon } from "@feedgot/ui/icons/shield";
-import { SettingIcon } from "@feedgot/ui/icons/setting";
-import { BoardIcon } from "@feedgot/ui/icons/board";
-import { RoadmapIcon } from "@feedgot/ui/icons/roadmap";
-import { ChangelogIcon } from "@feedgot/ui/icons/changelog";
+import { UsersIcon } from "@oreilla/ui/icons/users";
+import { FreeIcon } from "@oreilla/ui/icons/free";
+import { SetupIcon } from "@oreilla/ui/icons/setup";
+import { FeatherIcon } from "@oreilla/ui/icons/feather";
+import { ShieldIcon } from "@oreilla/ui/icons/shield";
+import { SettingIcon } from "@oreilla/ui/icons/setting";
+import { BoardIcon } from "@oreilla/ui/icons/board";
+import { RoadmapIcon } from "@oreilla/ui/icons/roadmap";
+import { ChangelogIcon } from "@oreilla/ui/icons/changelog";
 
 export default function Benefits() {
   return (

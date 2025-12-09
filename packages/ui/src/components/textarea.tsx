@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { cn } from "@feedgot/ui/lib/utils"
+import { cn } from "@oreilla/ui/lib/utils"
 
 const textareaVariants = cva(
   "placeholder:text-accent  flex field-sizing-content min-h-16 w-full rounded-sm px-3 py-2 text-base transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm  border-border ",

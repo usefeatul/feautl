@@ -2,7 +2,7 @@
 
 import React from "react"
 import { useWorkspaceRole } from "@/hooks/useWorkspaceAccess"
-import { Avatar, AvatarImage, AvatarFallback } from "@feedgot/ui/components/avatar"
+import { Avatar, AvatarImage, AvatarFallback } from "@oreilla/ui/components/avatar"
 import { getDisplayUser, getInitials } from "@/utils/user-utils"
 import { relativeTime } from "@/lib/time"
 import BoardPicker from "../requests/meta/BoardPicker"

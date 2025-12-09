@@ -9,7 +9,7 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from "@feedgot/ui/components/avatar";
+} from "@oreilla/ui/components/avatar";
 import { getInitials, getDisplayUser } from "@/utils/user-utils";
 import { randomAvatarUrl } from "@/utils/avatar";
 import { SubdomainRequestDetailData } from "../../../types/subdomain";

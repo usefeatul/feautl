@@ -2,11 +2,11 @@
 
 import * as React from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@feedgot/ui/components/button"
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@feedgot/ui/components/popover"
-import { ChevronDownIcon } from "@feedgot/ui/icons/chevron-down"
-import { ListIcon } from "@feedgot/ui/icons/list"
-import { client } from "@feedgot/api/client"
+import { Button } from "@oreilla/ui/components/button"
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
+import { ChevronDownIcon } from "@oreilla/ui/icons/chevron-down"
+import { ListIcon } from "@oreilla/ui/icons/list"
+import { client } from "@oreilla/api/client"
 
 type Board = { id: string; name: string; slug: string; type?: string | null }
 

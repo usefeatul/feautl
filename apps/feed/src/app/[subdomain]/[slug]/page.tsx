@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { db, workspace } from "@feedgot/db"
+import { db, workspace } from "@oreilla/db"
 import { eq } from "drizzle-orm"
 import { createWorkspaceSectionMetadata } from "@/lib/seo"
 import { getWorkspacePosts, getWorkspacePostsCount, getSidebarPositionBySlug, getWorkspaceBoards } from "@/lib/workspace"

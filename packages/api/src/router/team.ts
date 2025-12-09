@@ -1,8 +1,8 @@
 import { HTTPException } from "hono/http-exception"
 import { and, eq, gt, isNull, sql } from "drizzle-orm"
 import { j, privateProcedure } from "../jstack"
-import { workspace, workspaceMember, workspaceInvite, user, brandingConfig } from "@feedgot/db"
-import { sendWorkspaceInvite } from "@feedgot/auth/email"
+import { workspace, workspaceMember, workspaceInvite, user, brandingConfig } from "@oreilla/db"
+import { sendWorkspaceInvite } from "@oreilla/auth/email"
 import {
   byWorkspaceInputSchema,
   inviteMemberInputSchema,
@@ -148,7 +148,7 @@ export function createTeamRouter() {
             .where(eq(brandingConfig.workspaceId, ws.id))
             .limit(1)
           const brand = {
-            name: ws.name || "Feedgot",
+            name: ws.name || "oreilla",
             logoUrl: undefined,
             primaryColor: branding?.primaryColor || undefined,
             backgroundColor: undefined,

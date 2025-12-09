@@ -2,7 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
-import { Avatar, AvatarFallback, AvatarImage } from "@feedgot/ui/components/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@oreilla/ui/components/avatar"
 import { getInitials } from "@/utils/user-utils"
 import { relativeTime } from "@/lib/time"
 import { motion, HTMLMotionProps } from "framer-motion"

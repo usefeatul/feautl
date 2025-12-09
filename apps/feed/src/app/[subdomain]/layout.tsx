@@ -1,6 +1,6 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import { db, workspace, board } from "@feedgot/db";
+import { db, workspace, board } from "@oreilla/db";
 import { eq, and } from "drizzle-orm";
 import { Container } from "@/components/global/container";
 import { DomainHeader } from "@/components/subdomain/DomainHeader";
@@ -9,7 +9,7 @@ import { getBrandingBySlug } from "@/lib/workspace";
 import SubdomainThemeProvider from "@/components/subdomain/SubdomainThemeProvider";
 import { DomainBrandingProvider } from "@/components/subdomain/DomainBrandingProvider";
 import { PoweredBy } from "@/components/subdomain/PoweredBy";
-import { getServerSession } from "@feedgot/auth/session";
+import { getServerSession } from "@oreilla/auth/session";
 
 export default async function Layout({
   children,

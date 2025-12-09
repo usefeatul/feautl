@@ -2,14 +2,14 @@
 
 import * as React from "react"
 import { useRouter, usePathname } from "next/navigation"
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@feedgot/ui/components/popover"
-import { MenuIcon } from "@feedgot/ui/icons/menu"
-import { AccentBar } from "@feedgot/ui/components/cardElements"
-import { CommentsIcon } from "@feedgot/ui/icons/comments"
-import { RoadmapIcon } from "@feedgot/ui/icons/roadmap"
-import { ChangelogIcon } from "@feedgot/ui/icons/changelog"
-import { cn } from "@feedgot/ui/lib/utils"
-import { Button } from "@feedgot/ui/components/button"
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
+import { MenuIcon } from "@oreilla/ui/icons/menu"
+import { AccentBar } from "@oreilla/ui/components/cardElements"
+import { CommentsIcon } from "@oreilla/ui/icons/comments"
+import { RoadmapIcon } from "@oreilla/ui/icons/roadmap"
+import { ChangelogIcon } from "@oreilla/ui/icons/changelog"
+import { cn } from "@oreilla/ui/lib/utils"
+import { Button } from "@oreilla/ui/components/button"
 
 
 export function MobileBoardsMenu({ slug, subdomain }: { slug: string; subdomain: string }) {

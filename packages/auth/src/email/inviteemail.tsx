@@ -13,7 +13,7 @@ export function InviteWorkspaceEmail({ workspaceName, inviteUrl, brand }: { work
   const ctaText = "Accept Invite"
   const ctaUrl = inviteUrl
   const psText = "If you did not expect this invitation, you may safely ignore this email."
-  const signatureName = (brand?.name || "Feedgot") + " Team"
+  const signatureName = (brand?.name || "oreilla") + " Team"
 
   return (
     <BrandedEmail

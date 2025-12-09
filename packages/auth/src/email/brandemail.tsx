@@ -26,7 +26,7 @@ type Props = {
 
 function resolveBrand(brand?: Brand): Required<Brand> {
   return {
-    name: brand?.name || "Feedgot",
+    name: brand?.name || "oreilla",
     logoUrl: brand?.logoUrl || "",
     primaryColor: brand?.primaryColor || "#111111",
     backgroundColor: brand?.backgroundColor || "#ffffff",

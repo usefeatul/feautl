@@ -1,9 +1,9 @@
 import { eq, and, sql, isNull, ilike, or } from "drizzle-orm"
 import { j, publicProcedure } from "../jstack"
-import { vote, post, workspace, board, postTag, workspaceMember, postReport } from "@feedgot/db"
+import { vote, post, workspace, board, postTag, workspaceMember, postReport } from "@oreilla/db"
 import { votePostSchema, createPostSchema, updatePostSchema, byIdSchema, reportPostSchema, getSimilarSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
-import { auth } from "@feedgot/auth"
+import { auth } from "@oreilla/auth"
 import { headers } from "next/headers"
 import { mapPermissions } from "../shared/permissions"
 

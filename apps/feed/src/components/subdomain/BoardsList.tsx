@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { client } from "@feedgot/api/client"
+import { client } from "@oreilla/api/client"
 
 type Board = { id: string; name: string; slug: string; postCount?: number }
 

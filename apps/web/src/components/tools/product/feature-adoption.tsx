@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react"
 import BackLink from "@/components/tools/global/backlink"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from "@feedgot/ui/components/card"
-import { Label } from "@feedgot/ui/components/label"
-import { Input } from "@feedgot/ui/components/input"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from "@oreilla/ui/components/card"
+import { Label } from "@oreilla/ui/components/label"
+import { Input } from "@oreilla/ui/components/input"
 import StatusBadge from "@/components/tools/global/status-badge"
-import { Button } from "@feedgot/ui/components/button"
+import { Button } from "@oreilla/ui/components/button"
 import { Plus, Trash } from "lucide-react"
 
 type Cohort = { size: number; adopted: number }

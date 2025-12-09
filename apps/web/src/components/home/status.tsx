@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { StatusIndicator } from "@/components/home/status-indicator"
-import { cn } from "@feedgot/ui/lib/utils"
+import { cn } from "@oreilla/ui/lib/utils"
 
 type StatusButtonProps = {
   href?: string
@@ -10,7 +10,7 @@ type StatusButtonProps = {
   className?: string
 }
 
-export function StatusButton({ href = "https://status.feedgot.com", label = "status", className }: StatusButtonProps) {
+export function StatusButton({ href = "https://status.oreilla.com", label = "status", className }: StatusButtonProps) {
   return (
     <Link
       href={href}

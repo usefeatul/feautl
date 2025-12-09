@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Button } from "@feedgot/ui/components/button"
+import { Button } from "@oreilla/ui/components/button"
 import CreatePostModal from "./CreatePostModal"
 
 export default function EmptyDomainPosts({ subdomain, slug }: { subdomain: string; slug: string }) {

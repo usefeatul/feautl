@@ -2,15 +2,15 @@
 import Link from "next/link";
 import { navigationConfig } from "@/config/homeNav";
 import { Container } from "../global/container";
-import { ArrowIcon } from "@feedgot/ui/icons/arrow";
-import { MenuIcon } from "@feedgot/ui/icons/menu";
-import { cn } from "@feedgot/ui/lib/utils";
-import { Separator } from "@feedgot/ui/components/separator";
+import { ArrowIcon } from "@oreilla/ui/icons/arrow";
+import { MenuIcon } from "@oreilla/ui/icons/menu";
+import { cn } from "@oreilla/ui/lib/utils";
+import { Separator } from "@oreilla/ui/components/separator";
 import { useEffect, useState } from "react";
-import { Button } from "@feedgot/ui/components/button";
+import { Button } from "@oreilla/ui/components/button";
 import { Logo } from "../global/logo";
 import { MobileMenu } from "./mobile-menu";
-import { useIsMobile } from "@feedgot/ui/hooks/use-mobile";
+import { useIsMobile } from "@oreilla/ui/hooks/use-mobile";
 
 export default function Navbar() {
   const main = navigationConfig.main;
@@ -51,7 +51,7 @@ export default function Navbar() {
             className="inline-flex items-center gap-2"
           >
             <Logo size={26} />
-            {/* <span className="text-lg font-medium">Feedgot</span> */}
+            {/* <span className="text-lg font-medium">oreilla</span> */}
           </Link>
           <nav className="hidden md:flex items-center font-medium text-sm gap-6 md:ml-auto">
             {before.map((item) => (

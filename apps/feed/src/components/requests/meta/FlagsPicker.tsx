@@ -1,10 +1,10 @@
 "use client"
 
 import React from "react"
-import { Button } from "@feedgot/ui/components/button"
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@feedgot/ui/components/popover"
-import { DropdownIcon } from "@feedgot/ui/icons/dropdown"
-import { client } from "@feedgot/api/client"
+import { Button } from "@oreilla/ui/components/button"
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
+import { DropdownIcon } from "@oreilla/ui/icons/dropdown"
+import { client } from "@oreilla/api/client"
 
 type Flags = { isPinned?: boolean; isLocked?: boolean; isFeatured?: boolean }
 

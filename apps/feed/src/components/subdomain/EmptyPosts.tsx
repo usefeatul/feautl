@@ -9,9 +9,9 @@ export default function EmptyDomainPosts({ subdomain, slug }: { subdomain: strin
 
   return (
     <>
-      <div className="p-6 text-center">
-        <div className="text-sm font-medium">No posts yet</div>
-        <p className="mt-2 text-xs text-accent">Be the first to submit an idea.</p>
+      <div className="p-8 text-center">
+        <div className="text-md font-bold">No posts yet</div>
+        <p className="mt-2 text-xs font-light text-accent">Be the first to submit an idea.</p>
         <div className="mt-4">
           <Button onClick={() => setOpen(true)} className="h-9 px-4 bg-primary hover:bg-primary/90 ring-ring/60 hover:ring-ring">
             Submit a Post

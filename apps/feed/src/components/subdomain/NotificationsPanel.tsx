@@ -27,13 +27,13 @@ const NotificationsPanel = React.forwardRef<HTMLDivElement, NotificationsPanelPr
         exit={{ opacity: 0, y: -6, scale: 0.98 }}
         transition={{ type: "tween", ease: [0.22, 1, 0.36, 1], duration: 0.2 }}
       >
-        <div className="px-2 py-2 text-sm font-medium flex items-center justify-between">
+        <div className="px-2.5 py-2.5 space-x-4 text-sm font-medium flex items-center justify-between">
           <span>Notifications</span>
 
           {onMarkAllRead && (
             <button
               type="button"
-              className="text-xs rounded-md bg-muted ring-1 ring-border px-2 py-1 cursor-pointer"
+              className="text-xs rounded-md bg-muted ring-1 ring-border px-2 py-1.5 cursor-pointer"
               onClick={onMarkAllRead}
             >
               Mark all as read

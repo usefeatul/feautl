@@ -5,7 +5,7 @@ import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@feedgot/ui/components/avatar"
 import { getInitials } from "@/utils/user-utils"
 import { relativeTime } from "@/lib/time"
-import { motion } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
 
 interface NotificationsPanelProps {
   notifications: Array<any>
@@ -13,10 +13,13 @@ interface NotificationsPanelProps {
   onMarkAllRead?: () => void
 }
 
-export default function NotificationsPanel({ notifications, markRead, onMarkAllRead }: NotificationsPanelProps) {
+const NotificationsPanel = React.forwardRef<HTMLDivElement, NotificationsPanelProps & Omit<React.HTMLAttributes<HTMLDivElement>, keyof HTMLMotionProps<"div">> & HTMLMotionProps<"div">>(
+  ({ notifications, markRead, onMarkAllRead, ...props }, ref) => {
 
   return (
     <motion.div
+      ref={ref}
+      {...(props as any)}
       className="z-50  max-w-[90vw] max-h-[36rem] overflow-y-auto rounded-sm border bg-popover p-2 text-popover-foreground shadow-md"
       role="dialog"
       aria-label="Notifications"
@@ -40,7 +43,7 @@ export default function NotificationsPanel({ notifications, markRead, onMarkAllR
           {notifications.map((n) => (
             <li key={n.id} className="px-2">
               <Link
-                href={`/p/${n.postSlug}`}
+                href={`/board/p/${n.postSlug}`}
                 className="px-2 py-1.5 flex items-center gap-2 rounded-md hover:bg-muted dark:hover:bg-black/40"
                 onClick={() => markRead(n.id)}
               >
@@ -67,4 +70,8 @@ export default function NotificationsPanel({ notifications, markRead, onMarkAllR
       )}
     </motion.div>
   )
-}
+})
+
+NotificationsPanel.displayName = "NotificationsPanel"
+
+export default NotificationsPanel

@@ -1,5 +1,6 @@
 import React from "react"
 import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
 import { UpvoteButton } from "@/components/upvote/UpvoteButton"
 import { CommentsIcon } from "@feedgot/ui/icons/comments"
 
@@ -22,7 +23,11 @@ export function SimilarPosts({ posts, isLoading }: SimilarPostsProps) {
   }
 
   return (
-    <div className="transition-all duration-200 bg-muted/50 dark:bg-black/50">
+    <motion.div 
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      className="bg-muted/50 dark:bg-black/50 overflow-hidden"
+    >
       <div className="px-4 py-2 flex items-center justify-between border-t border-border dark:border-border/50">  
         <div className="text-xs font-extralight text-accent uppercase tracking-wide">
           Similar Posts
@@ -30,8 +35,14 @@ export function SimilarPosts({ posts, isLoading }: SimilarPostsProps) {
       </div>
       
       <div className="divide-y divide-border">
-          {posts.map((post) => (
-          <div key={post.id} className="relative group p-4 hover:bg-muted/30 dark:hover:bg-black/30 transition-colors">
+          {posts.map((post, index) => (
+          <motion.div 
+            key={post.id} 
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="relative group p-4 hover:bg-muted/30 dark:hover:bg-black/30 transition-colors"
+          >
             <Link 
               href={`/board/p/${post.slug}`}
               className="absolute inset-0 focus:outline-none"
@@ -60,9 +71,9 @@ export function SimilarPosts({ posts, isLoading }: SimilarPostsProps) {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
           ))}
       </div>
-    </div>
+    </motion.div>
   )
 }

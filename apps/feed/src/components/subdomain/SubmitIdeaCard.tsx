@@ -12,7 +12,7 @@ export function SubmitIdeaCard({ subdomain, slug }: { subdomain: string; slug: s
     <>
       <div className="rounded-md border bg-card p-4">
         <div className="mb-3 text-sm font-medium flex items-center gap-2">
-          <IdeaIcon size={18} className="opacity-90" />
+          <IdeaIcon className="size-5"/>
           Got an idea?
         </div>
         <Button 

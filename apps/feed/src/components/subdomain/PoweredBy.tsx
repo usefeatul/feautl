@@ -9,7 +9,7 @@ export function PoweredBy() {
   return (
     <div className="pt-2 text-center">
       <a
-        href="https://app.oreilla.com"
+        href="https://oreilla.com"
         target="_blank"
         rel="noopener noreferrer"
         className="inline-block rounded-sm bg-muted px-2 py-1 text-xs text-accent hover:bg-muted/80 transition-colors cursor-pointer"

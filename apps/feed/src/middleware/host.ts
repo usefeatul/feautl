@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 
-export const reservedSubdomains = new Set(["www", "app"])
+export const reservedSubdomains = new Set(["www", "app", "oreilla", "feedgot" ,"staging"])
 
 export function getHostInfo(req: NextRequest) {
   const pathname = req.nextUrl.pathname

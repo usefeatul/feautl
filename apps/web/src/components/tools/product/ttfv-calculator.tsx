@@ -79,7 +79,7 @@ export default function TtfvCalculator() {
               Within {isFinite(windowDays) ? windowDays : 0} days
               <span className="font-mono ml-1 text-foreground">{fmtPct(metrics.rate)}</span>
             </div>
-            <StatusBadge status={metrics.status as any} />
+            <StatusBadge status={metrics.status as "Low" | "Moderate" | "Strong"} />
           </CardFooter>
         </Card>
 

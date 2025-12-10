@@ -68,7 +68,7 @@ export default function WhyBetter({ alt }: { alt: Alternative }) {
               </div>
               <div className="text-accent mt-2 text-sm sm:text-base leading-7 space-y-4">
                 <p>
-                  Our lightweight widget loads fast with lazy-loading and intelligent caching. Collect comprehensive feedback without impacting your site's performance or user experience.
+                  Our lightweight widget loads fast with lazy-loading and intelligent caching. Collect comprehensive feedback without impacting your site&apos;s performance or user experience.
                 </p>
                 <p>
                   Every millisecond matters for conversion rates. Our performance-first approach ensures you gather insights while maintaining the speed that keeps users engaged and satisfied.
@@ -88,7 +88,7 @@ export default function WhyBetter({ alt }: { alt: Alternative }) {
                   Avoid feature bloat with a focused approach. Our unified workflow connects feedback collection, prioritization, and roadmapping in one coherent system no maze of unused configuration options.
                 </p>
                 <p>
-                  Enterprise software should solve problems, not create them. We focus on capabilities that directly improve your team's ability to act on customer feedback efficiently.
+                  Enterprise software should solve problems, not create them. We focus on capabilities that directly improve your team&apos;s ability to act on customer feedback efficiently.
                 </p>
               </div>
             </div>
@@ -105,7 +105,7 @@ export default function WhyBetter({ alt }: { alt: Alternative }) {
                   Skip generic support responses. Communicate directly with our engineering team for actionable solutions based on deep technical understanding, not scripted replies.
                 </p>
                 <p>
-                  Get expert guidance from the team who built the platform. We help you maximize value quickly, whether you're cloud-hosted or self-hosted.
+                  Get expert guidance from the team who built the platform. We help you maximize value quickly, whether you’re cloud-hosted or self-hosted.
                 </p>
               </div>
             </div>

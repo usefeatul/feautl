@@ -14,7 +14,6 @@ export default function ArrTool() {
     return Number.isFinite(n) ? n * 12 : 0
   }, [mrr])
 
-  const formatCurrency = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 })
   const formatCurrencyExact = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD" })
 
   return (

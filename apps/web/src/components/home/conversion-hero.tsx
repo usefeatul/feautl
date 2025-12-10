@@ -41,7 +41,7 @@ export function ConversionHero() {
             <p className="mt-3 text-accent/90 text-xs sm:text-sm md:text-sm leading-relaxed max-w-lg sm:max-w-xl">
               Set up your complete customer feedback system in under 5 minutes.
               Engage your users, prioritize what matters, and ship features
-              they'll love. No complex setup, no privacy concerns just results.
+              they’ll love. No complex setup, no privacy concerns just results.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <HotkeyLink

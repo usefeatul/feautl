@@ -24,8 +24,6 @@ export default function SaasValuationTool() {
 
   const ARR = parseNumber(arr);
   const baseMultiple = parseNumber(multiple);
-  const growth = parseNumber(growthPct);
-  const margin = parseNumber(marginPct);
 
   const enterpriseValue = ARR * baseMultiple;
   const sensitivityMinus = ARR * Math.max(baseMultiple - 1, 0);

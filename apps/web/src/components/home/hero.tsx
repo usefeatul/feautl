@@ -1,11 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Container } from "../global/container";
 import Image from "next/image";
 import { HeroContent } from "./hero-content";
 import { PreviewSwitchPill } from "@/components/home/preview-switch";
 import { usePreviewHint } from "../../hooks/usePreviewHint";
-import Pointer from "../global/pointer";
 
 export function Hero() {
   const [active, setActive] = useState<"dashboard" | "roadmap" | "changelog">(

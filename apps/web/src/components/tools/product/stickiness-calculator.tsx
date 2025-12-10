@@ -5,7 +5,6 @@ import BackLink from "@/components/tools/global/backlink"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@oreilla/ui/components/card"
 import { Label } from "@oreilla/ui/components/label"
 import { Input } from "@oreilla/ui/components/input"
-import { Button } from "@oreilla/ui/components/button"
 import StatusBadge from "@/components/tools/global/status-badge"
 
 export default function StickinessCalculator() {
@@ -80,7 +79,7 @@ export default function StickinessCalculator() {
             <div className="text-sm text-accent">
               DAU/MAU <span className="font-mono ml-1 text-foreground">{fmtPct(metrics.sDauMau)}</span>
             </div>
-            <StatusBadge status={metrics.status as any} />
+            <StatusBadge status={metrics.status as "Low" | "Moderate" | "Strong"} />
           </CardFooter>
         </Card>
 

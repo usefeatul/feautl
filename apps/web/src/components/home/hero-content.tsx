@@ -18,7 +18,7 @@ export function HeroContent() {
       </h1>
       <p className="mt-6 max-w-xl sm:max-w-2xl lg:max-w-3xl text-sm sm:text-base md:text-lg leading-relaxed text-accent text-balance">
         oreilla is a privacy-first, open-source customer feedback platform
-        that's both insightful and lightweight
+        that&apos;s both insightful and lightweight
       </p>
       <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4">
         <HotkeyLink

@@ -36,7 +36,7 @@ export default function FeaturesSection() {
                 <p className="text-accent text-sm sm:text-base">
                   Quick AI jean lives a single hotkey away - ready to quickly
                   appear as a floating window above your other apps. Get instant
-                  assistance whether you're browsing, coding, or writing
+                  assistance whether you’re browsing, coding, or writing
                   documents.
                 </p>
               </div>

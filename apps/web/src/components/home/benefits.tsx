@@ -49,7 +49,7 @@ export default function Benefits() {
                 <div className="text-accent mt-2 text-sm sm:text-sm  leading-7">
                   <p>
                     Start free, stay free. Boards, roadmap, changelog no limits.
-                    No trials, no paywalls. Upgrade when you're ready, not
+                    No trials, no paywalls. Upgrade when you’re ready, not
                     before.
                   </p>
                 </div>
@@ -119,7 +119,7 @@ export default function Benefits() {
                 <div className="text-accent mt-2 text-sm sm:text-sm  leading-7">
                   <p>
                     Zero trackers, zero cookies. We collect only what matters.
-                    Your data is yours forever we don't sell, share, or snoop.
+                    Your data is yours forever we don’t sell, share, or snoop.
                   </p>
                 </div>
               </div>

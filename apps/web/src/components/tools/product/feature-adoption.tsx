@@ -105,7 +105,7 @@ export default function FeatureAdoptionTool() {
             <div className="text-sm text-accent">
               Overall adoption <span className="font-mono ml-1 text-foreground">{formatPct(totals.rate)}</span>
             </div>
-            <StatusBadge status={totals.status as any} />
+            <StatusBadge status={totals.status as "Low" | "Moderate" | "Strong"} />
           </CardFooter>
         </Card>
 

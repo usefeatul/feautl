@@ -77,7 +77,7 @@ export default function FeatureUsageFrequency() {
             <div className="text-sm text-accent">
               Avg uses/user <span className="font-mono ml-1 text-foreground">{fmt(metrics.avg)}</span>
             </div>
-            <StatusBadge status={metrics.status as any} />
+            <StatusBadge status={metrics.status as "Low" | "Moderate" | "Strong"} />
           </CardFooter>
         </Card>
 

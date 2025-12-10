@@ -15,12 +15,12 @@ type TableOfContentsProps = {
 }
 
 export function TableOfContents({ items, className, title = "Table of content" }: TableOfContentsProps) {
-  if (!items?.length) return null
   const activeId = useActiveHeading(items)
   const prefersReducedMotion = usePrefersReducedMotion()
   const [expanded, setExpanded] = useState(false)
   const navRef = useRef<HTMLDivElement | null>(null)
   useAutoScrollActiveLink(activeId, expanded, navRef as React.RefObject<HTMLElement>)
+  if (!items?.length) return null
 
   function onAnchorClick(e: React.MouseEvent<HTMLAnchorElement>, id: string) {
     e.preventDefault()

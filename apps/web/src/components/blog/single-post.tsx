@@ -5,6 +5,7 @@ import { TableOfContents } from "@/components/blog/table-of-contents";
 import { PromoCard } from "@/components/blog/promo-card";
 import type { MarblePost } from "@/types/marble";
 import { ReadingProgress } from "@/components/blog/reading-progress";
+import Image from "next/image";
 
 type SinglePostProps = {
   post: MarblePost;
@@ -41,12 +42,12 @@ export function SinglePost({ post }: SinglePostProps) {
             <span aria-hidden className="mx-1">
               ›
             </span>
-            <span className="text-accent break-words">{post.title}</span>
+            <span className="text-accent wrap-break-word">{post.title}</span>
           </nav>
 
           {/* Title/meta constrained to left column width */}
           <header className="mb-6 text-left">
-            <h1 className="text-foreground text-2xl md:text-3xl font-bold leading-tight tracking-tight break-words text-balance">
+            <h1 className="text-foreground text-2xl md:text-3xl font-bold leading-tight tracking-tight wrap-break-words text-balance">
               {post.title}
             </h1>
             {post.excerpt ? (
@@ -69,7 +70,7 @@ export function SinglePost({ post }: SinglePostProps) {
                   <span className="mx-2 text-zinc-300">•</span>
                 ) : null}
                 {(author?.image) ? (
-                  <img
+                  <Image
                     src={author?.image ?? ""}
                     alt={author?.name ?? "Author"}
                     className="h-5 w-5 rounded-md object-cover translate-y-[0.5px]"
@@ -94,10 +95,10 @@ export function SinglePost({ post }: SinglePostProps) {
 
           {post.coverImage ? (
             <div className="mb-8 overflow-hidden rounded-md border w-full">
-              <img
+              <Image
                 src={post.coverImage}
                 alt={post.title}
-                className="aspect-[16/9] w-full object-cover"
+                className="aspect-video w-full object-cover"
               />
             </div>
           ) : null}

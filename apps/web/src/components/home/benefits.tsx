@@ -110,7 +110,7 @@ export default function Benefits() {
               <div className="flex h-full flex-col">
                 <div className="flex items-start gap-3">
                   <span className="inline-flex size-8 items-center justify-center rounded-md bg-foreground/5 text-primary ring-1 ring-foreground/10 p-1.5">
-                    <SettingIcon aria-hidden className="size-4" />
+                    <SettingIcon aria-hidden className="size-4" opacity={1} />
                   </span>
                   <h3 className="text-foreground text-base sm:text-lg font-medium">
                     Privacy‑first
@@ -127,7 +127,7 @@ export default function Benefits() {
               <div className="flex h-full flex-col">
                 <div className="flex items-start gap-3">
                   <span className="inline-flex size-8 items-center justify-center rounded-md bg-foreground/5 text-primary ring-1 ring-foreground/10 p-1.5">
-                    <BoardIcon aria-hidden className="size-4" />
+                    <BoardIcon aria-hidden className="size-4" opacity={1} />
                   </span>
                   <h3 className="text-foreground text-base sm:text-lg font-medium">
                     Feedback boards
@@ -144,7 +144,7 @@ export default function Benefits() {
               <div className="flex h-full flex-col">
                 <div className="flex items-start gap-3">
                   <span className="inline-flex size-8 items-center justify-center rounded-md bg-foreground/5 text-primary ring-1 ring-foreground/10 p-1.5">
-                    <RoadmapIcon aria-hidden className="size-4" />
+                    <RoadmapIcon aria-hidden className="size-4" opacity={1} />
                   </span>
                   <h3 className="text-foreground text-base sm:text-lg font-medium">
                     Public roadmap
@@ -161,7 +161,7 @@ export default function Benefits() {
               <div className="flex h-full flex-col">
                 <div className="flex items-start gap-3">
                   <span className="inline-flex size-8 items-center justify-center rounded-md bg-foreground/5 text-primary ring-1 ring-foreground/10 p-1.5">
-                    <ChangelogIcon aria-hidden className="size-4" />
+                    <ChangelogIcon aria-hidden className="size-4" opacity={1} />
                   </span>
                   <h3 className="text-foreground text-base sm:text-lg font-medium">
                     Changelogs

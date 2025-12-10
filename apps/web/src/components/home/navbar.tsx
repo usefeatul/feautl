@@ -73,7 +73,7 @@ export default function Navbar() {
                 {item.name === "Docs" && (
                   <ArrowIcon
                     aria-hidden
-                    className="ml-1 h-4 w-4 align-middle"
+                    className="ml-1 size-4 align-middle"
                   />
                 )}
               </Link>
@@ -96,20 +96,24 @@ export default function Navbar() {
               </Link>
             ))}
             <Button asChild size="sm" className="font-light ">
-              <Link href="/signup" data-sln-event="cta: start for free clicked">
+              <Link
+                href="https://app.oreilla.com"
+                data-sln-event="cta: start for free clicked"
+              >
                 Start for free
               </Link>
             </Button>
           </div>
 
-          <button
+          <Button
             type="button"
+            variant="nav"
             aria-label="Toggle menu"
-            className="md:hidden inline-flex items-center justify-center rounded-md p-2 bg-muted/70"
+            className="md:hidden inline-flex items-center justify-center rounded-md bg-muted"
             onClick={() => setMobileOpen((o) => !o)}
           >
-            <MenuIcon width={20} height={20} className="text-accent" />
-          </button>
+            <MenuIcon className="text-accent size-5" />
+          </Button>
         </div>
       </Container>
 

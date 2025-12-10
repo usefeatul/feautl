@@ -24,7 +24,9 @@ export function SinglePost({ post }: SinglePostProps) {
   const date = post.publishedAt ? new Date(post.publishedAt) : null;
   const reading = estimateReadingTime(post.content);
   const { html, items } = generateToc(post.content);
-  const author = post.author ?? (post.authors && post.authors.length > 0 ? post.authors[0] : null);
+  const author =
+    post.author ??
+    (post.authors && post.authors.length > 0 ? post.authors[0] : null);
   const authorName = author?.name ?? null;
 
   return (
@@ -36,7 +38,10 @@ export function SinglePost({ post }: SinglePostProps) {
             aria-label="Breadcrumb"
             className="mb-3 text-sm text-muted-foreground"
           >
-            <Link href="/blog" className="inline-flex items-center h-8 px-2 -mx-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 hover:text-primary">
+            <Link
+              href="/blog"
+              className="inline-flex items-center h-8 px-2 -mx-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 hover:text-primary"
+            >
               Blog
             </Link>
             <span aria-hidden className="mx-1">
@@ -69,12 +74,12 @@ export function SinglePost({ post }: SinglePostProps) {
                 {authorName || reading ? (
                   <span className="mx-2 text-zinc-300">•</span>
                 ) : null}
-                {(author?.image) ? (
+                {author?.image ? (
                   <Image
                     src={author?.image ?? ""}
                     alt={author?.name ?? "Author"}
-                     width={20}
-                     height={20}
+                    width={20}
+                    height={20}
                     className="h-5 w-5 rounded-md object-cover translate-y-[0.5px]"
                   />
                 ) : null}

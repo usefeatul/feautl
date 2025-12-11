@@ -464,6 +464,25 @@ export async function getPlannedRoadmapPosts(
   slug: string,
   opts?: { limit?: number; offset?: number; order?: "newest" | "oldest" }
 ) {
+  const ws = await getWorkspaceBySlug(slug);
+  if (!ws) return [];
+
+  const [rb] = await db
+    .select({
+      isVisible: board.isVisible,
+      isPublic: board.isPublic,
+    })
+    .from(board)
+    .where(
+      and(
+        eq(board.workspaceId, ws.id),
+        eq(board.systemType, "roadmap" as any)
+      )
+    )
+    .limit(1);
+
+  if (!rb?.isVisible || !rb?.isPublic) return [];
+
   const limit = opts?.limit;
   const offset = opts?.offset;
   const order = opts?.order;

@@ -12,7 +12,17 @@ import { cn } from "@oreilla/ui/lib/utils"
 import { Button } from "@oreilla/ui/components/button"
 
 
-export function MobileBoardsMenu({ slug, subdomain }: { slug: string; subdomain: string }) {
+export function MobileBoardsMenu({
+  slug,
+  subdomain,
+  roadmapVisible = true,
+  changelogVisible = true,
+}: {
+  slug: string;
+  subdomain: string;
+  roadmapVisible?: boolean;
+  changelogVisible?: boolean;
+}) {
   const router = useRouter()
   const pathname = usePathname() || ""
   const [open, setOpen] = React.useState(false)
@@ -34,6 +44,9 @@ export function MobileBoardsMenu({ slug, subdomain }: { slug: string; subdomain:
     : pathname.startsWith(`/${subdomain}/changelog`)
     ? "changelog"
     : "__all__"
+
+  const showRoadmap = Boolean(roadmapVisible);
+  const showChangelog = Boolean(changelogVisible);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -57,16 +70,20 @@ export function MobileBoardsMenu({ slug, subdomain }: { slug: string; subdomain:
             <span className={cn("text-sm", active === "__all__" ? "text-primary" : "text-muted-foreground")}>All Feedback</span>
             <CommentsIcon size={16} className="text-accent ml-auto" />
           </PopoverListItem>
-          <PopoverListItem onClick={() => go("roadmap")}> 
-            <AccentBar width={2} className={active === "roadmap" ? undefined : "bg-muted ring-0"} />
-            <span className={cn("text-sm", active === "roadmap" ? "text-primary" : "text-muted-foreground")}>Roadmap</span>
-            <RoadmapIcon size={16} className="text-accent ml-auto" />
-          </PopoverListItem>
-          <PopoverListItem onClick={() => go("changelog")}> 
-            <AccentBar width={2} className={active === "changelog" ? undefined : "bg-muted ring-0"} />
-            <span className={cn("text-sm", active === "changelog" ? "text-primary" : "text-muted-foreground")}>Changelog</span>
-            <ChangelogIcon size={16} className="text-accent ml-auto" />
-          </PopoverListItem>
+          {showRoadmap ? (
+            <PopoverListItem onClick={() => go("roadmap")}>
+              <AccentBar width={2} className={active === "roadmap" ? undefined : "bg-muted ring-0"} />
+              <span className={cn("text-sm", active === "roadmap" ? "text-primary" : "text-muted-foreground")}>Roadmap</span>
+              <RoadmapIcon size={16} className="text-accent ml-auto" />
+            </PopoverListItem>
+          ) : null}
+          {showChangelog ? (
+            <PopoverListItem onClick={() => go("changelog")}>
+              <AccentBar width={2} className={active === "changelog" ? undefined : "bg-muted ring-0"} />
+              <span className={cn("text-sm", active === "changelog" ? "text-primary" : "text-muted-foreground")}>Changelog</span>
+              <ChangelogIcon size={16} className="text-accent ml-auto" />
+            </PopoverListItem>
+          ) : null}
         </PopoverList>
       </PopoverContent>
     </Popover>

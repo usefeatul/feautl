@@ -35,14 +35,12 @@ export default function TeamSection({
       return { members: d?.members || [], invites: d?.invites || [], meId: (d as { meId?: string })?.meId ?? null };
     },
     initialData: (initialMembers || initialInvites || initialMeId) ? { members: initialMembers || [], invites: initialInvites || [], meId: initialMeId ?? null } : undefined,
-    staleTime: 300000,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
+    staleTime: 30000,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchOnMount: true,
   });
   const { loading: inviteAccessLoading, canInvite } = useCanInvite(slug);
-
-
 
   const refresh = async () => {
     await refetch();

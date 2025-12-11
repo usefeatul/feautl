@@ -407,10 +407,9 @@ export function createTeamRouter() {
           })
         }
 
-        // Mark all pending invites for this email as accepted (not just the one with the token)
+        // Delete all pending invites for this email (not just the one with the token)
         await ctx.db
-          .update(workspaceInvite)
-          .set({ acceptedAt: new Date() })
+          .delete(workspaceInvite)
           .where(and(
             eq(workspaceInvite.workspaceId, inv.workspaceId),
             eq(workspaceInvite.email, inv.email),
@@ -504,6 +503,14 @@ export function createTeamRouter() {
               permissions: mapPermissions(input.role),
               joinedAt: new Date(),
             })
+            // Delete any pending invites for this email since they're now a member
+            await ctx.db
+              .delete(workspaceInvite)
+              .where(and(
+                eq(workspaceInvite.workspaceId, ws.id),
+                eq(workspaceInvite.email, input.email.trim().toLowerCase()),
+                isNull(workspaceInvite.acceptedAt)
+              ))
           }
           return c.json({ ok: true, invited: false })
         }

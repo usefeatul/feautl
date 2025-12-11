@@ -651,7 +651,8 @@ export async function getSettingsInitialData(
     .from(board)
     .leftJoin(post, eq(post.boardId, board.id))
     .where(and(eq(board.workspaceId, ws.id), eq(board.isSystem, false)))
-    .groupBy(board.id);
+    .groupBy(board.id)
+    .orderBy(asc(board.sortOrder), asc(board.createdAt));
 
   const feedbackRoadmap = await db
     .select({
@@ -670,7 +671,8 @@ export async function getSettingsInitialData(
     .from(board)
     .leftJoin(post, eq(post.boardId, board.id))
     .where(and(eq(board.workspaceId, ws.id), eq(board.systemType, "roadmap" as any)))
-    .groupBy(board.id);
+    .groupBy(board.id)
+    .orderBy(asc(board.sortOrder), asc(board.createdAt));
 
   const feedbackBoards = [...feedbackRoadmap, ...feedbackBoardsNonSystem]
 

@@ -1,13 +1,11 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import { db, workspace, board } from "@oreilla/db";
-import { eq, and } from "drizzle-orm";
 import { Container } from "@/components/global/container";
 import { DomainHeader } from "@/components/subdomain/DomainHeader";
 import BrandVarsEffect from "@/components/global/BrandVarsEffect";
-import { getBrandingBySlug } from "@/lib/workspace";
 import SubdomainThemeProvider from "@/components/subdomain/SubdomainThemeProvider";
 import { DomainBrandingProvider } from "@/components/subdomain/DomainBrandingProvider";
+import { loadSubdomainLayoutData } from "./data";
 
 export default async function Layout({
   children,
@@ -17,52 +15,11 @@ export default async function Layout({
   params: Promise<{ subdomain: string }>;
 }) {
   const { subdomain } = await params;
-  const [ws] = await db
-    .select({
-      id: workspace.id,
-      name: workspace.name,
-      slug: workspace.slug,
-      domain: workspace.domain,
-      logo: workspace.logo,
-    })
-    .from(workspace)
-    .where(eq(workspace.slug, subdomain))
-    .limit(1);
+  const data = await loadSubdomainLayoutData(subdomain);
 
-  if (!ws) notFound();
+  if (!data) notFound();
 
-  const branding = await getBrandingBySlug(subdomain);
-  const [b] = await db
-    .select({
-      id: board.id,
-      isVisible: board.isVisible,
-      isPublic: board.isPublic,
-    })
-    .from(board)
-    .where(
-      and(
-        eq(board.workspaceId, ws.id),
-        eq(board.systemType, "changelog" as any)
-      )
-    )
-    .limit(1);
-  const changelogVisible = Boolean(b?.isVisible) && Boolean(b?.isPublic);
-
-  const [rb] = await db
-    .select({
-      id: board.id,
-      isVisible: board.isVisible,
-      isPublic: board.isPublic,
-    })
-    .from(board)
-    .where(
-      and(
-        eq(board.workspaceId, ws.id),
-        eq(board.systemType, "roadmap" as any)
-      )
-    )
-    .limit(1);
-  const roadmapVisible = Boolean(rb?.isVisible) && Boolean(rb?.isPublic);
+  const { workspace: ws, branding, changelogVisible, roadmapVisible } = data;
   const hidePoweredBy = Boolean(branding.hidePoweredBy);
   const p = branding.primary;
   return (

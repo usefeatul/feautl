@@ -28,6 +28,12 @@ export type RequestDetailData = {
   hasVoted?: boolean
   role?: "admin" | "member" | "viewer" | null
   isOwner?: boolean
+  tags?: Array<{
+    id: string
+    name: string
+    slug: string
+    color?: string | null
+  }>
   author?:
     | {
         name: string | null

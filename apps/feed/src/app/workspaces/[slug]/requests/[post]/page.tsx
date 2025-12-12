@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { db, workspace, board, post, user, workspaceMember } from "@oreilla/db"
+import { db, workspace, board, post, user, workspaceMember, postTag, tag } from "@oreilla/db"
 import { eq, and, sql } from "drizzle-orm"
 import RequestDetail from "@/components/requests/RequestDetail"
 import { client } from "@oreilla/api/client"
@@ -89,6 +89,13 @@ export default async function RequestDetailPage({ params, searchParams }: Props)
     }
   }
 
+  // Load tags for this post
+  const tags = await db
+    .select({ id: tag.id, name: tag.name, slug: tag.slug, color: tag.color })
+    .from(postTag)
+    .innerJoin(tag, eq(postTag.tagId, tag.id))
+    .where(eq(postTag.postId, p.id))
+
   const hasVoted = await readHasVotedForPost(p.id)
   const commentsRes = await client.comment.list.$get({ postId: p.id })
   const commentsJson = await commentsRes.json().catch(() => ({ comments: [] }))
@@ -118,7 +125,7 @@ export default async function RequestDetailPage({ params, searchParams }: Props)
 
   return (
     <RequestDetail
-      post={{ ...p, role, isOwner, hasVoted } as any}
+      post={{ ...p, role, isOwner, tags, hasVoted } as any}
       workspaceSlug={slug}
       initialComments={initialComments as any}
       initialCollapsedIds={initialCollapsedIds}

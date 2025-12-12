@@ -63,7 +63,7 @@ export default function StatusPicker({ postId, value, onChange, className }: { p
         >
           <StatusIcon status={value || "pending"} className="size-4 mr-2" />
           <span className="capitalize">{value || "pending"}</span>
-          <DropdownIcon className="ml-1.5 opacity-60" size={12} />
+          <DropdownIcon className="ml-1.5  size-3" />
         </Button>
       </PopoverTrigger>
       <PopoverContent list className="min-w-0 w-fit">

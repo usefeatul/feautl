@@ -53,7 +53,7 @@ export default function BoardPicker({ workspaceSlug, postId, value, onChange, cl
           )}
         >
           <span className="">{value?.name || "Board"}</span>
-          <DropdownIcon className="ml-1.5 opacity-60" size={12} />
+          <DropdownIcon className="ml-1.5  size-3" />
         </Button>
       </PopoverTrigger>
       <PopoverContent list className="w-fit">

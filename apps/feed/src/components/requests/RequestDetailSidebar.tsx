@@ -8,6 +8,7 @@ import { relativeTime } from "@/lib/time"
 import BoardPicker from "./meta/BoardPicker"
 import StatusPicker from "./meta/StatusPicker"
 import FlagsPicker from "./meta/FlagsPicker"
+import TagsPicker from "./meta/TagsPicker"
 import StatusIcon from "./StatusIcon"
 import RoleBadge from "../comments/RoleBadge"
 import type { RequestDetailData } from "./RequestDetail"
@@ -97,7 +98,7 @@ export default function RequestDetailSidebar({ post, workspaceSlug, readonly }: 
 
           {/* Flags */}
           {(canEdit || meta.isPinned || meta.isLocked || meta.isFeatured) && (
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between pb-3 border-b border-border">
               <span className="text-sm text-muted-foreground font-medium">Flags</span>
               {canEdit ? (
                 <FlagsPicker
@@ -125,6 +126,29 @@ export default function RequestDetailSidebar({ post, workspaceSlug, readonly }: 
               )}
             </div>
           )}
+
+          {/* Tags */}
+          {(post.tags && post.tags.length > 0) || canEdit ? (
+            <div className="pt-1">
+              <div className="flex items-start justify-between gap-1">
+                <span className="text-sm text-muted-foreground font-medium">Tags</span>
+                {canEdit ? (
+                  <TagsPicker workspaceSlug={workspaceSlug} postId={post.id} value={post.tags || []} />
+                ) : post.tags && post.tags.length > 0 ? (
+                  <div className="flex flex-wrap gap-1 justify-start ">
+                    {post.tags.map((t) => (
+                      <span
+                        key={t.id}
+                        className="text-[11px] rounded-md bg-green-100 px-2 py-0.5 text-green-500"
+                      >
+                        {t.name}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </aside>

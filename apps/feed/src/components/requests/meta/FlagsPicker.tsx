@@ -31,7 +31,7 @@ export default function FlagsPicker({ postId, value, onChange }: { postId: strin
       <PopoverTrigger asChild>
         <Button type="button" variant="nav" size="sm" className="h-7 px-2">
           <span className="rounded-md  px-2 py-0.5 capitalize">{label}</span>
-          <DropdownIcon className="ml-1 opacity-60" size={12} />
+          <DropdownIcon className="ml-1  size-3" />
         </Button>
       </PopoverTrigger>
       <PopoverContent list className="min-w-0 w-fit">

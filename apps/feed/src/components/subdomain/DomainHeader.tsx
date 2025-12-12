@@ -99,7 +99,7 @@ export function DomainHeader({
           </Link>
         </div>
         <div className="flex items-center gap-2 justify-self-end">
-          <NotificationsBell />
+          <NotificationsBell  />
           <Button asChild size="xs" variant="nav" aria-label="Dashboard">
             <Link href={dashboardUrl} className="group inline-flex items-center">
               <HomeIcon

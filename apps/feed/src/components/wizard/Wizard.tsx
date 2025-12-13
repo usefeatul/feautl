@@ -115,6 +115,15 @@ export default function WorkspaceWizard({
 
   const domainValid = useMemo(() => isDomainValid(domain), [domain]);
 
+  const domainFavicon = useMemo(() => {
+    if (!domainValid) return null;
+    const host = domain.trim().toLowerCase();
+    if (!host) return null;
+    return `https://www.google.com/s2/favicons?domain_url=${encodeURIComponent(
+      host
+    )}&sz=64`;
+  }, [domain, domainValid]);
+
   const canNext = useMemo(() => {
     if (step === 0) return isNameValid(name);
     if (step === 1) return domainValid;
@@ -285,6 +294,15 @@ export default function WorkspaceWizard({
                     {isCreating ? "Creating..." : "Create project →"}
                   </Button>
                 )}
+                {step === 1 && domainFavicon ? (
+                  <div className="ml-auto flex items-center">
+                    <img
+                      src={domainFavicon}
+                      alt="Website favicon preview"
+                      className="h-8 w-8 rounded-sm border bg-background"
+                    />
+                  </div>
+                ) : null}
               </div>
             </div>
 

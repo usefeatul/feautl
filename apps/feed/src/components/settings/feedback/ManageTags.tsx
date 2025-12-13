@@ -11,14 +11,28 @@ import ModalCreateTag from "./ModalCreateTag"
 import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
 import { MoreVertical } from "lucide-react"
 
-export default function ManageTags({ slug, plan }: { slug: string; plan?: string }) {
+export default function ManageTags({
+  slug,
+  plan,
+  initialTags,
+}: {
+  slug: string
+  plan?: string
+  initialTags?: any[]
+}) {
   const { data: tags = [], isLoading, refetch } = useQuery({
     queryKey: ["workspace-tags", slug],
     queryFn: async () => {
       const res = await client.board.tagsByWorkspaceSlug.$get({ slug })
       const d = await res.json()
-      return ((d as any)?.tags || []).map((t: any) => ({ id: t.id, name: t.name, slug: t.slug, postCount: Number(t.postCount || 0) }))
+      return ((d as any)?.tags || []).map((t: any) => ({
+        id: t.id,
+        name: t.name,
+        slug: t.slug,
+        postCount: Number(t.count || 0),
+      }))
     },
+    initialData: Array.isArray(initialTags) ? initialTags : undefined,
     staleTime: 300000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

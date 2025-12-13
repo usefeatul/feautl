@@ -5,11 +5,21 @@ import SectionCard from "../global/SectionCard"
 import RoadmapVisibility from "./RoadmapVisibility"
 import ManageTags from "./ManageTags"
 
-export default function FeedbackSection({ slug, plan }: { slug: string; plan?: string }) {
+export default function FeedbackSection({
+  slug,
+  plan,
+  initialBoards,
+  initialTags,
+}: {
+  slug: string
+  plan?: string
+  initialBoards?: any[]
+  initialTags?: any[]
+}) {
   return (
     <SectionCard title="Feedback" description="Configure boards and feedback">
-        <RoadmapVisibility slug={slug} />
-        <ManageTags slug={slug} plan={plan} />
+        <RoadmapVisibility slug={slug} initialBoards={initialBoards} />
+        <ManageTags slug={slug} plan={plan} initialTags={initialTags} />
     </SectionCard>
   )
 }

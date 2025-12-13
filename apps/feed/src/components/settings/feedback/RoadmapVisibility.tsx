@@ -6,7 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { client } from "@oreilla/api/client"
 import { toast } from "sonner"
 
-export default function RoadmapVisibility({ slug }: { slug: string }) {
+export default function RoadmapVisibility({ slug, initialBoards }: { slug: string; initialBoards?: any[] }) {
   const queryClient = useQueryClient()
   const { data: boards = [], refetch } = useQuery({
     queryKey: ["feedback-boards", slug],
@@ -15,6 +15,7 @@ export default function RoadmapVisibility({ slug }: { slug: string }) {
       const d = await res.json()
       return (d as any)?.boards || []
     },
+    initialData: Array.isArray(initialBoards) ? initialBoards : undefined,
     staleTime: 300000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

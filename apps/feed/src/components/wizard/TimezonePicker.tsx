@@ -41,7 +41,7 @@ export default function TimezonePicker({ value, onChange, now }: { value: string
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button type="button" variant="ghost" className="w-full justify-start gap-2">
+        <Button type="button" variant="nav" className="w-full justify-start gap-2">
           <Globe2 className="size-4" />
           <span className="truncate">{friendlyTZ(value)}</span>
           <span className="ml-auto text-xs px-2 py-1 rounded-md border bg-muted">{timeString}</span>

@@ -555,6 +555,7 @@ export async function getSettingsInitialData(
   initialDomainInfo?: any;
   initialDefaultDomain?: string;
   initialFeedbackBoards?: any[];
+  initialFeedbackTags?: any[];
 }> {
   const [ws] = await db
     .select({
@@ -676,6 +677,24 @@ export async function getSettingsInitialData(
 
   const feedbackBoards = [...feedbackRoadmap, ...feedbackBoardsNonSystem]
 
+  const feedbackTagsRows = await db
+    .select({
+      id: tag.id,
+      name: tag.name,
+      slug: tag.slug,
+      color: tag.color,
+      count: sql<number>`count(${board.id})`,
+    })
+    .from(tag)
+    .leftJoin(postTag, eq(postTag.tagId, tag.id))
+    .leftJoin(post, eq(postTag.postId, post.id))
+    .leftJoin(
+      board,
+      and(eq(post.boardId, board.id), eq(board.workspaceId, ws.id), eq(board.isSystem, false))
+    )
+    .where(eq(tag.workspaceId, ws.id))
+    .groupBy(tag.id, tag.name, tag.slug, tag.color)
+
   return {
     initialPlan: String((ws as any)?.plan || "free"),
     initialWorkspaceName: String((ws as any)?.name || ""),
@@ -716,6 +735,12 @@ export async function getSettingsInitialData(
       hidePublicMemberIdentity: Boolean(b.hidePublicMemberIdentity),
       sortOrder: Number(b.sortOrder || 0),
       postCount: Number(b.postCount || 0),
+    })),
+    initialFeedbackTags: feedbackTagsRows.map((t: any) => ({
+      id: t.id,
+      name: t.name,
+      slug: t.slug,
+      postCount: Number(t.count || 0),
     })),
   };
 }

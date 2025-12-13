@@ -25,7 +25,8 @@ type Props = {
   initialWorkspaceName?: string;
   initialDomainInfo?: any;
   initialDefaultDomain?: string;
-  initialFeedbackBoards?: any;
+  initialFeedbackBoards?: any[];
+  initialFeedbackTags?: any[];
 };
 
 export default function SettingsServer({
@@ -40,6 +41,8 @@ export default function SettingsServer({
   initialWorkspaceName,
   initialDomainInfo,
   initialDefaultDomain,
+  initialFeedbackBoards,
+  initialFeedbackTags,
 }: Props) {
   const sections = SECTIONS;
   const selected: string =
@@ -62,6 +65,8 @@ export default function SettingsServer({
           initialWorkspaceName={initialWorkspaceName}
           initialDomainInfo={initialDomainInfo}
           initialDefaultDomain={initialDefaultDomain}
+          initialFeedbackBoards={initialFeedbackBoards}
+          initialFeedbackTags={initialFeedbackTags}
         />
       </div>
     </section>
@@ -80,6 +85,8 @@ function SectionRenderer({
   initialWorkspaceName,
   initialDomainInfo,
   initialDefaultDomain,
+  initialFeedbackBoards,
+  initialFeedbackTags,
 }: {
   slug: string;
   section: string;
@@ -92,6 +99,8 @@ function SectionRenderer({
   initialWorkspaceName?: string;
   initialDomainInfo?: any;
   initialDefaultDomain?: string;
+  initialFeedbackBoards?: any[];
+  initialFeedbackTags?: any[];
 }) {
   switch (section) {
     case "branding":
@@ -115,7 +124,14 @@ function SectionRenderer({
         />
       );
     case "feedback":
-      return <FeedbackSection slug={slug} plan={initialPlan} />;
+      return (
+        <FeedbackSection
+          slug={slug}
+          plan={initialPlan}
+          initialBoards={initialFeedbackBoards}
+          initialTags={initialFeedbackTags}
+        />
+      );
     case "board":
       return <BoardSettings slug={slug} />;
     case "changelog":

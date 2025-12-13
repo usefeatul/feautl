@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@oreilla/ui/components/dialog"
+import { Dialog, DialogDescription } from "@oreilla/ui/components/dialog"
 import { Label } from "@oreilla/ui/components/label"
 import { Input } from "@oreilla/ui/components/input"
 import { Button } from "@oreilla/ui/components/button"
@@ -10,6 +10,7 @@ import { DropdownIcon } from "@oreilla/ui/icons/dropdown"
 import { LoadingButton } from "@/components/global/loading-button"
 import { client } from "@oreilla/api/client"
 import { toast } from "sonner"
+import { SettingsDialogShell } from "@/components/settings/global/SettingsDialogShell"
 
 type Role = "admin" | "member" | "viewer"
 const ROLES: Role[] = ["admin", "member", "viewer"]
@@ -43,44 +44,42 @@ export default function InviteMemberModal({ slug, open, onOpenChange, onInvited 
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="top-1/2 -translate-y-1/2 w-[min(92vw,450px)] sm:w-[380px] m-4">
-        <DialogHeader>
-          <DialogTitle>Invite member</DialogTitle>
-          <DialogDescription className="text-accent">Send an invite by email</DialogDescription>
-        </DialogHeader>
+    <SettingsDialogShell
+      open={open}
+      onOpenChange={onOpenChange}
+      title="Invite member"
+      description="Send an invite by email"
+    >
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <Label htmlFor="invite-email" className="sr-only">Email</Label>
+          <Input id="invite-email" type="email" autoComplete="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="flex-1 h-8 placeholder:text-accent" />
 
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Label htmlFor="invite-email" className="sr-only">Email</Label>
-            <Input id="invite-email" type="email" autoComplete="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="flex-1 h-8 placeholder:text-accent" />
-
-            <Popover open={roleOpen} onOpenChange={setRoleOpen}>
-              <PopoverTrigger asChild>
-                <Button type="button" variant="nav">
-                  <span className="rounded-md  px-2 py-0.5 capitalize">{role}</span>
-                  <DropdownIcon className="ml-1 size-3 opacity-100" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent list className="min-w-0 w-fit">
-                <PopoverList>
-                  {ROLES.map((r) => (
-                    <PopoverListItem key={r} role="menuitemradio" aria-checked={role === r} onClick={() => { setRole(r); setRoleOpen(false) }}>
-                      <span className="text-sm capitalize">{r}</span>
-                      {role === r ? <span className="ml-auto text-xs">✓</span> : null}
-                    </PopoverListItem>
-                  ))}
-                </PopoverList>
-              </PopoverContent>
-            </Popover>
-          </div>
-
-          <div className="flex items-center justify-end gap-2">
-            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
-            <LoadingButton type="button" onClick={onSubmit} loading={loading} disabled={!email.trim()}>Send Invite</LoadingButton>
-          </div>
+          <Popover open={roleOpen} onOpenChange={setRoleOpen}>
+            <PopoverTrigger asChild>
+              <Button type="button" variant="nav">
+                <span className="rounded-md  px-2 py-0.5 capitalize">{role}</span>
+                <DropdownIcon className="ml-1 size-3 opacity-100" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent list className="min-w-0 w-fit">
+              <PopoverList>
+                {ROLES.map((r) => (
+                  <PopoverListItem key={r} role="menuitemradio" aria-checked={role === r} onClick={() => { setRole(r); setRoleOpen(false) }}>
+                    <span className="text-sm capitalize">{r}</span>
+                    {role === r ? <span className="ml-auto text-xs">✓</span> : null}
+                  </PopoverListItem>
+                ))}
+              </PopoverList>
+            </PopoverContent>
+          </Popover>
         </div>
-      </DialogContent>
-    </Dialog>
+
+        <div className="flex items-center justify-end gap-2">
+          <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
+          <LoadingButton type="button" onClick={onSubmit} loading={loading} disabled={!email.trim()}>Send Invite</LoadingButton>
+        </div>
+      </div>
+    </SettingsDialogShell>
   )
 }

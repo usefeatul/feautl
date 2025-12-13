@@ -56,3 +56,13 @@ export function normalizePlan(raw: string): PlanKey {
 export function getPlanLimits(plan: PlanKey | string): PlanLimits {
   return LIMITS[normalizePlan(String(plan))]
 }
+
+export function assertWithinLimit(
+  current: number,
+  max: number | null,
+  message: (max: number) => string
+) {
+  if (typeof max === "number" && current >= max) {
+    throw new Error(message(max))
+  }
+}

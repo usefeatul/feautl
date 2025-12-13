@@ -13,7 +13,7 @@ import {
   acceptInviteInputSchema,
   addExistingMemberInputSchema,
 } from "../validators/team"
-import { getPlanLimits } from "../shared/plan"
+import { getPlanLimits, assertWithinLimit } from "../shared/plan"
 import { mapPermissions } from "../shared/permissions"
 
 async function getWorkspaceMemberEmails(
@@ -84,17 +84,12 @@ async function requireCanManageMembers(ctx: any, ws: { id: string; ownerId: stri
 
 async function assertMemberLimitNotReached(ctx: any, wsId: string, plan: string) {
   const limits = getPlanLimits(plan as "free" | "pro" | "enterprise")
-  if (typeof limits.maxMembers !== "number") return
-
   const [mc] = await ctx.db
     .select({ count: sql<number>`count(*)` })
     .from(workspaceMember)
     .where(and(eq(workspaceMember.workspaceId, wsId), eq(workspaceMember.isActive, true)))
     .limit(1)
-
-  if (Number(mc?.count || 0) >= limits.maxMembers) {
-    throw new HTTPException(403, { message: "Member limit reached for current plan" })
-  }
+  assertWithinLimit(Number(mc?.count || 0), limits.maxMembers, () => "Member limit reached for current plan")
 }
 
 export function createTeamRouter() {

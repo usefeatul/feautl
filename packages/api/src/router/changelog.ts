@@ -3,7 +3,9 @@ import { z } from "zod"
 import { j, publicProcedure, privateProcedure } from "../jstack"
 import { workspace, board, workspaceMember } from "@oreilla/db"
 import { HTTPException } from "hono/http-exception"
-import { normalizePlan, getPlanLimits } from "../shared/plan"
+import { normalizePlan, getPlanLimits, assertWithinLimit } from "../shared/plan"
+import { toSlug } from "../shared/slug"
+import { requireBoardManagerBySlug } from "../shared/access"
 
 const bySlugSchema = z.object({ slug: z.string().min(2).max(64) })
 
@@ -50,24 +52,7 @@ export function createChangelogRouter() {
     toggleVisibility: privateProcedure
       .input(z.object({ slug: bySlugSchema.shape.slug, isVisible: z.boolean() }))
       .post(async ({ ctx, input, c }) => {
-        const [ws] = await ctx.db
-          .select({ id: workspace.id, ownerId: workspace.ownerId })
-          .from(workspace)
-          .where(eq(workspace.slug, input.slug))
-          .limit(1)
-        if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
-
-        let allowed = ws.ownerId === ctx.session.user.id
-        if (!allowed) {
-          const [member] = await ctx.db
-            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-            .from(workspaceMember)
-            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-            .limit(1)
-          const perms = (member?.permissions || {}) as Record<string, boolean>
-          if (member?.role === "admin" || perms?.canManageBoards) allowed = true
-        }
-        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+        const ws = await requireBoardManagerBySlug(ctx, input.slug)
 
         const [b] = await ctx.db
           .select({ id: board.id })
@@ -103,23 +88,7 @@ export function createChangelogRouter() {
     tagsCreate: privateProcedure
         .input(z.object({ slug: bySlugSchema.shape.slug, name: z.string().min(1).max(64), color: z.string().optional() }))
         .post(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, plan: workspace.plan, ownerId: workspace.ownerId })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
-            .limit(1)
-          if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
-          let allowed = ws.ownerId === ctx.session.user.id
-          if (!allowed) {
-            const [member] = await ctx.db
-              .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-              .from(workspaceMember)
-              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-              .limit(1)
-            const perms = (member?.permissions || {}) as Record<string, boolean>
-            if (member?.role === "admin" || perms?.canManageBoards) allowed = true
-          }
-          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+          const ws = await requireBoardManagerBySlug(ctx, input.slug)
           const [b] = await ctx.db
             .select({ id: board.id, changelogTags: board.changelogTags })
             .from(board)
@@ -129,10 +98,8 @@ export function createChangelogRouter() {
           const limits = getPlanLimits(String(ws.plan || "free"))
           const current = Array.isArray((b as any)?.changelogTags) ? (b as any).changelogTags.length : 0
           const maxTags = limits.maxChangelogTags
-          if (typeof maxTags === "number" && current >= maxTags) {
-            throw new HTTPException(403, { message: `Changelog tags limit reached (${maxTags})` })
-          }
-          const slug = input.name.trim().toLowerCase().replace(/\s+/g, '-')
+          assertWithinLimit(current, maxTags, (max) => `Changelog tags limit reached (${max})`)
+          const slug = toSlug(input.name)
           const id = globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`
           const prev = Array.isArray((b as any)?.changelogTags) ? (b as any).changelogTags : []
           const next = [...prev, { id, name: input.name.trim(), slug, color: input.color || null }]
@@ -143,23 +110,7 @@ export function createChangelogRouter() {
     tagsDelete: privateProcedure
         .input(z.object({ slug: bySlugSchema.shape.slug, tagId: z.string().min(1) }))
         .post(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, ownerId: workspace.ownerId })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
-            .limit(1)
-          if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
-          let allowed = ws.ownerId === ctx.session.user.id
-          if (!allowed) {
-            const [member] = await ctx.db
-              .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-              .from(workspaceMember)
-              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-              .limit(1)
-            const perms = (member?.permissions || {}) as Record<string, boolean>
-            if (member?.role === "admin" || perms?.canManageBoards) allowed = true
-          }
-          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+          const ws = await requireBoardManagerBySlug(ctx, input.slug)
           const [b] = await ctx.db
             .select({ id: board.id, changelogTags: board.changelogTags })
             .from(board)

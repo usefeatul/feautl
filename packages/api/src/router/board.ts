@@ -7,10 +7,10 @@ import { byIdSchema, updatePostMetaSchema, updatePostBoardSchema } from "../vali
 import { HTTPException } from "hono/http-exception"
 import { byBoardInputSchema, boardSlugSchema } from "../validators/board"
 import { checkSlugInputSchema } from "../validators/workspace"
-import { normalizePlan, getPlanLimits } from "../shared/plan"
+import { normalizePlan, getPlanLimits, assertWithinLimit } from "../shared/plan"
+import { toSlug } from "../shared/slug"
+import { requireBoardManagerBySlug } from "../shared/access"
 import { createHash } from "crypto"
-
-
 
 export function createBoardRouter() {
   return j.router({
@@ -72,24 +72,7 @@ export function createBoardRouter() {
         })
       )
       .post(async ({ ctx, input, c }) => {
-        const [ws] = await ctx.db
-          .select({ id: workspace.id, ownerId: workspace.ownerId })
-          .from(workspace)
-          .where(eq(workspace.slug, input.slug))
-          .limit(1)
-        if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
-
-        let allowed = ws.ownerId === ctx.session.user.id
-        if (!allowed) {
-          const [member] = await ctx.db
-            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-            .from(workspaceMember)
-            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-            .limit(1)
-          const perms = (member?.permissions || {}) as Record<string, boolean>
-          if (member?.role === "admin" || perms?.canManageBoards) allowed = true
-        }
-        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+        const ws = await requireBoardManagerBySlug(ctx, input.slug)
 
         const [b] = await ctx.db
           .select({ id: board.id })
@@ -126,24 +109,7 @@ export function createBoardRouter() {
         })
       )
       .post(async ({ ctx, input, c }) => {
-        const [ws] = await ctx.db
-          .select({ id: workspace.id, ownerId: workspace.ownerId })
-          .from(workspace)
-          .where(eq(workspace.slug, input.slug))
-          .limit(1)
-        if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
-
-        let allowed = ws.ownerId === ctx.session.user.id
-        if (!allowed) {
-          const [member] = await ctx.db
-            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-            .from(workspaceMember)
-            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-            .limit(1)
-          const perms = (member?.permissions || {}) as Record<string, boolean>
-          if (member?.role === "admin" || perms?.canManageBoards) allowed = true
-        }
-        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+        const ws = await requireBoardManagerBySlug(ctx, input.slug)
 
         const next: Partial<typeof board.$inferSelect> = {}
         const p = input.patch || {}
@@ -170,24 +136,7 @@ export function createBoardRouter() {
         })
       )
       .post(async ({ ctx, input, c }) => {
-        const [ws] = await ctx.db
-          .select({ id: workspace.id, plan: workspace.plan, ownerId: workspace.ownerId })
-          .from(workspace)
-          .where(eq(workspace.slug, input.slug))
-          .limit(1)
-        if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
-
-        let allowed = ws.ownerId === ctx.session.user.id
-        if (!allowed) {
-          const [member] = await ctx.db
-            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-            .from(workspaceMember)
-            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-            .limit(1)
-          const perms = (member?.permissions || {}) as Record<string, boolean>
-          if (member?.role === "admin" || perms?.canManageBoards) allowed = true
-        }
-        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+        const ws = await requireBoardManagerBySlug(ctx, input.slug)
 
         const limits = getPlanLimits(normalizePlan(String(ws.plan || "free")))
         const [countRow] = await ctx.db
@@ -197,11 +146,9 @@ export function createBoardRouter() {
           .limit(1)
         const current = Number(countRow?.count || 0)
         const maxBoards = limits.maxNonSystemBoards
-        if (typeof maxBoards === "number" && current >= maxBoards) {
-          throw new HTTPException(403, { message: `Boards limit reached (${maxBoards})` })
-        }
+        assertWithinLimit(current, maxBoards, (max) => `Boards limit reached (${max})`)
 
-        const desiredSlug = (input.boardSlug || input.name).trim().toLowerCase().replace(/\s+/g, '-')
+        const desiredSlug = input.boardSlug ? toSlug(input.boardSlug) : toSlug(input.name)
 
         const [existing] = await ctx.db
           .select({ id: board.id })
@@ -237,24 +184,7 @@ export function createBoardRouter() {
     delete: privateProcedure
       .input(z.object({ slug: checkSlugInputSchema.shape.slug, boardSlug: z.string().min(1).max(64) }))
       .post(async ({ ctx, input, c }) => {
-        const [ws] = await ctx.db
-          .select({ id: workspace.id, ownerId: workspace.ownerId })
-          .from(workspace)
-          .where(eq(workspace.slug, input.slug))
-          .limit(1)
-        if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
-
-        let allowed = ws.ownerId === ctx.session.user.id
-        if (!allowed) {
-          const [member] = await ctx.db
-            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-            .from(workspaceMember)
-            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-            .limit(1)
-          const perms = (member?.permissions || {}) as Record<string, boolean>
-          if (member?.role === "admin" || perms?.canManageBoards) allowed = true
-        }
-        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+        const ws = await requireBoardManagerBySlug(ctx, input.slug)
 
         const [b] = await ctx.db
           .select({ id: board.id, isSystem: board.isSystem, slug: board.slug, systemType: board.systemType })
@@ -306,11 +236,9 @@ export function createBoardRouter() {
           .limit(1)
         const current = Number(countRow?.count || 0)
         const maxTags = limits.maxTags
-        if (typeof maxTags === "number" && current >= maxTags) {
-          throw new HTTPException(403, { message: `Tags limit reached (${maxTags})` })
-        }
+        assertWithinLimit(current, maxTags, (max) => `Tags limit reached (${max})`)
 
-        const slugVal = input.name.trim().toLowerCase().replace(/\s+/g, '-')
+        const slugVal = toSlug(input.name)
         const [existing] = await ctx.db
           .select({ id: tag.id })
           .from(tag)

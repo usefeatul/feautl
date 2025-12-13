@@ -14,7 +14,7 @@ export default function ModalCreateTag({ open, onOpenChange, onSave, saving }: {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="top-1/2 -translate-y-1/2 w-[min(92vw,520px)] sm:w-[420px] m-4">
+      <DialogContent className="top-1/2 -translate-y-1/2 w-[min(92vw,450px)] sm:w-[380px] m-4">
         <DialogHeader>
           <DialogTitle>Create tag</DialogTitle>
           <DialogDescription className="text-accent">Add a new tag to categorize feedback.</DialogDescription>

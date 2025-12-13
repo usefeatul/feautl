@@ -57,9 +57,9 @@ export default function InviteMemberModal({ slug, open, onOpenChange, onInvited 
 
             <Popover open={roleOpen} onOpenChange={setRoleOpen}>
               <PopoverTrigger asChild>
-                <Button type="button" variant="ghost" className="h-9 px-2">
+                <Button type="button" variant="nav">
                   <span className="rounded-md  px-2 py-0.5 capitalize">{role}</span>
-                  <DropdownIcon className="ml-1 opacity-60" size={12} />
+                  <DropdownIcon className="ml-1 size-3 opacity-100" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent list className="min-w-0 w-fit">

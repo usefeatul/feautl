@@ -1,4 +1,4 @@
-import type { CommandItem } from "./types"
+import type { CommandItem } from "../types/blocks"
 import { heading1Command } from "./heading1"
 import { heading2Command } from "./heading2"
 import { heading3Command } from "./heading3"
@@ -23,5 +23,5 @@ export const allCommands: CommandItem[] = [
   dividerCommand,
 ]
 
-export * from "./types"
+export * from "../types/blocks"
 

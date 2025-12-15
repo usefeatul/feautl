@@ -1,4 +1,4 @@
-import type { CommandItem } from "./types"
+import type { CommandItem } from "../types/blocks"
 
 export const heading1Command: CommandItem = {
   id: "heading1",

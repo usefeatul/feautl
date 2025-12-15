@@ -12,7 +12,7 @@ export { CustomImage } from "./extensions/image"
 
 // Blocks
 export { allCommands } from "./blocks"
-export type { CommandItem, CommandRange } from "./blocks"
+export type { CommandItem, CommandRange } from "./types/blocks"
 
 // Types
 export type { ChangelogEditorProps, ChangelogContent } from "./components/changelog-editor"

@@ -7,7 +7,7 @@ import { client } from "@oreilla/api/client"
 import { Button } from "@oreilla/ui/components/button"
 import { toast } from "sonner"
 import { cn } from "@oreilla/ui/lib/utils"
-import { NotionEditor, type NotionEditorRef } from "@/components/changelog/notion-editor"
+import { NotionEditor, type NotionEditorRef } from "@oreilla/editor"
 
 export default function NewChangelogEntryPage() {
   const params = useParams()

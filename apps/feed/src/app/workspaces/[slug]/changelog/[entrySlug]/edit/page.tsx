@@ -9,7 +9,7 @@ import { Badge } from "@oreilla/ui/components/badge"
 import { Skeleton } from "@oreilla/ui/components/skeleton"
 import { toast } from "sonner"
 import { cn } from "@oreilla/ui/lib/utils"
-import { NotionEditor, type NotionEditorRef } from "@/components/changelog/notion-editor"
+import { NotionEditor, type NotionEditorRef } from "@oreilla/editor"
 
 export default function EditChangelogEntryPage() {
   const params = useParams()

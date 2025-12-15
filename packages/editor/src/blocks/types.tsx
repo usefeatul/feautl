@@ -11,4 +11,3 @@ export interface CommandItem {
   command: (props: { editor: Editor; range: CommandRange }) => void
 }
 
-

@@ -25,4 +25,3 @@ export const allCommands: CommandItem[] = [
 
 export * from "./types"
 
-

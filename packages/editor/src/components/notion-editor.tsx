@@ -11,11 +11,12 @@ import Underline from "@tiptap/extension-underline"
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
 import Image from "@tiptap/extension-image"
 import { Extension } from "@tiptap/core"
-import Suggestion, { type SuggestionProps, type SuggestionKeyDownProps } from "@tiptap/suggestion"
+import Suggestion, { type SuggestionKeyDownProps } from "@tiptap/suggestion"
 import { common, createLowlight } from "lowlight"
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "../lib/utils"
 import tippy, { type Instance as TippyInstance } from "tippy.js"
-import { allCommands, type CommandItem } from "./blocks"
+import { allCommands, type CommandItem } from "../blocks"
+import styles from "../styles/notion-editor.module.css"
 
 const lowlight = createLowlight(common)
 
@@ -226,101 +227,9 @@ export const NotionEditor = forwardRef<NotionEditorRef, NotionEditorProps>(
     }))
 
     return (
-      <>
+      <div className={styles.root}>
         <EditorContent editor={editor} />
-        <style jsx global>{`
-          .ProseMirror {
-            min-height: 300px;
-            outline: none;
-          }
-          .ProseMirror > * + * {
-            margin-top: 0.75em;
-          }
-          .ProseMirror p.is-editor-empty:first-child::before {
-            color: var(--muted-foreground);
-            content: attr(data-placeholder);
-            float: left;
-            height: 0;
-            pointer-events: none;
-            opacity: 0.4;
-          }
-          .ProseMirror h1 {
-            font-size: 2em;
-            font-weight: 700;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-          }
-          .ProseMirror h2 {
-            font-size: 1.5em;
-            font-weight: 600;
-            margin-top: 1.25em;
-            margin-bottom: 0.5em;
-          }
-          .ProseMirror h3 {
-            font-size: 1.25em;
-            font-weight: 600;
-            margin-top: 1em;
-            margin-bottom: 0.5em;
-          }
-          .ProseMirror ul,
-          .ProseMirror ol {
-            padding-left: 1.5em;
-          }
-          .ProseMirror blockquote {
-            border-left: 3px solid var(--border);
-            padding-left: 1em;
-            color: var(--muted-foreground);
-            font-style: italic;
-          }
-          .ProseMirror pre {
-            background: #1e1e2e;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            overflow-x: auto;
-          }
-          .ProseMirror pre code {
-            color: #cdd6f4;
-            font-size: 0.875rem;
-          }
-          .ProseMirror code {
-            background: var(--muted);
-            padding: 0.125rem 0.375rem;
-            border-radius: 0.25rem;
-            font-size: 0.875em;
-          }
-          .ProseMirror img {
-            max-width: 100%;
-            border-radius: 0.5rem;
-            margin: 1em 0;
-          }
-          .ProseMirror hr {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 2em 0;
-          }
-          .ProseMirror a {
-            color: var(--primary);
-            text-decoration: underline;
-            text-underline-offset: 2px;
-          }
-          .ProseMirror ul[data-type="taskList"] {
-            list-style: none;
-            padding-left: 0;
-          }
-          .ProseMirror ul[data-type="taskList"] li {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-          }
-          .ProseMirror ul[data-type="taskList"] li > label {
-            flex-shrink: 0;
-            margin-top: 0.25rem;
-          }
-          .ProseMirror ul[data-type="taskList"] li > div {
-            flex: 1;
-          }
-        `}</style>
-      </>
+      </div>
     )
   }
 )

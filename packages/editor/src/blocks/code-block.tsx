@@ -1,9 +1,9 @@
 import type { CommandItem } from "./types"
 
-export const dividerCommand: CommandItem = {
-  id: "divider",
-  title: "Divider",
-  description: "Visual divider line",
+export const codeBlockCommand: CommandItem = {
+  id: "codeBlock",
+  title: "Code Block",
+  description: "Display code with syntax highlighting",
   icon: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -16,12 +16,12 @@ export const dividerCommand: CommandItem = {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <line x1="3" y1="12" x2="21" y2="12" />
+      <polyline points="16 18 22 12 16 6" />
+      <polyline points="8 6 2 12 8 18" />
     </svg>
   ),
   command: ({ editor, range }) => {
-    editor.chain().focus().deleteRange(range).setHorizontalRule().run()
+    editor.chain().focus().deleteRange(range).toggleCodeBlock().run()
   },
 }
-
 

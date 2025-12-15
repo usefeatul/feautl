@@ -10,4 +10,3 @@ export const heading1Command: CommandItem = {
   },
 }
 
-

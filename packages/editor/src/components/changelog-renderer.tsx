@@ -1,198 +1,166 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useMemo } from "react"
-import type { JSONContent } from "@tiptap/react"
-import { cn } from "../lib/utils"
+import type { JSONContent } from "@tiptap/react";
+import { generateHTML } from "@tiptap/html";
+import StarterKit from "@tiptap/starter-kit";
+import { cn } from "@oreilla/ui/lib/utils";
+import { Image } from "@tiptap/extension-image";
+import { TaskList, TaskItem } from "@tiptap/extension-list";
+import { Youtube } from "@tiptap/extension-youtube";
+import { Table as TiptapTable } from "@tiptap/extension-table";
+import { TableRow as TiptapTableRow } from "@tiptap/extension-table";
+import { TableCell as TiptapTableCell } from "@tiptap/extension-table";
+import { TableHeader as TiptapTableHeader } from "@tiptap/extension-table";
+import { Subscript } from "@tiptap/extension-subscript";
+import { Superscript } from "@tiptap/extension-superscript";
+import { Highlight } from "@tiptap/extension-highlight";
+import { Color } from "@tiptap/extension-color";
+import { TextStyleKit } from "@tiptap/extension-text-style";
 
 export interface ChangelogRendererProps {
-  content: JSONContent
-  className?: string
+  content: JSONContent;
+  className?: string;
 }
 
-type CalloutType = "info" | "warning" | "success" | "error"
+// Extensions needed for rendering (read-only, no interactive features)
+const renderExtensions = [
+  StarterKit.configure({
+    codeBlock: {
+      HTMLAttributes: {
+        class: "rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto",
+      },
+    },
+    bulletList: {
+      HTMLAttributes: {
+        class: "list-outside list-disc pl-4",
+      },
+    },
+    orderedList: {
+      HTMLAttributes: {
+        class: "list-outside list-decimal pl-4",
+      },
+    },
+    listItem: {
+      HTMLAttributes: {
+        class: "leading-normal",
+      },
+    },
+    blockquote: {
+      HTMLAttributes: {
+        class: "border-l border-l-2 pl-4 italic",
+      },
+    },
+    code: {
+      HTMLAttributes: {
+        class: "rounded-md bg-muted px-1.5 py-1 font-medium font-mono text-sm",
+      },
+    },
+    horizontalRule: {
+      HTMLAttributes: {
+        class: "my-6 border-t border-muted-foreground/20",
+      },
+    },
+  }),
+  Image.configure({
+    inline: false,
+    allowBase64: true,
+    HTMLAttributes: {
+      class: "rounded-lg max-w-full h-auto",
+    },
+  }),
+  TaskList.configure({
+    HTMLAttributes: {
+      class: "list-none p-0",
+    },
+  }),
+  TaskItem.configure({
+    nested: true,
+    HTMLAttributes: {
+      class: "flex items-start gap-2",
+    },
+  }),
+  Youtube.configure({
+    HTMLAttributes: {
+      class: "w-full aspect-video rounded-lg",
+    },
+  }),
+  TiptapTable.configure({
+    HTMLAttributes: {
+      class: "border-collapse table-auto w-full",
+    },
+  }),
+  TiptapTableRow,
+  TiptapTableCell.configure({
+    HTMLAttributes: {
+      class: "border border-muted p-2",
+    },
+  }),
+  TiptapTableHeader.configure({
+    HTMLAttributes: {
+      class: "border border-muted p-2 bg-muted font-semibold",
+    },
+  }),
+  Subscript,
+  Superscript,
+  Highlight.configure({ multicolor: true }),
+  TextStyleKit,
+  Color,
+];
 
-const calloutIcons: Record<CalloutType, string> = {
-  info: "ℹ️",
-  warning: "⚠️",
-  success: "✅",
-  error: "❌",
-}
-
-function renderMark(
-  text: string,
-  marks?: Array<{ type: string; attrs?: Record<string, unknown> }>
-): React.ReactNode {
-  if (!marks || marks.length === 0) {
-    return text
-  }
-
-  return marks.reduce<React.ReactNode>((acc, mark) => {
-    switch (mark.type) {
-      case "bold":
-        return <strong>{acc}</strong>
-      case "italic":
-        return <em>{acc}</em>
-      case "underline":
-        return <u>{acc}</u>
-      case "strike":
-        return <s>{acc}</s>
-      case "code":
-        return <code>{acc}</code>
-      case "link":
-        return (
-          <a
-            href={mark.attrs?.href as string}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary underline underline-offset-4"
-          >
-            {acc}
-          </a>
-        )
-      default:
-        return acc
-    }
-  }, text)
-}
-
-function renderContent(content?: JSONContent[]): React.ReactNode {
-  if (!content) return null
-
-  return content.map((node, index) => {
-    if (node.type === "text") {
-      return (
-        <React.Fragment key={index}>
-          {renderMark(node.text || "", node.marks)}
-        </React.Fragment>
-      )
-    }
-
-    return <RenderNode key={index} node={node} />
-  })
-}
-
-function RenderNode({ node }: { node: JSONContent }): React.ReactNode {
-  switch (node.type) {
-    case "doc":
-      return <>{renderContent(node.content)}</>
-
-    case "paragraph":
-      return <p>{renderContent(node.content)}</p>
-
-    case "heading": {
-      const level = node.attrs?.level || 1
-      const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
-      return <Tag>{renderContent(node.content)}</Tag>
-    }
-
-    case "bulletList":
-      return <ul>{renderContent(node.content)}</ul>
-
-    case "orderedList":
-      return <ol>{renderContent(node.content)}</ol>
-
-    case "listItem":
-      return <li>{renderContent(node.content)}</li>
-
-    case "taskList":
-      return (
-        <ul className="list-none pl-0 space-y-1">
-          {renderContent(node.content)}
-        </ul>
-      )
-
-    case "taskItem": {
-      const checked = node.attrs?.checked || false
-      return (
-        <li className="flex items-start gap-2">
-          <input
-            type="checkbox"
-            checked={checked}
-            readOnly
-            className="mt-1 h-4 w-4 rounded border-border"
-          />
-          <div className="flex-1">{renderContent(node.content)}</div>
-        </li>
-      )
-    }
-
-    case "blockquote":
-      return (
-        <blockquote className="border-l-4 border-primary/50 pl-4 italic">
-          {renderContent(node.content)}
-        </blockquote>
-      )
-
-    case "codeBlock": {
-      const language = node.attrs?.language || ""
-      return (
-        <pre className="rounded-lg bg-[#1e1e2e] p-4 overflow-x-auto">
-          <code className="text-[#cdd6f4] text-sm" data-language={language}>
-            {node.content?.map((n) => n.text).join("") || ""}
-          </code>
-        </pre>
-      )
-    }
-
-    case "horizontalRule":
-      return <hr className="my-8 border-border" />
-
-    case "image": {
-      const { src, alt, title, width } = node.attrs || {}
-      return (
-        <figure className="my-6 text-center">
-          <img
-            src={src as string}
-            alt={(alt as string) || ""}
-            title={(title as string) || undefined}
-            width={width as number | undefined}
-            className="rounded-lg inline-block max-w-full"
-          />
-          {title && (
-            <figcaption className="mt-2 text-sm text-muted-foreground">
-              {title as string}
-            </figcaption>
-          )}
-        </figure>
-      )
-    }
-
-    case "callout": {
-      const type = (node.attrs?.type as CalloutType) || "info"
-      const icon = calloutIcons[type] || calloutIcons.info
-      return (
-        <div className={cn("callout flex gap-3 rounded-lg border p-4 my-4", type)}>
-          <span className="callout-icon flex-shrink-0 text-lg">{icon}</span>
-          <div className="callout-content flex-1 min-w-0">
-            {renderContent(node.content)}
-          </div>
-        </div>
-      )
-    }
-
-    case "hardBreak":
-      return <br />
-
-    default:
-      // For unknown node types, try to render content if available
-      if (node.content) {
-        return <>{renderContent(node.content)}</>
-      }
-      return null
-  }
-}
-
+/**
+ * ChangelogRenderer Component
+ * 
+ * A read-only renderer for TipTap JSON content.
+ * Use this to display changelog entries, blog posts, or any rich text content.
+ * 
+ * @example
+ * ```tsx
+ * <ChangelogRenderer 
+ *   content={entry.content as JSONContent}
+ *   className="prose dark:prose-invert"
+ * />
+ * ```
+ */
 export function ChangelogRenderer({ content, className }: ChangelogRendererProps) {
-  const rendered = useMemo(() => {
-    if (!content) return null
-    return <RenderNode node={content} />
-  }, [content])
+  if (!content || !content.content?.length) {
+    return null;
+  }
 
-  return (
-    <div className={cn("changelog-renderer", className)}>
-      {rendered}
-    </div>
-  )
+  try {
+    const html = generateHTML(content, renderExtensions);
+
+    return (
+      <div
+        className={cn(
+          "prose prose-neutral dark:prose-invert max-w-none",
+          // Heading styles
+          "[&_h1]:text-3xl [&_h1]:font-bold [&_h1]:tracking-tight [&_h1]:mb-4",
+          "[&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:mb-3 [&_h2]:mt-8",
+          "[&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mb-2 [&_h3]:mt-6",
+          // Paragraph
+          "[&_p]:leading-relaxed [&_p]:mb-4",
+          // Links
+          "[&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-primary/80",
+          // Images
+          "[&_img]:rounded-lg [&_img]:my-6",
+          // Code blocks
+          "[&_pre]:bg-muted [&_pre]:rounded-lg [&_pre]:p-4 [&_pre]:overflow-x-auto",
+          "[&_code]:text-sm",
+          className
+        )}
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: HTML is generated from trusted TipTap content
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    );
+  } catch (error) {
+    console.error("Failed to render changelog content:", error);
+    return (
+      <div className="text-muted-foreground text-sm">
+        Failed to render content
+      </div>
+    );
+  }
 }
+
+export default ChangelogRenderer;
 

@@ -1,50 +1,54 @@
 {
   "name": "@oreilla/editor",
-  "version": "0.0.0",
-  "type": "module",
+  "version": "0.1.0",
   "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./components/*": "./src/components/*.tsx",
+    "./extensions/*": "./src/extensions/*"
+  },
   "scripts": {
-    "lint": "eslint . --max-warnings 0"
+    "lint": "biome check .",
+    "format": "biome --write ."
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.6.0",
     "@oreilla/ui": "workspace:*",
-    "@tiptap/core": "^2.11.5",
-    "@tiptap/extension-code-block-lowlight": "^2.11.5",
-    "@tiptap/extension-image": "^2.11.5",
-    "@tiptap/extension-link": "^2.11.5",
-    "@tiptap/extension-placeholder": "^2.11.5",
-    "@tiptap/extension-task-item": "^2.11.5",
-    "@tiptap/extension-task-list": "^2.11.5",
-    "@tiptap/extension-underline": "^2.11.5",
-    "@tiptap/pm": "^2.11.5",
-    "@tiptap/react": "^2.11.5",
-    "@tiptap/starter-kit": "^2.11.5",
-    "@tiptap/suggestion": "^2.11.5",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lowlight": "^3.2.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "tailwind-merge": "^3.3.1",
+    "@phosphor-icons/react": "^2.1.10",
+    "@tiptap/core": "^3.13.0",
+    "@tiptap/extension-code-block-lowlight": "^3.13.0",
+    "@tiptap/extension-color": "^3.13.0",
+    "@tiptap/extension-document": "^3.13.0",
+    "@tiptap/extension-file-handler": "^3.13.0",
+    "@tiptap/extension-highlight": "^3.13.0",
+    "@tiptap/extension-image": "^3.13.0",
+    "@tiptap/extension-list": "^3.13.0",
+    "@tiptap/extension-subscript": "^3.13.0",
+    "@tiptap/extension-superscript": "^3.13.0",
+    "@tiptap/extension-table": "^3.13.0",
+    "@tiptap/extension-text-style": "^3.13.0",
+    "@tiptap/extension-typography": "^3.13.0",
+    "@tiptap/extension-youtube": "^3.13.0",
+    "@tiptap/extensions": "^3.13.0",
+    "@tiptap/markdown": "^3.13.0",
+    "@tiptap/pm": "^3.13.0",
+    "@tiptap/react": "^3.13.0",
+    "@tiptap/starter-kit": "^3.13.0",
+    "@tiptap/suggestion": "^3.13.0",
+    "fuse.js": "^7.0.0",
+    "lowlight": "^3.3.0",
+    "lucide-react": "^0.452.0",
+    "react-colorful": "^5.6.1",
+    "react-tweet": "^3.2.2",
     "tippy.js": "^6.3.7"
   },
   "devDependencies": {
     "@oreilla/tsconfig": "workspace:*",
-    "@types/node": "^20.19.9",
-    "@types/react": "^19.1.9",
-    "@types/react-dom": "^19.1.7",
-    "typescript": "^5.9.2"
-  },
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
-  "exports": {
-    ".": {
-      "import": "./src/index.ts",
-      "types": "./src/index.ts"
-    },
-    "./styles": "./src/styles/editor.css",
-    "./components/*": "./src/components/*.tsx",
-    "./extensions/*": "./src/extensions/*.ts"
+    "@types/node": "^20",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "typescript": "^5"
   }
 }
-

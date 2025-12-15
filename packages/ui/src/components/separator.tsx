@@ -1,21 +1,26 @@
 "use client"
 
 import * as React from "react"
-import { Separator as BaseSeparator } from "@base-ui/react/separator"
 
 import { cn } from "@oreilla/ui/lib/utils"
+
+interface SeparatorProps extends React.ComponentPropsWithoutRef<"div"> {
+  orientation?: "horizontal" | "vertical"
+  decorative?: boolean
+}
 
 function Separator({
   className,
   orientation = "horizontal",
   decorative = true,
   ...props
-}: React.ComponentProps<typeof BaseSeparator>) {
+}: SeparatorProps) {
   return (
-    <BaseSeparator
+    <div
       data-slot="separator"
-      decorative={decorative}
-      orientation={orientation}
+      data-orientation={orientation}
+      role={decorative ? "none" : "separator"}
+      aria-orientation={decorative ? undefined : orientation}
       className={cn(
         "bg-accent/50 shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
         className

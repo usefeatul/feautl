@@ -13,7 +13,18 @@ import { EditorMarkBold } from "./marks/editor-mark-bold";
 import { EditorMarkItalic } from "./marks/editor-mark-italic";
 import { EditorMarkStrike } from "./marks/editor-mark-strike";
 import { EditorMarkCode } from "./marks/editor-mark-code";
+import { EditorMarkHighlight } from "./marks/editor-mark-highlight";
+import { EditorMarkTextColor } from "./marks/editor-mark-text-color";
 import { EditorLinkSelector } from "./marks/editor-link-selector";
+import { EditorSelector } from "./ui/editor-selector";
+import { EditorNodeText } from "./nodes/editor-node-text";
+import { EditorNodeHeading1 } from "./nodes/editor-node-heading1";
+import { EditorNodeHeading2 } from "./nodes/editor-node-heading2";
+import { EditorNodeHeading3 } from "./nodes/editor-node-heading3";
+import { EditorNodeBulletList } from "./nodes/editor-node-bullet-list";
+import { EditorNodeOrderedList } from "./nodes/editor-node-ordered-list";
+import { EditorNodeQuote } from "./nodes/editor-node-quote";
+import { EditorNodeCode } from "./nodes/editor-node-code";
 import "../styles/editor.css";
 
 export interface NotionEditorRef {
@@ -89,10 +100,22 @@ export const NotionEditor = forwardRef<NotionEditorRef, NotionEditorProps>(
       <EditorContext.Provider value={{ editor }}>
         <div className={`border-none outline-none ${className || ""}`}>
           <EditorBubbleMenu>
-            <EditorMarkBold />
-            <EditorMarkItalic />
-            <EditorMarkStrike />
-            <EditorMarkCode />
+            <EditorSelector title="Text">
+              <EditorNodeText />
+              <EditorNodeHeading1 />
+              <EditorNodeHeading2 />
+              <EditorNodeHeading3 />
+              <EditorNodeBulletList />
+              <EditorNodeOrderedList />
+              <EditorNodeQuote />
+              <EditorNodeCode />
+            </EditorSelector>
+            <EditorMarkBold hideName />
+            <EditorMarkItalic hideName />
+            <EditorMarkStrike hideName />
+            <EditorMarkCode hideName />
+            <EditorMarkHighlight hideName />
+            <EditorMarkTextColor hideName />
             <EditorLinkSelector />
           </EditorBubbleMenu>
           <TiptapEditorContent 

@@ -14,32 +14,36 @@ export const BubbleMenuButton = ({
   command,
   icon: Icon,
   hideName,
-}: EditorButtonProps) => (
-  <Button
-    className={cn(
-      "flex items-center justify-center gap-2 h-8 px-2",
-      hideName ? "w-8" : "w-auto min-w-[80px]",
-      isActive() && "bg-primary/10 text-primary hover:bg-primary/20"
-    )}
-    onClick={() => command()}
-    size="sm"
-    variant="ghost"
-  >
-    <Icon
+}: EditorButtonProps) => {
+  return (
+    <Button
       className={cn(
-        "shrink-0",
-        isActive() ? "text-primary" : "text-muted-foreground"
+        "flex items-center gap-2 h-8 px-2",
+        hideName 
+          ? "w-8 justify-center" 
+          : "w-full justify-between",
+        isActive() && "bg-primary/10 text-primary hover:bg-primary/20"
       )}
-      size={14}
-    />
-    {!hideName && (
-      <span className="text-xs whitespace-nowrap">{name}</span>
-    )}
-    {isActive() && (
-      <CheckIcon className="shrink-0 text-primary" size={12} />
-    )}
-  </Button>
-);
+      onClick={() => command()}
+      size="sm"
+      variant="ghost"
+    >
+      <Icon
+        className={cn(
+          "shrink-0",
+          isActive() ? "text-primary" : "text-muted-foreground"
+        )}
+        size={14}
+      />
+      {!hideName && (
+        <span className="text-xs whitespace-nowrap flex-1 text-left">{name}</span>
+      )}
+      {isActive() && !hideName && (
+        <CheckIcon className="shrink-0 text-primary ml-auto" size={12} />
+      )}
+    </Button>
+  );
+};
 
 /**
  * Clear Formatting Button

@@ -30,11 +30,7 @@ export * from "./nodes";
 export * from "./ui";
 
 // Legacy-compatible components (for migration from editorold)
-export {
-  NotionEditor,
-  type NotionEditorRef,
-  type NotionEditorProps,
-} from "./notion-editor";
+
 export {
   ChangelogRenderer,
   type ChangelogRendererProps,

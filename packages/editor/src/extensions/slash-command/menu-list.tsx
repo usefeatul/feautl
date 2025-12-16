@@ -100,7 +100,7 @@ export const EditorSlashMenu = ({
             {items.map((item, index) => (
               <PopoverListItem
                 key={item.title}
-                ref={(el) => {
+                ref={(el: HTMLButtonElement | null) => {
                   itemRefs.current[index] = el;
                 }}
                 className="flex items-center gap-3 px-3 py-2"

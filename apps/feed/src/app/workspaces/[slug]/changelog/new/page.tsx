@@ -2,12 +2,13 @@
 
 import { useState, useCallback, useRef } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { type JSONContent } from "@tiptap/react"
 import { client } from "@oreilla/api/client"
 import { Button } from "@oreilla/ui/components/button"
 import { toast } from "sonner"
 import { cn } from "@oreilla/ui/lib/utils"
-import { NotionEditor, type NotionEditorRef } from "@oreilla/editor"
+import { type JSONContent } from "@tiptap/react"
+import { ChangelogEditor, type ChangelogEditorRef } from "@/components/changelog/changelog-editor"
+import { TextareaAutosize } from "@/components/editor/TextareaAutosize"
 
 export default function NewChangelogEntryPage() {
   const params = useParams()
@@ -18,20 +19,13 @@ export default function NewChangelogEntryPage() {
   const [saving, setSaving] = useState(false)
   const [coverImage, setCoverImage] = useState<string | null>(null)
   const titleRef = useRef<HTMLTextAreaElement>(null)
-  const editorRef = useRef<NotionEditorRef>(null)
+  const editorRef = useRef<ChangelogEditorRef>(null)
 
   // Auto-resize title textarea
   const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value)
     e.target.style.height = "auto"
     e.target.style.height = e.target.scrollHeight + "px"
-  }
-
-  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault()
-      editorRef.current?.focus()
-    }
   }
 
   const handleAddCover = () => {
@@ -157,18 +151,18 @@ export default function NewChangelogEntryPage() {
         )}
 
         {/* Title */}
-        <textarea
+        <TextareaAutosize
           ref={titleRef}
           value={title}
           onChange={handleTitleChange}
-          onKeyDown={handleTitleKeyDown}
+          onEnterPress={() => editorRef.current?.focus()}
           placeholder="Untitled"
           className={cn(
             "w-full text-4xl font-bold tracking-tight bg-transparent border-none outline-none resize-none",
             "placeholder:text-muted-foreground/40",
             "mb-4"
           )}
-          rows={1}
+          minRows={1}
           autoFocus
         />
 
@@ -183,7 +177,7 @@ export default function NewChangelogEntryPage() {
         </div>
 
         {/* Content editor */}
-        <NotionEditor ref={editorRef} />
+        <ChangelogEditor ref={editorRef} />
       </div>
     </>
   )

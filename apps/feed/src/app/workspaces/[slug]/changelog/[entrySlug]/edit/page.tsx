@@ -9,7 +9,8 @@ import { Badge } from "@oreilla/ui/components/badge"
 import { Skeleton } from "@oreilla/ui/components/skeleton"
 import { toast } from "sonner"
 import { cn } from "@oreilla/ui/lib/utils"
-import { NotionEditor, type NotionEditorRef } from "@oreilla/editor"
+import { ChangelogEditor, type ChangelogEditorRef } from "@/components/changelog/changelog-editor"
+import { TextareaAutosize } from "@/components/editor/TextareaAutosize"
 
 export default function EditChangelogEntryPage() {
   const params = useParams()
@@ -26,7 +27,7 @@ export default function EditChangelogEntryPage() {
   const [initialContent, setInitialContent] = useState<JSONContent | null>(null)
   const [saving, setSaving] = useState(false)
   const titleRef = useRef<HTMLTextAreaElement>(null)
-  const editorRef = useRef<NotionEditorRef>(null)
+  const editorRef = useRef<ChangelogEditorRef>(null)
 
   useEffect(() => {
     if (!entryId) {
@@ -71,13 +72,6 @@ export default function EditChangelogEntryPage() {
     setTitle(e.target.value)
     e.target.style.height = "auto"
     e.target.style.height = e.target.scrollHeight + "px"
-  }
-
-  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault()
-      editorRef.current?.focus()
-    }
   }
 
   const handleAddCover = () => {
@@ -276,18 +270,22 @@ export default function EditChangelogEntryPage() {
         )}
 
         {/* Title */}
-        <textarea
+        <TextareaAutosize
           ref={titleRef}
           value={title}
-          onChange={handleTitleChange}
-          onKeyDown={handleTitleKeyDown}
+          onChange={(e) => {
+            setTitle(e.target.value)
+            e.target.style.height = "auto"
+            e.target.style.height = e.target.scrollHeight + "px"
+          }}
+          onEnterPress={() => editorRef.current?.focus()}
           placeholder="Untitled"
           className={cn(
             "w-full text-4xl font-bold tracking-tight bg-transparent border-none outline-none resize-none",
             "placeholder:text-muted-foreground/40",
             "mb-4"
           )}
-          rows={1}
+          minRows={1}
         />
 
         {/* Date indicator */}
@@ -309,7 +307,7 @@ export default function EditChangelogEntryPage() {
 
         {/* Content editor */}
         {initialContent && (
-          <NotionEditor ref={editorRef} initialContent={initialContent} />
+          <ChangelogEditor ref={editorRef} initialContent={initialContent} />
         )}
       </div>
     </>

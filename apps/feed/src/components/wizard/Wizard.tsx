@@ -8,6 +8,7 @@ import StepDomain from "./StepDomain";
 import StepSlug from "./StepSlug";
 import TimezonePicker from "./TimezonePicker";
 import { client } from "@oreilla/api/client";
+import { ArrowRight } from "lucide-react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
@@ -207,6 +208,7 @@ export default function WorkspaceWizard({
                     name={name}
                     onChange={setName}
                     isValid={isNameValid(name)}
+                    onNext={next}
                   />
                   {slugLocked ? (
                     <div className="mt-5">
@@ -223,6 +225,7 @@ export default function WorkspaceWizard({
                   domain={domain}
                   onChange={setDomain}
                   isValid={domainValid}
+                  onNext={next}
                 />
               )}
               {step === 2 && (
@@ -235,6 +238,7 @@ export default function WorkspaceWizard({
                   checking={slugChecking}
                   available={slugAvailable}
                   disabled={!!slugLocked}
+                  onNext={next}
                 />
               )}
               {step === 3 && (
@@ -292,6 +296,7 @@ export default function WorkspaceWizard({
                   disabled={!canNext}
                 >
                   Continue
+                  <ArrowRight className="ml-2 size-4" />
                 </Button>
               ) : (
                 <Button
@@ -300,6 +305,7 @@ export default function WorkspaceWizard({
                   disabled={!canNext || isCreating}
                 >
                   {isCreating ? "Creating..." : "Create Workspace"}
+                  {!isCreating && <ArrowRight className="ml-2 size-4" />}
                 </Button>
               )}
             </div>

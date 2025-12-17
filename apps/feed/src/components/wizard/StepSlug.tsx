@@ -6,7 +6,7 @@ import  CompletedIcon  from "@oreilla/ui/icons/completed"
 import ClosedIcon from "@oreilla/ui/icons/closed"
 import { isSlugValid } from "../../lib/validators"
 
-export default function StepSlug({ slug, onChange, checking, available, disabled = false }: { slug: string; onChange: (v: string) => void; checking: boolean; available: boolean | null; disabled?: boolean }) {
+export default function StepSlug({ slug, onChange, checking, available, disabled = false, onNext }: { slug: string; onChange: (v: string) => void; checking: boolean; available: boolean | null; disabled?: boolean; onNext: () => void }) {
   return (
     <div className="space-y-4">
       <div>
@@ -28,6 +28,12 @@ export default function StepSlug({ slug, onChange, checking, available, disabled
               aria-invalid={available === false || (!!slug && !isSlugValid(slug))}
               disabled={disabled}
               autoFocus={!disabled}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && available !== false && isSlugValid(slug)) {
+                  e.preventDefault()
+                  onNext()
+                }
+              }}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground select-none pointer-events-none">.oreilla.com</span>
           </div>

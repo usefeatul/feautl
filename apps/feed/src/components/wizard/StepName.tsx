@@ -2,7 +2,7 @@
 
 import { Input } from "@oreilla/ui/components/input"
 
-export default function StepName({ name, onChange, isValid }: { name: string; onChange: (v: string) => void; isValid: boolean }) {
+export default function StepName({ name, onChange, isValid, onNext }: { name: string; onChange: (v: string) => void; isValid: boolean; onNext: () => void }) {
   return (
     <div className="space-y-4">
       <div>
@@ -20,6 +20,12 @@ export default function StepName({ name, onChange, isValid }: { name: string; on
           className="h-11 text-base placeholder:text-accent/70"
           aria-invalid={!isValid && name.length > 0}
           autoFocus
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && isValid) {
+              e.preventDefault()
+              onNext()
+            }
+          }}
         />
         {!isValid && name.length > 0 ? (
           <p className="text-xs text-destructive">Name is required.</p>

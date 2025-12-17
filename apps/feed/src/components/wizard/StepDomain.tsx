@@ -4,7 +4,7 @@ import { Input } from "@oreilla/ui/components/input"
 import { AlertCircle } from "lucide-react"
 import { suggestDomainFix } from "../../lib/validators"
 
-export default function StepDomain({ domain, onChange, isValid }: { domain: string; onChange: (v: string) => void; isValid: boolean }) {
+export default function StepDomain({ domain, onChange, isValid, onNext }: { domain: string; onChange: (v: string) => void; isValid: boolean; onNext: () => void }) {
   return (
     <div className="space-y-4">
       <div>
@@ -25,6 +25,12 @@ export default function StepDomain({ domain, onChange, isValid }: { domain: stri
             className="h-11 text-base flex-1 rounded-l-none border-l-0 placeholder:text-accent/70"
             aria-invalid={!isValid && domain.length > 0}
             autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && isValid) {
+                e.preventDefault()
+                onNext()
+              }
+            }}
           />
           {!isValid && domain.length > 0 ? (
             <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 text-destructive size-4" />

@@ -13,16 +13,16 @@ export default function StepDomain({ domain, onChange, isValid }: { domain: stri
           We&apos;ll use this to match feedback with your users.
         </p>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-3">
         <div className="relative flex items-center">
-          <span className="inline-flex items-center h-9 px-2 bg-muted border rounded-l-md text-black/80 select-none">https://</span>
+          <span className="inline-flex items-center h-11 px-3 bg-muted border rounded-l-md text-muted-foreground select-none text-sm">https://</span>
           <Input
             id="domain"
             type="text"
             value={domain}
             onChange={(e) => onChange(e.target.value)}
             placeholder="acmeanalytics.com"
-            className="h-9 flex-1 rounded-l-none border-l-0 placeholder:text-accent/70"
+            className="h-11 text-base flex-1 rounded-l-none border-l-0 placeholder:text-accent/70"
             aria-invalid={!isValid && domain.length > 0}
             autoFocus
           />

@@ -200,64 +200,66 @@ export default function WorkspaceWizard({
           </div>
 
           <div className="min-h-[220px]">
-            {step === 0 && (
-              <>
-                <StepName
-                  name={name}
-                  onChange={setName}
-                  isValid={isNameValid(name)}
-                />
-                {slugLocked ? (
-                  <div className="mt-5">
-                    <div className="rounded-sm bg-muted/50 px-2 py-2 text-xs">
-                      <span className="text-accent">Reserved:</span>{" "}
-                      <span className="">{slugLocked}.oreilla.com</span>
+            <div key={step} className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
+              {step === 0 && (
+                <>
+                  <StepName
+                    name={name}
+                    onChange={setName}
+                    isValid={isNameValid(name)}
+                  />
+                  {slugLocked ? (
+                    <div className="mt-5">
+                      <div className="rounded-sm bg-muted/50 px-2 py-2 text-xs">
+                        <span className="text-accent">Reserved:</span>{" "}
+                        <span className="">{slugLocked}.oreilla.com</span>
+                      </div>
                     </div>
-                  </div>
-                ) : null}
-              </>
-            )}
-            {step === 1 && (
-              <StepDomain
-                domain={domain}
-                onChange={setDomain}
-                isValid={domainValid}
-              />
-            )}
-            {step === 2 && (
-              <StepSlug
-                slug={slug}
-                onChange={(v) => {
-                  setSlugDirty(true);
-                  setSlug(cleanSlug(v));
-                }}
-                checking={slugChecking}
-                available={slugAvailable}
-                disabled={!!slugLocked}
-              />
-            )}
-            {step === 3 && (
-              <div className="space-y-4">
-                <div>
-                  <h2 className="text-lg font-semibold">
-                    Choose your team&apos;s timezone.
-                  </h2>
-                  <p className="text-sm text-accent">
-                    We&apos;ll use this for your feedback and roadmap dates.
-                  </p>
-                </div>
-                <TimezonePicker
-                  value={timezone}
-                  onChange={setTimezone}
-                  now={now}
+                  ) : null}
+                </>
+              )}
+              {step === 1 && (
+                <StepDomain
+                  domain={domain}
+                  onChange={setDomain}
+                  isValid={domainValid}
                 />
-                {!isTimezoneValid(timezone) ? (
-                  <p className="text-xs text-destructive">
-                    Please select a valid timezone.
-                  </p>
-                ) : null}
-              </div>
-            )}
+              )}
+              {step === 2 && (
+                <StepSlug
+                  slug={slug}
+                  onChange={(v) => {
+                    setSlugDirty(true);
+                    setSlug(cleanSlug(v));
+                  }}
+                  checking={slugChecking}
+                  available={slugAvailable}
+                  disabled={!!slugLocked}
+                />
+              )}
+              {step === 3 && (
+                <div className="space-y-4">
+                  <div>
+                    <h2 className="text-lg font-semibold">
+                      Choose your team&apos;s timezone.
+                    </h2>
+                    <p className="text-sm text-accent">
+                      We&apos;ll use this for your feedback and roadmap dates.
+                    </p>
+                  </div>
+                  <TimezonePicker
+                    value={timezone}
+                    onChange={setTimezone}
+                    now={now}
+                  />
+                  {!isTimezoneValid(timezone) ? (
+                    <p className="text-xs text-destructive">
+                      Please select a valid timezone.
+                    </p>
+                  ) : null}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Footer Actions */}

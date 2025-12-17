@@ -15,7 +15,7 @@ export default function StepSlug({ slug, onChange, checking, available, disabled
           This is where your public changelog and roadmap will live.
         </p>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-3">
         <div className="flex items-center gap-3">
           <div className="relative flex-1">
             <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-accent" />
@@ -24,12 +24,12 @@ export default function StepSlug({ slug, onChange, checking, available, disabled
               value={slug}
               onChange={(e) => onChange(e.target.value)}
               placeholder="acmeapp"
-              className="w-full placeholder:text-accent/70 pl-9 sm:pl-10 pr-16 sm:pr-24"
+              className="w-full h-11 text-base placeholder:text-accent/70 pl-10 pr-24"
               aria-invalid={available === false || (!!slug && !isSlugValid(slug))}
               disabled={disabled}
               autoFocus={!disabled}
             />
-            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-accent select-none pointer-events-none">.oreilla.com</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground select-none pointer-events-none">.oreilla.com</span>
           </div>
           <div className="flex items-center gap-2">
             {checking ? (

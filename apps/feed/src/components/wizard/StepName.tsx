@@ -11,13 +11,13 @@ export default function StepName({ name, onChange, isValid }: { name: string; on
           This will be the name of your project or company.
         </p>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-3">
         <Input
           id="name"
           value={name}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Acme Analytics"
-          className="placeholder:text-accent/70"
+          className="h-11 text-base placeholder:text-accent/70"
           aria-invalid={!isValid && name.length > 0}
           autoFocus
         />

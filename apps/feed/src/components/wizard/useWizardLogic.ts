@@ -5,10 +5,7 @@ import { toast } from "sonner";
 import { client } from "@oreilla/api/client";
 import {
   workspaceSchema,
-  isNameValid,
   isDomainValid,
-  isSlugValid,
-  isTimezoneValid,
   cleanSlug,
   slugifyFromName,
 } from "../../lib/validators";
@@ -19,7 +16,6 @@ export function useWizardLogic() {
   const searchParams = useSearchParams();
 
   // Form State
-  const [step, setStep] = useState(0);
   const [name, setName] = useState("");
   const [domain, setDomain] = useState("");
   const [slug, setSlug] = useState("");
@@ -115,28 +111,8 @@ export function useWizardLogic() {
 
   // Validation
   const domainValid = useMemo(() => isDomainValid(domain), [domain]);
-  
-  const domainFavicon = useMemo(() => {
-    if (!domainValid) return null;
-    const host = domain.trim().toLowerCase();
-    if (!host) return null;
-    return `https://www.google.com/s2/favicons?domain_url=${encodeURIComponent(
-      host
-    )}&sz=64`;
-  }, [domain, domainValid]);
-
-  const canNext = useMemo(() => {
-    if (step === 0) return isNameValid(name);
-    if (step === 1) return domainValid;
-    if (step === 2) return isSlugValid(slug) && slugAvailable === true;
-    if (step === 3) return isTimezoneValid(timezone);
-    return false;
-  }, [step, name, domainValid, slug, slugAvailable, timezone]);
 
   // Actions
-  const total = 4;
-  const next = () => setStep((s) => Math.min(s + 1, total - 1));
-  const prev = () => setStep((s) => Math.max(s - 1, 0));
 
   const create = async () => {
     setIsCreating(true);
@@ -188,8 +164,6 @@ export function useWizardLogic() {
   };
 
   return {
-    step,
-    total,
     name,
     setName,
     domain,
@@ -205,10 +179,6 @@ export function useWizardLogic() {
     now,
     isCreating,
     domainValid,
-    domainFavicon,
-    canNext,
-    next,
-    prev,
     create,
     handleSlugChange: (v: string) => {
       setSlugDirty(true);
@@ -216,4 +186,3 @@ export function useWizardLogic() {
     }
   };
 }
-

@@ -1,18 +1,19 @@
 "use client";
 
 import { Button } from "@oreilla/ui/components/button";
-import Progress from "./Progress";
-import StepName from "./StepName";
-import StepDomain from "./StepDomain";
-import StepSlug from "./StepSlug";
+import { Input } from "@oreilla/ui/components/input";
+import { Label } from "@oreilla/ui/components/label";
 import TimezonePicker from "./TimezonePicker";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2, AlertCircle, Link2 } from "lucide-react";
+import CompletedIcon from "@oreilla/ui/icons/completed";
+import ClosedIcon from "@oreilla/ui/icons/closed";
 import { useWizardLogic } from "./useWizardLogic";
 import {
   isNameValid,
   isDomainValid,
   isSlugValid,
   isTimezoneValid,
+  suggestDomainFix,
 } from "../../lib/validators";
 
 export default function WorkspaceWizard({
@@ -21,8 +22,6 @@ export default function WorkspaceWizard({
   className?: string;
 }) {
   const {
-    step,
-    total,
     name,
     setName,
     domain,
@@ -37,142 +36,158 @@ export default function WorkspaceWizard({
     now,
     isCreating,
     domainValid,
-    domainFavicon,
-    canNext,
-    next,
-    prev,
     create,
   } = useWizardLogic();
 
+  const isFormValid = 
+    isNameValid(name) && 
+    isDomainValid(domain) && 
+    (slugLocked ? true : (isSlugValid(slug) && slugAvailable === true)) &&
+    isTimezoneValid(timezone);
+
   return (
     <section className="flex min-h-screen items-center justify-center bg-background p-4 sm:p-8">
-      <div className={`w-full max-w-[420px] mx-auto ${className}`}>
-        {/* Header */}
-        <div className="mb-8 text-center space-y-2">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium">
-            Welcome to Oreilla
-          </p>
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">
-            Set up your workspace
-          </h1>
-        </div>
-
+      <div className={`w-full max-w-[480px] mx-auto ${className}`}>
+        
         {/* Card */}
-        <div className="bg-card rounded-xl border ring-1 ring-border p-6 sm:p-10">
-          {/* Progress */}
-          <div className="mb-8 flex items-center justify-between gap-4">
-            <Progress step={step} total={total} />
-            <span className="text-[10px] uppercase tracking-wider text-accent font-medium whitespace-nowrap">
-              Step {step + 1} / {total}
-            </span>
-          </div>
+        <div className="bg-card rounded-xl border ring-1 ring-border p-6 sm:p-8 shadow-sm">
+            <div className="mb-6 space-y-1.5">
+                <h1 className="text-xl font-semibold tracking-tight">
+                    Create new project
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                    Tell us a bit about the website you want to track.
+                </p>
+            </div>
 
-          <div className="min-h-[220px]">
-            <div key={step} className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
-              {step === 0 && (
-                <>
-                  <StepName
-                    name={name}
-                    onChange={setName}
-                    isValid={isNameValid(name)}
-                    onNext={next}
-                  />
-                  {slugLocked ? (
-                    <div className="mt-5">
-                      <div className="rounded-sm bg-muted/50 px-2 py-2 text-xs">
-                        <span className="text-accent">Reserved:</span>{" "}
-                        <span className="">{slugLocked}.oreilla.com</span>
-                      </div>
+          <div className="space-y-6">
+            {/* Name */}
+            <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="My Project"
+                    className="h-10 bg-muted/50"
+                    autoFocus
+                />
+            </div>
+
+            {/* Domain */}
+            <div className="space-y-2">
+                <Label htmlFor="domain">Domain</Label>
+                <div className="relative flex items-center">
+                    <span className="inline-flex items-center h-10 px-3 bg-muted border rounded-l-md text-muted-foreground select-none text-sm border-r-0">
+                        https://
+                    </span>
+                    <Input
+                        id="domain"
+                        type="text"
+                        value={domain}
+                        onChange={(e) => setDomain(e.target.value)}
+                        placeholder="example.com"
+                        className="h-10 flex-1 rounded-l-none bg-muted/50"
+                    />
+                </div>
+                {!domainValid && domain.length > 0 && (
+                    <div className="text-xs text-destructive flex items-center gap-1 mt-1.5">
+                        <AlertCircle className="size-3" />
+                        <span>Invalid domain format</span>
+                        {(() => {
+                            const suggested = suggestDomainFix(domain);
+                            if (suggested) {
+                                return (
+                                    <>
+                                        <span>— did you mean </span>
+                                        <button 
+                                            type="button" 
+                                            className="underline hover:text-destructive/80" 
+                                            onClick={() => setDomain(suggested)}
+                                        >
+                                            {suggested}
+                                        </button>
+                                        ?
+                                    </>
+                                );
+                            }
+                            return null;
+                        })()}
                     </div>
-                  ) : null}
-                </>
-              )}
-              {step === 1 && (
-                <StepDomain
-                  domain={domain}
-                  onChange={setDomain}
-                  isValid={domainValid}
-                  onNext={next}
-                />
-              )}
-              {step === 2 && (
-                <StepSlug
-                  slug={slug}
-                  onChange={handleSlugChange}
-                  checking={slugChecking}
-                  available={slugAvailable}
-                  disabled={!!slugLocked}
-                  onNext={next}
-                />
-              )}
-              {step === 3 && (
-                <div className="space-y-4">
-                  <div>
-                    <h2 className="text-lg font-semibold">
-                      Choose your team&apos;s timezone.
-                    </h2>
-                    <p className="text-sm text-accent">
-                      We&apos;ll use this for your feedback and roadmap dates.
-                    </p>
-                  </div>
-                  <TimezonePicker
+                )}
+            </div>
+
+            {/* Slug (Optional/Advanced) */}
+            <div className="space-y-2">
+                <Label htmlFor="slug" className="flex items-center gap-2">
+                    Workspace URL
+                    {slugLocked && <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded text-muted-foreground font-normal">Reserved</span>}
+                </Label>
+                <div className="relative">
+                    <Input
+                        id="slug"
+                        value={slug}
+                        onChange={(e) => handleSlugChange(e.target.value)}
+                        placeholder="project-slug"
+                        className="h-10 pl-9 pr-24 bg-muted/50"
+                        disabled={!!slugLocked}
+                    />
+                    <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground pointer-events-none">
+                        .oreilla.com
+                    </span>
+                    
+                    <div className="absolute right-[6.5rem] top-1/2 -translate-y-1/2">
+                         {slugChecking ? (
+                            <Loader2 className="size-4 text-muted-foreground animate-spin" />
+                         ) : !slugLocked && slug && slugAvailable === true ? (
+                            <CompletedIcon size={16} className="text-emerald-600" />
+                         ) : !slugLocked && (slugAvailable === false || (slug && !isSlugValid(slug))) ? (
+                            <ClosedIcon size={16} className="text-destructive" />
+                         ) : null}
+                    </div>
+                </div>
+                {slug && !isSlugValid(slug) && (
+                    <p className="text-xs text-destructive">Use lowercase letters, numbers, and dashes (min 5 chars).</p>
+                )}
+                {!slugLocked && slugAvailable === false && (
+                    <p className="text-xs text-destructive">This URL is already taken.</p>
+                )}
+            </div>
+
+
+            {/* Timezone */}
+            <div className="space-y-2">
+                <Label>Timezone</Label>
+                <TimezonePicker
                     value={timezone}
                     onChange={setTimezone}
                     now={now}
-                  />
-                  {!isTimezoneValid(timezone) ? (
-                    <p className="text-xs text-destructive">
-                      Please select a valid timezone.
-                    </p>
-                  ) : null}
-                </div>
-              )}
+                />
+                <p className="text-[11px] text-muted-foreground">
+                    All project graphs, ranges and timestamps will be matched to this timezone. Can be updated later.
+                </p>
             </div>
-          </div>
 
-          {/* Footer Actions */}
-          <div className="mt-8 flex items-center justify-between gap-3">
+            {/* Submit */}
             <Button
-              type="button"
-              variant="ghost"
-              onClick={prev}
-              disabled={step === 0}
-              className={step === 0 ? "invisible" : ""}
+                type="button"
+                className="w-full mt-2"
+                size="lg"
+                onClick={create}
+                disabled={!isFormValid || isCreating}
             >
-              Back
+                {isCreating ? (
+                    <>
+                        <Loader2 className="mr-2 size-4 animate-spin" />
+                        Creating...
+                    </>
+                ) : (
+                    "Create project"
+                )}
+                {!isCreating && <ArrowRight className="ml-2 size-4 opacity-50" />}
             </Button>
 
-            <div className="flex items-center gap-4">
-              {step === 1 && domainFavicon ? (
-                <div className="flex items-center">
-                  <img
-                    src={domainFavicon}
-                    alt="Favicon"
-                    className="h-6 w-6 rounded-sm bg-background"
-                  />
-                </div>
-              ) : null}
-
-              {step < total - 1 ? (
-                <Button
-                  type="button"
-                  onClick={next}
-                  disabled={!canNext}
-                >
-                  Continue
-                  <ArrowRight className="ml-2 size-4" />
-                </Button>
-              ) : (
-                <Button
-                  type="button"
-                  onClick={create}
-                  disabled={!canNext || isCreating}
-                >
-                  {isCreating ? "Creating..." : "Create Workspace"}
-                  {!isCreating && <ArrowRight className="ml-2 size-4" />}
-                </Button>
-              )}
-            </div>
           </div>
         </div>
       </div>

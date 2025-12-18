@@ -5,6 +5,7 @@ import { Button } from "@oreilla/ui/components/button"
 import { Input } from "@oreilla/ui/components/input"
 import { Popover, PopoverContent, PopoverTrigger, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
 import { Globe2, ChevronDown, Search } from "lucide-react"
+import ct from "countries-and-timezones"
 
 export default function TimezonePicker({ value, onChange, now }: { value: string; onChange: (v: string) => void; now: Date }) {
   const [open, setOpen] = useState(false)
@@ -27,29 +28,17 @@ export default function TimezonePicker({ value, onChange, now }: { value: string
     }
   }, [value, now])
 
-  const friendlyTZ = (tz: string) => tz.split("/").slice(-1)[0]?.replace(/_/g, " ") ?? tz
+  const friendlyTZ = (tz: string) => {
+      const city = tz.split("/").slice(-1)[0]?.replace(/_/g, " ") ?? tz
+      const country = ct.getCountryForTimezone(tz)?.name
+      return country ? `${city}, ${country}` : city
+  }
   
   const formatTimeWithDate = (tz: string) => {
     const t = new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: tz }).format(now)
     const d = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", timeZone: tz }).format(now)
     return `${t}, ${d}`
   }
-
-  const formatListLabel = (tz: string) => {
-      const city = friendlyTZ(tz)
-      const parts = tz.split("/")
-      const region = parts.length > 1 ? parts[parts.length - 2]?.replace(/_/g, " ") : ""
-      // Try to create a more detailed label "City - Region" if region is different
-      const location = region && region !== city ? `${city} - ${region}` : city
-      
-      return (
-          <span className="flex items-center gap-1.5">
-             <span className="font-medium text-foreground">{formatTimeWithDate(tz)}.</span>
-             <span className="text-muted-foreground truncate">{location}</span>
-          </span>
-      )
-  }
-
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()

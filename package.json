@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@radix-ui/react-visually-hidden": "^1.2.4",
+    "countries-and-timezones": "^3.8.0",
     "mitata": "^1.0.34"
   }
 }

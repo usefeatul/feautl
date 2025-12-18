@@ -79,7 +79,7 @@ export default function WorkspaceWizard({
             <div className="space-y-2">
               <Label htmlFor="domain">Domain</Label>
               <div className="relative flex items-center">
-                <span className="inline-flex items-center h-10 px-3 bg-muted border rounded-l-md text-muted-foreground select-none text-sm border-r-0">
+                <span className="inline-flex items-center h-10 px-3 bg-muted border rounded-l-md text-accent select-none text-sm border-r-0">
                   https://
                 </span>
                 <Input

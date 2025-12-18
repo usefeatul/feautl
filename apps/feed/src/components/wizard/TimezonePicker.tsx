@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 import { Button } from "@oreilla/ui/components/button"
 import { Input } from "@oreilla/ui/components/input"
 import { Popover, PopoverContent, PopoverTrigger, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
-import { Globe2, ChevronDown } from "lucide-react"
+import { Globe2, ChevronDown, Search } from "lucide-react"
 
 export default function TimezonePicker({ value, onChange, now }: { value: string; onChange: (v: string) => void; now: Date }) {
   const [open, setOpen] = useState(false)
@@ -26,12 +26,31 @@ export default function TimezonePicker({ value, onChange, now }: { value: string
       return new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit", hour12: true }).format(now)
     }
   }, [value, now])
+
   const friendlyTZ = (tz: string) => tz.split("/").slice(-1)[0]?.replace(/_/g, " ") ?? tz
+  
   const formatTimeWithDate = (tz: string) => {
     const t = new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: tz }).format(now)
-    const d = new Intl.DateTimeFormat(undefined, { month: "short", day: "2-digit", timeZone: tz }).format(now)
+    const d = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", timeZone: tz }).format(now)
     return `${t}, ${d}`
   }
+
+  const formatListLabel = (tz: string) => {
+      const city = friendlyTZ(tz)
+      const parts = tz.split("/")
+      const region = parts.length > 1 ? parts[parts.length - 2]?.replace(/_/g, " ") : ""
+      // Try to create a more detailed label "City - Region" if region is different
+      const location = region && region !== city ? `${city} - ${region}` : city
+      
+      return (
+          <span className="flex items-center gap-1.5">
+             <span className="font-medium text-foreground">{formatTimeWithDate(tz)}.</span>
+             <span className="text-muted-foreground truncate">{location}</span>
+          </span>
+      )
+  }
+
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     if (!q) return timezones
@@ -41,28 +60,47 @@ export default function TimezonePicker({ value, onChange, now }: { value: string
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button type="button" variant="nav" className="w-full h-11 justify-start gap-2 text-base">
-          <Globe2 className="size-4" />
-          <span className="truncate">{friendlyTZ(value)}</span>
-          <span className="ml-auto text-xs px-2 py-1 rounded-md border bg-muted">{timeString}</span>
-          <ChevronDown className="size-4" />
+        <Button type="button" variant="outline" className="w-full h-10 justify-between bg-muted/50 border-input font-normal hover:bg-muted/70 px-3">
+            <div className="flex items-center gap-2 truncate">
+                <Globe2 className="size-4 text-muted-foreground shrink-0" />
+                <span className="truncate">
+                    {friendlyTZ(value)}
+                </span>
+            </div>
+          <div className="flex items-center gap-2 shrink-0">
+             <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded-sm border">{timeString}</span>
+             <ChevronDown className="size-4 text-muted-foreground opacity-50" />
+          </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent list className="w-[calc(100vw-2rem)] sm:w-[400px]">
-        <div className="p-2">
-          <Input placeholder="Search by city or country..." value={query} onChange={(e) => setQuery(e.target.value)} className="placeholder:text-accent/70" />
+      <PopoverContent className="w-[var(--radix-popover-trigger-width)] min-w-[300px] p-0" align="start">
+        <div className="p-2 border-b">
+           <div className="bg-muted/50 rounded-md px-2 py-1 mb-2">
+               <span className="text-xs font-medium text-muted-foreground">Your local time - {formatTimeWithDate(Intl.DateTimeFormat().resolvedOptions().timeZone)}</span>
+           </div>
+          <div className="relative">
+            <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <Input 
+                placeholder="Search by city or country..." 
+                value={query} 
+                onChange={(e) => setQuery(e.target.value)} 
+                className="pl-8 h-9 bg-transparent border-none shadow-none focus-visible:ring-0 placeholder:text-muted-foreground/70" 
+            />
+          </div>
         </div>
-        <PopoverList>
+        <PopoverList className="max-h-[300px] overflow-y-auto p-0">
           {filtered.map((tz) => (
             <PopoverListItem
               key={tz}
+              as="div"
               onClick={() => {
                 onChange(tz)
                 setOpen(false)
               }}
+              className={`flex items-center gap-1.5 px-3 py-2.5 cursor-pointer text-sm hover:bg-muted/50 ${value === tz ? "bg-accent text-accent-foreground" : ""}`}
             >
-              <span className="text-sm">{formatTimeWithDate(tz)}</span>
-              <span className="ml-auto text-sm text-accent truncate">{friendlyTZ(tz)}</span>
+              <span className="font-medium">{formatTimeWithDate(tz)}.</span>
+              <span className="text-muted-foreground truncate">{friendlyTZ(tz)}</span>
             </PopoverListItem>
           ))}
         </PopoverList>

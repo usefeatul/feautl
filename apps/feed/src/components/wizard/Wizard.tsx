@@ -16,6 +16,7 @@ import { ArrowRight, Loader2, AlertCircle, Link2 } from "lucide-react";
 import CompletedIcon from "@oreilla/ui/icons/completed";
 import ClosedIcon from "@oreilla/ui/icons/closed";
 import { useWizardLogic } from "./useWizardLogic";
+import { motion } from "framer-motion";
 import {
   isNameValid,
   isDomainValid,
@@ -54,14 +55,15 @@ export default function WorkspaceWizard({
     isTimezoneValid(timezone);
 
   return (
-    <Card className={`w-full max-w-[420px] mx-auto ${className}`}>
-      <CardHeader>
-        <CardTitle className="text-xl">Create new project</CardTitle>
-        <CardDescription className="text-accent">
-          Tell us a bit about the website you need feedback for.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}>
+      <Card className={`w-full max-w-[420px] mx-auto ${className}`}>
+        <CardHeader>
+          <CardTitle className="text-xl">Create new project</CardTitle>
+          <CardDescription className="text-accent">
+            Tell us a bit about the website you need feedback for.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
             {/* Name */}
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
@@ -195,6 +197,7 @@ export default function WorkspaceWizard({
               {!isCreating && <ArrowRight className="ml-2 size-4 opacity-50" />}
             </Button>
           </CardFooter>
-    </Card>
+      </Card>
+    </motion.div>
   );
 }

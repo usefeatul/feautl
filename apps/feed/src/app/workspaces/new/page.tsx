@@ -17,5 +17,9 @@ export default async function NewWorkspacePage() {
   if (!session?.user) {
     redirect("/auth/sign-in?redirect=/workspaces/new")
   }
-  return <WorkspaceWizard />
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 sm:p-8">
+      <WorkspaceWizard />
+    </div>
+  )
 }

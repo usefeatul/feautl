@@ -54,7 +54,7 @@ export default function WorkspaceWizard({
     isTimezoneValid(timezone);
 
   return (
-    <Card className={`w-full max-w-[480px] mx-auto ${className}`}>
+    <Card className={`w-full max-w-[420px] mx-auto ${className}`}>
       <CardHeader>
         <CardTitle className="text-xl">Create new project</CardTitle>
         <CardDescription>

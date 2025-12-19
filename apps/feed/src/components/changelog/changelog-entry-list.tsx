@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { ChangelogRenderer } from "@oreilla/editor"
 import { client } from "@oreilla/api/client"
 import { Button } from "@oreilla/ui/components/button"
@@ -86,11 +87,17 @@ function EntryCard({
       {/* Cover image */}
       {entry.coverImage && (
         <div className="mb-4 -mx-6 -mt-6 rounded-t-xl overflow-hidden">
-          <img
-            src={entry.coverImage}
-            alt={entry.title}
-            className="w-full h-48 object-cover"
-          />
+          <div className="relative w-full h-48">
+            <Image
+              src={entry.coverImage}
+              alt={entry.title}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              unoptimized
+              loader={({ src }) => src}
+            />
+          </div>
         </div>
       )}
 
@@ -352,4 +359,3 @@ export function ChangelogEntryList({
     </div>
   )
 }
-

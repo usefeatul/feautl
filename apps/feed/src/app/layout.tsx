@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Manrope, Sora } from "next/font/google";
 import { Providers } from "../components/providers/providers";
 import "./styles/globals.css";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
@@ -14,6 +15,19 @@ import {
 } from "@/config/seo";
 import { buildSoftwareApplicationSchema } from "@/lib/structured-data";
 
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-jakarta",
+});
+
+const sora = Sora({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
+  variable: "--font-playfair",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -71,12 +85,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={`${manrope.variable} ${sora.variable}`} suppressHydrationWarning>
       <head>
         <OrganizationJsonLd />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet" />
         <Script id="software-app-jsonld" type="application/ld+json" strategy="beforeInteractive">
           {JSON.stringify(buildSoftwareApplicationSchema(SITE_URL))}
         </Script>

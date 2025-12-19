@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from "react"
 import { useParams, useRouter } from "next/navigation"
+import Image from "next/image"
 import { client } from "@oreilla/api/client"
 import { Button } from "@oreilla/ui/components/button"
 import { toast } from "sonner"
@@ -122,11 +123,17 @@ export default function NewChangelogEntryPage() {
         {/* Cover image */}
         {coverImage ? (
           <div className="relative mb-8 group">
-            <img
-              src={coverImage}
-              alt="Cover"
-              className="w-full h-[280px] object-cover rounded-lg"
-            />
+            <div className="relative w-full h-[280px] rounded-lg overflow-hidden">
+              <Image
+                src={coverImage}
+                alt="Cover"
+                fill
+                className="object-cover"
+                sizes="100vw"
+                unoptimized
+                loader={({ src }) => src}
+              />
+            </div>
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
               <Button variant="secondary" size="sm" onClick={handleAddCover}>
                 Change cover

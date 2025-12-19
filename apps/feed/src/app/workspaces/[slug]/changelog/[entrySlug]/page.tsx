@@ -4,6 +4,7 @@ import { client } from "@oreilla/api/client"
 import { ChangelogRenderer } from "@oreilla/editor"
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import type { JSONContent } from "@tiptap/react"
 
 export const revalidate = 60
@@ -79,11 +80,17 @@ export default async function ChangelogEntryPage({ params }: Props) {
       {/* Cover image */}
       {entry.coverImage && (
         <div className="mb-8 rounded-xl overflow-hidden">
-          <img
-            src={entry.coverImage}
-            alt={entry.title}
-            className="w-full h-auto object-cover max-h-[400px]"
-          />
+          <div className="relative w-full h-[400px]">
+            <Image
+              src={entry.coverImage}
+              alt={entry.title}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              unoptimized
+              loader={({ src }) => src}
+            />
+          </div>
         </div>
       )}
 
@@ -131,4 +138,3 @@ export default async function ChangelogEntryPage({ params }: Props) {
     </article>
   )
 }
-

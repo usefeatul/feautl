@@ -11,6 +11,7 @@ import { formatTimeWithDate } from "../../lib/time"
 export default function TimezonePicker({ value, onChange, now }: { value: string; onChange: (v: string) => void; now: Date }) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState("")
+  const isServer = typeof window === "undefined"
 
   const timezones = useMemo(() => {
     const sup = typeof Intl.supportedValuesOf === "function" ? Intl.supportedValuesOf("timeZone") : []
@@ -22,6 +23,7 @@ export default function TimezonePicker({ value, onChange, now }: { value: string
   }, [])
 
   const timeString = useMemo(() => {
+    if (isServer) return "--:--"
     try {
       return new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: value }).format(now)
     } catch {
@@ -60,7 +62,9 @@ export default function TimezonePicker({ value, onChange, now }: { value: string
       <PopoverContent className="w-[calc(100vw-2rem)] sm:w-[450px] p-0" align="center">
         <div className="p-2 border-b">
            <div className="w-fit bg-muted/50 rounded-md px-1.5 py-1 mb-1.5">
-               <span className="text-xs font-light text-accent">Your local time - {formatTimeWithDate(Intl.DateTimeFormat().resolvedOptions().timeZone, now)}</span>
+               <span className="text-xs font-light text-accent" suppressHydrationWarning>
+                 Your local time - {formatTimeWithDate((typeof window !== "undefined" ? Intl.DateTimeFormat().resolvedOptions().timeZone : "UTC"), now)}
+               </span>
            </div>
           <div className="relative">
             <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />

@@ -4,7 +4,6 @@ import { cn } from "@oreilla/ui/lib/utils"
 type LeftSideImageProps = {
   src?: string
   alt?: string
-  height?: number
   className?: string
   priority?: boolean
 }
@@ -12,13 +11,12 @@ type LeftSideImageProps = {
 export default function LeftSideImage({
   src = "/workspaceimg.png",
   alt = "Workspace preview",
-  height = 560,
   className,
   priority = true,
 }: LeftSideImageProps) {
   return (
     <div className={cn("hidden md:block", className)}>
-      <div className="relative w-full" style={{ height }}>
+      <div className="relative w-full">
         <Image
           src={src}
           alt={alt}

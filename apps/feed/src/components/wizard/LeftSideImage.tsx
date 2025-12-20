@@ -9,7 +9,7 @@ type LeftSideImageProps = {
 }
 
 export default function LeftSideImage({
-  src = "/workspaceimg.png",
+  src = "/work.png",
   alt = "Workspace preview",
   className,
   priority = true,

@@ -60,7 +60,7 @@ export default function WizardForm({
   return (
     <Card className={`w-full max-w-[380px] mx-auto ${className}`}>
       <CardHeader>
-        <CardTitle className="text-lg">Create new project</CardTitle>
+        <CardTitle className="text-xl">Create new project</CardTitle>
         <CardDescription className="text-accent">
           Tell us a bit about the website you need feedback for.
         </CardDescription>

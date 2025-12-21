@@ -49,12 +49,12 @@ export function DomainHeader({
   const [changelogVisible, setChangelogVisible] = React.useState(
     Boolean(initialChangelogVisible)
   );
-  const itemCls = (active: boolean) =>
+  const navItemCls = (active: boolean) =>
     cn(
-      "rounded-md  border px-3 py-2 group",
+      "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-colors",
       active
-        ? "bg-background/50 border-accent/20"
-        : "border-transparent hover:bg-muted"
+        ? "bg-card dark:bg-black/40 text-foreground shadow-xs"
+        : "text-muted-foreground hover:bg-background/60 hover:text-foreground"
     );
   React.useEffect(() => {
     let active = true;
@@ -68,12 +68,63 @@ export function DomainHeader({
     return () => {
       active = false;
     };
-  }, []);
+  }, [subdomain]);
   const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/start`;
+
+  const navItems = [
+    { href: feedbackBase, label: "Feedback", active: isFeedback, visible: true },
+    { href: roadmapBase, label: "Roadmap", active: isRoadmap, visible: roadmapVisible },
+    { href: changelogBase, label: "Changelog", active: isChangelog, visible: changelogVisible },
+  ].filter((x) => x.visible);
+
+  const BrandMark = React.useCallback(
+    ({
+      size = "md",
+      showName = true,
+    }: {
+      size?: "sm" | "md";
+      showName?: boolean;
+    }) => {
+      const imageSize = size === "sm" ? 32 : 36;
+      const fallbackSize = size === "sm" ? "h-8 w-8" : "h-9 w-9";
+      const nameCls = size === "sm" ? "text-sm font-medium" : "text-md font-medium";
+      const nameWrapCls =
+        size === "sm" ? "hidden sm:inline max-w-40 truncate" : "max-w-56 truncate";
+
+      return (
+        <span className="inline-flex items-center gap-2">
+          {workspace.logo ? (
+            <Image
+              src={workspace.logo}
+              alt={workspace.name}
+              width={imageSize}
+              height={imageSize}
+              className="rounded-md object-cover"
+            />
+          ) : (
+            <span
+              className={cn(
+                fallbackSize,
+                "rounded-md bg-muted flex items-center justify-center text-md font-semibold"
+              )}
+              aria-hidden
+            >
+              {workspace.name?.[0]?.toUpperCase()}
+            </span>
+          )}
+          {showName ? (
+            <span className={cn(nameCls, nameWrapCls)}>{workspace.name}</span>
+          ) : null}
+        </span>
+      );
+    },
+    [workspace.logo, workspace.name]
+  );
+
   return (
     <header className={cn("py-3 sm:py-5")}>
-      <div className="md:hidden grid grid-cols-[1fr_auto_1fr] items-center w-full">
-        <div className="justify-self-start">
+      <div className="md:hidden flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2">
           <MobileBoardsMenu
             slug={workspace.slug}
             subdomain={subdomain}
@@ -81,30 +132,20 @@ export function DomainHeader({
             changelogVisible={changelogVisible}
           />
         </div>
-        <div className="inline-flex items-center justify-center justify-self-center">
-          <Link href="/" aria-label="Home">
-            {workspace.logo ? (
-              <Image
-                src={workspace.logo}
-                alt={workspace.name}
-                width={32}
-                height={32}
-                className="rounded-mdobject-cover"
-              />
-            ) : (
-              <div className="h-9 w-9 rounded-mdbg-muted flex items-center justify-center text-md font-semibold">
-                {workspace.name?.[0]?.toUpperCase()}
-              </div>
-            )}
-          </Link>
-        </div>
-        <div className="flex items-center gap-2 justify-self-end">
-          <NotificationsBell  />
+        <Link
+          href="/"
+          aria-label="Home"
+          className="min-w-0 flex-1 flex items-center justify-center hover:opacity-90 transition-opacity"
+        >
+          <BrandMark size="sm" showName />
+        </Link>
+        <div className="flex items-center gap-2">
+          <NotificationsBell />
           <Button asChild size="xs" variant="nav" aria-label="Dashboard">
             <Link href={dashboardUrl} className="group inline-flex items-center">
               <HomeIcon
                 className={cn(
-                  "opacity-90 text-accent rounded-mdsize-5.5 p-0.5 group-hover:bg-primary group-hover:text-primary-foreground"
+                  "opacity-90 text-accent rounded-md size-5.5 p-0.5 group-hover:bg-primary group-hover:text-primary-foreground"
                 )}
               />
             </Link>
@@ -113,55 +154,28 @@ export function DomainHeader({
         </div>
       </div>
 
-      <div className="hidden md:flex items-center gap-1 w-full">
-        <Link href="/" className="flex items-center gap-1 hover:opacity-80 transition-opacity">
-          <Image
-            src={workspace.logo || ""}
-            alt={workspace.name}
-            width={32}
-            height={32}
-            className="rounded-mdobject-cover"
-          />
-          <div className="text-md font-medium">{workspace.name}</div>
+      <div className="hidden md:flex items-center justify-between gap-4 w-full">
+        <Link
+          href="/"
+          className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+          aria-label="Home"
+        >
+          <BrandMark size="md" />
         </Link>
-        <span className="mx-2 text-accent" aria-hidden>
-          |
-        </span>
 
-        <nav className="flex-1">
-          <ul className="flex items-center gap-3 text-sm">
-            <li>
+        <nav className="flex-1 flex items-center justify-center">
+          <div className="inline-flex items-center rounded-lg border border-border/60 bg-muted/10 p-1">
+            {navItems.map((item) => (
               <Link
-                href={feedbackBase}
-                className={itemCls(isFeedback)}
-                aria-current={isFeedback ? "page" : undefined}
+                key={item.href}
+                href={item.href}
+                className={navItemCls(item.active)}
+                aria-current={item.active ? "page" : undefined}
               >
-                Feedback
+                {item.label}
               </Link>
-            </li>
-            <li>
-              {roadmapVisible ? (
-                <Link
-                  href={roadmapBase}
-                  className={itemCls(isRoadmap)}
-                  aria-current={isRoadmap ? "page" : undefined}
-                >
-                  Roadmap
-                </Link>
-              ) : null}
-            </li>
-            <li>
-              {changelogVisible ? (
-                <Link
-                  href={changelogBase}
-                  className={itemCls(isChangelog)}
-                  aria-current={isChangelog ? "page" : undefined}
-                >
-                  Changelog
-                </Link>
-              ) : null}
-            </li>
-          </ul>
+            ))}
+          </div>
         </nav>
 
         <div className="flex items-center gap-3">

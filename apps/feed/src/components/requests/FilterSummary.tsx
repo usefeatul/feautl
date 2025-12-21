@@ -4,8 +4,19 @@ import React from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { XMarkIcon } from "@oreilla/ui/icons/xmark"
 import { cn } from "@oreilla/ui/lib/utils"
+import { useQuery } from "@tanstack/react-query"
+import { client } from "@oreilla/api/client"
 import { getSlugFromPath, workspaceBase } from "@/config/nav"
-import { parseArrayParam } from "@/utils/request-filters"
+import { parseArrayParam, buildRequestsUrl } from "@/utils/request-filters"
+
+const STATUS_OPTIONS = [
+  { label: "Pending", value: "pending" },
+  { label: "Review", value: "review" },
+  { label: "Planned", value: "planned" },
+  { label: "Progress", value: "progress" },
+  { label: "Complete", value: "completed" },
+  { label: "Closed", value: "closed" },
+]
 
 export default function FilterSummary({ className = "" }: { className?: string }) {
   const pathname = usePathname() || "/"
@@ -13,11 +24,44 @@ export default function FilterSummary({ className = "" }: { className?: string }
   const router = useRouter()
   const slug = React.useMemo(() => getSlugFromPath(pathname), [pathname])
 
-  const status = React.useMemo(() => parseArrayParam(sp.get("status")), [sp])
+  const status = React.useMemo(() => parseArrayParam(sp.get("status")).map((s) => String(s).toLowerCase()), [sp])
   const boards = React.useMemo(() => parseArrayParam(sp.get("board")), [sp])
   const tags = React.useMemo(() => parseArrayParam(sp.get("tag")), [sp])
   const order = React.useMemo(() => (sp.get("order") || "newest").toLowerCase(), [sp])
   const count = status.length + boards.length + tags.length + (order === "oldest" ? 1 : 0)
+
+  const { data: boardsBySlug = {} } = useQuery({
+    queryKey: ["boards-map", slug],
+    enabled: !!slug,
+    queryFn: async () => {
+      const res = await client.board.byWorkspaceSlug.$get({ slug })
+      const data = await res.json()
+      const boardsArr = (data?.boards || []).filter((b: any) => b?.slug !== "roadmap" && b?.slug !== "changelog")
+      const map: Record<string, string> = {}
+      for (const b of boardsArr) map[String(b.slug)] = String(b.name || b.slug)
+      return map
+    },
+    staleTime: 300_000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
+
+  const { data: tagsBySlug = {} } = useQuery({
+    queryKey: ["tags-map", slug],
+    enabled: !!slug,
+    queryFn: async () => {
+      const res = await client.board.tagsByWorkspaceSlug.$get({ slug })
+      const data = await res.json()
+      const tagsArr = (data?.tags || [])
+      const map: Record<string, string> = {}
+      for (const t of tagsArr) map[String(t.slug)] = String(t.name || t.slug)
+      return map
+    },
+    staleTime: 300_000,
+    gcTime: 300_000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 
   if (count === 0) return null
 
@@ -26,10 +70,120 @@ export default function FilterSummary({ className = "" }: { className?: string }
     React.startTransition(() => router.replace(href, { scroll: false }))
   }
 
+  const removeStatus = (v: string) => {
+    const next = status.filter((s) => s !== v)
+    const hasOthers = boards.length + tags.length + (order === "oldest" ? 1 : 0) > 0
+    if (next.length === 0 && !hasOthers) {
+      clearAll()
+      return
+    }
+    const href = buildRequestsUrl(slug, sp, { status: next })
+    React.startTransition(() => router.push(href, { scroll: false }))
+  }
+
+  const removeBoard = (v: string) => {
+    const next = boards.filter((b) => b !== v)
+    const hasOthers = status.length + tags.length + (order === "oldest" ? 1 : 0) > 0
+    if (next.length === 0 && !hasOthers) {
+      clearAll()
+      return
+    }
+    const href = buildRequestsUrl(slug, sp, { board: next })
+    React.startTransition(() => router.push(href, { scroll: false }))
+  }
+
+  const removeTag = (v: string) => {
+    const next = tags.filter((t) => t !== v)
+    const hasOthers = status.length + boards.length + (order === "oldest" ? 1 : 0) > 0
+    if (next.length === 0 && !hasOthers) {
+      clearAll()
+      return
+    }
+    const href = buildRequestsUrl(slug, sp, { tag: next })
+    React.startTransition(() => router.push(href, { scroll: false }))
+  }
+
+  const removeOrder = () => {
+    const hasOthers = status.length + boards.length + tags.length > 0
+    if (!hasOthers) {
+      clearAll()
+      return
+    }
+    const href = buildRequestsUrl(slug, sp, { order: "newest" })
+    React.startTransition(() => router.push(href, { scroll: false }))
+  }
+
+  const statusLabel = (v: string) => {
+    const found = STATUS_OPTIONS.find((s) => s.value === v)
+    return found ? found.label : v
+  }
+
   return (
-    <button type="button" onClick={clearAll} className={cn("relative group inline-flex items-center justify-center h-8 min-w-[32px] rounded-md bg-muted px-3 text-xs text-foreground cursor-pointer", className)} aria-label="Clear filters">
-      <span className="pointer-events-none">{count} filters</span>
-      <XMarkIcon className="absolute -top-1 -right-1 size-3 opacity-0 group-hover:opacity-100 transition-opacity bg-card text-black rounded-md p-0.5" />
-    </button>
+    <div
+      className={cn(
+        "fixed top-2 left-1/2 -translate-x-1/2 z-40 max-w-[min(100vw-24px,900px)]",
+        className
+      )}
+      aria-label="Active filters"
+    >
+      <div className="flex items-center gap-1 overflow-x-auto rounded-md border bg-card px-2 py-1 shadow-sm">
+        {status.map((s) => (
+          <button
+            key={`status-${s}`}
+            type="button"
+            onClick={() => removeStatus(s)}
+            className="inline-flex items-center h-7 rounded-md bg-muted px-2 text-xs text-foreground"
+            aria-label={`Remove status ${statusLabel(s)}`}
+          >
+            <span className="truncate">{statusLabel(s)}</span>
+            <XMarkIcon className="ml-1 size-3" />
+          </button>
+        ))}
+        {boards.map((b) => (
+          <button
+            key={`board-${b}`}
+            type="button"
+            onClick={() => removeBoard(b)}
+            className="inline-flex items-center h-7 rounded-md bg-muted px-2 text-xs text-foreground"
+            aria-label={`Remove board ${boardsBySlug[b] || b}`}
+          >
+            <span className="truncate">{boardsBySlug[b] || b}</span>
+            <XMarkIcon className="ml-1 size-3" />
+          </button>
+        ))}
+        {tags.map((t) => (
+          <button
+            key={`tag-${t}`}
+            type="button"
+            onClick={() => removeTag(t)}
+            className="inline-flex items-center h-7 rounded-md bg-muted px-2 text-xs text-foreground"
+            aria-label={`Remove tag ${tagsBySlug[t] || t}`}
+          >
+            <span className="truncate">{tagsBySlug[t] || t}</span>
+            <XMarkIcon className="ml-1 size-3" />
+          </button>
+        ))}
+        {order === "oldest" ? (
+          <button
+            type="button"
+            onClick={removeOrder}
+            className="inline-flex items-center h-7 rounded-md bg-muted px-2 text-xs text-foreground"
+            aria-label="Remove sort oldest"
+          >
+            <span className="truncate">Oldest first</span>
+            <XMarkIcon className="ml-1 size-3" />
+          </button>
+        ) : null}
+        <button
+          type="button"
+          onClick={clearAll}
+          className="ml-1 inline-flex items-center h-7 rounded-md bg-card px-2 text-xs border"
+          aria-label="Clear all filters"
+        >
+          <span className="truncate">Clear</span>
+          <XMarkIcon className="ml-1 size-3" />
+        </button>
+      </div>
+    </div>
   )
 }

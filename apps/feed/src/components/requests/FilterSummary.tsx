@@ -122,12 +122,12 @@ export default function FilterSummary({ className = "" }: { className?: string }
   return (
     <div
       className={cn(
-        "fixed top-0 left-1/2 -translate-x-1/2 z-40 max-w-[min(100vw-24px,900px)]  px-3",
+        "fixed top-0 left-1/2 -translate-x-1/2 z-40",
         className
       )}
       aria-label="Active filters"
     >
-      <div className="rounded-b-lg border-x border-b bg-card shadow-sm overflow-hidden">
+      <div className="bg-card shadow-sm border-t-transparent  overflow-hidden">
         <div className="flex items-center gap-1 overflow-x-auto px-1 py-0.5">
           {status.map((s) => (
             <Button

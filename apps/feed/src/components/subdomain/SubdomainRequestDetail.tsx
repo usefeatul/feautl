@@ -29,7 +29,7 @@ export default function SubdomainRequestDetail({
   const { sidebarPosition = "right" } = useDomainBranding();
 
   return (
-    <section className="mt-4 md:mt-6 mb-">
+    <section className="mt-4 md:mt-6 mb-12">
       <RequestHeader sidebarPosition={sidebarPosition} backLink={backLink} />
 
       {/* Main Content Grid */}

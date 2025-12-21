@@ -13,16 +13,15 @@ const GliderContext = React.createContext<{
 
 type TabsRootProps = React.ComponentProps<typeof BaseTabs.Root>;
 
-function Tabs({
-  className,
-  onValueChange,
-  ...props
-}: TabsRootProps) {
+function Tabs({ className, onValueChange, ...props }: TabsRootProps) {
   const [internalValue, setInternalValue] = React.useState<string | undefined>(
     () => (props as any).value ?? (props as any).defaultValue
   );
 
-  const handleValueChange: TabsRootProps["onValueChange"] = (value, eventDetails) => {
+  const handleValueChange: TabsRootProps["onValueChange"] = (
+    value,
+    eventDetails
+  ) => {
     setInternalValue(value as string | undefined);
     onValueChange?.(value, eventDetails);
   };
@@ -69,25 +68,33 @@ function TabsList({
     return { x, width };
   }, []);
 
-  const measure = React.useCallback((el: HTMLElement | null) => {
-    const m = computeMetrics(el);
-    if (!m) return;
-    requestAnimationFrame(() => {
-      setIndicator({ x: m.x, width: m.width, visible: true });
-    });
-  }, [computeMetrics]);
+  const measure = React.useCallback(
+    (el: HTMLElement | null) => {
+      const m = computeMetrics(el);
+      if (!m) return;
+      requestAnimationFrame(() => {
+        setIndicator({ x: m.x, width: m.width, visible: true });
+      });
+    },
+    [computeMetrics]
+  );
 
-  const measureHover = React.useCallback((el: HTMLElement | null) => {
-    if (!el) {
+  const measureHover = React.useCallback(
+    (el: HTMLElement | null) => {
+      if (!el) {
+        requestAnimationFrame(() =>
+          setHover((prev) => ({ x: prev.x, width: prev.width, visible: false }))
+        );
+        return;
+      }
+      const m = computeMetrics(el);
+      if (!m) return;
       requestAnimationFrame(() =>
-        setHover((prev) => ({ x: prev.x, width: prev.width, visible: false }))
+        setHover({ x: m.x, width: m.width, visible: true })
       );
-      return;
-    }
-    const m = computeMetrics(el);
-    if (!m) return;
-    requestAnimationFrame(() => setHover({ x: m.x, width: m.width, visible: true }));
-  }, [computeMetrics]);
+    },
+    [computeMetrics]
+  );
 
   React.useLayoutEffect(() => {
     const root = listRef.current;
@@ -99,7 +106,11 @@ function TabsList({
     );
     if (!isMobile) measure(el);
     if (el && "scrollIntoView" in el) {
-      (el as HTMLElement).scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      (el as HTMLElement).scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
     }
   }, [ctx?.value, measure, isMobile]);
 
@@ -111,7 +122,9 @@ function TabsList({
         "relative flex w-full items-center gap-2 pb-2 flex-nowrap overflow-x-auto snap-x snap-mandatory scroll-smooth [-webkit-overflow-scrolling:touch] whitespace-nowrap md:flex-wrap md:overflow-visible",
         className
       )}
-      onPointerLeave={() => setHover((prev) => ({ x: prev.x, width: prev.width, visible: false }))}
+      onPointerLeave={() =>
+        setHover((prev) => ({ x: prev.x, width: prev.width, visible: false }))
+      }
       {...props}
     >
       <div
@@ -123,7 +136,9 @@ function TabsList({
           {hover.visible && (
             <motion.div
               key="hover"
-              className={cn("pointer-events-none absolute top-0 bottom-1 left-0 mb-1 rounded-mdbg-accent/10 z-0")}
+              className={cn(
+                "pointer-events-none absolute top-0 bottom-1 left-0 mb-1 rounded-md bg-accent/10 z-0"
+              )}
               initial={{ opacity: 0, x: hover.x, width: hover.width }}
               animate={{ opacity: 1, x: hover.x, width: hover.width }}
               exit={{ opacity: 0, x: hover.x, width: hover.width }}
@@ -136,10 +151,12 @@ function TabsList({
         value={{
           value: ctx?.value,
           onHover: isMobile ? undefined : (el) => measureHover(el),
-          onActive: isMobile ? undefined : (el) => {
-            measure(el);
-            measureHover(null);
-          },
+          onActive: isMobile
+            ? undefined
+            : (el) => {
+                measure(el);
+                measureHover(null);
+              },
         }}
       >
         {props.children}
@@ -151,7 +168,7 @@ function TabsList({
               key="selected"
               aria-hidden
               className={cn(
-                "pointer-events-none absolute bottom-0 left-0 h-[2px] rounded-mdbg-primary z-10"
+                "pointer-events-none absolute bottom-0 left-0 h-[2px] rounded-md bg-primary z-10"
               )}
               initial={false}
               animate={{ x: indicator.x, width: indicator.width, opacity: 1 }}
@@ -162,7 +179,7 @@ function TabsList({
         </AnimatePresence>
       )}
     </BaseTabs.List>
-  )
+  );
 }
 
 function TabsTrigger({

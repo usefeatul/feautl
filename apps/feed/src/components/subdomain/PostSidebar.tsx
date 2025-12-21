@@ -90,7 +90,7 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
             {canEdit ? (
               <BoardPicker workspaceSlug={workspaceSlug} postId={post.id} value={board} onChange={setBoard} />
             ) : (
-              <div className="h-6 px-2.5 rounded-mdborder text-xs font-medium flex items-center">
+              <div className="h-6 px-2.5 rounded-md border text-xs font-medium flex items-center">
                 {board.name}
               </div>
             )}
@@ -130,7 +130,7 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
                       meta.isLocked ? "Locked" : null,
                       meta.isFeatured ? "Featured" : null,
                     ].filter(Boolean).map(f => (
-                       <span key={f} className="text-xs bg-muted px-1.5 py-0.5 rounded-md  border text-muted-foreground ">{f}</span>
+                       <span key={f} className="text-xs bg-muted px-1.5 py-0.5 rounded-md border text-muted-foreground ">{f}</span>
                     ))}
                   </div>
                 )}

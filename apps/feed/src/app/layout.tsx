@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Manrope, Sora } from "next/font/google";
 import { Providers } from "../components/providers/providers";
+import MainThemeProvider from "@/components/global/MainThemeProvider";
 import "./styles/globals.css";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import { DebugTools } from "@oreilla/ui/global/debug-tools";
@@ -93,7 +94,9 @@ export default function RootLayout({
         </Script>
       </head>
       <body suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          <MainThemeProvider>{children}</MainThemeProvider>
+        </Providers>
         {((process.env.NODE_ENV !== "production") || process.env.NEXT_PUBLIC_ENABLE_DEBUG === "true") && <DebugTools />}
       </body>
     </html>

@@ -3,6 +3,7 @@ import AccountTabsHeader from "./AccountTabsHeader"
 import ProfileSection from "./Profile"
 import SecuritySection from "./Security"
 import NotificationsSection from "./Notifications"
+import AppearanceSection from "./Appearance"
 import { ACCOUNT_SECTIONS } from "@/config/account-sections"
 
 type Props = {
@@ -34,6 +35,8 @@ function SectionRenderer({ section, initialUser, initialMeSession, initialSessio
       return <SecuritySection initialMeSession={initialMeSession} initialSessions={initialSessions} />
     case "notifications":
       return <NotificationsSection />
+    case "appearance":
+      return <AppearanceSection />
     default:
       return <div className="bg-card rounded-md  border p-4">Unknown section</div>
   }

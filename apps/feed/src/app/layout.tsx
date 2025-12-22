@@ -86,10 +86,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${manrope.variable} ${sora.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${manrope.variable} ${sora.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <OrganizationJsonLd />
-        <Script id="software-app-jsonld" type="application/ld+json" strategy="beforeInteractive">
+        <Script
+          id="software-app-jsonld"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+        >
           {JSON.stringify(buildSoftwareApplicationSchema(SITE_URL))}
         </Script>
       </head>
@@ -97,7 +105,8 @@ export default function RootLayout({
         <Providers>
           <MainThemeProvider>{children}</MainThemeProvider>
         </Providers>
-        {((process.env.NODE_ENV !== "production") || process.env.NEXT_PUBLIC_ENABLE_DEBUG === "true") && <DebugTools />}
+        {(process.env.NODE_ENV !== "production" ||
+          process.env.NEXT_PUBLIC_ENABLE_DEBUG === "true") && <DebugTools />}
       </body>
     </html>
   );

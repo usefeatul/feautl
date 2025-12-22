@@ -23,7 +23,7 @@ const trackVariants = cva(
 )
 
 const thumbVariants = cva(
-  "pointer-events-none block rounded-md  ring-0 transition-transform bg-accent/30 shadow-xs translate-x-0 data-[checked]:translate-x-[calc(100%-2px)]",
+  "pointer-events-none block rounded-md  transition-transform bg-accent/30 shadow-xs translate-x-0 data-[checked]:translate-x-[calc(100%-2px)]",
   {
     variants: {
       size: {

@@ -79,7 +79,7 @@ export default function Profile({ initialUser }: { initialUser?: { name?: string
         <div className="flex items-center justify-between p-4">
           <div className="text-sm">Email</div>
           <div className="w-full max-w-md flex items-center justify-end">
-            <Input value={d.email || ""} disabled className="h-9 w-[220px] text-right" />
+            <Input  value={d.email || ""} disabled className="h-9 w-[220px] text-right" />
           </div>
         </div>
       </div>

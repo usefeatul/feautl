@@ -197,7 +197,7 @@ export default function RequestDetailSidebar({
                     {tags.map((t) => (
                       <span
                         key={t.id}
-                        className="rounded-sm bg-green-100 px-1.5 py-0.5 text-xs text-green-600"
+                        className="rounded-sm bg-green-100 px-1.5 py-0.5 text-xs text-green-700"
                       >
                         {t.name}
                       </span>

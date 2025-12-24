@@ -143,16 +143,19 @@ export default function FilterSummary({ className = "" }: { className?: string }
             transition={{ duration: 0.16 }}
           >
         <div className="flex items-center gap-1 overflow-x-auto px-0.5 py-0.5 flex-1 scrollbar-hide">
-          <AnimatePresence initial={false}>
+          <AnimatePresence initial={false} mode="popLayout">
             {status.map((s) => (
               <motion.div
                 key={`status-${s}`}
-                layout
-                initial={{ opacity: 0, scale: 0.9, y: 2 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -2 }}
-                transition={{ duration: 0.16 }}
-                whileHover={{ y: -1, scale: 1.02 }}
+                layout="position"
+                initial={{ opacity: 0, y: 3, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -3, scale: 0.94 }}
+                transition={{
+                  duration: 0.18,
+                  layout: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
+                }}
+                whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.97 }}
               >
                 <Button
@@ -170,12 +173,15 @@ export default function FilterSummary({ className = "" }: { className?: string }
             {boards.map((b) => (
               <motion.div
                 key={`board-${b}`}
-                layout
-                initial={{ opacity: 0, scale: 0.9, y: 2 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -2 }}
-                transition={{ duration: 0.16 }}
-                whileHover={{ y: -1, scale: 1.02 }}
+                layout="position"
+                initial={{ opacity: 0, y: 3, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -3, scale: 0.94 }}
+                transition={{
+                  duration: 0.18,
+                  layout: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
+                }}
+                whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.97 }}
               >
                 <Button
@@ -193,12 +199,15 @@ export default function FilterSummary({ className = "" }: { className?: string }
             {tags.map((t) => (
               <motion.div
                 key={`tag-${t}`}
-                layout
-                initial={{ opacity: 0, scale: 0.9, y: 2 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -2 }}
-                transition={{ duration: 0.16 }}
-                whileHover={{ y: -1, scale: 1.02 }}
+                layout="position"
+                initial={{ opacity: 0, y: 3, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -3, scale: 0.94 }}
+                transition={{
+                  duration: 0.18,
+                  layout: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
+                }}
+                whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.97 }}
               >
                 <Button
@@ -216,12 +225,15 @@ export default function FilterSummary({ className = "" }: { className?: string }
             {order === "oldest" ? (
               <motion.div
                 key="order-oldest"
-                layout
-                initial={{ opacity: 0, scale: 0.9, y: 2 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -2 }}
-                transition={{ duration: 0.16 }}
-                whileHover={{ y: -1, scale: 1.02 }}
+                layout="position"
+                initial={{ opacity: 0, y: 3, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -3, scale: 0.94 }}
+                transition={{
+                  duration: 0.18,
+                  layout: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
+                }}
+                whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.97 }}
               >
                 <Button

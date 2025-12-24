@@ -6,7 +6,7 @@ interface PendingIconProps {
   color?: string
 }
 
-export const PendingIcon: React.FC<PendingIconProps> = ({ className = '', size = 18, color = '#9ca3af' }) => {
+export const PendingIcon: React.FC<PendingIconProps> = ({ className = '', size = 18, color = '#909091' }) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" className={className} opacity={0.8} style={{ color }}>
       <title>pending</title>

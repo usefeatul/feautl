@@ -6,7 +6,7 @@ interface CloseIconProps {
   color?: string
 }
 
-export const ClosedIcon: React.FC<CloseIconProps> = ({ className = '', size = 18, color = '#ef4444' }) => {
+export const ClosedIcon: React.FC<CloseIconProps> = ({ className = '', size = 18, color = '#FA3434' }) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="-0.5 -0.5 16 16" className={className} opacity={0.8} style={{ color }}>
       <title>closed</title>

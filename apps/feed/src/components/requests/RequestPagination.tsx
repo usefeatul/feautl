@@ -3,7 +3,6 @@ import React, { useMemo } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@oreilla/ui/components/button"
-import { ArrowLeft, ArrowRight } from "lucide-react"
 import { buildRequestsUrl, buildWorkspaceUrl } from "@/utils/request-filters"
 import PaginationHotkeys from "@/components/pagination/PaginationHotkeys"
 import type { RequestPaginationProps as Props } from "@/types/pagination"
@@ -35,18 +34,16 @@ export default function RequestPagination({ workspaceSlug, page, pageSize, total
       />
       <div className="order-1 flex min-w-0 w-full flex-col items-end gap-2 sm:order-2 sm:w-auto">
         <div className="flex items-center gap-2">
-          <Button asChild variant="outline" size="sm" disabled={page <= 1} className="gap-2 pl-2.5 pr-4">
+          <Button asChild variant="nav" size="sm" disabled={page <= 1} className="gap-2 pl-2.5 pr-4">
             <Link prefetch={false} href={prevHref} rel="prev" aria-label="Previous page" aria-keyshortcuts="z" title="Prev (Z)" className="group">
-              <ArrowLeft className="w-4 h-4" />
               <span>Prev</span>
-              <span className="ml-1 rounded-mdborder px-1 py-0.5 text-[10px] leading-none text-accent transition-colors group-hover:bg-card">Z</span>
+              <span className="ml-1 rounded-sm border px-1 py-0.5 text-xs leading-none text-accent transition-colors group-hover:bg-card">Z</span>
             </Link>
           </Button>
-          <Button asChild variant="outline" size="sm" disabled={page >= totalPages || totalCount === 0} className="gap-2 pl-4 pr-2.5">
+          <Button asChild variant="nav" size="sm" disabled={page >= totalPages || totalCount === 0} className="gap-2 pl-4 pr-2.5">
             <Link prefetch={false} href={nextHref} rel="next" aria-label="Next page" aria-keyshortcuts="x" title="Next (X)" className="group">
               <span>Next</span>
-              <span className="ml-1 rounded-mdborder px-1 py-0.5 text-[10px] leading-none text-accent transition-colors group-hover:bg-card">X</span>
-              <ArrowRight className="w-4 h-4" />
+              <span className="ml-1 rounded-sm border px-1 py-0.5 text-xs leading-none text-accent transition-colors group-hover:bg-card">X</span>
             </Link>
           </Button>
         </div>

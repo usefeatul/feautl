@@ -42,6 +42,7 @@ export default function RequestDetailSidebar({
     name: post.boardName,
     slug: post.boardSlug,
   });
+  const [tags, setTags] = React.useState(post.tags || []);
 
   const displayAuthor = getDisplayUser(
     post.author
@@ -186,10 +187,23 @@ export default function RequestDetailSidebar({
                     <TagsPicker
                       workspaceSlug={workspaceSlug}
                       postId={post.id}
-                      value={post.tags || []}
+                      value={tags}
+                      onChange={setTags}
                     />
                   ) : null}
                 </div>
+                {tags && tags.length > 0 ? (
+                  <div className="flex w-full flex-wrap justify-start gap-1">
+                    {tags.map((t) => (
+                      <span
+                        key={t.id}
+                        className="rounded-sm bg-green-100 px-1.5 py-0.5 text-xs text-green-600"
+                      >
+                        {t.name}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
           ) : null}

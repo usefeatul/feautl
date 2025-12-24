@@ -18,11 +18,12 @@ type Tag = {
 type TagsPickerProps = {
   workspaceSlug: string
   postId: string
-  value?: Tag[]
+  value?: Array<{ id: string; name: string }>
   className?: string
+  onChange?: (next: Tag[]) => void
 }
 
-export default function TagsPicker({ workspaceSlug, postId, value = [], className }: TagsPickerProps) {
+export default function TagsPicker({ workspaceSlug, postId, value = [], className, onChange }: TagsPickerProps) {
   const [open, setOpen] = React.useState(false)
   const [selectedIds, setSelectedIds] = React.useState<string[]>(() => value.map((t) => t.id))
   const queryClient = useQueryClient()
@@ -63,6 +64,8 @@ export default function TagsPicker({ workspaceSlug, postId, value = [], classNam
     },
     onSuccess: async (nextIds) => {
       setSelectedIds(nextIds)
+      const nextTags = items.filter((t) => nextIds.includes(t.id))
+      onChange?.(nextTags)
       // Invalidate any queries that might depend on this post's tags
       await queryClient.invalidateQueries({ queryKey: ["tags", workspaceSlug], exact: false })
     },
@@ -73,8 +76,6 @@ export default function TagsPicker({ workspaceSlug, postId, value = [], classNam
     const next = exists ? selectedIds.filter((id) => id !== tagId) : [...selectedIds, tagId]
     mutation.mutate(next)
   }
-
-  const selectedTags = items.filter((t) => selectedIds.includes(t.id))
 
   return (
     <div className={cn("flex flex-col items-end gap-1", className)}>
@@ -123,18 +124,6 @@ export default function TagsPicker({ workspaceSlug, postId, value = [], classNam
         </PopoverContent>
       </Popover>
 
-      {selectedTags.length > 0 ? (
-        <div className="flex flex-wrap gap-1 justify-start w-full mt-2">
-          {selectedTags.map((t) => (
-            <span
-              key={t.id}
-              className="text-xs rounded-sm  bg-green-100 px-2 py-0.5 text-green-700"
-            >
-              {t.name}
-            </span>
-          ))}
-        </div>
-      ) : null}
     </div>
   )
 }

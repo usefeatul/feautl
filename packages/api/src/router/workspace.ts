@@ -1,12 +1,13 @@
 import { HTTPException } from "hono/http-exception"
 import { eq, and, sql } from "drizzle-orm"
 import { j, privateProcedure, publicProcedure } from "../jstack"
-import { workspace, workspaceMember, board, brandingConfig, tag, post, workspaceDomain, workspaceSlugReservation } from "@oreilla/db"
+import { workspace, workspaceMember, board, brandingConfig, tag, post, workspaceDomain, workspaceSlugReservation, user } from "@oreilla/db"
 import { createWorkspaceInputSchema, checkSlugInputSchema, updateCustomDomainInputSchema, createDomainInputSchema, verifyDomainInputSchema, updateWorkspaceNameInputSchema, deleteWorkspaceInputSchema } from "../validators/workspace"
 import { Resolver } from "node:dns/promises"
 import { normalizeStatus } from "../shared/status"
 import { addDomainToProject, removeDomainFromProject } from "../services/vercel"
 import { normalizePlan } from "../shared/plan"
+import { seedWorkspaceOnboarding } from "../services/onboarding"
 
 export function createWorkspaceRouter() {
   return j.router({
@@ -228,6 +229,8 @@ export function createWorkspaceRouter() {
             { workspaceId: ws.id, name: "Bugs", slug: "bugs" },
             { workspaceId: ws.id, name: "Support", slug: "support" },
           ])
+
+          await seedWorkspaceOnboarding(ctx.db, ws.id, ctx.session.user.id)
 
           // Mark reservation as claimed
           try {

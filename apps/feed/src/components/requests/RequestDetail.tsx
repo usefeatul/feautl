@@ -76,33 +76,32 @@ export default function RequestDetail({
                   <div className="space-y-1">
                     <h1 className="text-lg font-semibold leading-snug text-foreground md:text-xl">{post.title}</h1>
                   </div>
-                  <RequestNavigation
-                    prev={navigation?.prev}
-                    next={navigation?.next}
-                    prevHref={prevHref}
-                    nextHref={nextHref}
-                    className="shrink-0"
-                  />
+                  <div className="flex items-center gap-2 shrink-0">
+                    <RequestNavigation
+                      prev={navigation?.prev}
+                      next={navigation?.next}
+                      prevHref={prevHref}
+                      nextHref={nextHref}
+                      className="shrink-0"
+                    />
+                    <Button type="button" variant="ghost" size="icon-sm" aria-label="Merge">
+                      <GitMerge className="size-3.5" />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      className="text-destructive hover:bg-destructive/5"
+                      aria-label="Delete"
+                    >
+                      <TrashIcon className="size-3.5" />
+                    </Button>
+                  </div>
                 </div>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3 text-xs text-accent">
                     <UpvoteButton postId={post.id} upvotes={post.upvotes} hasVoted={post.hasVoted} className="text-xs" activeBg />
                     <CommentCounter postId={post.id} initialCount={post.commentCount} />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button type="button" variant="outline" size="sm" className="h-8 gap-2">
-                      <GitMerge className="size-3.5" />
-                      <span className="text-xs font-medium">Merge</span>
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 gap-2 border border-transparent text-destructive hover:border-destructive/40 hover:bg-destructive/5"
-                    >
-                      <TrashIcon className="size-3.5" />
-                      <span className="text-xs font-medium">Delete</span>
-                    </Button>
                   </div>
                 </div>
               </div>

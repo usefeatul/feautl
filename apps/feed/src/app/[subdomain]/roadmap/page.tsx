@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ subdomain
   return createWorkspaceSectionMetadata(subdomain, "roadmap")
 }
 
-const PAGE_SIZE = 15
+const PAGE_SIZE = 20
 
 export default async function RoadmapPage({
   params,

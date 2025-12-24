@@ -15,7 +15,7 @@ export async function generateMetadata({ params, searchParams }: { params: Promi
   const sp = await searchParams
   return createWorkspaceSectionMetadata(slug, "feedback", { boardSlug: sp.board })
 }
-const PAGE_SIZE = 15
+const PAGE_SIZE = 20
 export default async function SitePage({
   params,
   searchParams,

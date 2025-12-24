@@ -2,7 +2,7 @@ import { getServerSession } from "@oreilla/auth/session"
 import { getWorkspaceBySlug, getWorkspacePosts, getWorkspacePostsCount, normalizeStatus } from "@/lib/workspace"
 import { parseArrayParam } from "@/utils/request-filters"
 
-const PAGE_SIZE = 15
+const PAGE_SIZE = 20
 
 export type RequestsSearchParams = {
   status?: string | string[]

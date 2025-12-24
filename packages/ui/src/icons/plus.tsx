@@ -13,12 +13,14 @@ export const PlusIcon: React.FC<PlusIconProps> = ({ className = '', size = 18 })
       y="0px"
       width={size}
       height={size}
+      opacity={0.6}
       viewBox="0 0 18 18"
-      opacity={0.8}
       className={className}
     >
-      <path opacity="0.4" d="M13.2501 2H4.75012C3.23134 2 2.00012 3.23122 2.00012 4.75V13.25C2.00012 14.7688 3.23134 16 4.75012 16H13.2501C14.7689 16 16.0001 14.7688 16.0001 13.25V4.75C16.0001 3.23122 14.7689 2 13.2501 2Z" fill="currentColor"></path>
-      <path d="M12.2501 8.25H9.75012V5.75C9.75012 5.3359 9.41422 5 9.00012 5C8.58602 5 8.25012 5.3359 8.25012 5.75V8.25H5.75012C5.33602 8.25 5.00012 8.5859 5.00012 9C5.00012 9.4141 5.33602 9.75 5.75012 9.75H8.25012V12.25C8.25012 12.6641 8.58602 13 9.00012 13C9.41422 13 9.75012 12.6641 9.75012 12.25V9.75H12.2501C12.6642 9.75 13.0001 9.4141 13.0001 9C13.0001 8.5859 12.6642 8.25 12.2501 8.25Z" fill="currentColor"></path>
+      <rect x="2.25" y="2.25" width="13.5" height="13.5" rx="2.5" fill="currentColor" fillOpacity="0.3" data-color="color-2" data-stroke="none" />
+      <rect x="2.25" y="2.25" width="13.5" height="13.5" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 6V12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"></path>
+      <path d="M6 9H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"></path>
     </svg>
   )
 }

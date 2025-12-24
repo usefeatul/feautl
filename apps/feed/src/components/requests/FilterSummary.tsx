@@ -2,7 +2,7 @@
 
 import React from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useSearchParams, useRouter } from "next/navigation"
 import { TrashIcon } from "@oreilla/ui/icons/trash"
 import { XMarkIcon } from "@oreilla/ui/icons/xmark"
 
@@ -12,6 +12,7 @@ import { client } from "@oreilla/api/client"
 import { Button } from "@oreilla/ui/components/button"
 import { getSlugFromPath, workspaceBase } from "@/config/nav"
 import { parseArrayParam, buildRequestsUrl } from "@/utils/request-filters"
+import { useFilterBarVisibility } from "@/hooks/useFilterBarVisibility"
 
 const STATUS_OPTIONS = [
   { label: "Pending", value: "pending" },
@@ -33,6 +34,11 @@ export default function FilterSummary({ className = "" }: { className?: string }
   const tags = React.useMemo(() => parseArrayParam(sp.get("tag")), [sp])
   const order = React.useMemo(() => (sp.get("order") || "newest").toLowerCase(), [sp])
   const count = status.length + boards.length + tags.length + (order === "oldest" ? 1 : 0)
+  const hasAnyFilters = count > 0
+  const { isVisible, handleClearAll, handleBarExitComplete } = useFilterBarVisibility({
+    hasAnyFilters,
+    buildClearAllHref: () => workspaceBase(slug),
+  })
 
   const { data: boardsBySlug = {} } = useQuery({
     queryKey: ["boards-map", slug],
@@ -67,18 +73,11 @@ export default function FilterSummary({ className = "" }: { className?: string }
     refetchOnReconnect: false,
   })
 
-  if (count === 0) return null
-
-  const clearAll = () => {
-    const href = workspaceBase(slug)
-    React.startTransition(() => router.replace(href, { scroll: false }))
-  }
-
   const removeStatus = (v: string) => {
     const next = status.filter((s) => s !== v)
     const hasOthers = boards.length + tags.length + (order === "oldest" ? 1 : 0) > 0
     if (next.length === 0 && !hasOthers) {
-      clearAll()
+      handleClearAll()
       return
     }
     const href = buildRequestsUrl(slug, sp, { status: next })
@@ -89,7 +88,7 @@ export default function FilterSummary({ className = "" }: { className?: string }
     const next = boards.filter((b) => b !== v)
     const hasOthers = status.length + tags.length + (order === "oldest" ? 1 : 0) > 0
     if (next.length === 0 && !hasOthers) {
-      clearAll()
+      handleClearAll()
       return
     }
     const href = buildRequestsUrl(slug, sp, { board: next })
@@ -100,7 +99,7 @@ export default function FilterSummary({ className = "" }: { className?: string }
     const next = tags.filter((t) => t !== v)
     const hasOthers = status.length + boards.length + (order === "oldest" ? 1 : 0) > 0
     if (next.length === 0 && !hasOthers) {
-      clearAll()
+      handleClearAll()
       return
     }
     const href = buildRequestsUrl(slug, sp, { tag: next })
@@ -110,7 +109,7 @@ export default function FilterSummary({ className = "" }: { className?: string }
   const removeOrder = () => {
     const hasOthers = status.length + boards.length + tags.length > 0
     if (!hasOthers) {
-      clearAll()
+      handleClearAll()
       return
     }
     const href = buildRequestsUrl(slug, sp, { order: "newest" })
@@ -130,7 +129,19 @@ export default function FilterSummary({ className = "" }: { className?: string }
       )}
       aria-label="Active filters"
     >
-      <div className="bg-card pointer-events-auto mx-auto flex max-w-[90vw] items-center gap-1   border-t-transparent overflow-hidden rounded-xs  px-2 py-1 shadow-sm backdrop-blur supports-backdrop-filter:bg-background/60">
+      <AnimatePresence
+        initial={false}
+        onExitComplete={handleBarExitComplete}
+      >
+        {isVisible ? (
+          <motion.div
+            key="filter-summary-bar"
+            className="bg-card pointer-events-auto mx-auto flex max-w-[90vw] items-center gap-1   border-t-transparent overflow-hidden rounded-xs  px-2 py-1 shadow-sm backdrop-blur supports-backdrop-filter:bg-background/60"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.16 }}
+          >
         <div className="flex items-center gap-1 overflow-x-auto px-0.5 py-0.5 flex-1 scrollbar-hide">
           <AnimatePresence initial={false}>
             {status.map((s) => (
@@ -232,7 +243,7 @@ export default function FilterSummary({ className = "" }: { className?: string }
           <div className="h-5 w-px bg-border/70" />
           <Button
             type="button"
-            onClick={clearAll}
+            onClick={handleClearAll}
             variant="ghost"
             size="icon-sm"
             className="text-muted-foreground hover:text-destructive transition-colors"
@@ -246,7 +257,9 @@ export default function FilterSummary({ className = "" }: { className?: string }
             </motion.span>
           </Button>
         </div>
-      </div>
+      </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   )
 }

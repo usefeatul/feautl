@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { useWorkspaceRole } from "@/hooks/useWorkspaceAccess";
 import {
   Avatar,
   AvatarImage,
@@ -31,8 +30,7 @@ export default function RequestDetailSidebar({
   workspaceSlug,
   readonly,
 }: RequestDetailSidebarProps) {
-  const { isOwner } = useWorkspaceRole(workspaceSlug);
-  const canEdit = isOwner && !readonly;
+  const canEdit = !readonly;
 
   const [meta, setMeta] = React.useState({
     roadmapStatus: post.roadmapStatus || undefined,
@@ -166,43 +164,32 @@ export default function RequestDetailSidebar({
           {(post.tags && post.tags.length > 0) || canEdit ? (
             <div className="pt-1">
               <div className="flex flex-col gap-2">
-                <div className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
-                  <span>Tags</span>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        type="button"
-                        aria-label="About tags"
-                        className="inline-flex items-center rounded-sm text-accent hover:text-foreground"
-                      >
-                        <CircleQuestionMarkIcon className="size-4" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" sideOffset={6}>
-                      Tags categorize requests for filtering and reporting.
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-                {canEdit ? (
-                  <div className="w-full flex justify-end">
+                <div className="flex items-start justify-between">
+                  <div className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                    <span>Tags</span>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          type="button"
+                          aria-label="About tags"
+                          className="inline-flex items-center rounded-sm text-accent hover:text-foreground"
+                        >
+                          <CircleQuestionMarkIcon className="size-4" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" sideOffset={6}>
+                        Tags categorize requests for filtering and reporting.
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  {canEdit ? (
                     <TagsPicker
                       workspaceSlug={workspaceSlug}
                       postId={post.id}
                       value={post.tags || []}
                     />
-                  </div>
-                ) : post.tags && post.tags.length > 0 ? (
-                  <div className="flex w-full flex-wrap justify-center gap-1">
-                    {post.tags.map((t) => (
-                      <span
-                        key={t.id}
-                        className="rounded-md bg-green-100 px-2 py-0.5 text-[11px] text-green-500"
-                      >
-                        {t.name}
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
+                  ) : null}
+                </div>
               </div>
             </div>
           ) : null}

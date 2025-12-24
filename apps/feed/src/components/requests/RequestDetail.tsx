@@ -29,7 +29,15 @@ export type RequestDetailData = {
   role?: "admin" | "member" | "viewer" | null
   isOwner?: boolean
   duplicateOfId?: string | null
-  mergedInto?: { id: string; slug: string; title: string; roadmapStatus?: string | null; mergedAt?: string | null } | null
+  mergedInto?: {
+    id: string
+    slug: string
+    title: string
+    roadmapStatus?: string | null
+    mergedAt?: string | null
+    boardName?: string
+    boardSlug?: string
+  } | null
   mergedCount?: number
   mergedSources?: Array<{
     id: string
@@ -37,6 +45,8 @@ export type RequestDetailData = {
     title: string
     roadmapStatus?: string | null
     mergedAt?: string | null
+    boardName?: string
+    boardSlug?: string
   }>
   tags?: Array<{
     id: string

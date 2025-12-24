@@ -148,11 +148,28 @@ async function loadPostWithAuthorAndBoard(workspaceId: string, postSlug: string)
     .limit(1)
 
   const mergedCount = Number(mergedCountRow?.[0]?.count || 0)
-  let mergedInto: { id: string; slug: string; title: string; roadmapStatus?: string | null; mergedAt?: string | null } | null = null
+  let mergedInto:
+    | {
+        id: string
+        slug: string
+        title: string
+        roadmapStatus?: string | null
+        mergedAt?: string | null
+        boardName?: string
+        boardSlug?: string
+      }
+    | null = null
 
   if (p.duplicateOfId) {
     const [target] = await db
-      .select({ id: post.id, slug: post.slug, title: post.title, roadmapStatus: post.roadmapStatus })
+      .select({
+        id: post.id,
+        slug: post.slug,
+        title: post.title,
+        roadmapStatus: post.roadmapStatus,
+        boardName: board.name,
+        boardSlug: board.slug,
+      })
       .from(post)
       .innerJoin(board, eq(post.boardId, board.id))
       .where(and(eq(board.workspaceId, workspaceId), eq(post.id, p.duplicateOfId)))
@@ -163,7 +180,15 @@ async function loadPostWithAuthorAndBoard(workspaceId: string, postSlug: string)
       .where(and(eq(postMerge.sourcePostId, p.id), eq(postMerge.targetPostId, p.duplicateOfId)))
       .limit(1)
     if (target) {
-      mergedInto = { id: target.id, slug: target.slug, title: target.title, roadmapStatus: (target as any).roadmapStatus, mergedAt: mergeRow?.createdAt ? new Date(mergeRow.createdAt as any).toISOString() : null }
+      mergedInto = {
+        id: target.id,
+        slug: target.slug,
+        title: target.title,
+        roadmapStatus: (target as any).roadmapStatus,
+        mergedAt: mergeRow?.createdAt ? new Date(mergeRow.createdAt as any).toISOString() : null,
+        boardName: (target as any).boardName,
+        boardSlug: (target as any).boardSlug,
+      }
     }
   }
 
@@ -174,9 +199,12 @@ async function loadPostWithAuthorAndBoard(workspaceId: string, postSlug: string)
       title: post.title,
       roadmapStatus: post.roadmapStatus,
       mergedAt: postMerge.createdAt,
+      boardName: board.name,
+      boardSlug: board.slug,
     })
     .from(postMerge)
     .innerJoin(post, eq(post.id, postMerge.sourcePostId))
+    .innerJoin(board, eq(post.boardId, board.id))
     .where(eq(postMerge.targetPostId, p.id))
     .orderBy(sql`${postMerge.createdAt} desc`)
     .limit(3)
@@ -186,6 +214,8 @@ async function loadPostWithAuthorAndBoard(workspaceId: string, postSlug: string)
     title: r.title,
     roadmapStatus: r.roadmapStatus ?? null,
     mergedAt: r.mergedAt ? new Date(r.mergedAt as any).toISOString() : null,
+    boardName: r.boardName,
+    boardSlug: r.boardSlug,
   }))
 
   return { ...(p as any), mergedCount, mergedInto, mergedSources } as RawPostRecord

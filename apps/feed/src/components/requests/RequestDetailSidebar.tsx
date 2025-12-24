@@ -196,14 +196,18 @@ export default function RequestDetailSidebar({
                 <span className="text-sm font-medium text-muted-foreground">Merge submission</span>
               </div>
               {post.duplicateOfId ? (
-                <div className="rounded-md border bg-muted/30 p-3">
+                <div className="rounded-md border bg-card  border-border p-3">
                   <Link
                     href={post.mergedInto ? `/workspaces/${workspaceSlug}/requests/${post.mergedInto.slug}` : "#"}
-                    className="text-sm underline"
+                    className="text-sm font-medium"
                   >
                     {post.mergedInto?.title || "Merged request"}
                   </Link>
                   <div className="mt-1 inline-flex items-center gap-2 text-xs">
+                    {post.mergedInto?.boardName ? (
+                      <span className="text-muted-foreground">{post.mergedInto.boardName}</span>
+                    ) : null}
+                    <span className="text-muted-foreground">•</span>
                     <StatusIcon status={post.mergedInto?.roadmapStatus || "pending"} className="size-4" />
                     <span className="capitalize">{post.mergedInto?.roadmapStatus || "Open"}</span>
                     <span className="text-muted-foreground">
@@ -213,14 +217,16 @@ export default function RequestDetailSidebar({
                 </div>
               ) : null}
               {post.mergedSources && post.mergedSources.length > 0 ? (
-                <div className="rounded-md border bg-muted/30 p-3">
+                <div className="rounded-md border bg-card border-border p-3">
                   <div className="space-y-3">
                     {post.mergedSources.map((src) => (
                       <div key={src.id} className="space-y-1">
-                        <Link href={`/workspaces/${workspaceSlug}/requests/${src.slug}`} className="text-sm underline">
+                        <Link href={`/workspaces/${workspaceSlug}/requests/${src.slug}`} className="text-sm font-medium block">
                           {src.title}
                         </Link>
                         <div className="inline-flex items-center gap-2 text-xs">
+                          {src.boardName ? <span className="text-muted-foreground">{src.boardName}</span> : null}
+                          <span className="text-muted-foreground">•</span>
                           <StatusIcon status={src.roadmapStatus || "pending"} className="size-4" />
                           <span className="capitalize">{src.roadmapStatus || "Open"}</span>
                           <span className="text-muted-foreground">• {relativeTime(src.mergedAt || post.createdAt)}</span>

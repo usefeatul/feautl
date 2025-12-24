@@ -11,6 +11,10 @@ import SidebarSection from "./SidebarSection";
 import WorkspaceSwitcher from "./WorkspaceSwitcher";
 import Timezone from "./Timezone";
 import UserDropdown from "@/components/account/UserDropdown";
+import { Button } from "@oreilla/ui/components/button";
+import { PlusIcon } from "@oreilla/ui/icons/plus";
+import { getSlugFromPath } from "../../config/nav";
+import { CreatePostModal } from "../post/CreatePostModal";
 
 export default function MobileDrawerContent({
   pathname,
@@ -33,6 +37,8 @@ export default function MobileDrawerContent({
   initialWorkspaces?: { id: string; name: string; slug: string; logo?: string | null }[] | undefined;
   initialUser?: { name?: string; email?: string; image?: string | null } | undefined;
 }) {
+  const [createPostOpen, setCreatePostOpen] = React.useState(false);
+  const slug = getSlugFromPath(pathname);
   const statusKey = (label: string) => {
     return label.trim().toLowerCase();
   };
@@ -58,6 +64,20 @@ export default function MobileDrawerContent({
         </SidebarSection>
 
         <SidebarSection className="pb-8">
+          <Button
+            className="w-full mb-1 group flex items-center gap-2 rounded-md px-3 py-2 text-xs md:text-sm justify-start text-accent hover:bg-muted dark:hover:bg-black/40"
+            variant="plain"
+            onClick={() => setCreatePostOpen(true)}
+          >
+            <PlusIcon className="size-5 text-foreground opacity-60 group-hover:text-primary group-hover:opacity-100 transition-colors" />
+            <span className="transition-colors">Create Post</span>
+          </Button>
+          <CreatePostModal
+            open={createPostOpen}
+            onOpenChange={setCreatePostOpen}
+            workspaceSlug={slug}
+            user={initialUser}
+          />
           {secondaryNav.map((item) => (
             <SidebarItem key={item.label} item={item} pathname={pathname} mutedIcon />
           ))}

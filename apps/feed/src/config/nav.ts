@@ -8,7 +8,6 @@ import { RoadmapIcon } from "@oreilla/ui/icons/roadmap"
 import { ChangelogIcon } from "@oreilla/ui/icons/changelog"
 import { BoardIcon } from "@oreilla/ui/icons/board"
 import { SettingIcon } from "@oreilla/ui/icons/setting"
-import { AiIcon } from "@oreilla/ui/icons/ai"
 import { DocIcon } from "@oreilla/ui/icons/doc"
 import type { NavItem } from "../types/nav"
 
@@ -54,7 +53,6 @@ export function buildMiddleNav(slug: string, customDomain?: string | null): NavI
 
 export function buildBottomNav(): NavItem[] {
   return [
-    { label: "Show AI chat", href: "/chat", icon: AiIcon },
     { label: "Docs", href: "/docs", icon: DocIcon },
   ]
 }

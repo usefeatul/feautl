@@ -47,7 +47,7 @@ export function PostHeader({
         {user?.image ? (
           <AvatarImage src={user.image} alt={user.name} />
         ) : (
-          <AvatarFallback className="text-[10px]">{initials}</AvatarFallback>
+          <AvatarFallback className="text-xs">{initials}</AvatarFallback>
         )}
       </Avatar>
       <ChevronRightIcon className="size-3" />

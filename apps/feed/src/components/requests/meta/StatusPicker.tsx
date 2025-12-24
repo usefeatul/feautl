@@ -54,10 +54,10 @@ export default function StatusPicker({ postId, value, onChange, className }: { p
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="nav"
+          variant="ghost"
           size="sm"
           className={cn(
-            "h-8 px-2 pl-1.5 rounded-md  text-xs font-medium transition-colors hover:bg-muted",
+            "h-8 px-2 pl-1.5 rounded-md  border text-xs font-medium transition-colors hover:bg-muted",
             className
           )}
         >

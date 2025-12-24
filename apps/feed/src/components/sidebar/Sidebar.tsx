@@ -91,7 +91,7 @@ export default function Sidebar({
             className="h-6 w-6"
             priority
           />
-          <div className="text-md font-semibold">oreilla</div>
+          <div className="text-md font-semibold ">Loreila</div>
         </div>
         <WorkspaceSwitcher
           className="mt-5.5"
@@ -135,7 +135,7 @@ export default function Sidebar({
           onClick={() => setCreatePostOpen(true)}
         >
           <PlusIcon className="size-5 text-foreground opacity-60 group-hover:text-primary group-hover:opacity-100 transition-colors" />
-          <span className="transition-colors">Create Post</span>
+          <span className="transition-colors text-accent">Create Posts</span>
         </Button>
         <CreatePostModal
           open={createPostOpen}

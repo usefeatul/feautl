@@ -53,7 +53,7 @@ export default function MentionList({ candidates, selectedIndex, onSelect, class
           >
             <Avatar className="h-6 w-6">
               <AvatarImage src={user.image || undefined} />
-              <AvatarFallback className="text-[10px]">{getInitials(user.name || "U")}</AvatarFallback>
+              <AvatarFallback className="text-xs">{getInitials(user.name || "U")}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
               <span className="font-medium leading-none">{user.name}</span>

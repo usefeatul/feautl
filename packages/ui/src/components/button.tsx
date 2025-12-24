@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@oreilla/ui/lib/utils"
 
 const buttonVariants = cva(
-    "inline-flex items-center  dark:text-white justify-center gap-2 whitespace-now rap rounded-md   text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none cursor-pointer",
+    "inline-flex items-center  dark:text-white justify-center gap-2 whitespace-now rap rounded-md    text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none cursor-pointer",
     {
       variants: {
         variant: {
@@ -12,15 +12,15 @@ const buttonVariants = cva(
           destructive:
             cn("bg-destructive text-white hover:bg-destructive/90 ring-destructive/50 hover:ring-destructive/60 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"),
           outline:
-            cn("border bg-background shadow-xs hover:bg-muted hover:text-accent-foreground ring-border/60 hover:ring-accent/60 dark:bg-input/30 dark:border-input dark:hover:bg-input/50"),
+            cn("border bg-background shadow-xs hover:bg-muted hover:text-accent-foreground ring-border/60 hover:ring-accent/60 dark:bg-input/30 dark:border-input dark:hover:bg-input/50 ring-1 ring-border/60 ring-offset-1 ring-offset-background"),
           secondary:    
             cn("bg-secondary text-secondary-foreground hover:bg-secondary/80 ring-secondary/50 hover:ring-secondary/60 dark:bg-black/40"),
           ghost:
             cn("hover:bg-muted hover:text-accent-foreground ring-border/50 hover:ring-accent/60 dark:hover:bg-muted/50 dark:bg-black/40"),
           link: "text-primary underline-offset-4 hover:underline bg-transparent",
           quiet: cn("bg-primary text-primary-foreground hover:bg-primary/70"),
-          nav: cn("border bg-card text-foreground border-muted hover:bg-muted/50 hover:text-accent-foreground hover:border-accent/20 dark:bg-black/40 dark:hover:bg-black/50"),
-          plain: cn("bg-background text-foreground hover:bg-muted hover:text-accent-foreground dark:hover:bg-black/50"),
+          nav: cn("border bg-card text-foreground border-muted hover:bg-muted/50 hover:text-accent-foreground hover:border-accent/20 dark:bg-black/40 dark:hover:bg-black/50 ring-1 ring-border/60 ring-offset-1 ring-offset-background"),
+          plain: cn("bg-background text-foreground hover:bg-muted hover:text-accent-foreground dark:hover:bg-black/50 ring-1 ring-border/60 ring-offset-1 ring-offset-background"),
         },
         size: {
           default: "h-8 px-2 py-2 rounded-mdhas-[>svg]:px-3",

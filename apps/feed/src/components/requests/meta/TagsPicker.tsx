@@ -83,10 +83,10 @@ export default function TagsPicker({ workspaceSlug, postId, value = [], classNam
         <PopoverTrigger asChild>
           <Button
             type="button"
-            variant="nav"
+            variant="ghost"
             size="sm"
             className={cn(
-              "h-6 px-2.5 border text-xs font-medium transition-colors hover:bg-muted",
+              "h-6 px-2.5 border  text-xs font-medium transition-colors hover:bg-muted",
               mutation.isPending && "opacity-70 cursor-wait"
             )}
             aria-label="Manage tags"

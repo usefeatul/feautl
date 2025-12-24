@@ -90,7 +90,7 @@ export function MainContent({
           <div className="mb-4">
             {sidebarPosition === "left" ? (
               <div className="lg:hidden flex items-center justify-between gap-2">
-                <span className="inline-flex items-center gap-1">
+                <span className="inline-flex items-center gap-2">
                   <SortPopover subdomain={subdomain} slug={slug} />
                   <SearchAction />
                 </span>
@@ -99,7 +99,7 @@ export function MainContent({
             ) : (
               <div className="lg:hidden flex items-center justify-between gap-2">
                 <BoardsDropdown slug={slug} subdomain={subdomain} initialBoards={initialBoards} selectedBoard={selectedBoard} />
-                <span className="inline-flex items-center gap-1">
+                <span className="inline-flex items-center gap-2">
                   <SortPopover subdomain={subdomain} slug={slug} />
                   <SearchAction />
                 </span>
@@ -112,7 +112,7 @@ export function MainContent({
           <div className="lg:hidden mb-4">
             <SubmitIdeaCard subdomain={subdomain} slug={slug} />
           </div>
-          <div className="rounded-md  border bg-card mt-4">
+          <div className="rounded-md ring-1 ring-border/60 ring-offset-1 ring-offset-background border bg-card mt-4">
             {(items as any[]).length === 0 ? (
               <EmptyDomainPosts subdomain={subdomain} slug={slug} />
             ) : (

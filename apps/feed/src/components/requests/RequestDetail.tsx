@@ -83,8 +83,8 @@ export default function RequestDetail({
   const backHref = buildRequestsUrl(workspaceSlug, searchParams, {})
 
   return (
-    <section className="">
-      <div className="overflow-hidden rounded-sm bg-card dark:bg-black/40 border border-border">
+    <section>
+      <div className="overflow-hidden rounded-sm ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-card dark:bg-black/40 border border-border">
         <div className="grid items-stretch gap-0 md:grid-cols-[0.7fr_0.3fr]">
           <article className="relative  px-4 py-4 md:px-6 md:py-5">
             <div aria-hidden className="absolute right-0 top-0 hidden h-full w-px bg-border/50 md:block" />

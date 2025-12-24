@@ -18,7 +18,7 @@ export default function RoadmapDraggable({ id, children, className = "", isDragg
       {...sanitizedAttributes}
       style={{ transform: transform ? CSS.Translate.toString(transform) : undefined }}
       className={
-        "rounded-md  border dark:border-border/50 bg-background dark:bg-black/40 px-3 py-2 overflow-hidden cursor-grab active:cursor-grabbing select-none " +
+        "rounded-md ring-1 ring-border/60 ring-offset-1 ring-offset-background border dark:border-border/50 bg-background dark:bg-black/40 px-3 py-2 overflow-hidden cursor-grab active:cursor-grabbing select-none " +
         (isDragging ? "opacity-0 " : "") +
         (className ? className : "")
       }

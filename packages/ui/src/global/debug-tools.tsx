@@ -272,7 +272,7 @@ export function DebugTools() {
             />
             <div
               aria-hidden
-              className="pointer-events-none fixed z-[9999] text-[10px]"
+              className="pointer-events-none fixed z-[9999] text-xs"
               style={{
                 left: `${Math.max(0, r.rect.left)}px`,
                 top: `${Math.max(0, r.rect.top - 14)}px`,

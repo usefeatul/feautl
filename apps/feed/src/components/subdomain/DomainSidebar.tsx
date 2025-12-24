@@ -12,7 +12,7 @@ export function DomainSidebar({ subdomain, slug, initialBoards, selectedBoard, h
   const alignClass = sidebarPosition === "left" ? "justify-start" : "justify-end"
   return (
     <aside className="space-y-4">
-      <div className={`flex items-center ${alignClass} gap-1`}>
+      <div className={`flex items-center ${alignClass} gap-2`}>
         <SortPopover subdomain={subdomain} slug={slug} />
         <SearchAction />
       </div>

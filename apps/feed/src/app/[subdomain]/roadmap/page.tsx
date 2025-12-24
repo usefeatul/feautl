@@ -56,7 +56,7 @@ export default async function RoadmapPage({
         ) : (
           <>
             <div className="lg:hidden flex items-center justify-between gap-2">
-              <span className="inline-flex items-center gap-1">
+              <span className="inline-flex items-center gap-2">
                 <SortPopover subdomain={subdomain} slug={slug} />
                 <SearchAction />
               </span>

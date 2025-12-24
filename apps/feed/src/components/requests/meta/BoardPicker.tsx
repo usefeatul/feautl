@@ -45,7 +45,7 @@ export default function BoardPicker({ workspaceSlug, postId, value, onChange, cl
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="nav"
+          variant="ghost"
           size="sm"
           className={cn(
             "h-6 px-2.5  border text-xs font-medium transition-colors hover:bg-muted",

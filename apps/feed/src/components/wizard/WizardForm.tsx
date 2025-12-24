@@ -124,7 +124,7 @@ export default function WizardForm({
           <Label htmlFor="slug" className="flex items-center gap-2">
             Workspace URL
             {slugLocked && (
-              <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded text-muted-foreground font-normal">
+              <span className="text-xs bg-muted px-1.5 py-0.5 rounded text-muted-foreground font-normal">
                 Reserved
               </span>
             )}

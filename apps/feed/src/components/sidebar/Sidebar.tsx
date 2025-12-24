@@ -130,11 +130,11 @@ export default function Sidebar({
       </SidebarSection>
       <SidebarSection className="mt-auto pb-8 py-2">
         <Button
-          className="w-full mb-1  gap-1 font-medium justify-start text-accent hover:bg-muted dark:hover:bg-black/40 group"
+          className="w-full mb-1 group flex items-center gap-2 rounded-md px-3 py-2 text-xs md:text-sm justify-start text-accent hover:bg-muted dark:hover:bg-black/40"
           variant="plain"
           onClick={() => setCreatePostOpen(true)}
         >
-          <PlusIcon className="size-5 text-foreground group-hover:text-primary transition-colors opacity-60 group-hover:opacity-100" />
+          <PlusIcon className="size-5 text-foreground opacity-60 group-hover:text-primary group-hover:opacity-100 transition-colors" />
           <span className="transition-colors">Create Post</span>
         </Button>
         <CreatePostModal

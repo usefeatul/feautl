@@ -1,7 +1,7 @@
 import { eq, and, sql, isNull, ilike, or } from "drizzle-orm"
 import { j, publicProcedure } from "../jstack"
-import { vote, post, workspace, board, postTag, workspaceMember, postReport } from "@oreilla/db"
-import { votePostSchema, createPostSchema, updatePostSchema, byIdSchema, reportPostSchema, getSimilarSchema } from "../validators/post"
+import { vote, post, workspace, board, postTag, workspaceMember, postReport, postMerge, comment } from "@oreilla/db"
+import { votePostSchema, createPostSchema, updatePostSchema, byIdSchema, reportPostSchema, getSimilarSchema, mergePostSchema, mergeHerePostSchema, searchMergeCandidatesSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
 import { auth } from "@oreilla/auth"
 import { headers } from "next/headers"
@@ -516,6 +516,375 @@ export function createPostRouter() {
         }
         
         return c.superjson({ hasVoted })
+      }),
+
+    merge: publicProcedure
+      .input(mergePostSchema)
+      .post(async ({ ctx, input, c }) => {
+        const { postId, targetPostId, mergeType, reason } = input
+
+        let userId: string | null = null
+        try {
+          const session = await auth.api.getSession({
+            headers: (c as any)?.req?.raw?.headers || (await headers()),
+          })
+          if (session?.user?.id) {
+            userId = session.user.id
+          }
+        } catch {}
+
+        if (!userId) {
+          throw new HTTPException(401, { message: "Unauthorized" })
+        }
+
+        // Get both posts
+        const [sourcePost] = await ctx.db
+          .select()
+          .from(post)
+          .where(eq(post.id, postId))
+          .limit(1)
+
+        const [targetPost] = await ctx.db
+          .select()
+          .from(post)
+          .where(eq(post.id, targetPostId))
+          .limit(1)
+
+        if (!sourcePost || !targetPost) {
+          throw new HTTPException(404, { message: "One or both posts not found" })
+        }
+
+        if (sourcePost.id === targetPost.id) {
+          throw new HTTPException(400, { message: "Cannot merge a post with itself" })
+        }
+
+        // Check permissions - user must be able to moderate both posts
+        const [sourceBoard] = await ctx.db
+          .select({ workspaceId: board.workspaceId })
+          .from(board)
+          .where(eq(board.id, sourcePost.boardId))
+          .limit(1)
+
+        const [targetBoard] = await ctx.db
+          .select({ workspaceId: board.workspaceId })
+          .from(board)
+          .where(eq(board.id, targetPost.boardId))
+          .limit(1)
+
+        if (!sourceBoard || !targetBoard) {
+          throw new HTTPException(404, { message: "Board not found" })
+        }
+
+        if (sourceBoard.workspaceId !== targetBoard.workspaceId) {
+          throw new HTTPException(400, { message: "Cannot merge posts from different workspaces" })
+        }
+
+        // Check workspace permissions
+        const [ws] = await ctx.db
+          .select({ ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.id, sourceBoard.workspaceId))
+          .limit(1)
+
+        if (!ws) {
+          throw new HTTPException(404, { message: "Workspace not found" })
+        }
+
+        let allowed = ws.ownerId === userId
+        if (!allowed) {
+          const [member] = await ctx.db
+            .select({ role: workspaceMember.role })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, sourceBoard.workspaceId), eq(workspaceMember.userId, userId)))
+            .limit(1)
+          
+          if (member) {
+            const perms = mapPermissions(member.role)
+            if (perms.canModerateAllBoards) {
+              allowed = true
+            }
+          }
+        }
+
+        if (!allowed) {
+          throw new HTTPException(403, { message: "You don't have permission to merge posts" })
+        }
+
+        // Check if merge already exists
+        const [existingMerge] = await ctx.db
+          .select()
+          .from(postMerge)
+          .where(or(
+            and(eq(postMerge.sourcePostId, sourcePost.id), eq(postMerge.targetPostId, targetPost.id)),
+            and(eq(postMerge.sourcePostId, targetPost.id), eq(postMerge.targetPostId, sourcePost.id))
+          ))
+          .limit(1)
+
+        if (existingMerge) {
+          throw new HTTPException(400, { message: "These posts are already merged" })
+        }
+
+        // Create merge record
+        const [mergeRecord] = await ctx.db.insert(postMerge).values({
+          sourcePostId: sourcePost.id,
+          targetPostId: targetPost.id,
+          mergedBy: userId,
+          mergeType,
+          reason: reason || null,
+          metadata: {
+            consolidatedVotes: true,
+            transferredComments: true,
+            transferredTags: true,
+          }
+        }).returning()
+
+        // Consolidate votes (transfer upvotes from source to target)
+        await ctx.db
+          .update(post)
+          .set({ 
+            upvotes: sql`${post.upvotes} + ${sourcePost.upvotes}`
+          })
+          .where(eq(post.id, targetPost.id))
+
+        // Archive the source post
+        await ctx.db
+          .update(post)
+          .set({ 
+            status: 'archived',
+            duplicateOfId: targetPost.id
+          })
+          .where(eq(post.id, sourcePost.id))
+
+        // Transfer comments from source to target
+        await ctx.db
+          .update(comment)
+          .set({ postId: targetPost.id })
+          .where(eq(comment.postId, sourcePost.id))
+
+        // Transfer tags from source to target (avoiding duplicates)
+        const sourceTags = await ctx.db
+          .select({ tagId: postTag.tagId })
+          .from(postTag)
+          .where(eq(postTag.postId, sourcePost.id))
+
+        const targetTags = await ctx.db
+          .select({ tagId: postTag.tagId })
+          .from(postTag)
+          .where(eq(postTag.postId, targetPost.id))
+
+        const targetTagIds = new Set((targetTags as Array<{ tagId: string }>).map((t) => t.tagId))
+        const tagsToTransfer = (sourceTags as Array<{ tagId: string }>).filter((st) => !targetTagIds.has(st.tagId))
+
+        if (tagsToTransfer.length > 0) {
+          await ctx.db.insert(postTag).values(
+            (tagsToTransfer as Array<{ tagId: string }>).map((st) => ({
+              postId: targetPost.id,
+              tagId: st.tagId,
+            }))
+          )
+        }
+
+        return c.superjson({ success: true, merge: mergeRecord })
+      }),
+
+    mergeHere: publicProcedure
+      .input(mergeHerePostSchema)
+      .post(async ({ ctx, input, c }) => {
+        const { postId, sourcePostIds, reason } = input
+
+        let userId: string | null = null
+        try {
+          const session = await auth.api.getSession({
+            headers: (c as any)?.req?.raw?.headers || (await headers()),
+          })
+          if (session?.user?.id) {
+            userId = session.user.id
+          }
+        } catch {}
+
+        if (!userId) {
+          throw new HTTPException(401, { message: "Unauthorized" })
+        }
+
+        // Resolve target post
+        const [targetPost] = await ctx.db
+          .select()
+          .from(post)
+          .where(eq(post.id, postId))
+          .limit(1)
+        if (!targetPost) throw new HTTPException(404, { message: "Target post not found" })
+
+        const [targetBoard] = await ctx.db
+          .select({ workspaceId: board.workspaceId })
+          .from(board)
+          .where(eq(board.id, targetPost.boardId))
+          .limit(1)
+        if (!targetBoard) throw new HTTPException(404, { message: "Board not found" })
+
+        const [ws] = await ctx.db
+          .select({ ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.id, targetBoard.workspaceId))
+          .limit(1)
+        if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
+
+        let allowed = ws.ownerId === userId
+        if (!allowed) {
+          const [member] = await ctx.db
+            .select({ role: workspaceMember.role })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, targetBoard.workspaceId), eq(workspaceMember.userId, userId)))
+            .limit(1)
+          if (member) {
+            const perms = mapPermissions(member.role)
+            if (perms.canModerateAllBoards) {
+              allowed = true
+            }
+          }
+        }
+        if (!allowed) throw new HTTPException(403, { message: "You don't have permission to merge posts" })
+
+        // Process each source post
+        for (const sourceId of sourcePostIds) {
+          if (sourceId === postId) continue
+
+          const [sourcePost] = await ctx.db
+            .select()
+            .from(post)
+            .where(eq(post.id, sourceId))
+            .limit(1)
+          if (!sourcePost) continue
+
+          const [sourceBoard] = await ctx.db
+            .select({ workspaceId: board.workspaceId })
+            .from(board)
+            .where(eq(board.id, sourcePost.boardId))
+            .limit(1)
+          if (!sourceBoard) continue
+          if (sourceBoard.workspaceId !== targetBoard.workspaceId) continue
+
+          // Skip if already merged
+          const [existingMerge] = await ctx.db
+            .select()
+            .from(postMerge)
+            .where(and(eq(postMerge.sourcePostId, sourcePost.id), eq(postMerge.targetPostId, targetPost.id)))
+            .limit(1)
+          if (existingMerge) continue
+
+          // Create merge record
+          await ctx.db.insert(postMerge).values({
+            sourcePostId: sourcePost.id,
+            targetPostId: targetPost.id,
+            mergedBy: userId,
+            mergeType: 'merge_here',
+            reason: reason || null,
+            metadata: {
+              consolidatedVotes: true,
+              transferredComments: true,
+              transferredTags: true,
+            }
+          })
+
+          // Consolidate votes into target
+          await ctx.db
+            .update(post)
+            .set({ 
+              upvotes: sql`${post.upvotes} + ${sourcePost.upvotes}`
+            })
+            .where(eq(post.id, targetPost.id))
+
+          // Archive the source post
+          await ctx.db
+            .update(post)
+            .set({ 
+              status: 'archived',
+              duplicateOfId: targetPost.id
+            })
+            .where(eq(post.id, sourcePost.id))
+
+          // Transfer comments
+          await ctx.db
+            .update(comment)
+            .set({ postId: targetPost.id })
+            .where(eq(comment.postId, sourcePost.id))
+
+          // Transfer tags avoiding duplicates
+          const sourceTags = await ctx.db
+            .select({ tagId: postTag.tagId })
+            .from(postTag)
+            .where(eq(postTag.postId, sourcePost.id))
+
+          const targetTags = await ctx.db
+            .select({ tagId: postTag.tagId })
+            .from(postTag)
+            .where(eq(postTag.postId, targetPost.id))
+
+          const targetTagIds = new Set((targetTags as Array<{ tagId: string }>).map((t) => t.tagId))
+          const tagsToTransfer = (sourceTags as Array<{ tagId: string }>).filter((st) => !targetTagIds.has(st.tagId))
+
+          if (tagsToTransfer.length > 0) {
+            await ctx.db.insert(postTag).values(
+              (tagsToTransfer as Array<{ tagId: string }>).map((st) => ({
+                postId: targetPost.id,
+                tagId: st.tagId,
+              }))
+            )
+          }
+        }
+
+        return c.superjson({ success: true })
+      }),
+
+    searchMergeCandidates: publicProcedure
+      .input(searchMergeCandidatesSchema)
+      .get(async ({ ctx, input, c }) => {
+        const { postId, query, excludeSelf } = input
+
+        // Get the current post to find its workspace
+        const [currentPost] = await ctx.db
+          .select()
+          .from(post)
+          .where(eq(post.id, postId))
+          .limit(1)
+
+        if (!currentPost) {
+          throw new HTTPException(404, { message: "Post not found" })
+        }
+
+        const [currentBoard] = await ctx.db
+          .select({ workspaceId: board.workspaceId })
+          .from(board)
+          .where(eq(board.id, currentPost.boardId))
+          .limit(1)
+
+        if (!currentBoard) {
+          throw new HTTPException(404, { message: "Board not found" })
+        }
+
+        const searchTerm = `%${query}%`
+
+        let candidates = await ctx.db
+          .select({
+            id: post.id,
+            title: post.title,
+            slug: post.slug,
+            upvotes: post.upvotes,
+            commentCount: post.commentCount,
+            createdAt: post.createdAt,
+            boardName: board.name,
+          })
+          .from(post)
+          .innerJoin(board, eq(post.boardId, board.id))
+          .where(and(
+            eq(board.workspaceId, currentBoard.workspaceId),
+            eq(post.status, 'published'),
+            excludeSelf ? sql`${post.id} != ${postId}` : sql`true`,
+            sql`(${post.title} ilike ${searchTerm} or ${post.content} ilike ${searchTerm})`
+          ))
+          .orderBy(sql`${post.upvotes} desc`)
+          .limit(10)
+
+        return c.superjson({ candidates })
       }),
   })
 }

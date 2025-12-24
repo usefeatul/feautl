@@ -136,8 +136,36 @@ export const postReport = pgTable("post_report", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const postMerge = pgTable("post_merge", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sourcePostId: uuid("source_post_id")
+    .notNull()
+    .references(() => post.id, { onDelete: "cascade" }),
+  targetPostId: uuid("target_post_id")
+    .notNull()
+    .references(() => post.id, { onDelete: "cascade" }),
+  mergedBy: text("merged_by")
+    .notNull()
+    .references(() => user.id, { onDelete: "set null" }),
+  mergeType: text("merge_type", {
+    enum: ["merge_into", "merge_here"],
+  }).notNull(),
+  reason: text("reason"),
+  metadata: json("metadata").$type<{
+    consolidatedVotes?: boolean;
+    transferredComments?: boolean;
+    transferredTags?: boolean;
+  }>(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (table) => ({
+  postMergeSourceTargetUnique: uniqueIndex('post_merge_source_target_unique').on(table.sourcePostId, table.targetPostId),
+  postMergeSourceIdx: index('post_merge_source_idx').on(table.sourcePostId),
+  postMergeTargetIdx: index('post_merge_target_idx').on(table.targetPostId),
+} as const));
+
 export type Post = typeof post.$inferSelect
 export type PostTag = typeof postTag.$inferSelect
 export type Tag = typeof tag.$inferSelect
 export type PostUpdate = typeof postUpdate.$inferSelect
 export type PostReport = typeof postReport.$inferSelect
+export type PostMerge = typeof postMerge.$inferSelect

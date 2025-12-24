@@ -75,6 +75,8 @@ export default function RequestDetail({
                     <h1 className="text-lg font-semibold leading-snug text-foreground md:text-xl">{post.title}</h1>
                   </div>
                   <RequestNavigation
+                    postId={post.id}
+                    workspaceSlug={workspaceSlug}
                     prev={navigation?.prev}
                     next={navigation?.next}
                     prevHref={prevHref}

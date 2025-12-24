@@ -23,6 +23,7 @@ export const {
   postTag,
   postUpdate,
   postReport,
+  postMerge,
   comment,
   commentReaction,
   commentMention,

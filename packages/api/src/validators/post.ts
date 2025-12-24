@@ -53,3 +53,22 @@ export const getSimilarSchema = z.object({
   boardSlug: z.string().min(1),
   workspaceSlug: z.string().min(1),
 })
+
+export const mergePostSchema = z.object({
+  postId: z.string().uuid(),
+  targetPostId: z.string().uuid(),
+  mergeType: z.enum(["merge_into", "merge_here"]),
+  reason: z.string().max(500).optional(),
+})
+
+export const mergeHerePostSchema = z.object({
+  postId: z.string().uuid(),
+  sourcePostIds: z.array(z.string().uuid()).min(1),
+  reason: z.string().max(500).optional(),
+})
+
+export const searchMergeCandidatesSchema = z.object({
+  postId: z.string().uuid(),
+  query: z.string().min(1).max(128),
+  excludeSelf: z.boolean().optional().default(true),
+})

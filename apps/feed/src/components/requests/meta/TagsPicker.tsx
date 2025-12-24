@@ -97,7 +97,7 @@ export default function TagsPicker({ workspaceSlug, postId, value = [], classNam
             <DropdownIcon className="ml-1.5  size-3" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent list className="w-fit">
+        <PopoverContent list className="w-fit" align="end">
           {isLoading ? (
             <div className="p-3 text-sm text-accent">Loading...</div>
           ) : items.length === 0 ? (
@@ -124,11 +124,11 @@ export default function TagsPicker({ workspaceSlug, postId, value = [], classNam
       </Popover>
 
       {selectedTags.length > 0 ? (
-        <div className="flex flex-wrap gap-1 justify-start w-full mt-2">
+        <div className="flex flex-wrap gap-1 justify-center w-full mt-2">
           {selectedTags.map((t) => (
             <span
               key={t.id}
-              className="text-xs rounded-md  bg-green-100 px-2 py-0.5 text-green-500"
+              className="text-xs rounded-sm  bg-green-100 px-2 py-0.5 text-green-500"
             >
               {t.name}
             </span>
@@ -138,5 +138,4 @@ export default function TagsPicker({ workspaceSlug, postId, value = [], classNam
     </div>
   )
 }
-
 

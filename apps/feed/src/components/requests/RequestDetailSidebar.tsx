@@ -165,7 +165,7 @@ export default function RequestDetailSidebar({
 
           {(post.tags && post.tags.length > 0) || canEdit ? (
             <div className="pt-1">
-              <div className="flex items-start justify-between gap-1">
+              <div className="flex flex-col gap-2">
                 <div className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
                   <span>Tags</span>
                   <Tooltip>
@@ -184,13 +184,15 @@ export default function RequestDetailSidebar({
                   </Tooltip>
                 </div>
                 {canEdit ? (
-                  <TagsPicker
-                    workspaceSlug={workspaceSlug}
-                    postId={post.id}
-                    value={post.tags || []}
-                  />
+                  <div className="w-full flex justify-end">
+                    <TagsPicker
+                      workspaceSlug={workspaceSlug}
+                      postId={post.id}
+                      value={post.tags || []}
+                    />
+                  </div>
                 ) : post.tags && post.tags.length > 0 ? (
-                  <div className="flex flex-wrap justify-start gap-1">
+                  <div className="flex w-full flex-wrap justify-center gap-1">
                     {post.tags.map((t) => (
                       <span
                         key={t.id}

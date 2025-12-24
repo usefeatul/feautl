@@ -4,7 +4,7 @@ import Link from "next/link"
 import { Button } from "@oreilla/ui/components/button"
 import { cn } from "@oreilla/ui/lib/utils"
 import { TrashIcon } from "@oreilla/ui/icons/trash"
-import { GitMerge } from "lucide-react"
+import { MergeIcon } from "@oreilla/ui/icons/merge"
 import { ChevronLeftIcon } from "@oreilla/ui/icons/chevron-left"
 
 type NavItem = {
@@ -99,7 +99,7 @@ export default function RequestNavigation({ prev, next, prevHref, nextHref, back
             aria-label="Merge"
             onClick={onMergeClick}
           >
-            <GitMerge className="size-3.5" />
+            <MergeIcon className="size-3.5" />
           </Button>
           <div className="h-5 w-px bg-border" />
           <Button

@@ -64,7 +64,7 @@ export default function RequestDetail({
 
   return (
     <section className="mt-4 md:mt-6">
-      <div className="overflow-hidden rounded-sm bg-card border border-border/50">
+      <div className="overflow-hidden rounded-sm bg-card border border-border">
         <div className="grid items-stretch gap-0 md:grid-cols-[0.7fr_0.3fr]">
           <article className="relative  px-4 py-4 md:px-6 md:py-5">
             <div aria-hidden className="absolute right-0 top-0 hidden h-full w-px bg-border/50 md:block" />

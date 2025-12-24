@@ -2,14 +2,12 @@ import Image from "next/image"
 import { cn } from "@oreilla/ui/lib/utils"
 
 type LeftSideImageProps = {
-  src?: string
   alt?: string
   className?: string
   priority?: boolean
 }
 
 export default function LeftSideImage({
-  src = "/work.png",
   alt = "Workspace preview",
   className,
   priority = true,
@@ -18,7 +16,7 @@ export default function LeftSideImage({
     <div className={cn("hidden md:block", className)}>
       <div className="relative w-full">
         <Image
-          src={src}
+          src="/workspaceimg.png"
           alt={alt}
           fill
           className="object-contain"

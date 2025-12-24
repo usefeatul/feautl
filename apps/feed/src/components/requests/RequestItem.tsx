@@ -9,7 +9,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@oreilla/ui/components/avat
 import { getInitials } from "@/utils/user-utils"
 import { randomAvatarUrl } from "@/utils/avatar"
 import RoleBadge from "@/components/comments/RoleBadge"
-import { HeartIcon } from "lucide-react"
+import { UpvoteButton } from "@/components/upvote/UpvoteButton"
 
 export type RequestItemData = {
   id: string
@@ -44,15 +44,12 @@ function RequestItemBase({ item, workspaceSlug, linkBase }: { item: RequestItemD
         {item.title}
       </Link>
       <div className="ml-auto flex items-center gap-3 text-xs text-accent">
-        <div className="inline-flex items-center gap-2 bg-muted rounded-md ring-1 ring-border px-2 py-1">
-          <span className="inline-flex items-center gap-1">
-            <HeartIcon className="size-3" />
-            <span className="tabular-nums">{item.upvotes}</span>
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <CommentsIcon className="size-3" />
-            <span className="tabular-nums">{item.commentCount}</span>
-          </span>
+        <div className="inline-flex items-center gap-2 relative z-10">
+          <UpvoteButton postId={item.id} upvotes={item.upvotes} hasVoted={item.hasVoted} className="text-xs hover:text-red-500/80" activeBg />
+        </div>
+        <div className="inline-flex items-center gap-1">
+          <CommentsIcon aria-hidden className="size-3.5" />
+          <span className="tabular-nums">{item.commentCount}</span>
         </div>
         <span>{new Intl.DateTimeFormat(undefined, { month: "short", day: "2-digit" }).format(new Date(item.publishedAt ?? item.createdAt))}</span>
         <div className="relative">

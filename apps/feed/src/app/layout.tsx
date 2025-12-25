@@ -3,7 +3,7 @@ import Script from "next/script";
 import { Manrope, Sora } from "next/font/google";
 import { Providers } from "../components/providers/providers";
 import MainThemeProvider from "@/components/global/MainThemeProvider";
-import "./styles/globals.css";
+import "./globals.css";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import { DebugTools } from "@oreilla/ui/global/debug-tools";
 //

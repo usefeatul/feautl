@@ -48,7 +48,7 @@ export function SettingsDialogShell({
             {title}
           </DialogTitle>
         </DialogHeader>
-        <div className="bg-card rounded-lg p-2 dark:bg-black/40 border border-border">
+        <div className="bg-card rounded-lg p-2 dark:bg-black/60 border border-border">
           {description ? (
             <DialogDescription className="text-sm mb-2">
               {description}

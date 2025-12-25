@@ -39,16 +39,16 @@ export default function RequestNavigation({ postId, workspaceSlug, prev, next, p
           {backHref ? (
             <Link href={backHref} aria-label="Back to requests">
               <ChevronLeftIcon className="size-3" />
-              <span className="text-xs font-medium">Back</span>
+              <span className="text-xs font-medium ">Back</span>
             </Link>
           ) : (
             <span aria-hidden="true" className="flex items-center gap-2">
               <ChevronLeftIcon className="size-3.5 opacity-50" />
-              <span className="text-xs font-medium opacity-50">Back</span>
+              <span className="text-xs font-medium opacity-50 ">Back</span>
             </span>
           )}
         </Button>
-        <div className="mx-0.5 h-5 w-px bg-border" />
+        <div className="mx-0.5 h-5 w-px bg-border dark:bg-border/10" />
         <Button 
           asChild 
           variant="nav" 
@@ -68,7 +68,7 @@ export default function RequestNavigation({ postId, workspaceSlug, prev, next, p
             </span>
           )}
         </Button>
-        <div className="mx-0.5 h-5 w-px bg-border" />
+        <div className="mx-0.5 h-5 w-px bg-border dark:bg-border/10" />
         <Button 
           asChild 
           variant="nav" 

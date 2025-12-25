@@ -106,7 +106,7 @@ export default function CreatePostModal({
       title="Create post"
       // description="Share an idea or request"
       width="widest"
-      offsetY="30%"
+      offsetY="20%"
       icon={<DocumentTextIcon className="size-3.5" />}
     >
       <form onSubmit={handleSubmit} className="flex flex-col h-full pb-3">

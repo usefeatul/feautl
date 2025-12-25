@@ -130,7 +130,7 @@ export default function Sidebar({
       </SidebarSection>
       <SidebarSection className="mt-auto pb-8 py-2">
         <Button
-          className="w-full mb-1 group flex items-center gap-2 rounded-md px-3 py-2 text-xs md:text-sm justify-start text-accent hover:bg-muted dark:hover:bg-black/40"
+          className="w-full mb-1 group dark:bg-background flex items-center gap-2 rounded-md px-3 py-2 text-xs md:text-sm justify-start text-accent hover:bg-muted dark:hover:bg-black/40"
           variant="ghost"
           onClick={() => setCreatePostOpen(true)}
         >

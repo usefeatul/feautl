@@ -58,7 +58,7 @@ export default function WizardForm({
     isTimezoneValid(timezone)
 
   return (
-    <Card className={`w-full max-w-[380px] mx-auto ${className}`}>
+    <Card className={`w-full  max-w-[380px] mx-auto ${className}`}>
       <CardHeader>
         <CardTitle className="text-xl">Create new project</CardTitle>
         <CardDescription className="text-accent">

@@ -9,7 +9,6 @@ import {
 } from "@oreilla/ui/components/tooltip";
 import { StarIcon } from "@oreilla/ui/icons/star";
 
-
 interface RoleBadgeProps {
   role?: Role | null;
   isOwner?: boolean;
@@ -25,9 +24,11 @@ function getRoleColor(role?: Role | null, isOwner?: boolean): string {
 }
 
 function getTooltipClasses(role?: Role | null, isOwner?: boolean): string {
-  if (isOwner) return "bg-primary text-primary-foreground border-transparent";
-  if (role === "admin") return "bg-orange-500 dark:bg-orange-600 text-white border-transparent";
-  if (role === "viewer") return "bg-green-500 dark:bg-green-600 text-white border-transparent";
+  if (isOwner) return "bg-primary text-white border-transparent";
+  if (role === "admin")
+    return "bg-orange-500 dark:bg-orange-600 text-white border-transparent";
+  if (role === "viewer")
+    return "bg-green-500 dark:bg-green-600 text-white border-transparent";
   return "bg-blue-500 dark:bg-blue-600 text-white border-transparent";
 }
 
@@ -41,7 +42,7 @@ export default function RoleBadge({
   return (
     <div
       className={cn(
-        "absolute -bottom-2 -right-1 ml-4 rounded-full bg-background dark:bg-black/40 p-0.5 z-10 pointer-events-auto",
+        "absolute -bottom-2 -right-1 ml-4 rounded-full bg-background dark:bg-black p-0.5 z-10 pointer-events-auto",
         className
       )}
     >

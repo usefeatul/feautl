@@ -136,14 +136,14 @@ export default function FilterSummary({ className = "" }: { className?: string }
         {isVisible ? (
           <motion.div
             key="filter-summary-bar"
-            className="bg-card pointer-events-auto mx-auto flex max-w-[90vw] items-center gap-1 border border-border  border-t-transparent overflow-hidden rounded-xs  px-1.5 py-0.5 shadow-sm  backdrop-blur supports-backdrop-filter:bg-background"
+            className="bg-card dark:bg-black/60 pointer-events-auto mx-auto flex max-w-[90vw] items-center gap-2 border border-border  border-t-transparent overflow-hidden rounded-xs  px-1.5 py-0.5 shadow-sm  backdrop-blur supports-backdrop-filter:bg-background"
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.16 }}
           >
-        <div className="flex items-center gap-1 overflow-x-auto px-0.5 py-0.5 flex-1 scrollbar-hide">
-          <AnimatePresence initial={false} mode="popLayout">
+        <div className="flex items-center gap-2 overflow-x-auto px-0.5 py-0.5 flex-1 scrollbar-hide">
+          <AnimatePresence initial={false} mode="sync">
             {status.map((s) => (
               <motion.div
                 key={`status-${s}`}
@@ -181,7 +181,6 @@ export default function FilterSummary({ className = "" }: { className?: string }
                   duration: 0.18,
                   layout: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
                 }}
-                whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.97 }}
               >
                 <Button
@@ -251,14 +250,14 @@ export default function FilterSummary({ className = "" }: { className?: string }
           </AnimatePresence>
         </div>
 
-        <div className="flex items-center shrink-0 gap-1">
+        <div className="flex items-center shrink-0 gap-2">
           <div className="h-5 w-px bg-border/70" />
           <Button
             type="button"
             onClick={handleClearAll}
             variant="ghost"
             size="icon-sm"
-            className="text-muted-foreground hover:text-destructive transition-colors"
+            className="text-muted-foreground hover:text-destructive dark:hover:text-destructive transition-colors"
             aria-label="Clear all filters"
           >
             <motion.span

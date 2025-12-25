@@ -40,7 +40,7 @@ export function PostContent({
         onChange={(e) => setTitle(e.target.value)}
         required
         maxLength={128}
-        className="text-lg md:text-xl font-semibold h-auto py-2 placeholder:text-accent "
+        className="text-lg md:text-xl  font-semibold h-auto py-2 placeholder:text-accent "
       />
       <TextareaAutosize
         placeholder="Add post content"
@@ -48,7 +48,7 @@ export function PostContent({
         onChange={(e) => setContent(e.target.value)}
         minRows={2}
         maxRows={10}
-        className="w-full resize-none min-h-[72px] max-h-[32dvh] overflow-y-auto py-2 text-base placeholder:text-accent wrap-break-word bg-transparent border-none outline-none"
+        className="w-full resize-none min-h-[72px] max-h-[32dvh] overflow-y-auto py-2 text-base placeholder:text-accent wrap-break-word border-none outline-none"
       />
       
       {/* Image Preview */}

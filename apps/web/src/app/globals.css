@@ -3,9 +3,6 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
-@theme {
-  --text-xs: 0.8rem;
-}
 
 html {
   scroll-behavior: smooth;
@@ -15,7 +12,7 @@ html {
     scroll-behavior: auto;
   }
 }
-
+/* 
 @layer base {
   h1,
   h2,
@@ -26,4 +23,4 @@ html {
     font-family:
       var(--font-playfair), ui-serif, Georgia, "Times New Roman", Times, serif;
   }
-}
+} */

@@ -1,4 +1,4 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@oreilla/ui/globals.css";
-@custom-variant dark (&:where(.dark &, [data-theme='dark'] &));
+

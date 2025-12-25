@@ -14,6 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@oreilla/ui/components/alert-dialog";
+import { TrashIcon } from "@oreilla/ui/icons/trash";
 import { client } from "@oreilla/api/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -110,10 +111,15 @@ export default function DataSection({ slug, workspaceName }: Props) {
             if (!next) setConfirmName("");
           }}
         >
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription className="space-y-3 text-sm text-accent">
+          <AlertDialogContent className="p-1 bg-muted rounded-xl gap-2">
+            <AlertDialogHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
+              <AlertDialogTitle className="flex items-center gap-2 px-2 mt-1 py-1 text-sm font-normal">
+                <TrashIcon width={18} height={18} className="opacity-80" />
+                Are you absolutely sure?
+              </AlertDialogTitle>
+            </AlertDialogHeader>
+            <div className="bg-card rounded-lg p-2 dark:bg-black/40 border border-border">
+              <AlertDialogDescription className="space-y-3 text-sm text-accent mb-2">
                 <span className="block">
                   This will permanently delete{" "}
                   <span className="font-semibold text-red-500">
@@ -138,29 +144,32 @@ export default function DataSection({ slug, workspaceName }: Props) {
                   </span>
                 )}
               </AlertDialogDescription>
-            </AlertDialogHeader>
-            <div className="mt-3">
-              <Input
-                autoFocus
-                placeholder={expectedName || "Workspace name"}
-                value={confirmName}
-                onChange={(e) => setConfirmName(e.target.value)}
-                disabled={isPending}
-              />
+              <div className="mt-3">
+                <Input
+                  autoFocus
+                  placeholder={expectedName || "Workspace name"}
+                  value={confirmName}
+                  onChange={(e) => setConfirmName(e.target.value)}
+                  disabled={isPending}
+                  className="h-10"
+                />
+              </div>
+              <AlertDialogFooter className="flex justify-end gap-2 mt-4">
+                <AlertDialogCancel disabled={isPending} className="h-8 px-3 text-sm">
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (!disableConfirm) handleDelete();
+                  }}
+                  disabled={disableConfirm}
+                  className="h-8 px-4 text-sm bg-red-500 hover:bg-red-600 text-white"
+                >
+                  {isPending ? "Deleting..." : "Delete workspace"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
             </div>
-            <AlertDialogFooter>
-              <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (!disableConfirm) handleDelete();
-                }}
-                disabled={disableConfirm}
-                className="bg-red-500 hover:bg-red-600 text-white"
-              >
-                {isPending ? "Deleting..." : "Delete workspace"}
-              </AlertDialogAction>
-            </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </div>

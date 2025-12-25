@@ -111,10 +111,9 @@ export default function CreatePostModal({
             user={user}
             initials={initials}
             boards={boards}
-            selectedBoard={selectedBoard}
-            onSelectBoard={setSelectedBoard}
-            onClose={() => onOpenChange(false)}
-          />
+          selectedBoard={selectedBoard}
+          onSelectBoard={setSelectedBoard}
+        />
           
           <PostContent
             title={title}

@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Dialog, DialogContent, DialogTitle } from "@oreilla/ui/components/dialog"
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
+import { SettingsDialogShell } from "@/components/settings/global/SettingsDialogShell"
+import DocumentTextIcon from "@oreilla/ui/icons/document-text"
 import { PostHeader } from "./PostHeader"
 import { PostContent } from "./PostContent"
 import { PostFooter } from "./PostFooter"
@@ -141,48 +141,49 @@ export function CreatePostModal({
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] p-0 gap-0 overflow-hidden border-none shadow-2xl top-[20%] translate-y-[-20%]">
-        <VisuallyHidden>
-          <DialogTitle>Create Post</DialogTitle>
-        </VisuallyHidden>
-        <form onSubmit={handleSubmit}>
-          <PostHeader
-            user={user || null}
-            initials={user?.name?.[0] || "?"}
-            boards={boards}
-            selectedBoard={selectedBoard}
-            onSelectBoard={setSelectedBoard}
-            onClose={() => onOpenChange(false)}
-            status={status}
-            onStatusChange={setStatus}
-            availableTags={availableTags}
-            selectedTags={selectedTags}
-            onToggleTag={toggleTag}
-          />
-          <PostContent
-            title={title}
-            setTitle={setTitle}
-            content={content}
-            setContent={setContent}
-            uploadedImage={uploadedImage}
-            uploadingImage={uploadingImage}
-            handleRemoveImage={handleRemoveImage}
-          />
-
-          <PostFooter 
-            isPending={isPending} 
-            disabled={!title || !content || !selectedBoard || isPending || uploadingImage} 
-            uploadedImage={uploadedImage}
-            uploadingImage={uploadingImage}
-            fileInputRef={fileInputRef}
-            handleFileSelect={handleFileSelect}
-            ALLOWED_IMAGE_TYPES={ALLOWED_IMAGE_TYPES}
-          />
-
-          <SimilarPosts posts={similarPosts} isLoading={isSearchingSimilar} />
-        </form>
-      </DialogContent>
-    </Dialog>
+    <SettingsDialogShell
+      open={open}
+      onOpenChange={onOpenChange}
+      title="Create post"
+      // description="Share an idea or request"
+      width="widest"
+      icon={<DocumentTextIcon className="size-3.5" />}
+    >
+      <form onSubmit={handleSubmit}>
+        <PostHeader
+          user={user || null}
+          initials={user?.name?.[0] || "?"}
+          boards={boards}
+          selectedBoard={selectedBoard}
+          onSelectBoard={setSelectedBoard}
+          status={status}
+          onStatusChange={setStatus}
+          availableTags={availableTags}
+          selectedTags={selectedTags}
+          onToggleTag={toggleTag}
+        />
+        <PostContent
+          title={title}
+          setTitle={setTitle}
+          content={content}
+          setContent={setContent}
+          uploadedImage={uploadedImage}
+          uploadingImage={uploadingImage}
+          handleRemoveImage={handleRemoveImage}
+        />
+ 
+        <PostFooter 
+          isPending={isPending} 
+          disabled={!title || !content || !selectedBoard || isPending || uploadingImage} 
+          uploadedImage={uploadedImage}
+          uploadingImage={uploadingImage}
+          fileInputRef={fileInputRef}
+          handleFileSelect={handleFileSelect}
+          ALLOWED_IMAGE_TYPES={ALLOWED_IMAGE_TYPES}
+        />
+ 
+        <SimilarPosts posts={similarPosts} />
+      </form>
+    </SettingsDialogShell>
   )
 }

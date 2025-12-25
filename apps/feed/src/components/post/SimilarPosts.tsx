@@ -25,9 +25,9 @@ export function SimilarPosts({ posts }: SimilarPostsProps) {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
-          className="bg-muted/70 dark:bg-black/50 overflow-hidden"
+          className=" overflow-hidden"
         >
-          <div className="px-4 py-2 flex items-center justify-between border-t border-border dark:border-border/50">
+          <div className="px-4 py-2 flex items-center justify-between border-t border-border/50 dark:border-border/50">
             <div className="text-xs font-extralight text-accent uppercase tracking-wide">
               Similar Posts
             </div>

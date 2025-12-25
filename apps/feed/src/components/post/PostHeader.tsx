@@ -6,8 +6,6 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "@oreilla/ui/components/avatar";
-import { Button } from "@oreilla/ui/components/button";
-import { XMarkIcon } from "@oreilla/ui/icons/xmark";
 import { ChevronRightIcon } from "@oreilla/ui/icons/chevron-right";
 import { BoardSelector } from "./BoardSelector";
 import { StatusSelector } from "./StatusSelector";
@@ -19,7 +17,6 @@ export interface PostHeaderProps {
   boards: any[];
   selectedBoard: { name: string; slug: string } | null;
   onSelectBoard: (board: any) => void;
-  onClose: () => void;
   status?: string;
   onStatusChange?: (status: string) => void;
   availableTags?: any[];
@@ -33,7 +30,6 @@ export function PostHeader({
   boards,
   selectedBoard,
   onSelectBoard,
-  onClose,
   status,
   onStatusChange,
   availableTags,
@@ -66,14 +62,6 @@ export function PostHeader({
           onToggleTag={onToggleTag}
         />
       )}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="ml-auto h-6 w-6 rounded-md text-muted-foreground hover:text-foreground"
-        onClick={onClose}
-      >
-        <XMarkIcon size={12} />
-      </Button>
     </div>
   );
 }

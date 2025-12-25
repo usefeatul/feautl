@@ -28,7 +28,7 @@ export function PostFooter({
   submitLabel = "Create"
 }: PostFooterProps) {
   return (
-    <div className="flex items-center justify-between p-3 md:p-4 bg-muted dark:bg-black/50">
+    <div className="flex items-center justify-between p-3 md:p-4">
       <div className="flex items-center gap-2">
         <input
           ref={fileInputRef}

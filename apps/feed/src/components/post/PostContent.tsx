@@ -2,9 +2,9 @@
 
 import React from "react"
 import { Input } from "@oreilla/ui/components/input"
-import { Textarea } from "@oreilla/ui/components/textarea"
 import { XMarkIcon } from "@oreilla/ui/icons/xmark"
 import ContentImage from "@/components/global/ContentImage"
+import { TextareaAutosize } from "@/components/editor/TextareaAutosize"
 
 export interface UploadedImage {
   url: string
@@ -42,13 +42,13 @@ export function PostContent({
         maxLength={128}
         className="text-lg md:text-xl font-semibold h-auto py-2 placeholder:text-accent "
       />
-      <Textarea
-        variant="plain"
+      <TextareaAutosize
         placeholder="Add post content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="resize-none min-h-[80px] py-2 text-base placeholder:text-accent "
-        required
+        minRows={2}
+        maxRows={10}
+        className="w-full resize-none min-h-[72px] max-h-[32dvh] overflow-y-auto py-2 text-base placeholder:text-accent wrap-break-word bg-transparent border-none outline-none"
       />
       
       {/* Image Preview */}
@@ -75,4 +75,3 @@ export function PostContent({
     </div>
   )
 }
-

@@ -127,15 +127,12 @@ export default function DataSection({ slug, workspaceName }: Props) {
                   </span>{" "}
                   and <span className="font-semibold">all content within this workspace</span>.
                 </span>
-                <span className="block font-medium text-red-500">
-                  This action cannot be undone.
-                </span>
                 {expectedName ? (
                   <span className="block">
                     To confirm, type the workspace name{" "}
-                    <span className="font-mono text-foreground/80">
+                    <span className="font-mono text-red-500">
                       {expectedName}
-                    </span>{" "}
+                    </span >{" "}
                     below.
                   </span>
                 ) : (

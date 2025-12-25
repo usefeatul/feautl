@@ -4,6 +4,8 @@ import React from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@oreilla/ui/components/dialog"
 import { Input } from "@oreilla/ui/components/input"
 import { Button } from "@oreilla/ui/components/button"
+import { Tag } from "lucide-react"
+import TagIcon from "@oreilla/ui/icons/tag"
 
 type TagNameDialogProps = {
   open: boolean
@@ -26,7 +28,6 @@ export function TagNameDialog({
   saving,
   title,
   description,
-  label = "Name",
   placeholder = "Tag name",
   actionLabel,
   loadingLabel,
@@ -48,35 +49,36 @@ export function TagNameDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+      <DialogContent className="p-1 bg-muted rounded-xl gap-2">
+        <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
+          <DialogTitle className="flex items-center gap-2 px-2 mt-1 py-1 text-sm font-normal">
+            <TagIcon className="size-3.5" />
+            {title}
+          </DialogTitle>
         </DialogHeader>
-        <div className="space-y-3">
-          <div className="space-y-2">
-            <label htmlFor="tag-name" className="text-xs">
-              {label}
-            </label>
-            <Input
-              id="tag-name"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder={placeholder}
-              className="h-9 placeholder:text-accent"
-            />
+
+        <div className=" bg-card rounded-lg p-2 dark:bg-black/40 border border-border">
+          <DialogDescription className="text-sm mb-2 ">{description}</DialogDescription>
+
+          <Input
+            id="tag-name"
+            type="text"
+            placeholder={placeholder}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            className="h-10 placeholder:text-accent"
+          />
+
+          <div className="flex justify-end gap-2 mt-4">
+            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)} className="h-8 px-3 text-sm">
+              Cancel
+            </Button>
+            <Button type="button" onClick={handleSubmit} disabled={disabled} className="h-8 px-4 text-sm">
+              {saving ? loadingLabel : actionLabel}
+            </Button>
           </div>
-        </div>
-        <div className="flex justify-end gap-2 pt-3">
-          <Button variant="secondary" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit} disabled={disabled}>
-            {saving ? loadingLabel : actionLabel}
-          </Button>
         </div>
       </DialogContent>
     </Dialog>
   )
 }
-

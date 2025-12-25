@@ -13,14 +13,20 @@ import { PostFooter } from "../../post/PostFooter"
 import { useCreatePostData } from "@/hooks/useCreatePostData"
 import { usePostUpdate } from "@/hooks/usePostUpdate"
 import { usePostImageUpload } from "@/hooks/usePostImageUpload"
-import { SubdomainRequestDetailData } from "../../../types/subdomain";
 
+interface EditablePost {
+  id: string
+  title: string
+  content: string | null
+  image: string | null
+  boardSlug: string
+}
 
 interface EditPostModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   workspaceSlug: string
-  post: SubdomainRequestDetailData
+  post: EditablePost
 }
 
 export default function EditPostModal({

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import ContentImage from "@/components/global/ContentImage"
 import RequestNavigation from "./RequestNavigation"
@@ -13,9 +14,11 @@ import type { CommentData } from "../../types/comment"
 import { Button } from "@oreilla/ui/components/button"
 import { ChevronLeftIcon } from "@oreilla/ui/icons/chevron-left"
 import { ChevronRightIcon } from "@oreilla/ui/icons/chevron-right"
+import { EditIcon } from "@oreilla/ui/icons/edit"
 import { MergePopover } from "./MergePopover"
 import { DeletePostButton } from "./DeletePostButton"
 import { useIsMobile } from "@oreilla/ui/hooks/use-mobile"
+import EditPostModal from "../subdomain/request-detail/EditPostModal"
 
 export type RequestDetailData = {
   id: string
@@ -89,6 +92,8 @@ export default function RequestDetail({
   const { prevHref, nextHref, searchParams } = useRequestNavigation(workspaceSlug, navigation)
   const backHref = buildRequestsUrl(workspaceSlug, searchParams, {})
   const isMobile = useIsMobile()
+  const [editOpen, setEditOpen] = useState(false)
+  const canEdit = (post.role === "admin" || post.isOwner) && !readonly
 
   return (
     <section>
@@ -137,7 +142,23 @@ export default function RequestDetail({
               )}
             </header>
 
-            <div className="space-y-5 pt-4">
+            <div className="space-y-5 pt-4 relative group">
+              {canEdit ? (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className={
+                    isMobile
+                      ? "absolute right-0 top-0 h-7 w-7 p-0"
+                      : "absolute right-0 top-0 h-7 w-7 p-0 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity"
+                  }
+                  onClick={() => setEditOpen(true)}
+                  aria-label="Edit post"
+                >
+                  <EditIcon className="h-3 w-3 text-accent" />
+                </Button>
+              ) : null}
               {post.content ? <div className="prose text-sm text-accent dark:prose-invert">{post.content}</div> : null}
               {post.image ? (
                 <div className="flex justify-start">
@@ -214,6 +235,9 @@ export default function RequestDetail({
           <RequestDetailSidebar post={post} workspaceSlug={workspaceSlug} readonly={readonly} />
         </div>
       </div>
+      {canEdit ? (
+        <EditPostModal open={editOpen} onOpenChange={setEditOpen} workspaceSlug={workspaceSlug} post={post} />
+      ) : null}
     </section>
   )
 }

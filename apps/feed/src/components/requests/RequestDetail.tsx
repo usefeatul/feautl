@@ -12,6 +12,7 @@ import RequestDetailSidebar from "./RequestDetailSidebar"
 import type { CommentData } from "../../types/comment"
 import { Button } from "@oreilla/ui/components/button"
 import { ChevronLeftIcon } from "@oreilla/ui/icons/chevron-left"
+import { ChevronRightIcon } from "@oreilla/ui/icons/chevron-right"
 import { MergePopover } from "./MergePopover"
 import { DeletePostButton } from "./DeletePostButton"
 import { useIsMobile } from "@oreilla/ui/hooks/use-mobile"
@@ -99,15 +100,12 @@ export default function RequestDetail({
               {isMobile ? (
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center justify-between gap-2">
-                    <Button asChild variant="nav" size="sm" className="h-9 px-3 gap-2">
+                    <Button asChild variant="nav" size="xs">
                       <Link href={backHref} aria-label="Back to requests">
                         <ChevronLeftIcon className="size-3" />
-                        <span className="text-xs font-medium">Back</span>
                       </Link>
                     </Button>
                     <div className="inline-flex items-center gap-2">
-                      <UpvoteButton postId={post.id} upvotes={post.upvotes} hasVoted={post.hasVoted} className="text-sm" activeBg />
-                      <CommentCounter postId={post.id} initialCount={post.commentCount} />
                       <div className="inline-flex items-center rounded-sm border bg-card overflow-hidden">
                         <MergePopover postId={post.id} workspaceSlug={workspaceSlug} />
                         <div className="h-5 w-px bg-border" />
@@ -144,6 +142,55 @@ export default function RequestDetail({
               {post.image ? (
                 <div className="flex justify-start">
                   <ContentImage url={post.image} alt={post.title} className="h-40 w-auto max-w-full rounded-md" />
+                </div>
+              ) : null}
+              {isMobile ? (
+                <div className="flex items-center justify-between gap-3 text-sm text-accent">
+                  <div className="inline-flex items-center gap-3">
+                    <UpvoteButton postId={post.id} upvotes={post.upvotes} hasVoted={post.hasVoted} className="text-sm" activeBg />
+                    <CommentCounter postId={post.id} initialCount={post.commentCount} />
+                  </div>
+                  <div className="inline-flex items-center rounded-sm border bg-card overflow-hidden">
+                    <Button 
+                      asChild 
+                      variant="nav" 
+                      size="sm" 
+                      className="h-8 px-3 gap-2 rounded-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:bg-card"
+                      disabled={!prevHref}
+                    >
+                      {prevHref ? (
+                        <Link href={prevHref} aria-label="Previous post">
+                          <ChevronLeftIcon className="size-3" />
+                          <span className="text-xs font-medium">Prev</span>
+                        </Link>
+                      ) : (
+                        <span aria-hidden="true" className="flex items-center gap-2">
+                          <ChevronLeftIcon className="size-3.5 opacity-50" />
+                          <span className="text-xs font-medium opacity-50">Prev</span>
+                        </span>
+                      )}
+                    </Button>
+                    <div className="mx-0.5 h-5 w-px bg-border" />
+                    <Button 
+                      asChild 
+                      variant="nav" 
+                      size="sm" 
+                      className="h-8 px-3 gap-2 rounded-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:bg-card"
+                      disabled={!nextHref}
+                    >
+                      {nextHref ? (
+                        <Link href={nextHref} aria-label="Next post">
+                          <span className="text-xs font-medium">Next</span>
+                          <ChevronRightIcon className="size-3" />
+                        </Link>
+                      ) : (
+                        <span aria-hidden="true" className="flex items-center gap-2">
+                          <span className="text-xs font-medium opacity-50">Next</span>
+                          <ChevronRightIcon className="size-3.5 opacity-50" />
+                        </span>
+                      )}
+                    </Button>
+                  </div>
                 </div>
               ) : null}
               {isMobile ? null : (

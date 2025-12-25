@@ -30,9 +30,19 @@ const blocks = [
 export default function WizardKeyBlocks({ className }: WizardKeyBlocksProps) {
   return (
     <div
-      className={cn("hidden md:flex items-center justify-center pr-10 max-w-[520px]", className)}
+      className={cn("hidden md:flex pr-10 max-w-[520px]", className)}
     >
-      <div className="grid grid-cols-2 gap-5 w-full">
+      <div className="flex flex-col gap-6 w-full">
+        <div className="space-y-2">
+          <p className="text-xs font-medium tracking-[0.24em] uppercase text-accent">
+            Feedback blocks
+          </p>
+          <p className="text-sm text-accent max-w-sm">
+            A simple stack of steps that guide how you collect, ship, announce and prioritize work.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-5 w-full">
         {blocks.map((block, index) => (
           <div
             key={block.label}
@@ -68,6 +78,7 @@ export default function WizardKeyBlocks({ className }: WizardKeyBlocksProps) {
             </div>
           </div>
         ))}
+        </div>
       </div>
     </div>
   )

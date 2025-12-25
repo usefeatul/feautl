@@ -4,7 +4,7 @@ import React from "react"
 import { Input } from "@oreilla/ui/components/input"
 import { Button } from "@oreilla/ui/components/button"
 import { SettingsDialogShell } from "@/components/settings/global/SettingsDialogShell"
-import { LinkIcon } from "@oreilla/ui/icons/link"
+import DomainIcon from "@oreilla/ui/icons/domain"
 
 export default function AddDomainDialog({
   open,
@@ -24,14 +24,14 @@ export default function AddDomainDialog({
       onOpenChange={onOpenChange}
       title="Add domain"
       description="This will be the primary domain for your workspace."
-      icon={<LinkIcon className="size-3.5" />}
+      icon={<DomainIcon className="size-3.5" />}
     >
       <div className="space-y-2">
         <label htmlFor="domain" className="text-xs">
           Domain
         </label>
         <div className="relative flex items-center">
-          <span className="inline-flex items-center h-9 px-2 bg-muted border rounded-l-md text-black/80 select-none">
+          <span className="inline-flex items-center h-9 px-2 bg-muted border rounded-l-md text-accent select-none">
             https://feedback.
           </span>
           <Input

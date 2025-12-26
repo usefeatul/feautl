@@ -25,7 +25,7 @@ interface Props {
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-md bg-muted/40 p-3">
+    <div className="rounded-sm p-0">
       <div className="text-sm text-accent">{label}</div>
       <div className="text-2xl font-semibold">{value}</div>
     </div>
@@ -98,7 +98,7 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border bg-card dark:bg-black/40 p-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="rounded-sm border bg-card dark:bg-black/40 p-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between ring-1 ring-border/60 ring-offset-1 ring-offset-background">
         <div className="flex items-center gap-4">
           <div className="relative">
             <Avatar className="size-12">
@@ -128,7 +128,7 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="rounded-md border bg-card dark:bg-black/40 p-4 lg:col-span-2">
+        <div className="rounded-sm border bg-card dark:bg-black/40 p-4 lg:col-span-2 ring-1 ring-border/60 ring-offset-1 ring-offset-background">
           <div className="flex items-center justify-between mb-3">
             <div className="font-semibold">Activity</div>
           </div>
@@ -166,7 +166,7 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-md border bg-card dark:bg-black/40 p-4">
+          <div className="rounded-sm border bg-card dark:bg-black/40 p-4 ring-1 ring-border/60 ring-offset-1 ring-offset-background">
             <div className="font-semibold mb-3">Top posts</div>
             {topPosts.length === 0 ? (
               <div className="text-sm text-accent">No posts yet</div>

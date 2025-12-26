@@ -34,7 +34,7 @@ export default function WizardKeyBlocks({ className }: WizardKeyBlocksProps) {
     >
       <div className="flex flex-col justify-between gap-6 w-full h-full pt-6 pb-6">
         <div className="space-y-2 max-w-sm">
-          <p className="text-xs font-medium tracking-[0.24em] uppercase text-accent">
+          <p className="text-lg font-medium tracking-[0.24em] uppercase text-black dark:text-white">
             Feedback blocks
           </p>
           <p className="text-sm text-accent max-w-sm">

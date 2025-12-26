@@ -23,13 +23,15 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
   const initialActivity: { items: any[]; nextCursor: string | null } = { items: [], nextCursor: null }
 
   return (
-    <MemberDetail
-      slug={slug}
-      userId={userId}
-      initialMember={initialMember || undefined}
-      initialStats={initialStats || undefined}
-      initialTopPosts={initialTopPosts || []}
-      initialActivity={initialActivity}
-    />
+    <section className="space-y-4">
+      <MemberDetail
+        slug={slug}
+        userId={userId}
+        initialMember={initialMember || undefined}
+        initialStats={initialStats || undefined}
+        initialTopPosts={initialTopPosts || []}
+        initialActivity={initialActivity}
+      />
+    </section>
   )
 }

@@ -17,8 +17,8 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
   const initialMembers: Member[] = (data?.initialTeam?.members || []) as Member[]
 
   return (
-    <div className="">
+    <section className="space-y-4">
       <MemberList slug={slug} initialMembers={initialMembers} />
-    </div>
+    </section>
   )
 }

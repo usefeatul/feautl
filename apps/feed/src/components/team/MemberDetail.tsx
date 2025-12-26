@@ -12,6 +12,7 @@ import { cn } from "@oreilla/ui/lib/utils"
 import Link from "next/link"
 import StatusIcon from "@/components/requests/StatusIcon"
 import RoleBadge from "@/components/global/RoleBadge"
+import { UpvoteButton } from "@/components/upvote/UpvoteButton"
 
 interface Props {
   slug: string
@@ -160,14 +161,23 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
             ) : (
               <div className="space-y-2">
                 {(statsData?.topPosts || []).map((p) => (
-                  <Link
+                  <div
                     key={p.id}
-                    href={`/workspaces/${slug}/requests/${p.id}`}
                     className="flex items-center justify-between rounded-md px-3 py-2 hover:bg-muted text-sm"
                   >
-                    <div className="truncate">{p.title}</div>
-                    <div className="text-xs text-accent">{p.upvotes} ↑</div>
-                  </Link>
+                    <Link
+                      href={`/workspaces/${slug}/requests/${p.id}`}
+                      className="truncate text-foreground hover:text-primary"
+                    >
+                      {p.title}
+                    </Link>
+                    <UpvoteButton
+                      postId={p.id}
+                      upvotes={Number(p.upvotes || 0)}
+                      className="text-xs"
+                      activeBg
+                    />
+                  </div>
                 ))}
               </div>
             )}

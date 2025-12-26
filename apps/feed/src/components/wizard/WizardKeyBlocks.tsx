@@ -24,9 +24,9 @@ export default function WizardKeyBlocks({ className }: WizardKeyBlocksProps) {
     <div
       className={cn("hidden md:flex pr-10 max-w-[520px] h-full", className)}
     >
-      <div className="flex flex-col justify-between gap-6 w-full h-full pt-6 pb-6">
-        <div className="space-y-2 max-w-sm">
-          <p className="text-lg font-medium tracking-[0.24em] uppercase text-black dark:text-white">
+      <div className="flex flex-col justify-between gap-6 w-full h-full pb-6">
+        <div className="space-y-2 max-w-md mt-4">
+          <p className="text-lg font-medium tracking-[0.24em] uppercase text-black dark:text-white ">
             Feedback blocks
           </p>
           <p className="text-sm text-accent max-w-sm">
@@ -48,16 +48,14 @@ export default function WizardKeyBlocks({ className }: WizardKeyBlocksProps) {
             <div
               className={cn(
                 "absolute inset-0 rounded-sm translate-x-2 translate-y-2 opacity-70",
-                "bg-stone-950",
+                "bg-stone-950 ",
               )}
             />
             <div
               className={cn(
-                "relative",
-                "rounded-sm px-9 py-12 h-48 flex items-center justify-center",
-                "shadow-[0_18px_40px_rgba(15,23,42,0.9)] transition-transform duration-300",
-                "group-hover:-translate-y-2 group-hover:shadow-[0_24px_55px_rgba(15,23,42,1)]",
-                "border border-white/10 bg-gradient-to-br from-stone-900 to-stone-800",
+                "relative  ring-1 ring-border/60 ring-offset-1 ring-offset-background",
+                "rounded-sm px-7 py-8 h-52 flex items-center justify-center ",
+                "border border-white/10 bg-linear-to-br from-stone-900 to-stone-800 dark:from-stone-800 dark:to-stone-900",
               )}
             >
               <div className="flex flex-col items-center gap-3">

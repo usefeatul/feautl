@@ -7,23 +7,15 @@ type WizardKeyBlocksProps = {
 const blocks = [
   {
     label: "Collect",
-    color: "bg-emerald-500",
-    gradient: "from-emerald-400 to-emerald-600",
   },
   {
     label: "Ship",
-    color: "bg-blue-500",
-    gradient: "from-sky-400 to-blue-600",
   },
   {
     label: "Announce",
-    color: "bg-amber-500",
-    gradient: "from-amber-400 to-amber-600",
   },
   {
     label: "Prioritize",
-    color: "bg-rose-500",
-    gradient: "from-rose-400 to-rose-600",
   },
 ]
 
@@ -50,30 +42,29 @@ export default function WizardKeyBlocks({ className }: WizardKeyBlocksProps) {
               "group relative",
             )}
             style={{
-              transform: index % 2 === 0 ? "rotate(-3deg)" : "rotate(3deg)",
+              transform: index % 2 === 0 ? "rotate(-1deg)" : "rotate(1deg)",
             }}
           >
             <div
               className={cn(
-                "absolute inset-0 rounded-2xl translate-x-3 translate-y-3 opacity-70",
-                block.color,
+                "absolute inset-0 rounded-sm translate-x-2 translate-y-2 opacity-70",
+                "bg-stone-950",
               )}
             />
             <div
               className={cn(
                 "relative",
-                "rounded-2xl px-9 py-12 h-48 flex items-center justify-center",
+                "rounded-sm px-9 py-12 h-48 flex items-center justify-center",
                 "shadow-[0_18px_40px_rgba(15,23,42,0.9)] transition-transform duration-300",
                 "group-hover:-translate-y-2 group-hover:shadow-[0_24px_55px_rgba(15,23,42,1)]",
-                "border border-white/12 bg-gradient-to-br",
-                block.gradient,
+                "border border-white/10 bg-gradient-to-br from-stone-900 to-stone-800",
               )}
             >
               <div className="flex flex-col items-center gap-3">
                 <span className="text-white font-semibold text-lg tracking-[0.22em] uppercase">
                   {block.label}
                 </span>
-                <span className="h-1 w-10 rounded-full bg-white/80" />
+                <span className="h-1 w-10 rounded-full bg-stone-300/80" />
               </div>
             </div>
           </div>

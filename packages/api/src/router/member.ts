@@ -112,6 +112,7 @@ export function createMemberRouter() {
             entity: sql<string>`'post'`,
             entityId: post.id,
             createdAt: post.createdAt,
+            status: post.roadmapStatus,
           })
           .from(post)
           .innerJoin(board, eq(post.boardId, board.id))
@@ -126,6 +127,7 @@ export function createMemberRouter() {
             entity: sql<string>`'post'`,
             entityId: postUpdate.postId,
             createdAt: postUpdate.createdAt,
+            status: post.roadmapStatus,
           })
           .from(postUpdate)
           .innerJoin(post, eq(postUpdate.postId, post.id))
@@ -141,6 +143,7 @@ export function createMemberRouter() {
             entity: sql<string>`'post'`,
             entityId: postMerge.targetPostId,
             createdAt: postMerge.createdAt,
+            status: post.roadmapStatus,
           })
           .from(postMerge)
           .innerJoin(post, eq(postMerge.targetPostId, post.id))
@@ -156,6 +159,7 @@ export function createMemberRouter() {
             entity: sql<string>`'post'`,
             entityId: comment.postId,
             createdAt: comment.createdAt,
+            status: post.roadmapStatus,
           })
           .from(comment)
           .innerJoin(post, eq(comment.postId, post.id))
@@ -171,6 +175,7 @@ export function createMemberRouter() {
             entity: sql<string>`'post'`,
             entityId: comment.postId,
             createdAt: comment.editedAt,
+            status: post.roadmapStatus,
           })
           .from(comment)
           .innerJoin(post, eq(comment.postId, post.id))
@@ -186,6 +191,7 @@ export function createMemberRouter() {
             entity: sql<string>`'post'`,
             entityId: vote.postId,
             createdAt: vote.createdAt,
+            status: post.roadmapStatus,
           })
           .from(vote)
           .innerJoin(post, eq(vote.postId, post.id))
@@ -201,6 +207,7 @@ export function createMemberRouter() {
             entity: sql<string>`'post'`,
             entityId: comment.postId,
             createdAt: vote.createdAt,
+            status: post.roadmapStatus,
           })
           .from(vote)
           .innerJoin(comment, eq(vote.commentId, comment.id))

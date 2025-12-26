@@ -10,6 +10,7 @@ import { format } from "date-fns"
 import { roleBadgeClass } from "@/components/settings/team/role-badge"
 import { cn } from "@oreilla/ui/lib/utils"
 import Link from "next/link"
+import StatusIcon from "@/components/requests/StatusIcon"
 
 interface Props {
   slug: string
@@ -114,7 +115,8 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
                       <span className="font-medium">{format(new Date(it.createdAt), "LLL d")}</span>{" "}
                       <span className="text-accent">{it.type.replace("_", " ")}</span>
                     </div>
-                    <div className="text-sm">
+                    <div className="text-sm flex items-center gap-2">
+                      {it.entity === "post" && it.status ? <StatusIcon status={String(it.status)} className="size-4" /> : null}
                       <span className="font-semibold">{it.title}</span>
                     </div>
                   </li>

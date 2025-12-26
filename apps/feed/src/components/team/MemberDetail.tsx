@@ -58,9 +58,18 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
       }
     },
     placeholderData: { stats: initialStats || { posts: 0, comments: 0, upvotes: 0 }, topPosts: initialTopPosts },
-    staleTime: 0,
-    refetchOnMount: "always",
+    staleTime: 30_000,
+    refetchOnMount: false,
   })
+
+  const stats = statsData?.stats || initialStats || { posts: 0, comments: 0, upvotes: 0 }
+  const topPosts = (statsData?.topPosts || initialTopPosts || []) as Array<{
+    id: string
+    title: string
+    slug: string
+    upvotes: number
+    status?: string | null
+  }>
 
   const {
     data: activityData,
@@ -78,14 +87,14 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
     getNextPageParam: (lastPage) => (lastPage?.nextCursor ?? undefined) as string | undefined,
     initialPageParam: "",
     placeholderData: { pages: [initialActivity], pageParams: [""] } as any,
-    staleTime: 0,
-    refetchOnMount: "always",
+    staleTime: 30_000,
+    refetchOnMount: false,
   })
 
   const items = React.useMemo(() => {
-    const pages = (activityData?.pages as any[]) || []
+    const pages = (activityData?.pages as any[]) || [initialActivity]
     return pages.flatMap((p: any) => p?.items || [])
-  }, [activityData?.pages])
+  }, [activityData?.pages, initialActivity])
 
   return (
     <div className="space-y-4">
@@ -112,9 +121,9 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
           </div>
         </div>
         <div className="grid grid-cols-3 gap-3 w-full md:w-auto">
-          <StatCard label="Posts" value={Number(statsData?.stats?.posts || 0)} />
-          <StatCard label="Comments" value={Number(statsData?.stats?.comments || 0)} />
-          <StatCard label="Upvotes" value={Number(statsData?.stats?.upvotes || 0)} />
+          <StatCard label="Posts" value={Number(stats.posts || 0)} />
+          <StatCard label="Comments" value={Number(stats.comments || 0)} />
+          <StatCard label="Upvotes" value={Number(stats.upvotes || 0)} />
         </div>
       </div>
 
@@ -159,11 +168,11 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
         <div className="space-y-4">
           <div className="rounded-md border bg-card dark:bg-black/40 p-4">
             <div className="font-semibold mb-3">Top posts</div>
-            {(statsData?.topPosts || []).length === 0 ? (
+            {topPosts.length === 0 ? (
               <div className="text-sm text-accent">No posts yet</div>
             ) : (
               <div className="space-y-2">
-                {(statsData?.topPosts || []).map((p) => (
+                {topPosts.map((p) => (
                   <div
                     key={p.id}
                     className="flex items-center justify-between rounded-md px-3 py-2 hover:bg-muted text-sm gap-3"

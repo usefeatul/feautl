@@ -14,7 +14,7 @@ import StatusPicker from "./meta/StatusPicker";
 import FlagsPicker from "./meta/FlagsPicker";
 import TagsPicker from "./meta/TagsPicker";
 import StatusIcon from "./StatusIcon";
-import RoleBadge from "../comments/RoleBadge";
+import RoleBadge from "../global/RoleBadge";
 import type { RequestDetailData } from "./RequestDetail";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@oreilla/ui/components/tooltip";
 import { CircleQuestionMarkIcon } from "@oreilla/ui/icons/circle-question-mark";

@@ -10,7 +10,7 @@ import StatusPicker from "../requests/meta/StatusPicker"
 import FlagsPicker from "../requests/meta/FlagsPicker"
 import StatusIcon from "../requests/StatusIcon"
 import { PoweredBy } from "./PoweredBy"
-import RoleBadge from "../comments/RoleBadge"
+import RoleBadge from "../global/RoleBadge"
 
 
 export type PostSidebarProps = {

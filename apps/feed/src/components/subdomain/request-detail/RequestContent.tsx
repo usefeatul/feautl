@@ -16,7 +16,7 @@ import { randomAvatarUrl } from "@/utils/avatar";
 import { SubdomainRequestDetailData } from "../../../types/subdomain";
 import ContentImage from "@/components/global/ContentImage";
 import { RequestActions } from "./RequestActions";
-import RoleBadge from "../../comments/RoleBadge";
+import RoleBadge from "../../global/RoleBadge";
 
 interface RequestContentProps {
   post: SubdomainRequestDetailData;

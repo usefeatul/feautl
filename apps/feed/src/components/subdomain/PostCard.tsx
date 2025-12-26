@@ -11,7 +11,7 @@ import { getInitials } from "@/utils/user-utils"
 import { randomAvatarUrl } from "@/utils/avatar"
 import { statusLabel } from "@/lib/roadmap"
 import { relativeTime } from "@/lib/time"
-import RoleBadge from "@/components/comments/RoleBadge"
+import RoleBadge from "@/components/global/RoleBadge"
 
 function toPlain(s?: string | null): string {
   if (!s) return ""

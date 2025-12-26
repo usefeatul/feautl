@@ -221,7 +221,7 @@ export function createMemberRouter() {
           ...postUpdated,
           ...postMerged,
           ...commentCreated,
-          ...commentEdited.filter((e) => e.createdAt),
+          ...commentEdited.filter((e: { createdAt: Date | null }) => e.createdAt),
           ...votePosts,
           ...voteComments,
         ].sort((a, b) => {

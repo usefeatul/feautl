@@ -8,7 +8,7 @@ import { CommentsIcon } from "@oreilla/ui/icons/comments"
 import { Avatar, AvatarImage, AvatarFallback } from "@oreilla/ui/components/avatar"
 import { getInitials } from "@/utils/user-utils"
 import { randomAvatarUrl } from "@/utils/avatar"
-import RoleBadge from "@/components/comments/RoleBadge"
+import RoleBadge from "@/components/global/RoleBadge"
 import { UpvoteButton } from "@/components/upvote/UpvoteButton"
 
 export type RequestItemData = {

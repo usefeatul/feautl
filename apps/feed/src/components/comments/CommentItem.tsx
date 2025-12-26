@@ -8,7 +8,7 @@ import {
 } from "@oreilla/ui/components/avatar"
 import { cn } from "@oreilla/ui/lib/utils"
 import CommentForm from "./CommentForm"
-import RoleBadge from "./RoleBadge"
+import RoleBadge from "../global/RoleBadge"
 import { useWorkspaceRole } from "@/hooks/useWorkspaceAccess"
 import { getInitials } from "@/utils/user-utils"
 import CommentHeader from "./CommentHeader"

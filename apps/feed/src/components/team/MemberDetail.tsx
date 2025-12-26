@@ -104,7 +104,7 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
 
         <div className="space-y-3">
           <div className="font-semibold">Activity</div>
-          <div className="rounded-md border">
+          <div className="rounded-md border bg-card dark:bg-black/20">
             <ul className="divide-y">
               {items.length === 0 ? (
                 <li className="p-4 text-accent text-sm">No activity</li>
@@ -115,9 +115,11 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
                       <span className="font-medium">{format(new Date(it.createdAt), "LLL d")}</span>{" "}
                       <span className="text-accent">{it.type.replace("_", " ")}</span>
                     </div>
-                    <div className="text-sm flex items-center gap-2">
-                      {it.entity === "post" && it.status ? <StatusIcon status={String(it.status)} className="size-4" /> : null}
-                      <span className="font-semibold">{it.title}</span>
+                    <div className="text-sm flex items-center gap-2 min-w-0">
+                      {it.entity === "post" && it.status ? <StatusIcon status={String(it.status)} className="size-4 shrink-0" /> : null}
+                      <div className="min-w-0">
+                        <span className="font-semibold wrap-break-word">{it.title}</span>
+                      </div>
                     </div>
                   </li>
                 ))

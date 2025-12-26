@@ -42,7 +42,7 @@ export default function MemberList({ slug, initialMembers = [] }: Props) {
           <TableHeader>
             <TableRow>
               <TableHead className="px-4">Member</TableHead>
-              <TableHead className="px-4 w-40">Role</TableHead>
+              <TableHead className="px-4 w-48 text-center">Role</TableHead>
               <TableHead className="px-4 w-40">Joined</TableHead>
             </TableRow>
           </TableHeader>
@@ -66,8 +66,8 @@ export default function MemberList({ slug, initialMembers = [] }: Props) {
                       </div>
                     </Link>
                   </TableCell>
-                  <TableCell className="px-4 w-40">
-                    <span className={cn("text-xs px-2 py-0.5 rounded-sm capitalize", roleBadgeClass(m.role, m.isOwner))}>
+                  <TableCell className="px-4 w-48 text-center">
+                    <span className={cn("inline-block h-6 leading-6 text-xs px-2 rounded-sm capitalize", roleBadgeClass(m.role, m.isOwner))}>
                       {m.isOwner ? "owner" : m.role}
                     </span>
                   </TableCell>

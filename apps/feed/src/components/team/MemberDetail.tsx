@@ -51,8 +51,9 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
       const d = await res.json() as { stats?: { posts: number; comments: number; upvotes: number }; topPosts?: any[] }
       return { stats: d?.stats || { posts: 0, comments: 0, upvotes: 0 }, topPosts: (d?.topPosts || []) as Array<{ id: string; title: string; slug: string; upvotes: number }> }
     },
-    initialData: { stats: initialStats || { posts: 0, comments: 0, upvotes: 0 }, topPosts: initialTopPosts },
-    staleTime: 60_000,
+    placeholderData: { stats: initialStats || { posts: 0, comments: 0, upvotes: 0 }, topPosts: initialTopPosts },
+    staleTime: 0,
+    refetchOnMount: "always",
   })
 
   const {
@@ -62,24 +63,26 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["member-activity", slug, userId],
-    queryFn: async ({ pageParam }: { pageParam?: string }) => {
-      const res = await client.member.activityByWorkspaceSlug.$get({ slug, userId, cursor: typeof pageParam === "string" ? pageParam : undefined })
+    queryFn: async ({ pageParam }) => {
+      const cursor = typeof pageParam === "string" && pageParam.length > 0 ? pageParam : undefined
+      const res = await client.member.activityByWorkspaceSlug.$get({ slug, userId, limit: 20, cursor })
       const d = await res.json() as { items?: any[]; nextCursor?: string | null }
       return d
     },
-    getNextPageParam: (lastPage) => lastPage?.nextCursor || null,
-    initialPageParam: null,
-    initialData: { pages: [initialActivity], pageParams: [null] } as any,
-    staleTime: 30_000,
+    getNextPageParam: (lastPage) => (lastPage?.nextCursor ?? undefined) as string | undefined,
+    initialPageParam: "",
+    placeholderData: { pages: [initialActivity], pageParams: [""] } as any,
+    staleTime: 0,
+    refetchOnMount: "always",
   })
 
   const items = React.useMemo(() => {
-    const pages = activityData?.pages || []
-    return pages.flatMap((p) => p?.items || [])
+    const pages = (activityData?.pages as any[]) || []
+    return pages.flatMap((p: any) => p?.items || [])
   }, [activityData?.pages])
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div className="rounded-md border bg-card dark:bg-black/40 p-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
       <div className="lg:col-span-2 space-y-4">
         <div className="flex items-center gap-4">
           <Avatar className="size-12">

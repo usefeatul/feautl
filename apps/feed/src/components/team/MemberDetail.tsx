@@ -128,11 +128,11 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="rounded-sm border bg-card dark:bg-black/40 p-4 lg:col-span-2 ring-1 ring-border/60 ring-offset-1 ring-offset-background">
+        <div className="rounded-sm bg-card dark:bg-black/40 p-4 lg:col-span-2">
           <div className="flex items-center justify-between mb-3">
             <div className="font-semibold">Activity</div>
           </div>
-          <ul className="divide-y">
+          <ul className="divide-y divide-border/50">
             {items.length === 0 ? (
               <li className="py-6 text-accent text-sm text-center">No activity yet</li>
             ) : (

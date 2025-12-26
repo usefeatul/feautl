@@ -34,4 +34,5 @@ export const {
   brandingConfig,
   workspaceSlugReservation,
   changelogEntry,
+  activityLog,
 } = schema

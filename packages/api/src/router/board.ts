@@ -2,7 +2,7 @@
 import { eq, and, sql, inArray, asc, type SQLWrapper } from "drizzle-orm"
 import { z } from "zod"
 import { j, publicProcedure, privateProcedure } from "../jstack"
-import { workspace, board, post, postTag, tag, comment, user, workspaceMember, vote } from "@oreilla/db"
+import { workspace, board, post, postTag, tag, comment, user, workspaceMember, vote, activityLog } from "@oreilla/db"
 import { byIdSchema, updatePostMetaSchema, updatePostBoardSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
 import { byBoardInputSchema, boardSlugSchema } from "../validators/board"
@@ -246,9 +246,24 @@ export function createBoardRouter() {
           .limit(1)
         if (existing) throw new HTTPException(409, { message: "Tag slug already exists" })
 
-        await ctx.db
+        const [created] = await ctx.db
           .insert(tag)
           .values({ workspaceId: ws.id, name: input.name.trim(), slug: slugVal, color: input.color || undefined })
+          .returning({ id: tag.id })
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId: ctx.session.user.id,
+          action: "tag_created",
+          actionType: "create",
+          entity: "tag",
+          entityId: String(created.id),
+          title: input.name.trim(),
+          metadata: {
+            slug: slugVal,
+            color: input.color || null,
+          },
+        })
 
         return c.superjson({ ok: true })
       }),
@@ -283,6 +298,19 @@ export function createBoardRouter() {
         if (!t) throw new HTTPException(404, { message: "Tag not found" })
 
         await ctx.db.delete(tag).where(eq(tag.id, t.id))
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId: ctx.session.user.id,
+          action: "tag_deleted",
+          actionType: "delete",
+          entity: "tag",
+          entityId: String(t.id),
+          title: null,
+          metadata: {
+            slug: input.tagSlug,
+          },
+        })
         return c.superjson({ ok: true })
       }),
     byWorkspaceSlug: publicProcedure
@@ -719,7 +747,7 @@ export function createBoardRouter() {
       .input(updatePostMetaSchema)
       .post(async ({ ctx, input, c }) => {
         const [p] = await ctx.db
-          .select({ id: post.id, boardId: post.boardId })
+          .select({ id: post.id, boardId: post.boardId, title: post.title, slug: post.slug })
           .from(post)
           .where(eq(post.id, input.postId))
           .limit(1)
@@ -760,6 +788,25 @@ export function createBoardRouter() {
         patch.updatedAt = new Date()
 
         await ctx.db.update(post).set(patch).where(eq(post.id, input.postId))
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId: ctx.session.user.id,
+          action: "post_meta_updated",
+          actionType: "update",
+          entity: "post",
+          entityId: String(input.postId),
+          title: p.title,
+          metadata: {
+            roadmapStatus: input.roadmapStatus,
+            isPinned: input.isPinned,
+            isLocked: input.isLocked,
+            isFeatured: input.isFeatured,
+            boardId: p.boardId,
+            slug: p.slug,
+          },
+        })
+
         return c.superjson({ ok: true })
       }),
 
@@ -767,7 +814,7 @@ export function createBoardRouter() {
       .input(updatePostBoardSchema)
       .post(async ({ ctx, input, c }) => {
         const [p] = await ctx.db
-          .select({ id: post.id, boardId: post.boardId })
+          .select({ id: post.id, boardId: post.boardId, title: post.title, slug: post.slug })
           .from(post)
           .where(eq(post.id, input.postId))
           .limit(1)
@@ -807,6 +854,22 @@ export function createBoardRouter() {
         if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
         await ctx.db.update(post).set({ boardId: targetBoard.id, updatedAt: new Date() }).where(eq(post.id, input.postId))
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId: ctx.session.user.id,
+          action: "post_board_updated",
+          actionType: "update",
+          entity: "post",
+          entityId: String(input.postId),
+          title: p.title,
+          metadata: {
+            fromBoardId: p.boardId,
+            toBoardId: targetBoard.id,
+            slug: p.slug,
+          },
+        })
+
         return c.superjson({ ok: true })
       }),
   })

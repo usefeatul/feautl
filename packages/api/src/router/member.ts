@@ -11,6 +11,7 @@ import {
   user,
   postUpdate,
   postMerge,
+  activityLog,
 } from "@oreilla/db"
 import { memberByWorkspaceInputSchema, memberActivityInputSchema } from "../validators/member"
 
@@ -104,134 +105,47 @@ export function createMemberRouter() {
         const limit = Math.min(Math.max(Number(input.limit || 20), 1), 50)
         const cursorDate = input.cursor ? new Date(input.cursor) : null
 
-        const postCreated = await ctx.db
+        const rows = await ctx.db
           .select({
-            id: post.id,
-            type: sql<string>`'post_created'`,
-            title: post.title,
-            entity: sql<string>`'post'`,
-            entityId: post.id,
-            createdAt: post.createdAt,
-            status: post.roadmapStatus,
+            id: activityLog.id,
+            type: activityLog.action,
+            title: activityLog.title,
+            entity: activityLog.entity,
+            entityId: activityLog.entityId,
+            createdAt: activityLog.createdAt,
+            metadata: activityLog.metadata,
           })
-          .from(post)
-          .innerJoin(board, eq(post.boardId, board.id))
-          .where(and(eq(board.workspaceId, ws.id), eq(post.authorId, input.userId), ...(cursorDate ? [lt(post.createdAt, cursorDate)] : [])))
-          .limit(limit)
+          .from(activityLog)
+          .where(
+            and(
+              eq(activityLog.workspaceId, ws.id),
+              eq(activityLog.userId, input.userId),
+              ...(cursorDate ? [lt(activityLog.createdAt, cursorDate)] : []),
+            ),
+          )
+          .orderBy(sql`${activityLog.createdAt} desc`)
+          .limit(limit + 1)
 
-        const postUpdated = await ctx.db
-          .select({
-            id: postUpdate.id,
-            type: sql<string>`'post_updated'`,
-            title: postUpdate.title,
-            entity: sql<string>`'post'`,
-            entityId: postUpdate.postId,
-            createdAt: postUpdate.createdAt,
-            status: post.roadmapStatus,
-          })
-          .from(postUpdate)
-          .innerJoin(post, eq(postUpdate.postId, post.id))
-          .innerJoin(board, eq(post.boardId, board.id))
-          .where(and(eq(board.workspaceId, ws.id), eq(postUpdate.authorId, input.userId), ...(cursorDate ? [lt(postUpdate.createdAt, cursorDate)] : [])))
-          .limit(limit)
-
-        const postMerged = await ctx.db
-          .select({
-            id: postMerge.id,
-            type: sql<string>`'post_merged'`,
-            title: sql<string>`'Merged post'`,
-            entity: sql<string>`'post'`,
-            entityId: postMerge.targetPostId,
-            createdAt: postMerge.createdAt,
-            status: post.roadmapStatus,
-          })
-          .from(postMerge)
-          .innerJoin(post, eq(postMerge.targetPostId, post.id))
-          .innerJoin(board, eq(post.boardId, board.id))
-          .where(and(eq(board.workspaceId, ws.id), eq(postMerge.mergedBy, input.userId), ...(cursorDate ? [lt(postMerge.createdAt, cursorDate)] : [])))
-          .limit(limit)
-
-        const commentCreated = await ctx.db
-          .select({
-            id: comment.id,
-            type: sql<string>`'comment_created'`,
-            title: sql<string>`'Commented'`,
-            entity: sql<string>`'post'`,
-            entityId: comment.postId,
-            createdAt: comment.createdAt,
-            status: post.roadmapStatus,
-          })
-          .from(comment)
-          .innerJoin(post, eq(comment.postId, post.id))
-          .innerJoin(board, eq(post.boardId, board.id))
-          .where(and(eq(board.workspaceId, ws.id), eq(comment.authorId, input.userId), ...(cursorDate ? [lt(comment.createdAt, cursorDate)] : [])))
-          .limit(limit)
-
-        const commentEdited = await ctx.db
-          .select({
-            id: comment.id,
-            type: sql<string>`'comment_edited'`,
-            title: sql<string>`'Edited comment'`,
-            entity: sql<string>`'post'`,
-            entityId: comment.postId,
-            createdAt: comment.editedAt,
-            status: post.roadmapStatus,
-          })
-          .from(comment)
-          .innerJoin(post, eq(comment.postId, post.id))
-          .innerJoin(board, eq(post.boardId, board.id))
-          .where(and(eq(board.workspaceId, ws.id), eq(comment.authorId, input.userId), ...(cursorDate ? [lt(comment.editedAt as any, cursorDate)] : [])))
-          .limit(limit)
-
-        const votePosts = await ctx.db
-          .select({
-            id: vote.id,
-            type: sql<string>`'vote_post'`,
-            title: sql<string>`'Upvoted post'`,
-            entity: sql<string>`'post'`,
-            entityId: vote.postId,
-            createdAt: vote.createdAt,
-            status: post.roadmapStatus,
-          })
-          .from(vote)
-          .innerJoin(post, eq(vote.postId, post.id))
-          .innerJoin(board, eq(post.boardId, board.id))
-          .where(and(eq(board.workspaceId, ws.id), eq(vote.userId, input.userId), ...(cursorDate ? [lt(vote.createdAt, cursorDate)] : [])))
-          .limit(limit)
-
-        const voteComments = await ctx.db
-          .select({
-            id: vote.id,
-            type: sql<string>`'vote_comment'`,
-            title: sql<string>`'Upvoted comment'`,
-            entity: sql<string>`'post'`,
-            entityId: comment.postId,
-            createdAt: vote.createdAt,
-            status: post.roadmapStatus,
-          })
-          .from(vote)
-          .innerJoin(comment, eq(vote.commentId, comment.id))
-          .innerJoin(post, eq(comment.postId, post.id))
-          .innerJoin(board, eq(post.boardId, board.id))
-          .where(and(eq(board.workspaceId, ws.id), eq(vote.userId, input.userId), ...(cursorDate ? [lt(vote.createdAt, cursorDate)] : [])))
-          .limit(limit)
-
-        const all = [
-          ...postCreated,
-          ...postUpdated,
-          ...postMerged,
-          ...commentCreated,
-          ...commentEdited.filter((e: { createdAt: Date | null }) => e.createdAt),
-          ...votePosts,
-          ...voteComments,
-        ].sort((a, b) => {
-          const at = a.createdAt ? new Date(a.createdAt).getTime() : 0
-          const bt = b.createdAt ? new Date(b.createdAt).getTime() : 0
-          return bt - at
-        })
-
-        const limited = all.slice(0, limit)
-        const nextCursor = limited.length > 0 ? new Date(limited[limited.length - 1].createdAt as any).toISOString() : null
+        const hasMore = rows.length > limit
+        const limited = rows.slice(0, limit).map((row: {
+          id: string
+          type: string
+          title: string | null
+          entity: string
+          entityId: string
+          createdAt: Date | null
+          metadata: Record<string, any> | null
+        }) => ({
+          ...row,
+          status:
+            (row.metadata as any)?.status ??
+            (row.metadata as any)?.roadmapStatus ??
+            null,
+        }))
+        const nextCursor =
+          hasMore && limited.length > 0
+            ? new Date(limited[limited.length - 1].createdAt as any).toISOString()
+            : null
 
         c.header("Cache-Control", "private, max-age=60, stale-while-revalidate=300")
         return c.superjson({ items: limited, nextCursor })

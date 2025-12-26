@@ -163,9 +163,36 @@ export const postMerge = pgTable("post_merge", {
   postMergeTargetIdx: index('post_merge_target_idx').on(table.targetPostId),
 } as const));
 
+export const activityLog = pgTable(
+  "activity_log",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspace.id, { onDelete: "cascade" }),
+    userId: text("user_id").references(() => user.id, { onDelete: "set null" }),
+    action: text("action").notNull(),
+    actionType: text("action_type", {
+      enum: ["create", "update", "delete"],
+    }).notNull(),
+    entity: text("entity").notNull(),
+    entityId: text("entity_id").notNull(),
+    title: text("title"),
+    metadata: json("metadata").$type<Record<string, any>>(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => ({
+    activityWorkspaceIdx: index("activity_workspace_idx").on(table.workspaceId),
+    activityUserIdx: index("activity_user_idx").on(table.userId),
+    activityEntityIdx: index("activity_entity_idx").on(table.entity, table.entityId),
+    activityCreatedAtIdx: index("activity_created_at_idx").on(table.createdAt),
+  } as const),
+)
+
 export type Post = typeof post.$inferSelect
 export type PostTag = typeof postTag.$inferSelect
 export type Tag = typeof tag.$inferSelect
 export type PostUpdate = typeof postUpdate.$inferSelect
 export type PostReport = typeof postReport.$inferSelect
 export type PostMerge = typeof postMerge.$inferSelect
+export type ActivityLog = typeof activityLog.$inferSelect

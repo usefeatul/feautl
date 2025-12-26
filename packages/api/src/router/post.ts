@@ -1,6 +1,6 @@
 import { eq, and, sql, isNull, ilike, or } from "drizzle-orm"
 import { j, publicProcedure } from "../jstack"
-import { vote, post, workspace, board, postTag, workspaceMember, postReport, postMerge, comment } from "@oreilla/db"
+import { vote, post, workspace, board, postTag, workspaceMember, postReport, postMerge, comment, activityLog } from "@oreilla/db"
 import { votePostSchema, createPostSchema, updatePostSchema, byIdSchema, reportPostSchema, getSimilarSchema, mergePostSchema, mergeHerePostSchema, searchMergeCandidatesSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
 import { auth } from "@oreilla/auth"
@@ -88,6 +88,22 @@ export function createPostRouter() {
         
         // Update post upvotes
         await ctx.db.update(post).set({ upvotes: 1 }).where(eq(post.id, newPost.id))
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId,
+          action: "post_created",
+          actionType: "create",
+          entity: "post",
+          entityId: String(newPost.id),
+          title: newPost.title,
+          metadata: {
+            boardId: b.id,
+            slug: newPost.slug,
+            roadmapStatus: newPost.roadmapStatus,
+            tags: tags || [],
+            isAnonymous: !userId,
+          },
+        })
 
         return c.superjson({ post: newPost })
       }),
@@ -217,6 +233,31 @@ export function createPostRouter() {
             }
         }
 
+        const [boardRow] = await ctx.db
+          .select({ workspaceId: board.workspaceId })
+          .from(board)
+          .where(eq(board.id, boardId))
+          .limit(1)
+
+        if (boardRow) {
+          await ctx.db.insert(activityLog).values({
+            workspaceId: boardRow.workspaceId,
+            userId,
+            action: "post_updated",
+            actionType: "update",
+            entity: "post",
+            entityId: String(updatedPost.id),
+            title: updatedPost.title,
+            metadata: {
+              boardId,
+              roadmapStatus: updatedPost.roadmapStatus,
+              hasTitleChange: title !== undefined && title !== existingPost.title,
+              hasContentChange: content !== undefined && content !== existingPost.content,
+              hasTagsChange: Array.isArray(tags),
+            },
+          })
+        }
+
         return c.superjson({ post: updatedPost })
       }),
 
@@ -292,7 +333,30 @@ export function createPostRouter() {
            throw new HTTPException(403, { message: "You don't have permission to delete this post" })
         }
 
+        const [boardRow] = await ctx.db
+          .select({ workspaceId: board.workspaceId })
+          .from(board)
+          .where(eq(board.id, existingPost.boardId))
+          .limit(1)
+
         await ctx.db.delete(post).where(eq(post.id, postId))
+
+        if (boardRow) {
+          await ctx.db.insert(activityLog).values({
+            workspaceId: boardRow.workspaceId,
+            userId,
+            action: "post_deleted",
+            actionType: "delete",
+            entity: "post",
+            entityId: String(postId),
+            title: existingPost.title,
+            metadata: {
+              boardId: existingPost.boardId,
+              slug: existingPost.slug,
+              roadmapStatus: existingPost.roadmapStatus,
+            },
+          })
+        }
 
         return c.superjson({ success: true })
       }),
@@ -318,7 +382,13 @@ export function createPostRouter() {
 
         // Check if post exists
         const [existingPost] = await ctx.db
-          .select({ id: post.id })
+          .select({
+            id: post.id,
+            boardId: post.boardId,
+            title: post.title,
+            slug: post.slug,
+            roadmapStatus: post.roadmapStatus,
+          })
           .from(post)
           .where(eq(post.id, postId))
           .limit(1)
@@ -335,6 +405,30 @@ export function createPostRouter() {
           description: description || null,
           status: "pending",
         })
+
+        const [boardRow] = await ctx.db
+          .select({ workspaceId: board.workspaceId })
+          .from(board)
+          .where(eq(board.id, existingPost.boardId))
+          .limit(1)
+
+        if (boardRow) {
+          await ctx.db.insert(activityLog).values({
+            workspaceId: boardRow.workspaceId,
+            userId,
+            action: "post_reported",
+            actionType: "create",
+            entity: "post",
+            entityId: String(postId),
+            title: existingPost.title,
+            metadata: {
+              reason,
+              hasDescription: Boolean(description),
+              roadmapStatus: existingPost.roadmapStatus,
+              slug: existingPost.slug,
+            },
+          })
+        }
 
         return c.superjson({ success: true })
       }),
@@ -360,7 +454,12 @@ export function createPostRouter() {
 
         // Check if post exists
         const [targetPost] = await ctx.db
-          .select({ id: post.id })
+          .select({
+            id: post.id,
+            boardId: post.boardId,
+            title: post.title,
+            roadmapStatus: post.roadmapStatus,
+          })
           .from(post)
           .where(eq(post.id, postId))
           .limit(1)
@@ -368,6 +467,12 @@ export function createPostRouter() {
         if (!targetPost) {
           throw new HTTPException(404, { message: "Post not found" })
         }
+
+        const [boardRow] = await ctx.db
+          .select({ workspaceId: board.workspaceId })
+          .from(board)
+          .where(eq(board.id, targetPost.boardId))
+          .limit(1)
 
         let existingVote
         
@@ -396,7 +501,23 @@ export function createPostRouter() {
             })
             .where(eq(post.id, postId))
             .returning({ upvotes: post.upvotes })
-            
+
+          if (boardRow) {
+            await ctx.db.insert(activityLog).values({
+              workspaceId: boardRow.workspaceId,
+              userId,
+              action: "post_vote_removed",
+              actionType: "delete",
+              entity: "post",
+              entityId: String(postId),
+              title: targetPost.title,
+              metadata: {
+                roadmapStatus: targetPost.roadmapStatus,
+                fingerprint: userId ? null : fingerprint || null,
+              },
+            })
+          }
+
           return c.superjson({ upvotes: updatedPost?.upvotes || 0, hasVoted: false })
         } else {
           // Add vote
@@ -414,6 +535,22 @@ export function createPostRouter() {
             })
             .where(eq(post.id, postId))
             .returning({ upvotes: post.upvotes })
+
+          if (boardRow) {
+            await ctx.db.insert(activityLog).values({
+              workspaceId: boardRow.workspaceId,
+              userId,
+              action: "post_voted",
+              actionType: "create",
+              entity: "post",
+              entityId: String(postId),
+              title: targetPost.title,
+              metadata: {
+                roadmapStatus: targetPost.roadmapStatus,
+                fingerprint: userId ? null : fingerprint || null,
+              },
+            })
+          }
 
           return c.superjson({ upvotes: updatedPost?.upvotes || 0, hasVoted: true })
         }
@@ -581,7 +718,7 @@ export function createPostRouter() {
 
         // Check workspace permissions
         const [ws] = await ctx.db
-          .select({ ownerId: workspace.ownerId })
+          .select({ id: workspace.id, ownerId: workspace.ownerId })
           .from(workspace)
           .where(eq(workspace.id, sourceBoard.workspaceId))
           .limit(1)
@@ -684,6 +821,21 @@ export function createPostRouter() {
           )
         }
 
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId,
+          action: "post_merged",
+          actionType: "update",
+          entity: "post",
+          entityId: String(targetPost.id),
+          title: targetPost.title,
+          metadata: {
+            sourcePostId: sourcePost.id,
+            mergeType,
+            reason: reason || null,
+          },
+        })
+
         return c.superjson({ success: true, merge: mergeRecord })
       }),
 
@@ -722,7 +874,7 @@ export function createPostRouter() {
         if (!targetBoard) throw new HTTPException(404, { message: "Board not found" })
 
         const [ws] = await ctx.db
-          .select({ ownerId: workspace.ownerId })
+          .select({ id: workspace.id, ownerId: workspace.ownerId })
           .from(workspace)
           .where(eq(workspace.id, targetBoard.workspaceId))
           .limit(1)
@@ -830,6 +982,21 @@ export function createPostRouter() {
               }))
             )
           }
+
+          await ctx.db.insert(activityLog).values({
+            workspaceId: ws.id,
+            userId,
+            action: "post_merged",
+            actionType: "update",
+            entity: "post",
+            entityId: String(targetPost.id),
+            title: targetPost.title,
+            metadata: {
+              sourcePostId: sourcePost.id,
+              mergeType: "merge_here",
+              reason: reason || null,
+            },
+          })
         }
 
         return c.superjson({ success: true })

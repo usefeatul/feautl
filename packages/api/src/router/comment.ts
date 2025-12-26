@@ -10,6 +10,7 @@ import {
   user,
   workspace,
   workspaceMember,
+  activityLog,
 } from "@oreilla/db";
 import { auth } from "@oreilla/auth";
 import { headers } from "next/headers";
@@ -281,6 +282,23 @@ export function createCommentRouter() {
           })
           .returning();
 
+        if (targetPost.workspaceId) {
+          await ctx.db.insert(activityLog).values({
+            workspaceId: targetPost.workspaceId,
+            userId,
+            action: "comment_created",
+            actionType: "create",
+            entity: "comment",
+            entityId: String(newComment.id),
+            title: null,
+            metadata: {
+              postId: newComment.postId,
+              parentId: newComment.parentId,
+              isAnonymous: !userId,
+            },
+          });
+        }
+
         // Parse mentions and persist (only if authenticated)
         try {
           if (userId && content.includes("@")) {
@@ -423,6 +441,31 @@ export function createCommentRouter() {
           .where(eq(comment.id, commentId))
           .returning();
 
+        const [postInfo] = await ctx.db
+          .select({
+            workspaceId: workspace.id,
+          })
+          .from(post)
+          .innerJoin(board, eq(post.boardId, board.id))
+          .innerJoin(workspace, eq(board.workspaceId, workspace.id))
+          .where(eq(post.id, existingComment.postId))
+          .limit(1);
+
+        if (postInfo) {
+          await ctx.db.insert(activityLog).values({
+            workspaceId: postInfo.workspaceId,
+            userId,
+            action: "comment_updated",
+            actionType: "update",
+            entity: "comment",
+            entityId: String(commentId),
+            title: null,
+            metadata: {
+              postId: existingComment.postId,
+            },
+          });
+        }
+
         return c.superjson({ comment: updatedComment });
       }),
 
@@ -433,7 +476,6 @@ export function createCommentRouter() {
         const { commentId } = input;
         const userId = ctx.session.user.id;
 
-        // Check if comment exists and get post/workspace info
         const [existingComment] = await ctx.db
           .select({
             id: comment.id,
@@ -449,27 +491,27 @@ export function createCommentRouter() {
           throw new HTTPException(404, { message: "Comment not found" });
         }
 
-        // Check if user is comment author
+        const [postInfo] = await ctx.db
+          .select({
+            postId: post.id,
+            workspaceId: workspace.id,
+            ownerId: workspace.ownerId,
+          })
+          .from(post)
+          .innerJoin(board, eq(post.boardId, board.id))
+          .innerJoin(workspace, eq(board.workspaceId, workspace.id))
+          .where(eq(post.id, existingComment.postId))
+          .limit(1);
+
+        if (!postInfo) {
+          throw new HTTPException(404, { message: "Post not found" });
+        }
+
         const isAuthor = existingComment.authorId === userId;
 
-        // Check if user is workspace owner
         let isWorkspaceOwner = false;
         if (!isAuthor) {
-          const [postInfo] = await ctx.db
-            .select({
-              postId: post.id,
-              workspaceId: workspace.id,
-              ownerId: workspace.ownerId,
-            })
-            .from(post)
-            .innerJoin(board, eq(post.boardId, board.id))
-            .innerJoin(workspace, eq(board.workspaceId, workspace.id))
-            .where(eq(post.id, existingComment.postId))
-            .limit(1);
-
-          if (postInfo) {
-            isWorkspaceOwner = postInfo.ownerId === userId;
-          }
+          isWorkspaceOwner = postInfo.ownerId === userId;
         }
 
         if (!isAuthor && !isWorkspaceOwner) {
@@ -510,6 +552,19 @@ export function createCommentRouter() {
             .where(eq(comment.id, existingComment.parentId));
         }
 
+        await ctx.db.insert(activityLog).values({
+          workspaceId: postInfo.workspaceId,
+          userId,
+          action: "comment_deleted",
+          actionType: "delete",
+          entity: "comment",
+          entityId: String(commentId),
+          title: null,
+          metadata: {
+            postId: existingComment.postId,
+          },
+        });
+
         return c.superjson({ success: true });
       }),
 
@@ -531,15 +586,31 @@ export function createCommentRouter() {
           // User is not authenticated
         }
 
-        // Check if comment exists
         const [targetComment] = await ctx.db
-          .select({ id: comment.id })
+          .select({
+            id: comment.id,
+            postId: comment.postId,
+          })
           .from(comment)
           .where(eq(comment.id, commentId))
           .limit(1);
 
         if (!targetComment) {
           throw new HTTPException(404, { message: "Comment not found" });
+        }
+
+        const [postInfo] = await ctx.db
+          .select({
+            workspaceId: workspace.id,
+          })
+          .from(post)
+          .innerJoin(board, eq(post.boardId, board.id))
+          .innerJoin(workspace, eq(board.workspaceId, workspace.id))
+          .where(eq(post.id, targetComment.postId))
+          .limit(1);
+
+        if (!postInfo) {
+          throw new HTTPException(404, { message: "Post not found" });
         }
 
         // Check if user already voted
@@ -588,6 +659,22 @@ export function createCommentRouter() {
               .where(eq(comment.id, commentId))
               .returning({ upvotes: comment.upvotes, downvotes: comment.downvotes });
 
+            if (postInfo.workspaceId) {
+              await ctx.db.insert(activityLog).values({
+                workspaceId: postInfo.workspaceId,
+                userId,
+                action: "comment_vote_removed",
+                actionType: "delete",
+                entity: "comment",
+                entityId: String(commentId),
+                title: null,
+                metadata: {
+                  voteType,
+                  fingerprint: userId ? null : fingerprint || null,
+                },
+              });
+            }
+
             return c.superjson({
               upvotes: updatedComment?.upvotes || 0,
               downvotes: updatedComment?.downvotes || 0,
@@ -612,6 +699,23 @@ export function createCommentRouter() {
               })
               .where(eq(comment.id, commentId))
               .returning({ upvotes: comment.upvotes, downvotes: comment.downvotes });
+
+            if (postInfo.workspaceId) {
+              await ctx.db.insert(activityLog).values({
+                workspaceId: postInfo.workspaceId,
+                userId,
+                action: "comment_vote_changed",
+                actionType: "update",
+                entity: "comment",
+                entityId: String(commentId),
+                title: null,
+                metadata: {
+                  from: existingReaction.type,
+                  to: voteType,
+                  fingerprint: userId ? null : fingerprint || null,
+                },
+              });
+            }
 
             return c.superjson({
               upvotes: updatedComment?.upvotes || 0,
@@ -638,6 +742,22 @@ export function createCommentRouter() {
             .where(eq(comment.id, commentId))
             .returning({ upvotes: comment.upvotes, downvotes: comment.downvotes });
 
+          if (postInfo.workspaceId) {
+            await ctx.db.insert(activityLog).values({
+              workspaceId: postInfo.workspaceId,
+              userId,
+              action: "comment_voted",
+              actionType: "create",
+              entity: "comment",
+              entityId: String(commentId),
+              title: null,
+              metadata: {
+                voteType,
+                fingerprint: userId ? null : fingerprint || null,
+              },
+            });
+          }
+
           return c.superjson({
             upvotes: updatedComment?.upvotes || 0,
             downvotes: updatedComment?.downvotes || 0,
@@ -653,15 +773,31 @@ export function createCommentRouter() {
         const { commentId, reason, description } = input;
         const userId = ctx.session.user.id;
 
-        // Check if comment exists
         const [targetComment] = await ctx.db
-          .select({ id: comment.id })
+          .select({
+            id: comment.id,
+            postId: comment.postId,
+          })
           .from(comment)
           .where(eq(comment.id, commentId))
           .limit(1);
 
         if (!targetComment) {
           throw new HTTPException(404, { message: "Comment not found" });
+        }
+
+        const [postInfo] = await ctx.db
+          .select({
+            workspaceId: workspace.id,
+          })
+          .from(post)
+          .innerJoin(board, eq(post.boardId, board.id))
+          .innerJoin(workspace, eq(board.workspaceId, workspace.id))
+          .where(eq(post.id, targetComment.postId))
+          .limit(1);
+
+        if (!postInfo) {
+          throw new HTTPException(404, { message: "Post not found" });
         }
 
         // Create report
@@ -671,6 +807,20 @@ export function createCommentRouter() {
           reason,
           description: description || null,
           status: "pending",
+        });
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: postInfo.workspaceId,
+          userId,
+          action: "comment_reported",
+          actionType: "create",
+          entity: "comment",
+          entityId: String(commentId),
+          title: null,
+          metadata: {
+            reason,
+            hasDescription: Boolean(description),
+          },
         });
 
         return c.superjson({ success: true });
@@ -683,12 +833,12 @@ export function createCommentRouter() {
         const { commentId, isPinned } = input;
         const userId = ctx.session.user.id;
 
-        // Load comment and associated workspace owner
         const [target] = await ctx.db
           .select({
             id: comment.id,
             postId: post.id,
             workspaceOwnerId: workspace.ownerId,
+            workspaceId: workspace.id,
           })
           .from(comment)
           .innerJoin(post, eq(comment.postId, post.id))
@@ -718,6 +868,19 @@ export function createCommentRouter() {
           })
           .where(eq(comment.id, commentId))
           .returning({ id: comment.id, isPinned: comment.isPinned });
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: target.workspaceId,
+          userId,
+          action: isPinned ? "comment_pinned" : "comment_unpinned",
+          actionType: "update",
+          entity: "comment",
+          entityId: String(commentId),
+          title: null,
+          metadata: {
+            postId: target.postId,
+          },
+        });
 
         return c.superjson({
           id: updated?.id,

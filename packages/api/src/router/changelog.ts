@@ -1,7 +1,7 @@
 import { and, eq, desc, sql } from "drizzle-orm"
 import { z } from "zod"
 import { j, publicProcedure, privateProcedure } from "../jstack"
-import { workspace, board, workspaceMember, changelogEntry } from "@oreilla/db"
+import { workspace, board, workspaceMember, changelogEntry, activityLog } from "@oreilla/db"
 import { HTTPException } from "hono/http-exception"
 import { normalizePlan, getPlanLimits, assertWithinLimit } from "../shared/plan"
 import { toSlug } from "../shared/slug"
@@ -129,6 +129,21 @@ export function createChangelogRouter() {
         const prev = Array.isArray((b as any)?.changelogTags) ? (b as any).changelogTags : []
         const next = [...prev, { id, name: input.name.trim(), slug, color: input.color || null }]
         await ctx.db.update(board).set({ changelogTags: next, updatedAt: new Date() }).where(eq(board.id, b.id))
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId: ctx.session.user.id,
+          action: "changelog_tag_created",
+          actionType: "create",
+          entity: "changelog_tag",
+          entityId: String(id),
+          title: input.name.trim(),
+          metadata: {
+            slug,
+            color: input.color || null,
+          },
+        })
+
         return c.superjson({ ok: true })
       }),
 
@@ -145,6 +160,17 @@ export function createChangelogRouter() {
         const prev = Array.isArray((b as any)?.changelogTags) ? (b as any).changelogTags : []
         const next = prev.filter((t: any) => String(t.id) !== String(input.tagId))
         await ctx.db.update(board).set({ changelogTags: next, updatedAt: new Date() }).where(eq(board.id, b.id))
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId: ctx.session.user.id,
+          action: "changelog_tag_deleted",
+          actionType: "delete",
+          entity: "changelog_tag",
+          entityId: String(input.tagId),
+          title: null,
+          metadata: {},
+        })
         return c.superjson({ ok: true })
       }),
 
@@ -188,6 +214,20 @@ export function createChangelogRouter() {
           })
           .returning()
 
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId: ctx.session.user.id,
+          action: "changelog_entry_created",
+          actionType: "create",
+          entity: "changelog_entry",
+          entityId: String(entry.id),
+          title: entry.title,
+          metadata: {
+            status: entry.status,
+            tags: entry.tags,
+          },
+        })
+
         return c.superjson({ ok: true, entry })
       }),
 
@@ -228,6 +268,20 @@ export function createChangelogRouter() {
           .set(updates)
           .where(eq(changelogEntry.id, input.entryId))
           .returning()
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId: ctx.session.user.id,
+          action: "changelog_entry_updated",
+          actionType: "update",
+          entity: "changelog_entry",
+          entityId: String(entry.id),
+          title: entry.title,
+          metadata: {
+            status: entry.status,
+            tags: entry.tags,
+          },
+        })
 
         return c.superjson({ ok: true, entry })
       }),
@@ -307,13 +361,24 @@ export function createChangelogRouter() {
         if (!b) throw new HTTPException(404, { message: "Changelog board not found" })
 
         const [existing] = await ctx.db
-          .select({ id: changelogEntry.id })
+          .select({ id: changelogEntry.id, title: changelogEntry.title })
           .from(changelogEntry)
           .where(and(eq(changelogEntry.id, input.entryId), eq(changelogEntry.boardId, b.id)))
           .limit(1)
         if (!existing) throw new HTTPException(404, { message: "Changelog entry not found" })
 
         await ctx.db.delete(changelogEntry).where(eq(changelogEntry.id, input.entryId))
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId: ctx.session.user.id,
+          action: "changelog_entry_deleted",
+          actionType: "delete",
+          entity: "changelog_entry",
+          entityId: String(input.entryId),
+          title: existing.title,
+          metadata: {},
+        })
 
         return c.superjson({ ok: true })
       }),
@@ -345,6 +410,19 @@ export function createChangelogRouter() {
           })
           .where(eq(changelogEntry.id, input.entryId))
           .returning()
+
+        await ctx.db.insert(activityLog).values({
+          workspaceId: ws.id,
+          userId: ctx.session.user.id,
+          action: "changelog_entry_published",
+          actionType: "update",
+          entity: "changelog_entry",
+          entityId: String(entry.id),
+          title: entry.title,
+          metadata: {
+            status: entry.status,
+          },
+        })
 
         return c.superjson({ ok: true, entry })
       }),
@@ -387,7 +465,7 @@ export function createChangelogRouter() {
           .offset(offset)
 
         const tagsMap = new Map((b.changelogTags as any[] || []).map((t: { id: string }) => [t.id, t]))
-        const entriesWithTags = entries.map((e) => ({
+        const entriesWithTags = entries.map((e: typeof changelogEntry.$inferSelect) => ({
           ...e,
           tags: e.tags.map((id: string) => tagsMap.get(id)).filter(Boolean),
         }))
@@ -435,7 +513,7 @@ export function createChangelogRouter() {
           .offset(offset)
 
         const tagsMap = new Map((b.changelogTags as any[] || []).map((t: { id: string }) => [t.id, t]))
-        const entriesWithTags = entries.map((e) => ({
+        const entriesWithTags = entries.map((e: typeof changelogEntry.$inferSelect) => ({
           ...e,
           tags: e.tags.map((id: string) => tagsMap.get(id)).filter(Boolean),
         }))

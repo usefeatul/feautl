@@ -98,6 +98,10 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
 
   function renderActivityDescription(it: any) {
     const status = it.status || it.metadata?.status || it.metadata?.roadmapStatus || it.metadata?.toStatus
+    const tags =
+      (Array.isArray(it.metadata?.tags) && it.metadata?.tags) ||
+      (Array.isArray((it.metadata as any)?.tagSummaries) && (it.metadata as any).tagSummaries) ||
+      []
 
     if (it.entity === "post") {
       if (it.type === "post_meta_updated") {
@@ -129,12 +133,34 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
 
       if (it.type === "post_updated") {
         return (
-          <span className="flex items-center gap-2 min-w-0">
-            <span>updated post</span>
-            {status ? <StatusIcon status={String(status)} className="size-3.5 shrink-0" /> : null}
-            {it.title ? (
-              <span className="text-foreground font-medium truncate">
-                {it.title}
+          <span className="flex flex-col gap-1 min-w-0">
+            <span className="flex items-center gap-2 min-w-0">
+              <span>updated post</span>
+              {status ? <StatusIcon status={String(status)} className="size-3.5 shrink-0" /> : null}
+              {it.title ? (
+                <span className="text-foreground font-medium truncate">
+                  {it.title}
+                </span>
+              ) : null}
+            </span>
+            {Array.isArray(tags) && tags.length > 0 ? (
+              <span className="ml-10 flex flex-wrap gap-1 text-[11px] text-accent">
+                {tags.map((t: any) => (
+                  <span
+                    key={String(t.id || t.slug || t.name)}
+                    className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/80 px-2 py-0.5"
+                  >
+                    {t.color ? (
+                      <span
+                        className="inline-block size-2 rounded-full"
+                        style={{ backgroundColor: t.color }}
+                      />
+                    ) : null}
+                    <span className="truncate max-w-[160px]">
+                      {t.name || t.slug || "tag"}
+                    </span>
+                  </span>
+                ))}
               </span>
             ) : null}
           </span>
@@ -143,12 +169,34 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
 
       if (it.type === "post_created") {
         return (
-          <span className="flex items-center gap-2 min-w-0">
-            <span>created post</span>
-            {status ? <StatusIcon status={String(status)} className="size-3.5 shrink-0" /> : null}
-            {it.title ? (
-              <span className="text-foreground font-medium truncate">
-                {it.title}
+          <span className="flex flex-col gap-1 min-w-0">
+            <span className="flex items-center gap-2 min-w-0">
+              <span>created post</span>
+              {status ? <StatusIcon status={String(status)} className="size-3.5 shrink-0" /> : null}
+              {it.title ? (
+                <span className="text-foreground font-medium truncate">
+                  {it.title}
+                </span>
+              ) : null}
+            </span>
+            {Array.isArray(tags) && tags.length > 0 ? (
+              <span className="ml-10 flex flex-wrap gap-1 text-[11px] text-accent">
+                {tags.map((t: any) => (
+                  <span
+                    key={String(t.id || t.slug || t.name)}
+                    className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/80 px-2 py-0.5"
+                  >
+                    {t.color ? (
+                      <span
+                        className="inline-block size-2 rounded-full"
+                        style={{ backgroundColor: t.color }}
+                      />
+                    ) : null}
+                    <span className="truncate max-w-[160px]">
+                      {t.name || t.slug || "tag"}
+                    </span>
+                  </span>
+                ))}
               </span>
             ) : null}
           </span>

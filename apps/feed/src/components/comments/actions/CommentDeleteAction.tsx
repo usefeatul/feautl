@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useTransition } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { TrashIcon } from "@oreilla/ui/icons/trash"
 import { client } from "@oreilla/api/client"
 import { toast } from "sonner"
@@ -16,23 +17,29 @@ interface CommentDeleteActionProps {
 export default function CommentDeleteAction({ commentId, postId, onSuccess, onCloseMenu }: CommentDeleteActionProps) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isPending, startTransition] = useTransition()
+  const queryClient = useQueryClient()
 
   const handleDelete = () => {
     if (isDeleting || isPending) return
     
     setIsDeleting(true)
     onCloseMenu?.()
-    
+
     startTransition(async () => {
       try {
         const res = await client.comment.delete.$post({ commentId })
         if (res.ok) {
           toast.success("Comment deleted")
+
           try {
-            window.dispatchEvent(
-              new CustomEvent("comment:deleted", { detail: { postId } })
-            )
+            window.dispatchEvent(new CustomEvent("comment:deleted", { detail: { postId } }))
           } catch {}
+
+          try {
+            queryClient.invalidateQueries({ queryKey: ["member-stats"] })
+            queryClient.invalidateQueries({ queryKey: ["member-activity"] })
+          } catch {}
+
           onSuccess?.()
         } else {
           toast.error("Failed to delete comment")

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { client } from "@oreilla/api/client"
 import { toast } from "sonner"
 import { getBrowserFingerprint } from "@/utils/fingerprint"
@@ -18,6 +19,7 @@ export function usePostSubmission({ workspaceSlug, onSuccess, onCreated, skipDef
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const submitPost = async (selectedBoard: { slug: string } | null, user: any, image?: string | null, roadmapStatus?: string, tags?: string[]) => {
     if (!title || !content || !selectedBoard) return
@@ -43,6 +45,12 @@ export function usePostSubmission({ workspaceSlug, onSuccess, onCreated, skipDef
           setTitle("")
           setContent("")
           onSuccess()
+
+          try {
+            queryClient.invalidateQueries({ queryKey: ["member-stats"] })
+            queryClient.invalidateQueries({ queryKey: ["member-activity"] })
+          } catch {}
+
           if (onCreated) {
             onCreated(data.post)
           }
@@ -52,9 +60,9 @@ export function usePostSubmission({ workspaceSlug, onSuccess, onCreated, skipDef
         } else {
           const err = await res.json()
           if (res.status === 401) {
-             toast.error("Anonymous posting is not allowed on this board")
+            toast.error("Anonymous posting is not allowed on this board")
           } else {
-             toast.error((err as any)?.message || "Failed to submit post")
+            toast.error((err as any)?.message || "Failed to submit post")
           }
         }
       } catch (error) {
@@ -70,6 +78,6 @@ export function usePostSubmission({ workspaceSlug, onSuccess, onCreated, skipDef
     content,
     setContent,
     isPending,
-    submitPost
+    submitPost,
   }
 }

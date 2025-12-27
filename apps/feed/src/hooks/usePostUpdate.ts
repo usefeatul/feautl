@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { client } from "@oreilla/api/client"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
@@ -15,6 +16,7 @@ export function usePostUpdate({ postId, onSuccess }: UsePostUpdateProps) {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const updatePost = async (selectedBoard: { slug: string } | null, image?: string | null, roadmapStatus?: string, tags?: string[]) => {
     if (!title || !content || !selectedBoard) return
@@ -34,6 +36,12 @@ export function usePostUpdate({ postId, onSuccess }: UsePostUpdateProps) {
         if (res.ok) {
           toast.success("Post updated successfully")
           onSuccess()
+
+          try {
+            queryClient.invalidateQueries({ queryKey: ["member-stats"] })
+            queryClient.invalidateQueries({ queryKey: ["member-activity"] })
+          } catch {}
+
           router.refresh()
         } else {
           const err = await res.json()
@@ -52,6 +60,6 @@ export function usePostUpdate({ postId, onSuccess }: UsePostUpdateProps) {
     content,
     setContent,
     isPending,
-    updatePost
+    updatePost,
   }
 }

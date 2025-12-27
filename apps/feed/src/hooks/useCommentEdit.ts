@@ -1,4 +1,5 @@
 import { useState, useRef, useTransition, useEffect } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { client } from "@oreilla/api/client"
 
@@ -14,6 +15,7 @@ export function useCommentEdit({ commentId, initialContent, onUpdate }: UseComme
   const [isPending, startTransition] = useTransition()
   const isSavingRef = useRef(false)
   const saveTimerRef = useRef<NodeJS.Timeout | null>(null)
+   const queryClient = useQueryClient()
 
   useEffect(() => {
     if (!isEditing) setEditContent(initialContent)
@@ -35,6 +37,11 @@ export function useCommentEdit({ commentId, initialContent, onUpdate }: UseComme
           setIsEditing(false)
           toast.success("Comment updated")
           onUpdate?.()
+
+          try {
+            queryClient.invalidateQueries({ queryKey: ["member-stats"] })
+            queryClient.invalidateQueries({ queryKey: ["member-activity"] })
+          } catch {}
         } else {
           toast.error("Failed to update comment")
         }

@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useTransition } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { Button } from "@oreilla/ui/components/button"
 import { TrashIcon } from "@oreilla/ui/icons/trash"
 import {
@@ -28,6 +29,7 @@ export function DeletePostButton({ postId, workspaceSlug, backHref, className }:
   const router = useRouter()
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
+  const queryClient = useQueryClient()
 
   const handleDelete = () => {
     startTransition(async () => {
@@ -37,6 +39,11 @@ export function DeletePostButton({ postId, workspaceSlug, backHref, className }:
           toast.success("Post deleted successfully")
           try {
             window.dispatchEvent(new CustomEvent("post:deleted", { detail: { postId } }))
+          } catch {}
+
+          try {
+            queryClient.invalidateQueries({ queryKey: ["member-stats"] })
+            queryClient.invalidateQueries({ queryKey: ["member-activity"] })
           } catch {}
 
           const target = backHref || (workspaceSlug ? "/" : null)

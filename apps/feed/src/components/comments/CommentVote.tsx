@@ -6,7 +6,7 @@ import { client } from "@oreilla/api/client"
 import { toast } from "sonner"
 import { cn } from "@oreilla/ui/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getBrowserFingerprint } from "@/utils/fingerprint"
 
 interface CommentVoteProps {
@@ -29,6 +29,7 @@ export default function CommentVote({
   const [userVote, setUserVote] = useState(initialUserVote)
   const [isPending, startTransition] = useTransition()
   const [visitorId, setVisitorId] = useState<string | null>(null)
+  const queryClient = useQueryClient()
 
   React.useEffect(() => {
     getBrowserFingerprint().then(setVisitorId)
@@ -125,6 +126,11 @@ export default function CommentVote({
           setUpvotes(data.upvotes)
           setDownvotes(data.downvotes)
           setUserVote(data.userVote)
+
+          try {
+            queryClient.invalidateQueries({ queryKey: ["member-stats"] })
+            queryClient.invalidateQueries({ queryKey: ["member-activity"] })
+          } catch {}
         } else {
           // Revert on error
           setUpvotes(previousUpvotes)

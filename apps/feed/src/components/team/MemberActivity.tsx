@@ -78,7 +78,7 @@ function renderActivityDescription(it: any) {
               {tags.map((t: any) => (
                 <span
                   key={String(t.id || t.slug || t.name)}
-                  className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/80 px-2 py-0.5"
+                  className="inline-flex items-center gap-1 rounded-full border border-border/70  ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-muted/80 px-2 py-0.5"
                 >
                   {t.color ? (
                     <span
@@ -114,7 +114,7 @@ function renderActivityDescription(it: any) {
               {tags.map((t: any) => (
                 <span
                   key={String(t.id || t.slug || t.name)}
-                  className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/80 px-2 py-0.5"
+                  className="inline-flex items-center gap-1 rounded-full border border-border/70  ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-muted/80 px-2 py-0.5"
                 >
                   {t.color ? (
                     <span
@@ -384,8 +384,10 @@ function renderActivityDescription(it: any) {
       return (
         <span className="flex items-center gap-2 min-w-0">
           <span>created tag</span>
-          <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/80 px-2 py-0.5 text-[11px]">
+          <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/80 ring-1 ring-border/60 ring-offset-1 ring-offset-background px-2 py-0.5 text-[11px]">
             {color ? (
+              
+              
               <span
                 className="inline-block size-2 rounded-full"
                 style={{ backgroundColor: color }}
@@ -421,7 +423,7 @@ function renderActivityDescription(it: any) {
       return (
         <span className="flex items-center gap-2 min-w-0">
           <span>created changelog tag</span>
-          <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/80 px-2 py-0.5 text-[11px]">
+          <span className="inline-flex items-center gap-1 rounded-full border border-border/70 ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-muted/80 px-2 py-0.5 text-[11px]">
             {color ? (
               <span
                 className="inline-block size-2 rounded-full"
@@ -457,7 +459,7 @@ function renderActivityDescription(it: any) {
 
 export function MemberActivity({ items, hasNextPage, isFetchingNextPage, onLoadMore }: MemberActivityProps) {
   return (
-    <div className="rounded-sm bg-card dark:bg-black/40 ring-1 ring-border/60 ring-offset-1 ring-offset-background p-4 lg:col-span-2">
+    <div className="rounded-sm bg-card dark:bg-black/40 border ring-1 ring-border/60 ring-offset-1 ring-offset-background p-4 lg:col-span-2">
       <div className="flex items-center justify-between mb-3">
         <div className="font-semibold">Activity</div>
       </div>

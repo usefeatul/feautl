@@ -1,8 +1,8 @@
 import { useState, useTransition, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { client } from "@oreilla/api/client";
 import { toast } from "sonner";
 import { getBrowserFingerprint } from "@/utils/fingerprint";
-import { useQuery } from "@tanstack/react-query";
 
 interface UseUpvoteProps {
   postId: string;
@@ -28,6 +28,7 @@ export function useUpvote({
   const [hasVoted, setHasVoted] = useState(initialHasVoted);
   const [isPending, startTransition] = useTransition();
   const [fingerprint, setFingerprint] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     getBrowserFingerprint().then(setFingerprint);
@@ -81,6 +82,11 @@ export function useUpvote({
           setHasVoted(data.hasVoted);
           if (onChange)
             onChange({ upvotes: data.upvotes, hasVoted: data.hasVoted });
+
+          try {
+            queryClient.invalidateQueries({ queryKey: ["member-stats"] });
+            queryClient.invalidateQueries({ queryKey: ["member-activity"] });
+          } catch {}
         } else {
           // Revert optimistic update
           setUpvotes(previousUpvotes);

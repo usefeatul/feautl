@@ -1,8 +1,10 @@
 import { useTransition } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { client } from "@oreilla/api/client"
 import { UploadedImage } from "./useImageUpload"
 import { getBrowserFingerprint } from "@/utils/fingerprint"
+import type { CommentData } from "../types/comment"
 
 interface UseCommentSubmitProps {
   postId: string
@@ -18,6 +20,7 @@ export function useCommentSubmit({
   resetForm,
 }: UseCommentSubmitProps) {
   const [isPending, startTransition] = useTransition()
+  const queryClient = useQueryClient()
 
   const handleSubmit = async (
     e: React.FormEvent,
@@ -52,6 +55,74 @@ export function useCommentSubmit({
         })
 
         if (res.ok) {
+          let createdComment: any = null
+          try {
+            const data = await res.json()
+            createdComment = (data as any)?.comment || null
+          } catch {}
+
+          if (createdComment) {
+            try {
+              const mapped: CommentData = {
+                id: String(createdComment.id),
+                postId: String(createdComment.postId || postId),
+                parentId: createdComment.parentId || null,
+                content: createdComment.content || "",
+                authorId: createdComment.authorId ?? null,
+                authorName: createdComment.authorName || "Anonymous",
+                authorEmail: createdComment.authorEmail ?? null,
+                authorImage: "",
+                isAnonymous: createdComment.isAnonymous ?? null,
+                status: createdComment.status || "published",
+                upvotes:
+                  typeof createdComment.upvotes === "number"
+                    ? createdComment.upvotes
+                    : 1,
+                downvotes:
+                  typeof createdComment.downvotes === "number"
+                    ? createdComment.downvotes
+                    : 0,
+                replyCount:
+                  typeof createdComment.replyCount === "number"
+                    ? createdComment.replyCount
+                    : 0,
+                depth:
+                  typeof createdComment.depth === "number"
+                    ? createdComment.depth
+                    : 0,
+                isPinned: createdComment.isPinned ?? null,
+                isEdited: createdComment.isEdited ?? null,
+                createdAt:
+                  createdComment.createdAt ||
+                  new Date().toISOString(),
+                updatedAt:
+                  createdComment.updatedAt ||
+                  createdComment.createdAt ||
+                  new Date().toISOString(),
+                editedAt: createdComment.editedAt ?? null,
+                userVote: createdComment.hasVoted ? "upvote" : null,
+                role: null,
+                isOwner: false,
+                metadata: createdComment.metadata ?? null,
+              }
+
+              queryClient.setQueryData<{ comments: CommentData[] }>(
+                ["comments", postId],
+                (prev) => {
+                  const base = prev?.comments || []
+                  const exists = base.some(
+                    (c) => c.id === mapped.id
+                  )
+                  if (exists) return prev || { comments: base }
+                  return {
+                    ...(prev || {}),
+                    comments: [mapped, ...base],
+                  }
+                }
+              )
+            } catch {}
+          }
+
           resetForm()
           toast.success(parentId ? "Reply posted" : "Comment posted")
           try {
@@ -61,6 +132,12 @@ export function useCommentSubmit({
               })
             )
           } catch {}
+
+          try {
+            queryClient.invalidateQueries({ queryKey: ["member-stats"] })
+            queryClient.invalidateQueries({ queryKey: ["member-activity"] })
+          } catch {}
+
           onSuccess?.()
         } else if (res.status === 401) {
           toast.error("Please sign in to comment")

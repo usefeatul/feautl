@@ -32,7 +32,7 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
     return initialMember || list.find((m) => m.userId === userId)
   }, [membersData?.members, initialMember, userId])
 
-  const { data: statsData } = useQuery({
+  const { data: statsData, isLoading: isStatsLoading, isFetching: isStatsFetching } = useQuery({
     queryKey: ["member-stats", slug, userId],
     queryFn: async () => {
       const res = await client.member.statsByWorkspaceSlug.$get({ slug, userId })
@@ -61,6 +61,8 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading: isActivityLoading,
+    isFetching: isActivityFetching,
   } = useInfiniteQuery({
     queryKey: ["member-activity", slug, userId],
     queryFn: async ({ pageParam }) => {
@@ -91,8 +93,13 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
           onLoadMore={() => fetchNextPage()}
+          isLoading={isActivityLoading || isActivityFetching}
         />
-        <MemberTopPosts slug={slug} topPosts={topPosts} />
+        <MemberTopPosts
+          slug={slug}
+          topPosts={topPosts}
+          isLoading={isStatsLoading || isStatsFetching}
+        />
       </div>
     </div>
   )

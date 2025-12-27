@@ -4,12 +4,14 @@ import React from "react"
 import { format } from "date-fns"
 import StatusIcon from "@/components/requests/StatusIcon"
 import { Button } from "@oreilla/ui/components/button"
+import { LoadingSpinner } from "@/components/settings/global/LoadingSpinner"
 
 interface MemberActivityProps {
   items: any[]
   hasNextPage: boolean | undefined
   isFetchingNextPage: boolean
   onLoadMore: () => void
+  isLoading?: boolean
 }
 
 function renderActivityDescription(it: any) {
@@ -458,26 +460,37 @@ function renderActivityDescription(it: any) {
   return <span>{it.type.replace("_", " ")}</span>
 }
 
-export function MemberActivity({ items, hasNextPage, isFetchingNextPage, onLoadMore }: MemberActivityProps) {
+export function MemberActivity({ items, hasNextPage, isFetchingNextPage, onLoadMore, isLoading }: MemberActivityProps) {
   return (
     <div className="rounded-sm bg-card dark:bg-black/40 border ring-1 ring-border/60 ring-offset-1 ring-offset-background p-4 lg:col-span-2">
       <div className="flex items-center justify-between mb-3">
         <div className="font-semibold">Activity</div>
       </div>
       <ul className="divide-y divide-border/50">
-        {items.length === 0 ? (
+        {isLoading && items.length === 0 ? (
+          <li className="py-6">
+            <LoadingSpinner label="Loading activity..." />
+          </li>
+        ) : items.length === 0 ? (
           <li className="py-6 text-accent text-sm text-center">No activity yet</li>
         ) : (
-          items.map((it: any) => (
-            <li key={`${it.type}-${it.id}-${String(it.createdAt)}`} className="py-3">
-              <div className="text-xs text-accent flex items-start gap-2 min-w-0">
-                <span className="font-medium">
-                  {format(new Date(it.createdAt), "LLL d")}
-                </span>
-                {renderActivityDescription(it)}
-              </div>
-            </li>
-          ))
+          <>
+            {isLoading ? (
+              <li className="py-3">
+                <LoadingSpinner label="Refreshing activity..." />
+              </li>
+            ) : null}
+            {items.map((it: any) => (
+              <li key={`${it.type}-${it.id}-${String(it.createdAt)}`} className="py-3">
+                <div className="text-xs text-accent flex items-start gap-2 min-w-0">
+                  <span className="font-medium">
+                    {format(new Date(it.createdAt), "LLL d")}
+                  </span>
+                  {renderActivityDescription(it)}
+                </div>
+              </li>
+            ))}
+          </>
         )}
       </ul>
       {hasNextPage ? (

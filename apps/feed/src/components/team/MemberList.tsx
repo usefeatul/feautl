@@ -37,7 +37,7 @@ export default function MemberList({ slug, initialMembers = [] }: Props) {
   const items = data.members || []
 
   return (
-    <div className="space-y-3">
+
       <div className="rounded-sm border bg-card dark:bg-black/40 overflow-hidden ring-1 ring-border/60 ring-offset-1 ring-offset-background">
         <Table>
           <TableHeader>
@@ -84,6 +84,6 @@ export default function MemberList({ slug, initialMembers = [] }: Props) {
           </TableBody>
         </Table>
       </div>
-    </div>
+
   )
 }

@@ -474,23 +474,16 @@ export function MemberActivity({ items, hasNextPage, isFetchingNextPage, onLoadM
         ) : items.length === 0 ? (
           <li className="py-6 text-accent text-sm text-center">No activity yet</li>
         ) : (
-          <>
-            {isLoading ? (
-              <li className="py-3">
-                <LoadingSpinner label="Refreshing activity..." />
-              </li>
-            ) : null}
-            {items.map((it: any) => (
-              <li key={`${it.type}-${it.id}-${String(it.createdAt)}`} className="py-3">
-                <div className="text-xs text-accent flex items-start gap-2 min-w-0">
-                  <span className="font-medium">
-                    {format(new Date(it.createdAt), "LLL d")}
-                  </span>
-                  {renderActivityDescription(it)}
-                </div>
-              </li>
-            ))}
-          </>
+          items.map((it: any) => (
+            <li key={`${it.type}-${it.id}-${String(it.createdAt)}`} className="py-3">
+              <div className="text-xs text-accent flex items-start gap-2 min-w-0">
+                <span className="font-medium">
+                  {format(new Date(it.createdAt), "LLL d")}
+                </span>
+                {renderActivityDescription(it)}
+              </div>
+            </li>
+          ))
         )}
       </ul>
       {hasNextPage ? (

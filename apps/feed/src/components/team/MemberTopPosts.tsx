@@ -26,37 +26,30 @@ export function MemberTopPosts({ slug, topPosts, isLoading }: MemberTopPostsProp
             No posts yet
           </div>
         ) : (
-          <>
-            {isLoading ? (
-              <div className="mb-2">
-                <LoadingSpinner label="Refreshing top posts..." />
-              </div>
-            ) : null}
-            <div className="space-y-2">
-              {topPosts.map((p) => (
-                <div
-                  key={p.id}
-                  className="flex items-center justify-between rounded-md px-3 py-2 hover:bg-muted text-sm gap-3"
-                >
-                  <div className="flex items-center gap-2 min-w-0">
-                    {p.status ? <StatusIcon status={String(p.status)} className="size-3.5 shrink-0" /> : null}
-                    <Link
-                      href={`/workspaces/${slug}/requests/${p.id}`}
-                      className="truncate text-foreground hover:text-primary"
-                    >
-                      {p.title}
-                    </Link>
-                  </div>
-                  <UpvoteButton
-                    postId={p.id}
-                    upvotes={Number(p.upvotes || 0)}
-                    className="text-xs"
-                    activeBg
-                  />
+          <div className="space-y-2">
+            {topPosts.map((p) => (
+              <div
+                key={p.id}
+                className="flex items-center justify-between rounded-md px-3 py-2 hover:bg-muted text-sm gap-3"
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  {p.status ? <StatusIcon status={String(p.status)} className="size-3.5 shrink-0" /> : null}
+                  <Link
+                    href={`/workspaces/${slug}/requests/${p.id}`}
+                    className="truncate text-foreground hover:text-primary"
+                  >
+                    {p.title}
+                  </Link>
                 </div>
-              ))}
-            </div>
-          </>
+                <UpvoteButton
+                  postId={p.id}
+                  upvotes={Number(p.upvotes || 0)}
+                  className="text-xs"
+                  activeBg
+                />
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

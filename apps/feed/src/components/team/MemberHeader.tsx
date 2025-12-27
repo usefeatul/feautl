@@ -48,7 +48,7 @@ export function MemberHeader({ member, userId, stats }: MemberHeaderProps) {
           <div className="text-base font-semibold truncate">{member?.name || member?.email || userId}</div>
           <div className="text-xs text-accent truncate">{member?.email}</div>
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className={cn("px-2 py-0.5 rounded-full border", roleBadgeClass(member?.role || "member", member?.isOwner))}>
+            <span className={cn("px-2 py-0.5", roleBadgeClass(member?.role || "member", member?.isOwner))}>
               {member?.isOwner ? "owner" : member?.role}
             </span>
             {member?.joinedAt ? (

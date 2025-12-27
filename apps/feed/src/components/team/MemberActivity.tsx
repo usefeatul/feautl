@@ -3,6 +3,7 @@
 import React from "react"
 import { format } from "date-fns"
 import StatusIcon from "@/components/requests/StatusIcon"
+import { Button } from "@oreilla/ui/components/button"
 
 interface MemberActivityProps {
   items: any[]
@@ -63,7 +64,7 @@ function renderActivityDescription(it: any) {
       }
 
       return (
-        <span className="flex flex-col gap-1 min-w-0">
+        <span className="flex flex-col gap-2 min-w-0">
           <span className="flex items-center gap-2 min-w-0">
             <span>{label}</span>
             {status ? <StatusIcon status={String(status)} className="size-3.5 shrink-0" /> : null}
@@ -74,11 +75,11 @@ function renderActivityDescription(it: any) {
             ) : null}
           </span>
           {Array.isArray(tags) && tags.length > 0 ? (
-            <span className="mt-0.5 flex flex-wrap gap-1 text-[11px] text-accent">
+            <span className="mt-0.5 flex flex-wrap gap-2 text-sm text-accent">
               {tags.map((t: any) => (
                 <span
                   key={String(t.id || t.slug || t.name)}
-                  className="inline-flex items-center gap-1 rounded-full border border-border/70  ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-muted/80 px-2 py-0.5"
+                  className="inline-flex items-center gap-2 rounded-full border border-border/70  ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-muted/80 px-2 py-0.5"
                 >
                   {t.color ? (
                     <span
@@ -99,7 +100,7 @@ function renderActivityDescription(it: any) {
 
     if (it.type === "post_created") {
       return (
-        <span className="flex flex-col gap-1 min-w-0">
+        <span className="flex flex-col gap-2 min-w-0">
           <span className="flex items-center gap-2 min-w-0">
             <span>created post</span>
             {status ? <StatusIcon status={String(status)} className="size-3.5 shrink-0" /> : null}
@@ -110,11 +111,11 @@ function renderActivityDescription(it: any) {
             ) : null}
           </span>
           {Array.isArray(tags) && tags.length > 0 ? (
-            <span className="mt-0.5 flex flex-wrap gap-1 text-[11px] text-accent">
+            <span className="mt-0.5 flex flex-wrap gap-2 text-sm text-accent">
               {tags.map((t: any) => (
                 <span
                   key={String(t.id || t.slug || t.name)}
-                  className="inline-flex items-center gap-1 rounded-full border border-border/70  ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-muted/80 px-2 py-0.5"
+                  className="inline-flex items-center gap-2 rounded-full border border-border/70  ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-muted/80 px-2 py-0.5"
                 >
                   {t.color ? (
                     <span
@@ -384,12 +385,12 @@ function renderActivityDescription(it: any) {
       return (
         <span className="flex items-center gap-2 min-w-0">
           <span>created tag</span>
-          <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/80 ring-1 ring-border/60 ring-offset-1 ring-offset-background px-2 py-0.5 text-[11px]">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-muted/80 ring-1 ring-border/60 ring-offset-1 ring-offset-background px-2 py-0.5 text-sm">
             {color ? (
               
               
               <span
-                className="inline-block size-2 rounded-full"
+                className="inline-block size-2 rounded-full "
                 style={{ backgroundColor: color }}
               />
             ) : null}
@@ -405,7 +406,7 @@ function renderActivityDescription(it: any) {
       return (
         <span className="flex items-center gap-2 min-w-0">
           <span>deleted tag</span>
-          <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/60 px-2 py-0.5 text-[11px]">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-muted/60 ring-1 ring-border/60 ring-offset-1 ring-offset-background px-2 py-0.5 text-sm">
             <span className="truncate max-w-[160px]">
               {label}
             </span>
@@ -423,7 +424,7 @@ function renderActivityDescription(it: any) {
       return (
         <span className="flex items-center gap-2 min-w-0">
           <span>created changelog tag</span>
-          <span className="inline-flex items-center gap-1 rounded-full border border-border/70 ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-muted/80 px-2 py-0.5 text-[11px]">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-muted/80 px-2 py-0.5 text-sm">
             {color ? (
               <span
                 className="inline-block size-2 rounded-full"
@@ -443,7 +444,7 @@ function renderActivityDescription(it: any) {
         <span className="flex items-center gap-2 min-w-0">
           <span>deleted changelog tag</span>
           {label ? (
-            <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/60 px-2 py-0.5 text-[11px]">
+            <span className="inline-flex items-center 2 rounded-full border border-border/70 bg-muted/60 px-2 py-0.5 text-sm">
               <span className="truncate max-w-[160px]">
                 {label}
               </span>
@@ -481,13 +482,15 @@ export function MemberActivity({ items, hasNextPage, isFetchingNextPage, onLoadM
       </ul>
       {hasNextPage ? (
         <div className="pt-3 mt-1 border-t flex justify-center">
-          <button
-            className="text-sm text-primary"
+          <Button
+          variant="nav"
+
+
             onClick={onLoadMore}
             disabled={isFetchingNextPage}
           >
             {isFetchingNextPage ? "Loading..." : "Load more"}
-          </button>
+          </Button>
         </div>
       ) : null}
     </div>

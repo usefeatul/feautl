@@ -144,7 +144,7 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
               ) : null}
             </span>
             {Array.isArray(tags) && tags.length > 0 ? (
-              <span className="ml-10 flex flex-wrap gap-1 text-[11px] text-accent">
+              <span className="mt-0.5 flex flex-wrap gap-1 text-[11px] text-accent">
                 {tags.map((t: any) => (
                   <span
                     key={String(t.id || t.slug || t.name)}
@@ -180,7 +180,7 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
               ) : null}
             </span>
             {Array.isArray(tags) && tags.length > 0 ? (
-              <span className="ml-10 flex flex-wrap gap-1 text-[11px] text-accent">
+              <span className="mt-0.5 flex flex-wrap gap-1 text-[11px] text-accent">
                 {tags.map((t: any) => (
                   <span
                     key={String(t.id || t.slug || t.name)}
@@ -491,7 +491,7 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
             ) : (
               items.map((it: any) => (
                 <li key={`${it.type}-${it.id}-${String(it.createdAt)}`} className="py-3">
-                  <div className="text-xs text-accent flex items-center gap-2 min-w-0">
+                  <div className="text-xs text-accent flex items-start gap-2 min-w-0">
                     <span className="font-medium">
                       {format(new Date(it.createdAt), "LLL d")}
                     </span>

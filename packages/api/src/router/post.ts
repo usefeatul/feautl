@@ -1,6 +1,6 @@
-import { eq, and, sql, isNull, ilike, or } from "drizzle-orm"
+import { eq, and, sql, isNull, ilike, or, inArray } from "drizzle-orm"
 import { j, publicProcedure } from "../jstack"
-import { vote, post, workspace, board, postTag, workspaceMember, postReport, postMerge, comment, activityLog } from "@oreilla/db"
+import { vote, post, workspace, board, postTag, workspaceMember, postReport, postMerge, comment, activityLog, tag } from "@oreilla/db"
 import { votePostSchema, createPostSchema, updatePostSchema, byIdSchema, reportPostSchema, getSimilarSchema, mergePostSchema, mergeHerePostSchema, searchMergeCandidatesSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
 import { auth } from "@oreilla/auth"
@@ -68,14 +68,32 @@ export function createPostRouter() {
             roadmapStatus: roadmapStatus || "pending",
         }).returning()
 
-        // Insert tags
+        let tagSummaries: Array<{ id: string; name: string | null; color: string | null; slug: string | null }> = []
+
         if (tags && tags.length > 0) {
-            await ctx.db.insert(postTag).values(
-                tags.map((tagId) => ({
-                    postId: newPost.id,
-                    tagId,
-                }))
-            )
+          await ctx.db.insert(postTag).values(
+            tags.map((tagId) => ({
+              postId: newPost.id,
+              tagId,
+            }))
+          )
+
+          const tagRows = await ctx.db
+            .select({
+              id: tag.id,
+              name: tag.name,
+              color: tag.color,
+              slug: tag.slug,
+            })
+            .from(tag)
+            .where(inArray(tag.id, tags))
+
+          tagSummaries = tagRows.map((t: { id: string; name: string | null; color: string | null; slug: string | null }) => ({
+            id: String(t.id),
+            name: t.name,
+            color: t.color || null,
+            slug: t.slug || null,
+          }))
         }
 
         // Auto-upvote
@@ -100,7 +118,8 @@ export function createPostRouter() {
             boardId: b.id,
             slug: newPost.slug,
             roadmapStatus: newPost.roadmapStatus,
-            tags: tags || [],
+            tagIds: tags || [],
+            tags: tagSummaries,
             isAnonymous: !userId,
           },
         })
@@ -217,20 +236,36 @@ export function createPostRouter() {
           .where(eq(post.id, postId))
           .returning()
 
-        // Update tags if provided
+        let tagSummaries: Array<{ id: string; name: string | null; color: string | null; slug: string | null }> = []
+
         if (tags) {
-            // Delete existing tags
-            await ctx.db.delete(postTag).where(eq(postTag.postId, postId))
-            
-            // Insert new tags
-            if (tags.length > 0) {
-                await ctx.db.insert(postTag).values(
-                    tags.map((tagId) => ({
-                        postId,
-                        tagId,
-                    }))
-                )
-            }
+          await ctx.db.delete(postTag).where(eq(postTag.postId, postId))
+
+          if (tags.length > 0) {
+            await ctx.db.insert(postTag).values(
+              tags.map((tagId) => ({
+                postId,
+                tagId,
+              }))
+            )
+
+            const tagRows = await ctx.db
+              .select({
+                id: tag.id,
+                name: tag.name,
+                color: tag.color,
+                slug: tag.slug,
+              })
+              .from(tag)
+              .where(inArray(tag.id, tags))
+
+            tagSummaries = tagRows.map((t: { id: string; name: string | null; color: string | null; slug: string | null }) => ({
+              id: String(t.id),
+              name: t.name,
+              color: t.color || null,
+              slug: t.slug || null,
+            }))
+          }
         }
 
         const [boardRow] = await ctx.db
@@ -259,6 +294,8 @@ export function createPostRouter() {
               hasTitleChange: title !== undefined && title !== existingPost.title,
               hasContentChange: content !== undefined && content !== existingPost.content,
               hasTagsChange: Array.isArray(tags),
+              tagIds: Array.isArray(tags) ? tags : undefined,
+              tags: tagSummaries,
             },
           })
         }

@@ -47,10 +47,25 @@ function renderActivityDescription(it: any) {
     }
 
     if (it.type === "post_updated") {
+      const hasTagsChange = Boolean(it.metadata?.hasTagsChange)
+      const hasTagsAdded = Boolean(it.metadata?.hasTagsAdded)
+      const hasTagsRemoved = Boolean(it.metadata?.hasTagsRemoved)
+
+      let label = "updated post"
+      if (hasTagsChange) {
+        if (hasTagsAdded && !hasTagsRemoved) {
+          label = "added tags to"
+        } else if (hasTagsRemoved && !hasTagsAdded) {
+          label = "removed tags from"
+        } else {
+          label = "updated tags on"
+        }
+      }
+
       return (
         <span className="flex flex-col gap-1 min-w-0">
           <span className="flex items-center gap-2 min-w-0">
-            <span>updated post</span>
+            <span>{label}</span>
             {status ? <StatusIcon status={String(status)} className="size-3.5 shrink-0" /> : null}
             {it.title ? (
               <span className="text-foreground font-medium truncate">

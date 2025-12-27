@@ -361,6 +361,82 @@ function renderActivityDescription(it: any) {
     }
   }
 
+  if (it.entity === "tag") {
+    const label = it.title || it.metadata?.slug || "tag"
+    const color = it.metadata?.color || null
+
+    if (it.type === "tag_created") {
+      return (
+        <span className="flex items-center gap-2 min-w-0">
+          <span>created tag</span>
+          <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/80 px-2 py-0.5 text-[11px]">
+            {color ? (
+              <span
+                className="inline-block size-2 rounded-full"
+                style={{ backgroundColor: color }}
+              />
+            ) : null}
+            <span className="truncate max-w-[160px]">
+              {label}
+            </span>
+          </span>
+        </span>
+      )
+    }
+
+    if (it.type === "tag_deleted") {
+      return (
+        <span className="flex items-center gap-2 min-w-0">
+          <span>deleted tag</span>
+          <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/60 px-2 py-0.5 text-[11px]">
+            <span className="truncate max-w-[160px]">
+              {label}
+            </span>
+          </span>
+        </span>
+      )
+    }
+  }
+
+  if (it.entity === "changelog_tag") {
+    const label = it.title || it.metadata?.slug || "tag"
+    const color = it.metadata?.color || null
+
+    if (it.type === "changelog_tag_created") {
+      return (
+        <span className="flex items-center gap-2 min-w-0">
+          <span>created changelog tag</span>
+          <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/80 px-2 py-0.5 text-[11px]">
+            {color ? (
+              <span
+                className="inline-block size-2 rounded-full"
+                style={{ backgroundColor: color }}
+              />
+            ) : null}
+            <span className="truncate max-w-[160px]">
+              {label}
+            </span>
+          </span>
+        </span>
+      )
+    }
+
+    if (it.type === "changelog_tag_deleted") {
+      return (
+        <span className="flex items-center gap-2 min-w-0">
+          <span>deleted changelog tag</span>
+          {label ? (
+            <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-muted/60 px-2 py-0.5 text-[11px]">
+              <span className="truncate max-w-[160px]">
+                {label}
+              </span>
+            </span>
+          ) : null}
+        </span>
+      )
+    }
+  }
+
   return <span>{it.type.replace("_", " ")}</span>
 }
 
@@ -400,4 +476,3 @@ export function MemberActivity({ items, hasNextPage, isFetchingNextPage, onLoadM
     </div>
   )
 }
-

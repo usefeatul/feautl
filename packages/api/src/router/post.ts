@@ -237,8 +237,29 @@ export function createPostRouter() {
           .returning()
 
         let tagSummaries: Array<{ id: string; name: string | null; color: string | null; slug: string | null }> = []
+        let previousTagSummaries: Array<{ id: string; name: string | null; color: string | null; slug: string | null }> = []
+        let addedTags: Array<{ id: string; name: string | null; color: string | null; slug: string | null }> = []
+        let removedTags: Array<{ id: string; name: string | null; color: string | null; slug: string | null }> = []
 
         if (tags) {
+          const previousTagRows = await ctx.db
+            .select({
+              id: tag.id,
+              name: tag.name,
+              color: tag.color,
+              slug: tag.slug,
+            })
+            .from(postTag)
+            .innerJoin(tag, eq(postTag.tagId, tag.id))
+            .where(eq(postTag.postId, postId))
+
+          previousTagSummaries = previousTagRows.map((t: { id: string; name: string | null; color: string | null; slug: string | null }) => ({
+            id: String(t.id),
+            name: t.name,
+            color: t.color || null,
+            slug: t.slug || null,
+          }))
+
           await ctx.db.delete(postTag).where(eq(postTag.postId, postId))
 
           if (tags.length > 0) {
@@ -265,6 +286,14 @@ export function createPostRouter() {
               color: t.color || null,
               slug: t.slug || null,
             }))
+
+            const previousIds = new Set(previousTagSummaries.map((t) => t.id))
+            const nextIds = new Set(tags.map((id) => String(id)))
+
+            addedTags = tagSummaries.filter((t) => !previousIds.has(t.id))
+            removedTags = previousTagSummaries.filter((t) => !nextIds.has(t.id))
+          } else {
+            removedTags = previousTagSummaries
           }
         }
 
@@ -294,8 +323,12 @@ export function createPostRouter() {
               hasTitleChange: title !== undefined && title !== existingPost.title,
               hasContentChange: content !== undefined && content !== existingPost.content,
               hasTagsChange: Array.isArray(tags),
+              hasTagsAdded: addedTags.length > 0,
+              hasTagsRemoved: removedTags.length > 0,
               tagIds: Array.isArray(tags) ? tags : undefined,
               tags: tagSummaries,
+              addedTags,
+              removedTags,
             },
           })
         }

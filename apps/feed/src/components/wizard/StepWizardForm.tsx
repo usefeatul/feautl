@@ -201,10 +201,14 @@ export default function StepWizardForm({
                 {slugChecking ? (
                   <Loader2 className="size-4 text-muted-foreground animate-spin" />
                 ) : !slugLocked && slug && slugAvailable === true ? (
-                  <CheckIcon  className=" size-3 bg-emerald-600 rounded-full p-2" />
+                  <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-500 text-white">
+                    <CheckIcon className="size-2" />
+                  </span>
                 ) : !slugLocked &&
                   (slugAvailable === false || (slug && !isSlugValid(slug))) ? (
-                  <XMarkIcon className=" size-3 bg-destructive rounded-full" />
+                  <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-destructive text-destructive-foreground">
+                    <XMarkIcon className="size-2" />
+                  </span>
                 ) : null}
               </div>
             </div>

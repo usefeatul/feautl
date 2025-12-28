@@ -223,9 +223,6 @@ export default function StepWizardForm({
           <div className="space-y-2">
             <Label>Timezone</Label>
             <TimezonePicker value={timezone} onChange={setTimezone} now={now} />
-            <p className="text-xs text-accent">
-              All project graphs, ranges and timestamps will be matched to this timezone. Can be updated later.
-            </p>
           </div>
         )}
       </CardContent>

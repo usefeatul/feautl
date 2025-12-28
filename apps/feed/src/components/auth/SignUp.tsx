@@ -95,7 +95,7 @@ export default function SignUp() {
           handleSubmit();
         }}
       >
-        <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-6 sm:p-8 pb-5 sm:pb-6">
+        <div className="bg-card dark:bg-black/40 -m-px rounded-[calc(var(--radius)+.125rem)] border p-6 sm:p-8 pb-5 sm:pb-6">
           <div className="text-left">
             <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-left">
               Sign up to oreilla

@@ -24,7 +24,7 @@ export default async function SignInPage({ searchParams }: { searchParams?: { re
     }
     const slug = await findFirstAccessibleWorkspaceSlug(session.user.id)
     if (slug) redirect(`/workspaces/${slug}`)
-    redirect("/workspaces/new")
+    redirect("/start")
   }
   return <SignIn />
 }

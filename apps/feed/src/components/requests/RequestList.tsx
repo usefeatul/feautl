@@ -6,21 +6,12 @@ import RequestItem, { type RequestItemData } from "./RequestItem"
 import EmptyRequests from "./EmptyRequests"
 import { Button } from "@oreilla/ui/components/button"
 import { Checkbox } from "@oreilla/ui/components/checkbox"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@oreilla/ui/components/alert-dialog"
 import { client } from "@oreilla/api/client"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 import { useSelection, setSelecting, toggleSelectionId, selectAllForKey, getSelectedIds, removeSelectedIds } from "@/lib/selection-store"
 import type { PostDeletedEventDetail } from "../../types/events"
+import { BulkDeleteConfirmDialog } from "./BulkDeleteConfirmDialog"
 
 interface RequestListProps {
   items: RequestItemData[]
@@ -64,26 +55,35 @@ function SelectionToolbar({ allSelected, selectedCount, isPending, onToggleAll, 
   )
 }
 
-function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount }: RequestListProps) {
-  const router = useRouter()
-  const [listItems, setListItems] = useState<RequestItemData[]>(items)
-  const [confirmOpen, setConfirmOpen] = useState(false)
-  const [isRefetching, setIsRefetching] = useState(false)
-  const [isPending, startTransition] = useTransition()
-  const [totalCount, setTotalCount] = useState<number | null>(typeof initialTotalCount === "number" ? initialTotalCount : null)
-  const queryClient = useQueryClient()
-  const listKey = workspaceSlug
-  const selection = useSelection(listKey)
-  const isSelecting = selection.isSelecting
-  const selectingRef = useRef(isSelecting)
-  useEffect(() => {
-    selectingRef.current = isSelecting
-  }, [isSelecting])
+interface UseBulkDeleteRequestsParams {
+  workspaceSlug: string
+  listKey: string
+  listItems: RequestItemData[]
+  initialTotalCount?: number
+  onItemsChange: (next: RequestItemData[]) => void
+  onComplete?: () => void
+}
 
-  useEffect(() => {
-    setListItems(items)
-    setIsRefetching(false)
-  }, [items])
+interface UseBulkDeleteRequestsResult {
+  isPending: boolean
+  isRefetching: boolean
+  totalCount: number | null
+  handleBulkDelete: () => void
+}
+
+function useBulkDeleteRequests({
+  workspaceSlug,
+  listKey,
+  listItems,
+  initialTotalCount,
+  onItemsChange,
+  onComplete,
+}: UseBulkDeleteRequestsParams): UseBulkDeleteRequestsResult {
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const [isRefetching, setIsRefetching] = useState(false)
+  const [totalCount, setTotalCount] = useState<number | null>(typeof initialTotalCount === "number" ? initialTotalCount : null)
+  const [isPending, startTransition] = useTransition()
 
   useEffect(() => {
     if (typeof initialTotalCount === "number") {
@@ -91,41 +91,14 @@ function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount }: 
     }
   }, [initialTotalCount])
 
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "d") {
-        e.preventDefault()
-        setSelecting(listKey, !selectingRef.current)
-      }
-    }
-    window.addEventListener("keydown", onKeyDown)
-    return () => window.removeEventListener("keydown", onKeyDown)
-  }, [])
-
-  const allSelected = useMemo(() => listItems.length > 0 && listItems.every((i) => selection.selectedIds.includes(i.id)), [selection, listItems])
-  const selectedCount = selection.selectedIds.length
-
-  const toggleId = useCallback(
-    (id: string, checked?: boolean) => {
-      toggleSelectionId(listKey, id, checked)
-    },
-    [listKey]
-  )
-
-  const toggleAll = useCallback(() => {
-    if (allSelected) {
-      removeSelectedIds(listKey, listItems.map((i) => i.id))
-      return
-    }
-    selectAllForKey(listKey, listItems.map((i) => i.id))
-  }, [allSelected, listItems, listKey])
-
   const handleBulkDelete = useCallback(() => {
     startTransition(async () => {
       try {
         const ids = getSelectedIds(listKey)
         if (ids.length === 0) {
-          setConfirmOpen(false)
+          if (onComplete) {
+            onComplete()
+          }
           return
         }
         const results = await Promise.allSettled(ids.map((postId) => client.post.delete.$post({ postId })))
@@ -155,13 +128,14 @@ function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount }: 
             queryClient.invalidateQueries({ queryKey: ["member-stats"] })
             queryClient.invalidateQueries({ queryKey: ["member-activity"] })
           } catch {}
-          const nextLength = listItems.filter((i) => !okIds.includes(i.id)).length
+          const remainingItems = listItems.filter((i) => !okIds.includes(i.id))
+          const nextLength = remainingItems.length
           const prevTotal = totalCount
           const nextTotal = typeof prevTotal === "number" ? Math.max(prevTotal - okIds.length, 0) : prevTotal
           if (typeof nextTotal === "number") {
             setTotalCount(nextTotal)
           }
-          setListItems((prev) => prev.filter((i) => !okIds.includes(i.id)))
+          onItemsChange(remainingItems)
           removeSelectedIds(listKey, okIds)
           if (nextLength === 0 && typeof nextTotal === "number" && nextTotal > 0) {
             setIsRefetching(true)
@@ -177,11 +151,75 @@ function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount }: 
       } catch {
         toast.error("Failed to delete posts")
       } finally {
-        setConfirmOpen(false)
+        if (onComplete) {
+          onComplete()
+        }
         setSelecting(listKey, false)
       }
     })
-  }, [listKey, listItems, queryClient, workspaceSlug, totalCount, router])
+  }, [listKey, listItems, queryClient, workspaceSlug, totalCount, router, onComplete])
+
+  return {
+    isPending,
+    isRefetching,
+    totalCount,
+    handleBulkDelete,
+  }
+}
+
+function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount }: RequestListProps) {
+  const [listItems, setListItems] = useState<RequestItemData[]>(items)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const listKey = workspaceSlug
+  const selection = useSelection(listKey)
+  const isSelecting = selection.isSelecting
+  const selectingRef = useRef(isSelecting)
+
+  const { isPending, isRefetching, handleBulkDelete } = useBulkDeleteRequests({
+    workspaceSlug,
+    listKey,
+    listItems,
+    initialTotalCount,
+    onItemsChange: setListItems,
+    onComplete: () => setConfirmOpen(false),
+  })
+
+  useEffect(() => {
+    selectingRef.current = isSelecting
+  }, [isSelecting])
+
+  useEffect(() => {
+    setListItems(items)
+  }, [items])
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "d") {
+        e.preventDefault()
+        setSelecting(listKey, !selectingRef.current)
+      }
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [])
+
+  const allSelected = useMemo(() => listItems.length > 0 && listItems.every((i) => selection.selectedIds.includes(i.id)), [selection, listItems])
+  const selectedCount = selection.selectedIds.length
+
+  const toggleId = useCallback(
+    (id: string, checked?: boolean) => {
+      toggleSelectionId(listKey, id, checked)
+    },
+    [listKey]
+  )
+
+  const toggleAll = useCallback(() => {
+    if (allSelected) {
+      removeSelectedIds(listKey, listItems.map((i) => i.id))
+      return
+    }
+    selectAllForKey(listKey, listItems.map((i) => i.id))
+  }, [allSelected, listItems, listKey])
 
   if (listItems.length === 0) {
     if (isRefetching) {
@@ -216,35 +254,13 @@ function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount }: 
         ))}
       </ul>
 
-      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-        <AlertDialogContent className="p-1 bg-muted rounded-xl gap-2">
-          <AlertDialogHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
-            <AlertDialogTitle className="flex items-center gap-2 px-2 mt-1 py-1 text-sm font-normal">
-              Delete selected posts?
-            </AlertDialogTitle>
-          </AlertDialogHeader>
-          <div className="bg-card rounded-lg p-2 dark:bg-black/40 border border-border">
-            <AlertDialogDescription className="space-y-3 text-sm text-accent mb-2">
-              <span className="block">This will permanently delete {selectedCount} {selectedCount === 1 ? "post" : "posts"}.</span>
-            </AlertDialogDescription>
-            <AlertDialogFooter className="flex justify-end gap-2 mt-4">
-              <AlertDialogCancel disabled={isPending} className="h-8 px-3 text-sm">
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleBulkDelete()
-                }}
-                disabled={isPending}
-                className="h-8 px-4 text-sm bg-red-500 hover:bg-red-600 text-white"
-              >
-                {isPending ? "Deleting..." : "Delete"}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </div>
-        </AlertDialogContent>
-      </AlertDialog>
+      <BulkDeleteConfirmDialog
+        open={confirmOpen}
+        selectedCount={selectedCount}
+        isPending={isPending}
+        onOpenChange={setConfirmOpen}
+        onConfirmDelete={handleBulkDelete}
+      />
     </div>
   )
 }

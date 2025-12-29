@@ -96,15 +96,15 @@ async function main() {
     return rows
   }
 
-  const featureRows = makeRows(featureBoard, 10, 'feature')
-  const bugRows = makeRows(bugBoard, 10, 'bug')
+  const featureRows = makeRows(featureBoard, 50, 'feature')
+  const bugRows = makeRows(bugBoard, 50, 'bug')
 
   await db.insert(post).values(featureRows)
   await db.insert(post).values(bugRows)
 }
 
 main()
-  .then(() => { console.log('Inserted 20 posts (10 per board)') })
+  .then(() => { console.log('Inserted 100 posts (50 per board)') })
   .catch((err) => { console.error(err); process.exit(1) })
 function randomAvatarUrl(seed?: string | null, style: 'identicon' | 'avataaars' = 'avataaars') {
   const s = encodeURIComponent((seed || 'anonymous').trim() || 'anonymous')

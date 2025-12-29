@@ -1,10 +1,10 @@
 "use client"
 
 import React from "react"
-import { Button } from "@oreilla/ui/components/button"
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
-import { DropdownIcon } from "@oreilla/ui/icons/dropdown"
-import { client } from "@oreilla/api/client"
+import { Button } from "@featul/ui/components/button"
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@featul/ui/components/popover"
+import { DropdownIcon } from "@featul/ui/icons/dropdown"
+import { client } from "@featul/api/client"
 
 type Flags = { isPinned?: boolean; isLocked?: boolean; isFeatured?: boolean }
 

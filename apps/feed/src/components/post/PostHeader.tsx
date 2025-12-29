@@ -5,8 +5,8 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from "@oreilla/ui/components/avatar";
-import { ChevronRightIcon } from "@oreilla/ui/icons/chevron-right";
+} from "@featul/ui/components/avatar";
+import { ChevronRightIcon } from "@featul/ui/icons/chevron-right";
 import { BoardSelector } from "./BoardSelector";
 import { StatusSelector } from "./StatusSelector";
 import { TagSelector } from "./TagSelector";

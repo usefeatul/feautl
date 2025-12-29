@@ -1,4 +1,4 @@
-import { cn } from "@oreilla/ui/lib/utils";
+import { cn } from "@featul/ui/lib/utils";
 import { Color } from "@tiptap/extension-color";
 import { FileHandler } from "@tiptap/extension-file-handler";
 import { Highlight } from "@tiptap/extension-highlight";

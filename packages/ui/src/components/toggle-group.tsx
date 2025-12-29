@@ -4,8 +4,8 @@ import * as React from "react"
 import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group"
 import { type VariantProps } from "class-variance-authority"
 
-import { cn } from "@oreilla/ui/lib/utils"
-import { toggleVariants } from "@oreilla/ui/components/toggle"
+import { cn } from "@featul/ui/lib/utils"
+import { toggleVariants } from "@featul/ui/components/toggle"
 
 const ToggleGroupContext = React.createContext<
   VariantProps<typeof toggleVariants> & {

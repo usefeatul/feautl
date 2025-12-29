@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { SettingsDialogShell } from "@/components/settings/global/SettingsDialogShell";
-import { cn } from "@oreilla/ui/lib/utils";
+import { cn } from "@featul/ui/lib/utils";
 
 interface ContentImageProps {
   url: string;

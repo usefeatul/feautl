@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { client } from "@oreilla/api/client"
-import { DocumentTextIcon } from "@oreilla/ui/icons/document-text"
+import { client } from "@featul/api/client"
+import { DocumentTextIcon } from "@featul/ui/icons/document-text"
 
 type Board = { id: string; name: string; slug: string; postCount?: number }
 

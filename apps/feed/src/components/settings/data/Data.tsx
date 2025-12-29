@@ -2,8 +2,8 @@
 
 import React from "react";
 import SectionCard from "../global/SectionCard";
-import { Input } from "@oreilla/ui/components/input";
-import { Button } from "@oreilla/ui/components/button";
+import { Input } from "@featul/ui/components/input";
+import { Button } from "@featul/ui/components/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,9 +13,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@oreilla/ui/components/alert-dialog";
-import { TrashIcon } from "@oreilla/ui/icons/trash";
-import { client } from "@oreilla/api/client";
+} from "@featul/ui/components/alert-dialog";
+import { TrashIcon } from "@featul/ui/icons/trash";
+import { client } from "@featul/api/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 

@@ -1,3 +1,3 @@
-# `@oreilla/typescript-config`
+# `@featul/typescript-config`
 
 Shared typescript configuration for the workspace.

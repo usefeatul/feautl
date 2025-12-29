@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { Container } from "../global/container";
 import { HotkeyLink } from "../global/hotkey-link";
-import { Button } from "@oreilla/ui/components/button";
-import { BoardIcon } from "@oreilla/ui/icons/board";
-import { RoadmapIcon } from "@oreilla/ui/icons/roadmap";
-import { ChangelogIcon } from "@oreilla/ui/icons/changelog";
-import { ArrowIcon } from "@oreilla/ui/icons/arrow";
-import { useIsMobile } from "@oreilla/ui/hooks/use-mobile";
+import { Button } from "@featul/ui/components/button";
+import { BoardIcon } from "@featul/ui/icons/board";
+import { RoadmapIcon } from "@featul/ui/icons/roadmap";
+import { ChangelogIcon } from "@featul/ui/icons/changelog";
+import { ArrowIcon } from "@featul/ui/icons/arrow";
+import { useIsMobile } from "@featul/ui/hooks/use-mobile";
 
 export function ConversionHero() {
   const isMobile = useIsMobile();

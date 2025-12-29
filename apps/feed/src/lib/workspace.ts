@@ -10,7 +10,7 @@ import {
   workspaceDomain,
   workspaceInvite,
   user,
-} from "@oreilla/db";
+} from "@featul/db";
 import { randomAvatarUrl } from "@/utils/avatar";
 import { eq, and, inArray, desc, asc, sql } from "drizzle-orm";
 import { createHash } from "crypto";

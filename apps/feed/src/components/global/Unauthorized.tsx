@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Button } from "@oreilla/ui/components/button"
+import { Button } from "@featul/ui/components/button"
 
 export default function UnauthorizedWorkspace({ slug, fallbackSlug }: { slug: string; fallbackSlug?: string | null }) {
   return (

@@ -2,8 +2,8 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Button } from "@oreilla/ui/components/button"
-import { ChevronLeftIcon } from "@oreilla/ui/icons/chevron-left"
+import { Button } from "@featul/ui/components/button"
+import { ChevronLeftIcon } from "@featul/ui/icons/chevron-left"
 import { SECTIONS, WORKSPACE_TITLES } from "@/config/sections"
 import HeaderActions from "@/components/requests/HeaderActions"
 

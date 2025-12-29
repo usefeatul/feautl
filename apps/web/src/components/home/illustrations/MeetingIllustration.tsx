@@ -1,4 +1,4 @@
-import { Card } from '@oreilla/ui/components/card'
+import { Card } from '@featul/ui/components/card'
 
 export function MeetingIllustration() {
   return (

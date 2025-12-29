@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 const buttonVariants = cva(
     "inline-flex items-center  dark:text-white justify-center gap-2 whitespace-now rap rounded-md    text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none cursor-pointer",

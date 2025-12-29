@@ -1,5 +1,5 @@
-import { Button } from "@oreilla/ui/components/button";
-import { cn } from "@oreilla/ui/lib/utils";
+import { Button } from "@featul/ui/components/button";
+import { cn } from "@featul/ui/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import { CheckIcon, RemoveFormattingIcon } from "lucide-react";
 import type { EditorButtonProps } from "../../types";

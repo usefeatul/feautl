@@ -1,4 +1,4 @@
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 import type { BrandingConfig, BrandingResponse } from "../types/branding"
 
 export async function loadBrandingBySlug(slug: string): Promise<BrandingConfig | null> {

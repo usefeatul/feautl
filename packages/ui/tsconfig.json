@@ -1,10 +1,10 @@
 {
-  "extends": "@oreilla/tsconfig/react-library.json",
+  "extends": "@featul/tsconfig/react-library.json",
   "compilerOptions": {
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@oreilla/ui/*": ["./src/*"]
+      "@featul/ui/*": ["./src/*"]
     }
   },
   "include": ["."],

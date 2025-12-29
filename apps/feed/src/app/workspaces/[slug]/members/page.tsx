@@ -1,4 +1,4 @@
-import { getServerSession } from "@oreilla/auth/session"
+import { getServerSession } from "@featul/auth/session"
 import { redirect } from "next/navigation"
 import type { Member } from "@/types/team"
 import MemberList from "@/components/team/MemberList"

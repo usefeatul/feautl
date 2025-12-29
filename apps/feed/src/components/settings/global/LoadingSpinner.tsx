@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react"
-import { cn } from "@oreilla/ui/lib/utils"
-import LoaderIcon from "@oreilla/ui/icons/loader"
+import { cn } from "@featul/ui/lib/utils"
+import LoaderIcon from "@featul/ui/icons/loader"
 
 interface LoadingSpinnerProps {
   label?: string

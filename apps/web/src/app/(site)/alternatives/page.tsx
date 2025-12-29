@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
   title:
-    "Alternatives - Compare oreilla with Canny, Featurebase, Nolt, Upvoty, UserJot",
+    "Alternatives - Compare featul with Canny, Featurebase, Nolt, Upvoty, UserJot",
   description:
     "Side‑by‑side comparisons covering features, privacy, and hosting differences to help you choose confidently.",
   path: "/alternatives",
@@ -20,7 +20,7 @@ export default function AlternativesIndexPage() {
             Alternatives
           </h1>
           <p className="text-muted-foreground mt-4 text-base sm:text-lg">
-            Compare oreilla with similar products. Each page highlights key
+            Compare featul with similar products. Each page highlights key
             features, privacy, and hosting differences.
           </p>
         </div>

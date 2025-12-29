@@ -1,4 +1,4 @@
-import { cn } from "@oreilla/ui/lib/utils";
+import { cn } from "@featul/ui/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import type { ReactNode } from "react";
 

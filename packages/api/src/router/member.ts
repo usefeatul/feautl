@@ -12,7 +12,7 @@ import {
   postUpdate,
   postMerge,
   activityLog,
-} from "@oreilla/db"
+} from "@featul/db"
 import { memberByWorkspaceInputSchema, memberActivityInputSchema } from "../validators/member"
 
 async function getWorkspaceBySlugOrThrow(ctx: any, slug: string) {

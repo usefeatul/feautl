@@ -1,5 +1,5 @@
 "use client"
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 import type { StatusIndicatorProps } from "../../types/status"
 import { colorForStatus } from "../../types/status"
 

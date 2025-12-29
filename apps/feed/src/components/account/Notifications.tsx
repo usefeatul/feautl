@@ -2,8 +2,8 @@
 
 import React from "react"
 import SectionCard from "@/components/settings/global/SectionCard"
-import { Switch } from "@oreilla/ui/components/switch"
-import { Button } from "@oreilla/ui/components/button"
+import { Switch } from "@featul/ui/components/switch"
+import { Button } from "@featul/ui/components/button"
 import { LoadingButton } from "@/components/global/loading-button"
 import { toast } from "sonner"
 

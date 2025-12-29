@@ -1,9 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "@oreilla/ui/components/button"
-import { cn } from "@oreilla/ui/lib/utils"
-import { ChevronLeftIcon } from "@oreilla/ui/icons/chevron-left"
+import { Button } from "@featul/ui/components/button"
+import { cn } from "@featul/ui/lib/utils"
+import { ChevronLeftIcon } from "@featul/ui/icons/chevron-left"
 import { MergePopover } from "./MergePopover"
 import { DeletePostButton } from "./DeletePostButton"
 

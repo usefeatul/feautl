@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Manrope, Sora } from "next/font/google";
-import { DebugTools } from "@oreilla/ui/global/debug-tools";
+import { DebugTools } from "@featul/ui/global/debug-tools";
 import "./globals.css";
 import { SITE_URL, DEFAULT_TITLE, TITLE_TEMPLATE, DEFAULT_DESCRIPTION, DEFAULT_KEYWORDS } from "@/config/seo";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "oreilla",
-    title: "oreilla",
+    siteName: "featul",
+    title: "featul",
     description:
       "Privacy‑first, EU‑hosted product feedback, public roadmap, and changelog—built for alignment and customer‑driven delivery.",
     images: [
@@ -43,13 +43,13 @@ export const metadata: Metadata = {
         url: "/logo.png",
         width: 1200,
         height: 630,
-        alt: "oreilla",
+        alt: "featul",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "oreilla",
+    title: "featul",
     description:
       "Privacy‑first, EU‑hosted product feedback, public roadmap, and changelog—built for alignment and customer‑driven delivery.",
     images: ["/logo.png"],

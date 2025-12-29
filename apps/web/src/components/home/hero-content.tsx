@@ -1,8 +1,8 @@
 "use client";
 
-import { FreeIcon } from "@oreilla/ui/icons/free";
-import { UsersIcon } from "@oreilla/ui/icons/users";
-import { SetupIcon } from "@oreilla/ui/icons/setup";
+import { FreeIcon } from "@featul/ui/icons/free";
+import { UsersIcon } from "@featul/ui/icons/users";
+import { SetupIcon } from "@featul/ui/icons/setup";
 import { HotkeyLink } from "../global/hotkey-link";
 import { LiveDemo } from "../global/live-demo";
 
@@ -17,7 +17,7 @@ export function HeroContent() {
         <span className="block mt-0"> Customer feedback alternative</span>
       </h1>
       <p className="mt-6 max-w-xl sm:max-w-2xl lg:max-w-3xl text-sm sm:text-base md:text-lg leading-relaxed text-accent text-balance">
-        oreilla is a privacy-first, open-source customer feedback platform
+        featul is a privacy-first, open-source customer feedback platform
         that&apos;s both insightful and lightweight
       </p>
       <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4">

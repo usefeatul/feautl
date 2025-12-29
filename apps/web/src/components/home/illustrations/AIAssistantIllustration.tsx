@@ -1,5 +1,5 @@
-import { Card } from '@oreilla/ui/components/card'
-import { Button } from '@oreilla/ui/components/button'
+import { Card } from '@featul/ui/components/card'
+import { Button } from '@featul/ui/components/button'
 import { Sparkles, Plus, Globe, ArrowUp } from 'lucide-react'
 
 export function AIAssistantIllustration() {

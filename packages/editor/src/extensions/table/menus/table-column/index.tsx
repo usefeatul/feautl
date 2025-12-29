@@ -1,4 +1,4 @@
-import { Button } from "@oreilla/ui/components/button";
+import { Button } from "@featul/ui/components/button";
 import type { Editor } from "@tiptap/react";
 import { BubbleMenu as TiptapBubbleMenu } from "@tiptap/react/menus";
 import { ArrowLeftIcon, ArrowRightIcon, Trash2Icon } from "lucide-react";

@@ -2,11 +2,11 @@
 
 import React from "react"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { Button } from "@oreilla/ui/components/button"
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
-import { DropdownIcon } from "@oreilla/ui/icons/dropdown"
-import { cn } from "@oreilla/ui/lib/utils"
-import { client } from "@oreilla/api/client"
+import { Button } from "@featul/ui/components/button"
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@featul/ui/components/popover"
+import { DropdownIcon } from "@featul/ui/icons/dropdown"
+import { cn } from "@featul/ui/lib/utils"
+import { client } from "@featul/api/client"
 
 type Tag = {
   id: string

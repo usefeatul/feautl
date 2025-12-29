@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useState } from "react"
-import { Button } from "@oreilla/ui/components/button"
+import { Button } from "@featul/ui/components/button"
 import CreatePostModal from "./CreatePostModal"
-import { IdeaIcon } from "@oreilla/ui/icons/idea"
+import { IdeaIcon } from "@featul/ui/icons/idea"
 
 export function SubmitIdeaCard({ subdomain, slug }: { subdomain: string; slug: string }) {
   const [open, setOpen] = useState(false)

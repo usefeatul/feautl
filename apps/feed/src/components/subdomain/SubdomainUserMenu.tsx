@@ -1,9 +1,9 @@
 import React from "react"
-import { DropdownMenuItem } from "@oreilla/ui/components/dropdown-menu"
-import { CommentsIcon } from "@oreilla/ui/icons/comments"
-import { SettingIcon } from "@oreilla/ui/icons/setting"
-import { PlusIcon } from "@oreilla/ui/icons/plus"
-import { LogoutIcon } from "@oreilla/ui/icons/logout"
+import { DropdownMenuItem } from "@featul/ui/components/dropdown-menu"
+import { CommentsIcon } from "@featul/ui/icons/comments"
+import { SettingIcon } from "@featul/ui/icons/setting"
+import { PlusIcon } from "@featul/ui/icons/plus"
+import { LogoutIcon } from "@featul/ui/icons/logout"
 
 type SubdomainUserMenuProps = {
   themeLabel: string

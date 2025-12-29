@@ -4,11 +4,11 @@ import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
 import { SearchIcon } from "lucide-react"
 
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 import {
   Dialog,
-} from "@oreilla/ui/components/dialog"
-import { DialogShell } from "@oreilla/ui/components/dialog-shell"
+} from "@featul/ui/components/dialog"
+import { DialogShell } from "@featul/ui/components/dialog-shell"
 
 function Command({
   className,

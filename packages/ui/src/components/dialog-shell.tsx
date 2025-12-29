@@ -7,10 +7,10 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@oreilla/ui/components/dialog"
+} from "@featul/ui/components/dialog"
 
 import { SearchIcon } from "lucide-react"
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 interface DialogShellProps {
   open: boolean

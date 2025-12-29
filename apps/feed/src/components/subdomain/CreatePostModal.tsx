@@ -2,7 +2,7 @@
 
 import React from "react"
 import { SettingsDialogShell } from "@/components/settings/global/SettingsDialogShell"
-import DocumentTextIcon from "@oreilla/ui/icons/document-text"
+import DocumentTextIcon from "@featul/ui/icons/document-text"
 import { getInitials } from "@/utils/user-utils"
 import { PostHeader } from "../post/PostHeader"
 import { PostContent } from "../post/PostContent"
@@ -11,7 +11,7 @@ import { useCreatePostData } from "../../hooks/useCreatePostData"
 import { usePostSubmission } from "../../hooks/usePostSubmission"
 import { usePostImageUpload } from "../../hooks/usePostImageUpload"
 import { useState, useEffect } from "react"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 import { useDebounce } from "../../hooks/useDebounce"
 import { SimilarPosts } from "../post/SimilarPosts"
 

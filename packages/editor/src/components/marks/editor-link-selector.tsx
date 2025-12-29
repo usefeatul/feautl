@@ -1,16 +1,16 @@
-import { Button } from "@oreilla/ui/components/button";
+import { Button } from "@featul/ui/components/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@oreilla/ui/components/popover";
-import { Separator } from "@oreilla/ui/components/separator";
+} from "@featul/ui/components/popover";
+import { Separator } from "@featul/ui/components/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@oreilla/ui/components/tooltip";
-import { cn } from "@oreilla/ui/lib/utils";
+} from "@featul/ui/components/tooltip";
+import { cn } from "@featul/ui/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import {
   CheckIcon,

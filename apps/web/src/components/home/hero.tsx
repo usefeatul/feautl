@@ -31,7 +31,7 @@ export function Hero() {
               <div className="relative z-0 aspect-[16/9] w-full overflow-hidden bg-muted rounded-md  shadow-2xl shadow-zinc-950/50 translate-y-[3px] outline-none ring-2 ring-border/60 ring-offset-2 ring-offset-background">
                 <Image
                   src={imageSrc}
-                  alt={`oreilla ${active} preview`}
+                  alt={`featul ${active} preview`}
                   fill
                   priority
                   className="object-cover"

@@ -3,10 +3,10 @@
 import React from "react";
 import SectionCard from "../global/SectionCard";
 import PlanNotice from "../global/PlanNotice";
-import { Button } from "@oreilla/ui/components/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@oreilla/ui/components/table";
-import { Label } from "@oreilla/ui/components/label";
-import { client } from "@oreilla/api/client";
+import { Button } from "@featul/ui/components/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@featul/ui/components/table";
+import { Label } from "@featul/ui/components/label";
+import { client } from "@featul/api/client";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import InviteMemberModal from "./InviteMemberModal";

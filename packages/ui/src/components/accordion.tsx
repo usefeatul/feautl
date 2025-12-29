@@ -4,7 +4,7 @@ import * as React from "react"
 import { Accordion as BaseAccordion } from "@base-ui/react/accordion"
 import { ChevronDownIcon } from "lucide-react"
 
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 function Accordion({
   ...props

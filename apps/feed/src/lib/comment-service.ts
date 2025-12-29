@@ -1,4 +1,4 @@
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 
 export async function getCommentImageUploadUrl(
   postId: string,

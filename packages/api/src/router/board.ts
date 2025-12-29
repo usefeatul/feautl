@@ -2,7 +2,7 @@
 import { eq, and, sql, inArray, asc, type SQLWrapper } from "drizzle-orm"
 import { z } from "zod"
 import { j, publicProcedure, privateProcedure } from "../jstack"
-import { workspace, board, post, postTag, tag, comment, user, workspaceMember, vote, activityLog } from "@oreilla/db"
+import { workspace, board, post, postTag, tag, comment, user, workspaceMember, vote, activityLog } from "@featul/db"
 import { byIdSchema, updatePostMetaSchema, updatePostBoardSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
 import { byBoardInputSchema, boardSlugSchema } from "../validators/board"

@@ -1,8 +1,8 @@
 "use client"
 
-import { Button } from "@oreilla/ui/components/button"
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
-import { DropdownIcon } from "@oreilla/ui/icons/dropdown"
+import { Button } from "@featul/ui/components/button"
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@featul/ui/components/popover"
+import { DropdownIcon } from "@featul/ui/icons/dropdown"
 import { BRANDING_COLORS } from "../../../types/colors"
 import type { ColorOption } from "../../../types/colors"
 

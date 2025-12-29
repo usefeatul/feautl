@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react"
 import { toast } from "sonner"
-import { client } from "@oreilla/api/client"
-import { useSession } from "@oreilla/auth/client"
+import { client } from "@featul/api/client"
+import { useSession } from "@featul/auth/client"
 
 interface Member {
   id: string

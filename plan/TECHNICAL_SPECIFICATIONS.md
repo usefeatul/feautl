@@ -1,8 +1,8 @@
-# oreilla Technical Specifications
+# featul Technical Specifications
 
 ## Project Overview
 
-oreilla is an open-source user feedback platform designed to be the "Linear of feedback management" - beautiful, fast, and developer-loved. It aims to disrupt the market dominated by expensive closed-source solutions like FeatureBase ($60-250/month) and UserJot ($29-59/month).
+featul is an open-source user feedback platform designed to be the "Linear of feedback management" - beautiful, fast, and developer-loved. It aims to disrupt the market dominated by expensive closed-source solutions like FeatureBase ($60-250/month) and UserJot ($29-59/month).
 
 ## Architecture Overview
 
@@ -253,7 +253,7 @@ comments {
 
 ### Code Organization
 ```
-oreilla/
+featul/
 ├── apps/
 │   ├── web/          # Landing web application
 │   └── feed/         # Main application
@@ -322,4 +322,4 @@ oreilla/
 - Performance audits
 - Security assessments
 
-This technical specification serves as the foundation for the oreilla platform development and will be updated as the project evolves.
+This technical specification serves as the foundation for the featul platform development and will be updated as the project evolves.

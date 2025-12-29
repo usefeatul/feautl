@@ -3,7 +3,7 @@
 import type { JSONContent } from "@tiptap/react";
 import { generateHTML } from "@tiptap/html";
 import StarterKit from "@tiptap/starter-kit";
-import { cn } from "@oreilla/ui/lib/utils";
+import { cn } from "@featul/ui/lib/utils";
 import { Image } from "@tiptap/extension-image";
 import { TaskList, TaskItem } from "@tiptap/extension-list";
 import { Youtube } from "@tiptap/extension-youtube";

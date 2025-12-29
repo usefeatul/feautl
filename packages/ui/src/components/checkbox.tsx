@@ -4,7 +4,7 @@ import * as React from "react"
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox"
 import { CheckIcon } from "lucide-react"
 
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 function Checkbox({
   className,

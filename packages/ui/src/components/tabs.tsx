@@ -3,8 +3,8 @@
 import * as React from "react";
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
 import { AnimatePresence, motion } from "framer-motion";
-import { cn } from "@oreilla/ui/lib/utils";
-import { useIsMobile } from "@oreilla/ui/hooks/use-mobile";
+import { cn } from "@featul/ui/lib/utils";
+import { useIsMobile } from "@featul/ui/hooks/use-mobile";
 const GliderContext = React.createContext<{
   value?: string;
   onHover?: (el: HTMLElement) => void;

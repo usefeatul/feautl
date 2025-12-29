@@ -2,14 +2,14 @@
 
 import * as React from "react"
 import { useRouter, usePathname } from "next/navigation"
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
-import { MenuIcon } from "@oreilla/ui/icons/menu"
-import { AccentBar } from "@oreilla/ui/components/cardElements"
-import { CommentsIcon } from "@oreilla/ui/icons/comments"
-import { RoadmapIcon } from "@oreilla/ui/icons/roadmap"
-import { ChangelogIcon } from "@oreilla/ui/icons/changelog"
-import { cn } from "@oreilla/ui/lib/utils"
-import { Button } from "@oreilla/ui/components/button"
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@featul/ui/components/popover"
+import { MenuIcon } from "@featul/ui/icons/menu"
+import { AccentBar } from "@featul/ui/components/cardElements"
+import { CommentsIcon } from "@featul/ui/icons/comments"
+import { RoadmapIcon } from "@featul/ui/icons/roadmap"
+import { ChangelogIcon } from "@featul/ui/icons/changelog"
+import { cn } from "@featul/ui/lib/utils"
+import { Button } from "@featul/ui/components/button"
 
 
 export function MobileBoardsMenu({

@@ -4,14 +4,14 @@ import { BrandedEmail, type Brand } from "./brandemail"
 
 export function ReserveSlugEmail({ slug, confirmUrl, brand }: { slug: string; confirmUrl: string; brand?: Brand }) {
   const eyebrow = "RESERVE"
-  const title = `Reserve ${slug}.oreilla.com`
+  const title = `Reserve ${slug}.featul.com`
   const intro = "Hello,"
-  const body = `You requested to reserve the subdomain ${slug}.oreilla.com.`
+  const body = `You requested to reserve the subdomain ${slug}.featul.com.`
   const paragraphs = ["Click the button below to confirm your reservation."]
   const ctaText = "Confirm Reservation"
   const ctaUrl = confirmUrl
   const psText = "If you did not request this, you may safely ignore this email."
-  const signatureName = (brand?.name || "oreilla") + " Team"
+  const signatureName = (brand?.name || "featul") + " Team"
   return (
     <BrandedEmail
       eyebrow={eyebrow}

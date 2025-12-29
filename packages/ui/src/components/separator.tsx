@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 interface SeparatorProps extends React.ComponentPropsWithoutRef<"div"> {
   orientation?: "horizontal" | "vertical"

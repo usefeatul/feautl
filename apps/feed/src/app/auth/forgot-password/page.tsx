@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Forgot Password",
-  description: "Reset your oreilla password.",
+  description: "Reset your featul password.",
   path: "/auth/forgot-password",
   indexable: false,
 })

@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react"
 import BackLink from "@/components/tools/global/backlink"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from "@oreilla/ui/components/card"
-import { Label } from "@oreilla/ui/components/label"
-import { Input } from "@oreilla/ui/components/input"
-import { Badge } from "@oreilla/ui/components/badge"
-import { Button } from "@oreilla/ui/components/button"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from "@featul/ui/components/card"
+import { Label } from "@featul/ui/components/label"
+import { Input } from "@featul/ui/components/input"
+import { Badge } from "@featul/ui/components/badge"
+import { Button } from "@featul/ui/components/button"
 import { Plus, Trash } from "lucide-react"
 
 type Plan = { customers: string; price: string }

@@ -1,16 +1,16 @@
 "use client";
 
 import React from "react";
-import { Button } from "@oreilla/ui/components/button";
+import { Button } from "@featul/ui/components/button";
 import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from "@oreilla/ui/components/avatar";
+} from "@featul/ui/components/avatar";
 import { getInitials } from "@/utils/user-utils";
 import { useRouter, useParams } from "next/navigation";
-import { authClient } from "@oreilla/auth/client";
-import { client } from "@oreilla/api/client";
+import { authClient } from "@featul/auth/client";
+import { client } from "@featul/api/client";
 import { toast } from "sonner";
 
 type InviteProps = {

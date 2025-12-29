@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { cn } from "@oreilla/ui/lib/utils"
-import { XMarkIcon } from '@oreilla/ui/icons/xmark';
+import { cn } from "@featul/ui/lib/utils"
+import { XMarkIcon } from '@featul/ui/icons/xmark';
 
 function Dialog({
   ...props

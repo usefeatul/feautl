@@ -1,12 +1,12 @@
 import { HTTPException } from "hono/http-exception"
 import { and, eq, gt, isNull, sql } from "drizzle-orm"
 import { j, publicProcedure, privateProcedure } from "../jstack"
-import { workspace, workspaceSlugReservation } from "@oreilla/db"
+import { workspace, workspaceSlugReservation } from "@featul/db"
 import { reserveSlugInputSchema, tokenInputSchema, checkSlugPublicInputSchema } from "../validators/reservation"
-import { sendReservationEmail } from "@oreilla/auth/email"
+import { sendReservationEmail } from "@featul/auth/email"
 
 const BLOCKED_SLUGS = new Set([
-  "admin","api","oreilla","feedback","www","app","support","help","mail","blog","status","docs","pricing","signup","signin","start","invite","reserve","verify","staging"
+  "admin","api","featul","feedback","www","app","support","help","mail","blog","status","docs","pricing","signup","signin","start","invite","reserve","verify","staging"
 ])
 const MAX_RESERVATIONS_PER_EMAIL = 3
 

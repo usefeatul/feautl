@@ -1,9 +1,9 @@
  "use client"
  
  import { useEffect, useMemo, useState } from "react"
-import { Button } from "@oreilla/ui/components/button"
-import { Input } from "@oreilla/ui/components/input"
-import { Popover, PopoverContent, PopoverTrigger, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
+import { Button } from "@featul/ui/components/button"
+import { Input } from "@featul/ui/components/input"
+import { Popover, PopoverContent, PopoverTrigger, PopoverList, PopoverListItem } from "@featul/ui/components/popover"
 import { Globe2, ChevronDown, Search } from "lucide-react"
 import * as ct from "countries-and-timezones"
 import { formatTimeWithDate } from "../../lib/time"

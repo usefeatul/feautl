@@ -4,7 +4,7 @@ import {
   PopoverContent,
   PopoverList,
   PopoverListItem,
-} from "@oreilla/ui/components/popover";
+} from "@featul/ui/components/popover";
 import { useEffect, useRef, useState } from "react";
 import type { EditorSlashMenuProps } from "../../types";
 

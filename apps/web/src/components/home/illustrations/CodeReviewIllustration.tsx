@@ -1,4 +1,4 @@
-import { Card } from '@oreilla/ui/components/card'
+import { Card } from '@featul/ui/components/card'
 import { Signature, Play } from 'lucide-react'
 import Image from 'next/image'
 

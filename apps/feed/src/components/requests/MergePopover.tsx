@@ -2,11 +2,11 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { Button } from "@oreilla/ui/components/button"
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
-import { CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "@oreilla/ui/components/command"
-import { MergeIcon } from "@oreilla/ui/icons/merge"
-import { client } from "@oreilla/api/client"
+import { Button } from "@featul/ui/components/button"
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@featul/ui/components/popover"
+import { CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "@featul/ui/components/command"
+import { MergeIcon } from "@featul/ui/icons/merge"
+import { client } from "@featul/api/client"
 import { useQuery } from "@tanstack/react-query"
 
 export interface MergePopoverProps {

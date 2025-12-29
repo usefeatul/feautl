@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@oreilla/ui/components/button"
+import { Button } from "@featul/ui/components/button"
 import { buildRequestsUrl, buildWorkspaceUrl } from "@/utils/request-filters"
 import PaginationHotkeys from "@/components/pagination/PaginationHotkeys"
 import type { RequestPaginationProps as Props } from "@/types/pagination"

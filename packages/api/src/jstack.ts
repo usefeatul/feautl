@@ -1,8 +1,8 @@
 import { jstack } from "jstack"
-import { auth } from "@oreilla/auth/auth"
+import { auth } from "@featul/auth/auth"
 import { HTTPException } from "hono/http-exception"
 import { headers } from "next/headers"
-import { db } from "@oreilla/db"
+import { db } from "@featul/db"
 // import { limitPublic, limitPrivate } from "./services/ratemiliter"
 
 

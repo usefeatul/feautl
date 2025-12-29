@@ -1,7 +1,7 @@
 "use client"
 
-import { cn } from "@oreilla/ui/lib/utils"
-import { PointerDownIcon } from "@oreilla/ui/icons/pointer-down"
+import { cn } from "@featul/ui/lib/utils"
+import { PointerDownIcon } from "@featul/ui/icons/pointer-down"
 import { motion } from "framer-motion"
 
 interface PointerProps {

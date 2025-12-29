@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm"
 import { HTTPException } from "hono/http-exception"
-import { workspace, workspaceMember } from "@oreilla/db"
+import { workspace, workspaceMember } from "@featul/db"
 
 export async function requireBoardManagerBySlug(ctx: any, slug: string) {
   const [ws] = await ctx.db

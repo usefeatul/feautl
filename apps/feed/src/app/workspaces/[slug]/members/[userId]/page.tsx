@@ -1,9 +1,9 @@
-import { getServerSession } from "@oreilla/auth/session"
+import { getServerSession } from "@featul/auth/session"
 import { redirect } from "next/navigation"
 import type { Member } from "@/types/team"
 import MemberDetail from "@/components/team/MemberDetail"
 import { getSettingsInitialData } from "@/lib/workspace"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 
 export const revalidate = 30
 

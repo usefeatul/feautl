@@ -1,9 +1,9 @@
 "use client"
 
 import React from "react"
-import { Switch } from "@oreilla/ui/components/switch"
+import { Switch } from "@featul/ui/components/switch"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 import { toast } from "sonner"
 
 export default function ChangelogVisibility({ slug, initialIsVisible }: { slug: string; initialIsVisible?: boolean }) {

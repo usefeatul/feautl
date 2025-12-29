@@ -3,13 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Button } from "@oreilla/ui/components/button";
-import { cn } from "@oreilla/ui/lib/utils";
+import { Button } from "@featul/ui/components/button";
+import { cn } from "@featul/ui/lib/utils";
 import { MobileBoardsMenu } from "./MobileBoardsMenu";
-import { HomeIcon } from "@oreilla/ui/icons/home";
+import { HomeIcon } from "@featul/ui/icons/home";
 import React from "react";
 import SubdomainUserDropdown from "@/components/subdomain/SubdomainUserDropdown";
-import { client } from "@oreilla/api/client";
+import { client } from "@featul/api/client";
 import NotificationsBell from "./NotificationsBell";
 
 type WorkspaceInfo = {

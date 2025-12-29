@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { Button } from "@oreilla/ui/components/button";
-import { cn } from "@oreilla/ui/lib/utils";
+import { Button } from "@featul/ui/components/button";
+import { cn } from "@featul/ui/lib/utils";
 
 type PromoCardProps = {
   className?: string;
@@ -14,10 +14,10 @@ type PromoCardProps = {
 
 export function PromoCard({
   className,
-  title = "oreilla, Simplified",
+  title = "featul, Simplified",
   description = "Stop guessing. Get actionable feedback understand what users need, iterate faster, and ship with confidence.",
-  ctaHref = "https://app.oreilla.com",
-  ctaLabel = "Sign up for oreilla",
+  ctaHref = "https://app.featul.com",
+  ctaLabel = "Sign up for featul",
   subtext = "free to start, no cc required",
 }: PromoCardProps) {
   return (

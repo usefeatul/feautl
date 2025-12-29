@@ -2,8 +2,8 @@
 
 import React, { useState, useTransition } from "react"
 import { useQueryClient } from "@tanstack/react-query"
-import { Button } from "@oreilla/ui/components/button"
-import { TrashIcon } from "@oreilla/ui/icons/trash"
+import { Button } from "@featul/ui/components/button"
+import { TrashIcon } from "@featul/ui/icons/trash"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,8 +13,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@oreilla/ui/components/alert-dialog"
-import { client } from "@oreilla/api/client"
+} from "@featul/ui/components/alert-dialog"
+import { client } from "@featul/api/client"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import type { PostDeletedEventDetail } from "@/types/events"

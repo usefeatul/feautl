@@ -1,12 +1,12 @@
 "use client"
 
 import React from "react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@oreilla/ui/components/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@featul/ui/components/table"
 import SectionCard from "@/components/settings/global/SectionCard"
-import { Button } from "@oreilla/ui/components/button"
+import { Button } from "@featul/ui/components/button"
 import { useRouter, usePathname } from "next/navigation"
 import { toast } from "sonner"
-import { authClient } from "@oreilla/auth/client"
+import { authClient } from "@featul/auth/client"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 export default function Security({ initialMeSession, initialSessions }: { initialMeSession?: any; initialSessions?: { token: string; userAgent?: string | null; ipAddress?: string | null; createdAt?: string; expiresAt?: string }[] | null }) {

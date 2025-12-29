@@ -9,12 +9,12 @@ export function PoweredBy() {
   return (
     <div className="pt-2 text-center">
       <a
-        href="https://oreilla.com"
+        href="https://featul.com"
         target="_blank"
         rel="noopener noreferrer"
         className="inline-block rounded-mdbg-muted px-2 py-1 text-xs text-accent hover:bg-muted/80 transition-colors cursor-pointer"
       >
-        Powered by oreilla
+        Powered by featul
       </a>
     </div>
   )

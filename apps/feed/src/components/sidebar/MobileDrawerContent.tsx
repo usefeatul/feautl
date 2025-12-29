@@ -2,8 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
-import { ScrollArea } from "@oreilla/ui/components/scroll-area";
-import { DrawerContent, DrawerTitle } from "@oreilla/ui/components/drawer";
+import { ScrollArea } from "@featul/ui/components/scroll-area";
+import { DrawerContent, DrawerTitle } from "@featul/ui/components/drawer";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import type { NavItem } from "../../types/nav";
 import SidebarItem from "./SidebarItem";
@@ -11,8 +11,8 @@ import SidebarSection from "./SidebarSection";
 import WorkspaceSwitcher from "./WorkspaceSwitcher";
 import Timezone from "./Timezone";
 import UserDropdown from "@/components/account/UserDropdown";
-import { Button } from "@oreilla/ui/components/button";
-import { PlusIcon } from "@oreilla/ui/icons/plus";
+import { Button } from "@featul/ui/components/button";
+import { PlusIcon } from "@featul/ui/icons/plus";
 import { getSlugFromPath } from "../../config/nav";
 import { CreatePostModal } from "../post/CreatePostModal";
 

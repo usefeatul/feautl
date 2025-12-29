@@ -1,5 +1,5 @@
 import React from 'react'
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 type ContainerProps = {
   children: React.ReactNode

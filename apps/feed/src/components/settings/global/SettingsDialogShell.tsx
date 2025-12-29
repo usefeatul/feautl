@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@oreilla/ui/components/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@featul/ui/components/dialog"
 
 type SettingsDialogShellProps = {
   open: boolean

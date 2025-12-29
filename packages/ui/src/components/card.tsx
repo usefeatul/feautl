@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 interface CardProps extends React.ComponentProps<"div"> {
   variant?: "default" | "plain"

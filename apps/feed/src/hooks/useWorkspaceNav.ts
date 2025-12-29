@@ -1,6 +1,6 @@
 import React from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 import { buildTopNav, buildMiddleNav } from "@/config/nav"
 import type { PostDeletedEventDetail } from "@/types/events"
 

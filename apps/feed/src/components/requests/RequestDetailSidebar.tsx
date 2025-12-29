@@ -6,7 +6,7 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from "@oreilla/ui/components/avatar";
+} from "@featul/ui/components/avatar";
 import { getDisplayUser, getInitials } from "@/utils/user-utils";
 import { relativeTime } from "@/lib/time";
 import BoardPicker from "./meta/BoardPicker";
@@ -16,8 +16,8 @@ import TagsPicker from "./meta/TagsPicker";
 import StatusIcon from "./StatusIcon";
 import RoleBadge from "../global/RoleBadge";
 import type { RequestDetailData } from "./RequestDetail";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@oreilla/ui/components/tooltip";
-import { CircleQuestionMarkIcon } from "@oreilla/ui/icons/circle-question-mark";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@featul/ui/components/tooltip";
+import { CircleQuestionMarkIcon } from "@featul/ui/icons/circle-question-mark";
 
 export type RequestDetailSidebarProps = {
   post: RequestDetailData;

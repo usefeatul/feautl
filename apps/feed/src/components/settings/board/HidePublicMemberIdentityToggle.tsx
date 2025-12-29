@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Switch } from "@oreilla/ui/components/switch"
+import { Switch } from "@featul/ui/components/switch"
 import { useGlobalBoardToggle } from "@/hooks/useGlobalBoardToggle"
 
 export default function HidePublicMemberIdentityToggle({

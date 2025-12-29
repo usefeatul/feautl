@@ -26,7 +26,7 @@ type Props = {
 
 function resolveBrand(brand?: Brand): Required<Brand> {
   return {
-    name: brand?.name || "oreilla",
+    name: brand?.name || "featul",
     logoUrl: brand?.logoUrl || "",
     primaryColor: brand?.primaryColor || "#111111",
     backgroundColor: brand?.backgroundColor || "#ffffff",
@@ -122,7 +122,7 @@ export function BrandedEmail(props: Props) {
           {/* Minimal Footer */}
           <Section style={{ marginTop: 48, borderTop: "1px solid #eaeaea", paddingTop: 24 }}>
              <Text style={{ color: "#8898aa", fontSize: 12, margin: 0, textAlign: "center" }}>
-               © {new Date().getFullYear()} {"Oreilla"}
+               © {new Date().getFullYear()} {"featul"}
              </Text>
           </Section>
 

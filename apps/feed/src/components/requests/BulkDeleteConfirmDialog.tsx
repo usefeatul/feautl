@@ -10,7 +10,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@oreilla/ui/components/alert-dialog"
+} from "@featul/ui/components/alert-dialog"
 
 interface BulkDeleteConfirmDialogProps {
   open: boolean

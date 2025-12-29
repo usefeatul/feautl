@@ -1,5 +1,5 @@
 import { eq, and } from "drizzle-orm"
-import { board, post, user } from "@oreilla/db"
+import { board, post, user } from "@featul/db"
 
 function mkSlug(t: string) {
   const base = t.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
@@ -8,8 +8,8 @@ function mkSlug(t: string) {
 }
 
 export async function seedWorkspaceOnboarding(db: any, workspaceId: string, creatorUserId: string) {
-  const founderId = "oreilla-founder"
-  const founderEmail = "jean@oreilla.com"
+  const founderId = "featul-founder"
+  const founderEmail = "jean@featul.com"
   const [founder] = await db
     .select({ id: user.id })
     .from(user)
@@ -50,14 +50,14 @@ export async function seedWorkspaceOnboarding(db: any, workspaceId: string, crea
     rows.push(
       {
         boardId: featuresBoard.id,
-        title: "Welcome to Oreilla – collect feedback, build a roadmap, and share updates",
+        title: "Welcome to featul – collect feedback, build a roadmap, and share updates",
         content: [
-          "Oreilla is a lightweight feedback platform that helps teams collect ideas, track bugs, and keep users in the loop.",
+          "featul is a lightweight feedback platform that helps teams collect ideas, track bugs, and keep users in the loop.",
           "Use the “Features” board for new ideas and the “Bugs” board for issues. Posts can be upvoted and commented on, so the most-wanted items rise to the top.",
           "Statuses (Pending → Review → Planned → Progress → Completed) show where each item stands. The public roadmap reflects these states so everyone knows what’s next.",
           "When work ships, publish a changelog entry to close the loop with your community. Invite teammates, set your brand colors, and connect a custom domain to make the space yours.",
         ].join("\n\n"),
-        slug: mkSlug("Welcome to Oreilla"),
+        slug: mkSlug("Welcome to featul"),
         authorId: founderId,
         isAnonymous: false,
         status: "published",

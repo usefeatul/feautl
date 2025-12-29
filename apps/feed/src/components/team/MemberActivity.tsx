@@ -3,7 +3,7 @@
 import React from "react"
 import { format } from "date-fns"
 import StatusIcon from "@/components/requests/StatusIcon"
-import { Button } from "@oreilla/ui/components/button"
+import { Button } from "@featul/ui/components/button"
 import { LoadingSpinner } from "@/components/settings/global/LoadingSpinner"
 
 interface MemberActivityProps {

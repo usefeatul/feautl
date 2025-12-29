@@ -4,7 +4,7 @@ import React from "react"
 import { useRouter } from "next/navigation"
 import { SettingsDialogShell } from "@/components/settings/global/SettingsDialogShell"
 import WorkspaceWizard from "@/components/wizard/Wizard"
-import { PlusIcon } from "@oreilla/ui/icons/plus"
+import { PlusIcon } from "@featul/ui/icons/plus"
 
 interface CreateWorkspaceDialogProps {
   open?: boolean

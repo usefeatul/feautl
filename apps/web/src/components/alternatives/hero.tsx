@@ -1,7 +1,7 @@
 "use client";
 
 import { Container } from "@/components/global/container";
-import { Card } from "@oreilla/ui/components/card";
+import { Card } from "@featul/ui/components/card";
 import Image from "next/image";
 import { Alternative } from "@/config/alternatives";
 import { AlternativeHeroContent } from "./hero-content";
@@ -28,7 +28,7 @@ export function AlternativeHero({ alt }: { alt: Alternative }) {
                   <div className="relative z-0 aspect-[4/3] w-full overflow-hidden rounded-md  bg-muted ring-1 ring-border/60">
                     <Image
                       src={imageSrc}
-                      alt={`${alt.name} vs oreilla preview screenshot`}
+                      alt={`${alt.name} vs featul preview screenshot`}
                       fill
                       priority
                       className="object-cover"

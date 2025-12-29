@@ -2,10 +2,10 @@
 
 import React from "react"
 import { useParams, useRouter } from "next/navigation"
-import { client } from "@oreilla/api/client"
-import { Button } from "@oreilla/ui/components/button"
+import { client } from "@featul/api/client"
+import { Button } from "@featul/ui/components/button"
 import { toast } from "sonner"
-import { authClient } from "@oreilla/auth/client"
+import { authClient } from "@featul/auth/client"
 import { Link2, Mail } from "lucide-react"
 
 export default function ReserveConfirm() {
@@ -84,7 +84,7 @@ export default function ReserveConfirm() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Link2 className="size-4 text-accent" />
-              <div className="rounded-md  bg-muted px-2 py-1 text-sm font-mono">{slug}.oreilla.com</div>
+              <div className="rounded-md  bg-muted px-2 py-1 text-sm font-mono">{slug}.featul.com</div>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="size-4 text-accent" />

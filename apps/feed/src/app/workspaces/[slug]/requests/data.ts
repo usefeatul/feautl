@@ -1,4 +1,4 @@
-import { getServerSession } from "@oreilla/auth/session"
+import { getServerSession } from "@featul/auth/session"
 import { getWorkspaceBySlug, getWorkspacePosts, getWorkspacePostsCount, normalizeStatus } from "@/lib/workspace"
 import { parseArrayParam } from "@/utils/request-filters"
 

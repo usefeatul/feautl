@@ -1,8 +1,8 @@
-# oreilla Subscription & Pricing Model
+# featul Subscription & Pricing Model
 
 ## Pricing Philosophy
 
-oreilla aims to be **70-80% more affordable** than existing solutions while providing superior value through:
+featul aims to be **70-80% more affordable** than existing solutions while providing superior value through:
 - Open-source transparency
 - Developer-first approach
 - No vendor lock-in
@@ -17,7 +17,7 @@ oreilla aims to be **70-80% more affordable** than existing solutions while prov
 | **UserJot** | $29/month | $59/month | Limited customization |
 | **Canny** | $50/month | $400/month | Complex, feature-heavy |
 | **ProductBoard** | $20/user/month | $60/user/month | Per-user pricing |
-| **oreilla** | **FREE** | **$49/month** | Open-source advantage |
+| **featul** | **FREE** | **$49/month** | Open-source advantage |
 
 ## Pricing Tiers
 
@@ -354,4 +354,4 @@ oreilla aims to be **70-80% more affordable** than existing solutions while prov
 - Competitive pricing monitoring
 - Value perception surveys
 
-This pricing model balances accessibility with sustainability, ensuring oreilla can compete effectively while building a profitable, scalable business.
+This pricing model balances accessibility with sustainability, ensuring featul can compete effectively while building a profitable, scalable business.

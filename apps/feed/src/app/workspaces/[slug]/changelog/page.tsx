@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { createPageMetadata } from "@/lib/seo"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 import { ChangelogEntryList } from "@/components/changelog/changelog-entry-list"
 
 export const revalidate = 30

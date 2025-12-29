@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react"
 import { useQueryClient } from "@tanstack/react-query"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 

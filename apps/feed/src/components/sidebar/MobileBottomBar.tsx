@@ -2,10 +2,10 @@
 
 import React from "react";
 import Link from "next/link";
-import { cn } from "@oreilla/ui/lib/utils";
-import { DrawerTrigger } from "@oreilla/ui/components/drawer";
+import { cn } from "@featul/ui/lib/utils";
+import { DrawerTrigger } from "@featul/ui/components/drawer";
 import type { NavItem } from "../../types/nav";
-import MoreIcon from "@oreilla/ui/icons/more";
+import MoreIcon from "@featul/ui/icons/more";
 
 export default function MobileBottomBar({ items }: { items: NavItem[] }) {
   return (

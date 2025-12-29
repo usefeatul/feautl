@@ -1,7 +1,7 @@
 import React from "react"
 import CommentVote from "./CommentVote"
 import CommentReplyButton from "./actions/CommentReplyAction"
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 interface CommentFooterProps {
   commentId: string

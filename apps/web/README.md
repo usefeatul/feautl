@@ -1,4 +1,4 @@
-# oreilla Web Platform
+# featul Web Platform
 
 A modern business tools platform built with Next.js, featuring calculators, blog integration, and comprehensive business resources.
 
@@ -51,4 +51,4 @@ npm run dev
 
 ---
 
-**oreilla** - Built for modern business teams 🚀
+**featul** - Built for modern business teams 🚀

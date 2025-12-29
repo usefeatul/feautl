@@ -1,12 +1,12 @@
-import { Button } from "@oreilla/ui/components/button";
+import { Button } from "@featul/ui/components/button";
 import {
   Popover,
   PopoverContent,
   PopoverList,
   PopoverListItem,
   PopoverTrigger,
-} from "@oreilla/ui/components/popover";
-import { cn } from "@oreilla/ui/lib/utils";
+} from "@featul/ui/components/popover";
+import { cn } from "@featul/ui/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";

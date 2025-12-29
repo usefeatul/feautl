@@ -6,7 +6,7 @@ import LegalMarkdown from "@/components/legal/legal-markdown"
 
 export const metadata: Metadata = createPageMetadata({
   title: "GDPR Compliance",
-  description: "oreilla’s approach to GDPR and data protection obligations.",
+  description: "featul’s approach to GDPR and data protection obligations.",
   path: "/gdpr",
 })
 

@@ -1,6 +1,6 @@
-import { Button } from "@oreilla/ui/components/button";
-import { Input } from "@oreilla/ui/components/input";
-import { cn } from "@oreilla/ui/lib/utils";
+import { Button } from "@featul/ui/components/button";
+import { Input } from "@featul/ui/components/input";
+import { cn } from "@featul/ui/lib/utils";
 import { Undo2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";

@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from "react"
 import BackLink from "@/components/tools/global/backlink"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@oreilla/ui/components/card"
-import { Label } from "@oreilla/ui/components/label"
-import { Input } from "@oreilla/ui/components/input"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@featul/ui/components/card"
+import { Label } from "@featul/ui/components/label"
+import { Input } from "@featul/ui/components/input"
 import StatusBadge from "@/components/tools/global/status-badge"
 
 export default function TtfvCalculator() {

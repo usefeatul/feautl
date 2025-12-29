@@ -6,7 +6,7 @@ import LegalMarkdown from "@/components/legal/legal-markdown"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Terms of Service",
-  description: "oreilla terms and conditions for using our services.",
+  description: "featul terms and conditions for using our services.",
   path: "/terms",
 })
 

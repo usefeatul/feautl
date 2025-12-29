@@ -2,10 +2,10 @@
 
 import React, { useState, useTransition } from "react"
 import { useQueryClient } from "@tanstack/react-query"
-import { TrashIcon } from "@oreilla/ui/icons/trash"
-import { client } from "@oreilla/api/client"
+import { TrashIcon } from "@featul/ui/icons/trash"
+import { client } from "@featul/api/client"
 import { toast } from "sonner"
-import { PopoverListItem } from "@oreilla/ui/components/popover"
+import { PopoverListItem } from "@featul/ui/components/popover"
 
 interface CommentDeleteActionProps {
   commentId: string

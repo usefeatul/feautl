@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide covers the complete deployment and infrastructure setup for oreilla, including development, staging, and production environments across multiple hosting providers.
+This guide covers the complete deployment and infrastructure setup for featul, including development, staging, and production environments across multiple hosting providers.
 
 ## Architecture Overview
 
@@ -37,8 +37,8 @@ This guide covers the complete deployment and infrastructure setup for oreilla, 
 #### Local Setup
 ```bash
 # Clone repository
-git clone https://github.com/your-org/oreilla.git
-cd oreilla
+git clone https://github.com/your-org/featul.git
+cd featul
 
 # Install dependencies
 pnpm install
@@ -64,8 +64,8 @@ NEXTAUTH_SECRET=your-secret-key
 NEXTAUTH_URL=http://localhost:3000
 
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/oreilla_dev
-DIRECT_URL=postgresql://user:password@localhost:5432/oreilla_dev
+DATABASE_URL=postgresql://user:password@localhost:5432/featul_dev
+DIRECT_URL=postgresql://user:password@localhost:5432/featul_dev
 
 # Authentication Providers
 GOOGLE_CLIENT_ID=your-google-client-id
@@ -173,10 +173,10 @@ const pooledSql = neon(process.env.DATABASE_URL!, {
 #!/bin/bash
 # backup.sh
 DATE=$(date +%Y%m%d_%H%M%S)
-BACKUP_FILE="oreilla_backup_$DATE.sql"
+BACKUP_FILE="featul_backup_$DATE.sql"
 
 pg_dump $DATABASE_URL > $BACKUP_FILE
-aws s3 cp $BACKUP_FILE s3://oreilla-backups/
+aws s3 cp $BACKUP_FILE s3://featul-backups/
 rm $BACKUP_FILE
 ```
 
@@ -249,7 +249,7 @@ pnpm dev
 # Core
 NODE_ENV=production
 NEXTAUTH_SECRET=<strong-secret-key>
-NEXTAUTH_URL=https://oreilla.com
+NEXTAUTH_URL=https://featul.com
 
 # Database
 DATABASE_URL=postgresql://user:pass@host/db?sslmode=require
@@ -292,8 +292,8 @@ export { r2 };
 ```
 
 ### Bucket Configuration
-- **Public bucket**: `oreilla-public` (avatars, logos)
-- **Private bucket**: `oreilla-private` (attachments, exports)
+- **Public bucket**: `featul-public` (avatars, logos)
+- **Private bucket**: `featul-private` (attachments, exports)
 - **CDN**: Cloudflare CDN for public assets
 - **Lifecycle**: Auto-delete temporary files after 7 days
 
@@ -310,7 +310,7 @@ export const sendEmail = async ({
   to,
   subject,
   html,
-  from = 'oreilla <noreply@oreilla.com>'
+  from = 'featul <noreply@featul.com>'
 }) => {
   return await resend.emails.send({
     from,
@@ -402,7 +402,7 @@ export async function GET() {
 // next.config.js
 module.exports = {
   images: {
-    domains: ['oreilla.com', 'r2.cloudflarestorage.com'],
+    domains: ['featul.com', 'r2.cloudflarestorage.com'],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 86400,
   },
@@ -551,4 +551,4 @@ jobs:
 - Storage usage tracking
 - Third-party service costs
 
-This deployment guide ensures a robust, scalable, and maintainable infrastructure for oreilla across all environments.
+This deployment guide ensures a robust, scalable, and maintainable infrastructure for featul across all environments.

@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { authClient } from "@oreilla/auth/client";
-import { Button } from "@oreilla/ui/components/button";
-import { Input } from "@oreilla/ui/components/input";
-import { Label } from "@oreilla/ui/components/label";
-import { GoogleIcon } from "@oreilla/ui/icons/google";
-import GitHubIcon from "@oreilla/ui/icons/github";
+import { authClient } from "@featul/auth/client";
+import { Button } from "@featul/ui/components/button";
+import { Input } from "@featul/ui/components/input";
+import { Label } from "@featul/ui/components/label";
+import { GoogleIcon } from "@featul/ui/icons/google";
+import GitHubIcon from "@featul/ui/icons/github";
 import Link from "next/link";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/global/loading-button";
@@ -93,7 +93,7 @@ export default function SignIn() {
         <div className="bg-card dark:bg-black/40 -m-px rounded-[calc(var(--radius)+.125rem)] border p-6 sm:p-8 pb-5 sm:pb-6">
           <div className="text-left">
             <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-left">
-              Sign in to oreilla
+              Sign in to featul
             </h1>
             <p className="text-xs sm:text-sm text-accent mb-2 text-left">
               Welcome back! Sign in to continue

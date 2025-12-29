@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react"
-import { Button } from "@oreilla/ui/components/button"
-import { LoaderIcon } from "@oreilla/ui/icons/loader"
+import { Button } from "@featul/ui/components/button"
+import { LoaderIcon } from "@featul/ui/icons/loader"
 import { ImageIcon } from "lucide-react"
 import { UploadedImage } from "./PostContent"
 

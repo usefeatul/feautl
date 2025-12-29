@@ -1,13 +1,13 @@
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
 
-export const DEFAULT_TITLE = "oreilla"
-export const TITLE_TEMPLATE = "%s - oreilla"
+export const DEFAULT_TITLE = "featul"
+export const TITLE_TEMPLATE = "%s - featul"
 
 export const DEFAULT_DESCRIPTION =
-  "Plan, track, and ship projects with oreilla."
+  "Plan, track, and ship projects with featul."
 
 export const DEFAULT_KEYWORDS = [
-  "oreilla",
+  "featul",
   "project management",
   "roadmap",
   "changelog",
@@ -20,7 +20,7 @@ export function getOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "oreilla",
+    name: "featul",
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     sameAs: [],

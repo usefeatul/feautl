@@ -1,12 +1,12 @@
-import { Button } from "@oreilla/ui/components/button";
-import { Input } from "@oreilla/ui/components/input";
-import { Label } from "@oreilla/ui/components/label";
+import { Button } from "@featul/ui/components/button";
+import { Input } from "@featul/ui/components/input";
+import { Label } from "@featul/ui/components/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@oreilla/ui/components/popover";
-import { cn } from "@oreilla/ui/lib/utils";
+} from "@featul/ui/components/popover";
+import { cn } from "@featul/ui/lib/utils";
 import type { NodeViewProps } from "@tiptap/core";
 import { NodeViewWrapper } from "@tiptap/react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";

@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <> */
-import { Separator } from "@oreilla/ui/components/separator";
-import { cn } from "@oreilla/ui/lib/utils";
+import { Separator } from "@featul/ui/components/separator";
+import { cn } from "@featul/ui/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import {
   BubbleMenu as TiptapBubbleMenu,

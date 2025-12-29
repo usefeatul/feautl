@@ -1,5 +1,5 @@
 {
-  "name": "@oreilla/auth",
+  "name": "@featul/auth",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -22,13 +22,13 @@
   },
   "dependencies": {
     "better-auth": "^1.3.9",
-    "@oreilla/db": "workspace:*",
+    "@featul/db": "workspace:*",
     "@react-email/components": "^1.0.1",
     "@react-email/render": "^2.0.0"
 
   },
   "devDependencies": {
-    "@oreilla/tsconfig": "workspace:*",
+    "@featul/tsconfig": "workspace:*",
     "typescript": "^5.7.3"
   }
 }

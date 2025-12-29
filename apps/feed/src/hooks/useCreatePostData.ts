@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { client } from "@oreilla/api/client"
-import { authClient } from "@oreilla/auth/client"
+import { client } from "@featul/api/client"
+import { authClient } from "@featul/auth/client"
 
 interface UseCreatePostDataProps {
   open: boolean

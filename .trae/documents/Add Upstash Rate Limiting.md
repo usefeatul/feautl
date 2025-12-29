@@ -2,7 +2,7 @@
 - Add rate limiting using Upstash Redis for both public and private API procedures and the Elysia health endpoint.
 - Create `packages/api/src/services/ratemiliter.ts` to encapsulate Upstash client and limiter.
 - Wire a JStack middleware into `publicProcedure` and `privateProcedure` so all routers inherit limits.
-- Add env keys to `apps/feed/.env.example` and dependencies to `@oreilla/api`.
+- Add env keys to `apps/feed/.env.example` and dependencies to `@featul/api`.
 
 ## Files and Changes
 - Create: `packages/api/src/services/ratemiliter.ts`

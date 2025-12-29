@@ -1,7 +1,7 @@
-import { Button } from '@oreilla/ui/components/button'
+import { Button } from '@featul/ui/components/button'
 import { Check } from 'lucide-react'
 import Link from 'next/link'
-import { Card, CardHeader, CardTitle, CardDescription } from '@oreilla/ui/components/card'
+import { Card, CardHeader, CardTitle, CardDescription } from '@featul/ui/components/card'
 import { Container } from '../global/container'
 import { topPlans, selfHostedPlan } from '../../types/plan'
 

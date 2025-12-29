@@ -2,19 +2,19 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import { cn } from "@oreilla/ui/lib/utils";
+import { cn } from "@featul/ui/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@oreilla/ui/components/dropdown-menu";
+} from "@featul/ui/components/dropdown-menu";
 import { useWorkspaceSwitcher } from "./useWorkspaceSwitcher";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image"
 import { getSlugFromPath } from "../../config/nav";
-import { ChevronIcon } from "@oreilla/ui/icons/chevron";
-import { PlusIcon } from "@oreilla/ui/icons/plus";
+import { ChevronIcon } from "@featul/ui/icons/chevron";
+import { PlusIcon } from "@featul/ui/icons/plus";
 import type { Ws } from "./useWorkspaceSwitcher";
 
 export default function WorkspaceSwitcher({

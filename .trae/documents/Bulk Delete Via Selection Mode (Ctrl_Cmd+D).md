@@ -70,7 +70,7 @@
 
   * Columns: Member, Role (badge from `components/settings/team/role-badge.tsx`), Joined (format `joinedAt`).
 
-  * Avatar from `@oreilla/ui/components/avatar`; initials via `utils/user-utils.ts:getInitials`.
+  * Avatar from `@featul/ui/components/avatar`; initials via `utils/user-utils.ts:getInitials`.
 
   * Search input filtering by name/email.
 

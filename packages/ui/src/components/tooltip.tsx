@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip"
 
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 type TooltipProviderProps = React.PropsWithChildren<
   {

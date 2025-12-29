@@ -1,10 +1,10 @@
-# oreilla API Documentation
+# featul API Documentation
 
 ## Overview
 
-The oreilla API is a RESTful API that allows you to integrate feedback management into your applications. It provides endpoints for managing feedback, users, organizations, and more.
+The featul API is a RESTful API that allows you to integrate feedback management into your applications. It provides endpoints for managing feedback, users, organizations, and more.
 
-**Base URL**: `https://api.oreilla.com/v1`
+**Base URL**: `https://api.featul.com/v1`
 
 **API Version**: v1
 
@@ -20,7 +20,7 @@ Authorization: Bearer YOUR_API_KEY
 
 ### Getting an API Key
 
-1. Log in to your oreilla dashboard
+1. Log in to your featul dashboard
 2. Navigate to Settings → API Keys
 3. Click "Generate New API Key"
 4. Copy and securely store your API key
@@ -271,7 +271,7 @@ Retrieve a specific feedback item.
         "id": "att_123",
         "filename": "mockup.png",
         "file_size": 1024000,
-        "file_url": "https://cdn.oreilla.com/files/mockup.png"
+        "file_url": "https://cdn.featul.com/files/mockup.png"
       }
     ],
     "created_at": "2024-01-01T00:00:00Z",
@@ -655,19 +655,19 @@ POST /webhooks/{webhook_id}/test
 ### JavaScript/Node.js
 
 ```bash
-npm install @oreilla/js-sdk
+npm install @featul/js-sdk
 ```
 
 ```javascript
-import { oreilla } from '@oreilla/js-sdk';
+import { featul } from '@featul/js-sdk';
 
-const oreilla = new oreilla({
+const featul = new featul({
   apiKey: 'your_api_key',
-  baseUrl: 'https://api.oreilla.com/v1'
+  baseUrl: 'https://api.featul.com/v1'
 });
 
 // Create feedback
-const feedback = await oreilla.feedback.create({
+const feedback = await featul.feedback.create({
   title: 'New feature request',
   description: 'Description here',
   author: {
@@ -677,7 +677,7 @@ const feedback = await oreilla.feedback.create({
 });
 
 // List feedback
-const feedbackList = await oreilla.feedback.list({
+const feedbackList = await featul.feedback.list({
   status: 'open',
   limit: 10
 });
@@ -686,13 +686,13 @@ const feedbackList = await oreilla.feedback.list({
 ### Python
 
 ```bash
-pip install oreilla-python
+pip install featul-python
 ```
 
 ```python
-from oreilla import oreilla
+from featul import featul
 
-client = oreilla(api_key='your_api_key')
+client = featul(api_key='your_api_key')
 
 # Create feedback
 feedback = client.feedback.create(
@@ -714,11 +714,11 @@ feedback_list = client.feedback.list(
 ### PHP
 
 ```bash
-composer require oreilla/php-sdk
+composer require featul/php-sdk
 ```
 
 ```php
-use oreilla\Client;
+use featul\Client;
 
 $client = new Client('your_api_key');
 
@@ -739,11 +739,11 @@ $feedback = $client->feedback()->create([
 
 ```html
 <!-- Add to your HTML head -->
-<script src="https://widget.oreilla.com/widget.js"></script>
+<script src="https://widget.featul.com/widget.js"></script>
 
 <!-- Initialize the widget -->
 <script>
-  oreilla.init({
+  featul.init({
     organizationId: 'your_org_id',
     apiKey: 'your_public_api_key',
     position: 'bottom-right', // 'bottom-left', 'bottom-right', 'top-left', 'top-right'
@@ -756,7 +756,7 @@ $feedback = $client->feedback()->create([
 ### Advanced Configuration
 
 ```javascript
-oreilla.init({
+featul.init({
   organizationId: 'your_org_id',
   apiKey: 'your_public_api_key',
   
@@ -844,4 +844,4 @@ oreilla.init({
 4. **Batch operations** when possible
 5. **Monitor API usage** to optimize performance
 
-This API documentation provides comprehensive coverage of all oreilla API endpoints and features, enabling developers to integrate feedback management seamlessly into their applications.
+This API documentation provides comprehensive coverage of all featul API endpoints and features, enabling developers to integrate feedback management seamlessly into their applications.

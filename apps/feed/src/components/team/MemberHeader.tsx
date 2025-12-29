@@ -2,11 +2,11 @@
 
 import React from "react"
 import type { Member } from "@/types/team"
-import { Avatar, AvatarFallback, AvatarImage } from "@oreilla/ui/components/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@featul/ui/components/avatar"
 import { getInitials } from "@/utils/user-utils"
 import { format } from "date-fns"
 import { roleBadgeClass } from "@/components/settings/team/role-badge"
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 import RoleBadge from "@/components/global/RoleBadge"
 
 interface MemberHeaderProps {

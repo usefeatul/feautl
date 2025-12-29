@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 import DomainPageLayout from "@/components/subdomain/DomainPageLayout"
 import { createWorkspaceSectionMetadata } from "@/lib/seo"
 import { getSidebarPositionBySlug } from "@/lib/workspace"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 
 export async function generateMetadata({ params }: { params: Promise<{ subdomain: string }> }): Promise<Metadata> {
   const { subdomain } = await params

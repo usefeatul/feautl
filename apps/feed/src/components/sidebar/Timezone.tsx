@@ -2,11 +2,11 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import { cn } from "@oreilla/ui/lib/utils";
-import { client } from "@oreilla/api/client";
+import { cn } from "@featul/ui/lib/utils";
+import { client } from "@featul/api/client";
 import { getSlugFromPath } from "../../config/nav";
 import { formatTime12h } from "@/lib/time";
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@oreilla/ui/components/tooltip";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@featul/ui/components/tooltip";
 
 export default function Timezone({ className = "", initialTimezone, initialServerNow }: { className?: string; initialTimezone?: string | null; initialServerNow?: number }) {
   const pathname = usePathname();

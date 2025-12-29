@@ -1,13 +1,13 @@
 "use client";
 
 import type { Role } from "@/types/team";
-import { cn } from "@oreilla/ui/lib/utils";
+import { cn } from "@featul/ui/lib/utils";
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from "@oreilla/ui/components/tooltip";
-import { StarIcon } from "@oreilla/ui/icons/star";
+} from "@featul/ui/components/tooltip";
+import { StarIcon } from "@featul/ui/icons/star";
 
 interface RoleBadgeProps {
   role?: Role | null;

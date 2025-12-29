@@ -1,11 +1,11 @@
-import { Button } from "@oreilla/ui/components/button"
-import { Input } from "@oreilla/ui/components/input"
-import { Label } from "@oreilla/ui/components/label"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@oreilla/ui/components/card"
+import { Button } from "@featul/ui/components/button"
+import { Input } from "@featul/ui/components/input"
+import { Label } from "@featul/ui/components/label"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@featul/ui/components/card"
 import TimezonePicker from "./TimezonePicker"
 import { ArrowRight, Loader2, AlertCircle, Link2 } from "lucide-react"
-import CompletedIcon from "@oreilla/ui/icons/completed"
-import ClosedIcon from "@oreilla/ui/icons/closed"
+import CompletedIcon from "@featul/ui/icons/completed"
+import ClosedIcon from "@featul/ui/icons/closed"
 import {
   isNameValid,
   isDomainValid,
@@ -140,7 +140,7 @@ export default function WizardForm({
             />
             <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground pointer-events-none">
-              .oreilla.com
+              .featul.com
             </span>
 
             <div className="absolute right-[6.5rem] top-1/2 -translate-y-1/2">

@@ -24,7 +24,7 @@ import {
   EditorNodeText,
   EditorSelector,
   EditorTableMenus,
-} from "@oreilla/editor";
+} from "@featul/editor";
 
 /**
  * ChangelogEditorMenus

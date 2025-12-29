@@ -1,7 +1,7 @@
 import { useState, useRef, useTransition, useEffect } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 
 interface UseCommentEditProps {
   commentId: string

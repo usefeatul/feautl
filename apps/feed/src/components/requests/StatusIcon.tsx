@@ -1,11 +1,11 @@
 "use client"
 
-import PlannedIcon from "@oreilla/ui/icons/planned"
-import ProgressIcon from "@oreilla/ui/icons/progress"
-import ReviewingIcon from "@oreilla/ui/icons/review"
-import CompletedIcon from "@oreilla/ui/icons/completed"
-import PendingIcon from "@oreilla/ui/icons/pending"
-import ClosedIcon from "@oreilla/ui/icons/closed"
+import PlannedIcon from "@featul/ui/icons/planned"
+import ProgressIcon from "@featul/ui/icons/progress"
+import ReviewingIcon from "@featul/ui/icons/review"
+import CompletedIcon from "@featul/ui/icons/completed"
+import PendingIcon from "@featul/ui/icons/pending"
+import ClosedIcon from "@featul/ui/icons/closed"
 
 export default function StatusIcon({ status, className = "" }: { status?: string; className?: string }) {
   const s = (status || "").toLowerCase()

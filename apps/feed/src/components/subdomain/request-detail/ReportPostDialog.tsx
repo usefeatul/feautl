@@ -8,18 +8,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@oreilla/ui/components/dialog"
-import { Button } from "@oreilla/ui/components/button"
-import { Label } from "@oreilla/ui/components/label"
+} from "@featul/ui/components/dialog"
+import { Button } from "@featul/ui/components/button"
+import { Label } from "@featul/ui/components/label"
 import {
   Popover,
   PopoverContent,
   PopoverList,
   PopoverListItem,
   PopoverTrigger,
-} from "@oreilla/ui/components/popover"
-import { Textarea } from "@oreilla/ui/components/textarea"
-import { client } from "@oreilla/api/client"
+} from "@featul/ui/components/popover"
+import { Textarea } from "@featul/ui/components/textarea"
+import { client } from "@featul/api/client"
 import { toast } from "sonner"
 import { Check, ChevronsUpDown } from "lucide-react"
 

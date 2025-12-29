@@ -1,14 +1,14 @@
 "use client"
 
 import React from "react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@oreilla/ui/components/table"
-import { Button } from "@oreilla/ui/components/button"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@featul/ui/components/table"
+import { Button } from "@featul/ui/components/button"
 import { useQuery } from "@tanstack/react-query"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 import { toast } from "sonner"
 import PlanNotice from "../global/PlanNotice"
 import ModalCreateTag from "./ModalCreateTag"
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@featul/ui/components/popover"
 import { MoreVertical } from "lucide-react"
 
 export default function ManageTags({

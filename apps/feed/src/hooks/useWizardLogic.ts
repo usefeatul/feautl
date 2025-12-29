@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { client } from "@oreilla/api/client";
+import { client } from "@featul/api/client";
 import {
   workspaceSchema,
   isDomainValid,

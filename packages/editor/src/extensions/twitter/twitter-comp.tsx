@@ -1,13 +1,13 @@
-import { Button } from "@oreilla/ui/components/button";
+import { Button } from "@featul/ui/components/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@oreilla/ui/components/card";
-import { Textarea } from "@oreilla/ui/components/textarea";
-import { cn } from "@oreilla/ui/lib/utils";
+} from "@featul/ui/components/card";
+import { Textarea } from "@featul/ui/components/textarea";
+import { cn } from "@featul/ui/lib/utils";
 import type { ChangeEvent, KeyboardEvent } from "react";
 import { useCallback, useState } from "react";
 import { Twitter } from "../../components/icons/twitter";

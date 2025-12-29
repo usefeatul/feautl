@@ -2,7 +2,7 @@
 
 import React from "react"
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 import type { Member } from "@/types/team"
 import { MemberHeader } from "@/components/team/MemberHeader"
 import { MemberActivity } from "@/components/team/MemberActivity"

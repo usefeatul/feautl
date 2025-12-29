@@ -10,7 +10,7 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from "@oreilla/ui/components/avatar";
+} from "@featul/ui/components/avatar";
 import { getInitials, getDisplayUser } from "@/utils/user-utils";
 import { randomAvatarUrl } from "@/utils/avatar";
 import { SubdomainRequestDetailData } from "../../../types/subdomain";

@@ -3,10 +3,10 @@
 import { useState, useCallback, useRef } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
-import { client } from "@oreilla/api/client"
-import { Button } from "@oreilla/ui/components/button"
+import { client } from "@featul/api/client"
+import { Button } from "@featul/ui/components/button"
 import { toast } from "sonner"
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 import { ChangelogEditor, type ChangelogEditorRef } from "@/components/changelog/changelog-editor"
 import { TextareaAutosize } from "@/components/editor/TextareaAutosize"
 

@@ -6,8 +6,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@oreilla/ui/components/card";
-import { Input } from "@oreilla/ui/components/input";
+} from "@featul/ui/components/card";
+import { Input } from "@featul/ui/components/input";
 import BackLink from "../global/backlink";
 
 function parseNumber(value: string): number {

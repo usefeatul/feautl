@@ -1,4 +1,4 @@
-import { getServerSession } from "@oreilla/auth/session"
+import { getServerSession } from "@featul/auth/session"
 import { findFirstAccessibleWorkspaceSlug } from "@/lib/workspace"
 import NotFoundWorkspaceLink from "@/components/global/NotFoundWorkspaceLink"
 

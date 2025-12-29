@@ -3,9 +3,9 @@
 import * as React from "react"
 import { AlertDialog as BaseAlertDialog } from "@base-ui/react/alert-dialog"
 
-import { cn } from "@oreilla/ui/lib/utils"
-import { buttonVariants } from "@oreilla/ui/components/button"
-import { XMarkIcon } from "@oreilla/ui/icons/xmark"
+import { cn } from "@featul/ui/lib/utils"
+import { buttonVariants } from "@featul/ui/components/button"
+import { XMarkIcon } from "@featul/ui/icons/xmark"
 
 function AlertDialog({
   ...props

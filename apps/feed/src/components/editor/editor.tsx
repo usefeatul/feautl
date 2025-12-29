@@ -26,9 +26,9 @@ import {
   EditorSelector,
   EditorTableMenus,
   useCurrentEditor,
-  useMarbleEditor as useOreillaEditor,
+  useMarbleEditor as usefeatulEditor,
   type JSONContent,
-} from "@oreilla/editor";
+} from "@featul/editor";
 import { EditorContent as TiptapEditorContent } from "@tiptap/react";
 import {
   forwardRef,
@@ -121,7 +121,7 @@ export const FeedEditor = forwardRef(
     }: FeedEditorProps,
     ref: ForwardedRef<FeedEditorRef>
   ) => {
-    const editor = useOreillaEditor({
+    const editor = usefeatulEditor({
       content: initialContent,
       placeholder,
       editable,

@@ -2,7 +2,7 @@
 
 import React from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 export default function AnimatedReplies({
   isOpen,

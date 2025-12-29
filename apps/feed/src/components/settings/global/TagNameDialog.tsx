@@ -1,11 +1,11 @@
 "use client"
 
 import React from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@oreilla/ui/components/dialog"
-import { Input } from "@oreilla/ui/components/input"
-import { Button } from "@oreilla/ui/components/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@featul/ui/components/dialog"
+import { Input } from "@featul/ui/components/input"
+import { Button } from "@featul/ui/components/button"
 import { Tag } from "lucide-react"
-import TagIcon from "@oreilla/ui/icons/tag"
+import TagIcon from "@featul/ui/icons/tag"
 
 type TagNameDialogProps = {
   open: boolean

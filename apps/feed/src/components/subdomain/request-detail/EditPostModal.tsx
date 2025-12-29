@@ -9,7 +9,7 @@ import { PostFooter } from "../../post/PostFooter";
 import { useCreatePostData } from "@/hooks/useCreatePostData";
 import { usePostUpdate } from "@/hooks/usePostUpdate";
 import { usePostImageUpload } from "@/hooks/usePostImageUpload";
-import DocumentTextIcon from "@oreilla/ui/icons/document-text";
+import DocumentTextIcon from "@featul/ui/icons/document-text";
 
 interface EditablePost {
   id: string;

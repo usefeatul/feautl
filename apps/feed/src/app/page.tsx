@@ -5,8 +5,8 @@ import { createPageMetadata } from "@/lib/seo"
 export const revalidate = 30
 
 export const metadata: Metadata = createPageMetadata({
-  title: "oreilla",
-  description: "Welcome to oreilla.",
+  title: "featul",
+  description: "Welcome to featul.",
   path: "/",
   indexable: false,
 })

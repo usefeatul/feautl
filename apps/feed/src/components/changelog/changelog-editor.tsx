@@ -3,8 +3,8 @@
 import {
   EditorContext,
   type JSONContent,
-  useMarbleEditor as useOreillaEditor,
-} from "@oreilla/editor";
+  useMarbleEditor as usefeatulEditor,
+} from "@featul/editor";
 import { EditorContent as TiptapEditorContent } from "@tiptap/react";
 import {
   forwardRef,
@@ -34,7 +34,7 @@ export interface ChangelogEditorProps {
  * ChangelogEditor
  *
  * Editor component for changelog entries.
- * Uses the Oreilla editor with custom menus and configuration.
+ * Uses the featul editor with custom menus and configuration.
  */
 export const ChangelogEditor = forwardRef<
   ChangelogEditorRef,
@@ -58,7 +58,7 @@ export const ChangelogEditor = forwardRef<
       [onUpdate]
     );
 
-    const editor = useOreillaEditor({
+    const editor = usefeatulEditor({
       content: initialContent || undefined,
       placeholder,
       editable,

@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react"
-import { Input } from "@oreilla/ui/components/input"
-import { XMarkIcon } from "@oreilla/ui/icons/xmark"
+import { Input } from "@featul/ui/components/input"
+import { XMarkIcon } from "@featul/ui/icons/xmark"
 import ContentImage from "@/components/global/ContentImage"
 import { TextareaAutosize } from "@/components/editor/TextareaAutosize"
 

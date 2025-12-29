@@ -1,12 +1,12 @@
 import { Container } from "@/components/global/container";
 import type { Alternative } from "@/config/alternatives";
-import { AccentBar } from "@oreilla/ui/components/cardElements";
-import { ShieldIcon } from "@oreilla/ui/icons/shield";
-import { SetupIcon } from "@oreilla/ui/icons/setup";
-import { FeatherIcon } from "@oreilla/ui/icons/feather";
-import { ChartIcon } from "@oreilla/ui/icons/chart";
-import { UsersIcon } from "@oreilla/ui/icons/users";
-import { BookmarkIcon } from "@oreilla/ui/icons/bookmark";
+import { AccentBar } from "@featul/ui/components/cardElements";
+import { ShieldIcon } from "@featul/ui/icons/shield";
+import { SetupIcon } from "@featul/ui/icons/setup";
+import { FeatherIcon } from "@featul/ui/icons/feather";
+import { ChartIcon } from "@featul/ui/icons/chart";
+import { UsersIcon } from "@featul/ui/icons/users";
+import { BookmarkIcon } from "@featul/ui/icons/bookmark";
 
 export default function WhyBetter({ alt }: { alt: Alternative }) {
   return (
@@ -14,13 +14,13 @@ export default function WhyBetter({ alt }: { alt: Alternative }) {
       <section className="py-16" data-component="WhyBetter">
         <div className="mx-auto w-full max-w-5xl px-0 sm:px-6">
           <h2 className="text-foreground text-balance text-2xl sm:text-3xl lg:text-3xl font-semibold">
-            Why organizations choose oreilla over {alt.name}
+            Why organizations choose featul over {alt.name}
           </h2>
 
           <div className="mt-10 flex items-start gap-2">
             <AccentBar width={8} />
             <p className="text-accent text-sm sm:text-base">
-              While {alt.name} provides feedback collection, oreilla offers a fundamentally different approach prioritizing data sovereignty, rapid implementation, and workflows that adapt to your processes rather than forcing you to adapt to rigid systems.
+              While {alt.name} provides feedback collection, featul offers a fundamentally different approach prioritizing data sovereignty, rapid implementation, and workflows that adapt to your processes rather than forcing you to adapt to rigid systems.
             </p>
           </div>
 
@@ -34,7 +34,7 @@ export default function WhyBetter({ alt }: { alt: Alternative }) {
               </div>
               <div className="text-accent mt-2 text-sm sm:text-base leading-7 space-y-4">
                 <p>
-                  Maintain complete control over your feedback data with EU hosting and built-in GDPR compliance. oreilla ensures your data remains portable migrate, self-host, or integrate without losing valuable insights.
+                  Maintain complete control over your feedback data with EU hosting and built-in GDPR compliance. featul ensures your data remains portable migrate, self-host, or integrate without losing valuable insights.
                 </p>
                 <p>
                   Unlike platforms that lock you into proprietary formats, our open export standards protect your investment and give you the freedom to evolve your tech stack without starting from zero.
@@ -54,7 +54,7 @@ export default function WhyBetter({ alt }: { alt: Alternative }) {
                   Deploy a branded feedback portal with a single line of code. Pre-configured workflows and tagging eliminate setup complexity start collecting feedback immediately without infrastructure changes.
                 </p>
                 <p>
-                  Traditional enterprise systems require weeks of implementation. oreilla reverses this paradigm, letting you share hosted spaces instantly while maintaining your existing user experience flow.
+                  Traditional enterprise systems require weeks of implementation. featul reverses this paradigm, letting you share hosted spaces instantly while maintaining your existing user experience flow.
                 </p>
               </div>
             </div>

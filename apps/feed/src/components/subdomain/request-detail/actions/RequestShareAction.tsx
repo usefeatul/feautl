@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { ShareIcon } from "@oreilla/ui/icons/share";
-import { PopoverListItem } from "@oreilla/ui/components/popover";
+import { ShareIcon } from "@featul/ui/icons/share";
+import { PopoverListItem } from "@featul/ui/components/popover";
 import { toast } from "sonner";
 
 interface RequestShareActionProps {

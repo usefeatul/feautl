@@ -1,10 +1,10 @@
 "use client"
 
 import React from "react"
-import { Input } from "@oreilla/ui/components/input"
-import { Button } from "@oreilla/ui/components/button"
+import { Input } from "@featul/ui/components/input"
+import { Button } from "@featul/ui/components/button"
 import { SettingsDialogShell } from "@/components/settings/global/SettingsDialogShell"
-import DomainIcon from "@oreilla/ui/icons/domain"
+import DomainIcon from "@featul/ui/icons/domain"
 
 export default function AddDomainDialog({
   open,

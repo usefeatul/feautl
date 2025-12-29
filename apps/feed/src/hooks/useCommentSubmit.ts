@@ -1,7 +1,7 @@
 import { useTransition } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 import { UploadedImage } from "./useImageUpload"
 import { getBrowserFingerprint } from "@/utils/fingerprint"
 import type { CommentData } from "../types/comment"

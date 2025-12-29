@@ -11,8 +11,8 @@ import {
   workspace,
   workspaceMember,
   activityLog,
-} from "@oreilla/db";
-import { auth } from "@oreilla/auth";
+} from "@featul/db";
+import { auth } from "@featul/auth";
 import { headers } from "next/headers";
 import {
   createCommentInputSchema,

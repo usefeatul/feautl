@@ -1,4 +1,4 @@
-# @oreilla/auth
+# @featul/auth
 
 - Server setup: `packages/auth/src/auth.ts`.
 - React client: `packages/auth/src/client.ts`.

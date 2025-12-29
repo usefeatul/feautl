@@ -1,6 +1,6 @@
 import React from "react";
-import { TableRow, TableCell } from "@oreilla/ui/components/table";
-import { Avatar, AvatarImage, AvatarFallback } from "@oreilla/ui/components/avatar";
+import { TableRow, TableCell } from "@featul/ui/components/table";
+import { Avatar, AvatarImage, AvatarFallback } from "@featul/ui/components/avatar";
 import RoleCell from "./RoleCell";
 import type { Member } from "../../../types/team";
 import { getInitials } from "@/utils/user-utils";

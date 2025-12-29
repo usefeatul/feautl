@@ -1,11 +1,11 @@
 "use client"
 
 import React from "react"
-import { Button } from "@oreilla/ui/components/button"
-import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@oreilla/ui/components/popover"
-import { DropdownIcon } from "@oreilla/ui/icons/dropdown"
-import { client } from "@oreilla/api/client"
-import { cn } from "@oreilla/ui/lib/utils"
+import { Button } from "@featul/ui/components/button"
+import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem } from "@featul/ui/components/popover"
+import { DropdownIcon } from "@featul/ui/icons/dropdown"
+import { client } from "@featul/api/client"
+import { cn } from "@featul/ui/lib/utils"
 
 type Board = { id: string; name: string; slug: string }
 

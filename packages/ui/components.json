@@ -11,11 +11,11 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@oreilla/ui/components",
-    "utils": "@oreilla/ui/lib/utils",
-    "ui": "@oreilla/ui/components",
-    "lib": "@oreilla/ui/lib",
-    "hooks": "@oreilla/ui/hooks"
+    "components": "@featul/ui/components",
+    "utils": "@featul/ui/lib/utils",
+    "ui": "@featul/ui/components",
+    "lib": "@featul/ui/lib",
+    "hooks": "@featul/ui/hooks"
   },
   "registries": {
     "@tailark": "https://tailark.com/r/{name}.json"

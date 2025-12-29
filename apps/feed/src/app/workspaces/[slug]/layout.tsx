@@ -5,7 +5,7 @@ import MobileSidebar from "@/components/sidebar/MobileSidebar"
 import { getBrandingColorsBySlug, getWorkspaceStatusCounts, getWorkspaceTimezoneBySlug, getWorkspaceBySlug, listUserWorkspaces, getWorkspaceDomainInfoBySlug } from "@/lib/workspace"
 import WorkspaceHeader from "@/components/global/WorkspaceHeader"
 import FilterSummary from "@/components/requests/FilterSummary"
-import { getServerSession } from "@oreilla/auth/session"
+import { getServerSession } from "@featul/auth/session"
 import { redirect } from "next/navigation"
 import UnauthorizedWorkspace from "@/components/global/Unauthorized"
 

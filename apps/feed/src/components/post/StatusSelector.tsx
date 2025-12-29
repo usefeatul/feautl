@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@oreilla/ui/components/button";
+import { Button } from "@featul/ui/components/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
   PopoverList,
   PopoverListItem,
-} from "@oreilla/ui/components/popover";
+} from "@featul/ui/components/popover";
 
 const STATUSES = ["pending", "review", "planned", "progress", "completed", "closed"] as const;
 

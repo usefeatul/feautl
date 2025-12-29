@@ -38,7 +38,7 @@
 - Server component loads initial members via `client.team.membersByWorkspaceSlug.get`.
 - Client component `MemberList` (new) renders:
   - Columns: Member, Role (badge from `components/settings/team/role-badge.tsx`), Joined (format `joinedAt`).
-  - Avatar from `@oreilla/ui/components/avatar`; initials via `utils/user-utils.ts:getInitials`.
+  - Avatar from `@featul/ui/components/avatar`; initials via `utils/user-utils.ts:getInitials`.
   - Search input filtering by name/email.
   - Clicking a row navigates to `/workspaces/[slug]/members/[userId]`.
 

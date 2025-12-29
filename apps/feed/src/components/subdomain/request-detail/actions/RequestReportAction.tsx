@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { FlagIcon } from "@oreilla/ui/icons/flag";
-import { PopoverListItem } from "@oreilla/ui/components/popover";
+import { FlagIcon } from "@featul/ui/icons/flag";
+import { PopoverListItem } from "@featul/ui/components/popover";
 
 interface RequestReportActionProps {
   onClick: () => void;

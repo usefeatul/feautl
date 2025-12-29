@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { token } = await params
   return createPageMetadata({
     title: "Confirm reservation",
-    description: "Confirm your oreilla subdomain reservation.",
+    description: "Confirm your featul subdomain reservation.",
     path: `/reserve/${token}`,
     indexable: false,
   })

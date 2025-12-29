@@ -2,11 +2,11 @@
 
 import React from "react"
 import { motion } from "framer-motion"
-import { Button } from "@oreilla/ui/components/button"
-import { BoxIcon } from "@oreilla/ui/icons/box"
+import { Button } from "@featul/ui/components/button"
+import { BoxIcon } from "@featul/ui/icons/box"
 
 export default function EmptyRequests({ workspaceSlug, className = "" }: { workspaceSlug: string; className?: string }) {
-  const href = `https://${workspaceSlug}.oreilla.com`
+  const href = `https://${workspaceSlug}.featul.com`
 
   return (
     <div className={`flex items-center justify-center min-h-[60vh] md:min-h-[70vh] py-10 px-4 ${className}`}>

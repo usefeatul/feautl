@@ -5,8 +5,8 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from "@oreilla/ui/components/avatar"
-import { cn } from "@oreilla/ui/lib/utils"
+} from "@featul/ui/components/avatar"
+import { cn } from "@featul/ui/lib/utils"
 import CommentForm from "./CommentForm"
 import RoleBadge from "../global/RoleBadge"
 import { useWorkspaceRole } from "@/hooks/useWorkspaceAccess"

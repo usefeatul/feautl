@@ -1,21 +1,21 @@
-import { Button } from "@oreilla/ui/components/button";
+import { Button } from "@featul/ui/components/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@oreilla/ui/components/card";
+} from "@featul/ui/components/card";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@oreilla/ui/components/dialog";
-import { Input } from "@oreilla/ui/components/input";
-import { ScrollArea } from "@oreilla/ui/components/scroll-area";
-import { cn } from "@oreilla/ui/lib/utils";
+} from "@featul/ui/components/dialog";
+import { Input } from "@featul/ui/components/input";
+import { ScrollArea } from "@featul/ui/components/scroll-area";
+import { cn } from "@featul/ui/lib/utils";
 import {
   CheckIcon,
   ImageIcon,

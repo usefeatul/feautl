@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, Fragment } from "react";
-import { Button } from "@oreilla/ui/components/button";
+import { Button } from "@featul/ui/components/button";
 
 type Severity = "info" | "warn" | "error";
 type Diagnostic = {

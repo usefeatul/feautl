@@ -4,7 +4,7 @@ import * as React from "react"
 import { Switch as BaseSwitch } from "@base-ui/react/switch"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { cn } from "@oreilla/ui/lib/utils"
+import { cn } from "@featul/ui/lib/utils"
 
 const trackVariants = cva(
   "peer inline-flex items-center rounded-md  border shadow-xs transition-all outline-none disabled:cursor-not-allowed disabled:opacity-50 bg-input/30 dark:bg-input/40 border-input ring-1 ring-border/50 dark:ring-border/40 data-[checked]:bg-[#22c55e] dark:data-[checked]:bg-[#22c55e] data-[checked]:border-[#16a34a] dark:data-[checked]:border-[#16a34a] data-[checked]:ring-2 data-[checked]:ring-[#16a34a]/35 focus-visible:ring-[#22c55e]/40 focus-visible:ring-[3px]",

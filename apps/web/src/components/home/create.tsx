@@ -1,6 +1,6 @@
 import { Container } from "../global/container";
-import { Card } from "@oreilla/ui/components/card";
-import { Button } from "@oreilla/ui/components/button";
+import { Card } from "@featul/ui/components/card";
+import { Button } from "@featul/ui/components/button";
 import {
   Bold,
   Calendar1,
@@ -9,12 +9,12 @@ import {
   Strikethrough,
   Underline,
 } from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@oreilla/ui/components/toggle-group";
-import { cn } from "@oreilla/ui/lib/utils";
-import { CardAccent, CardTag, AccentBar } from "@oreilla/ui/components/cardElements";
-import { ChartIcon } from "@oreilla/ui/icons/chart";
-import { UsersIcon } from "@oreilla/ui/icons/users";
-import { SetupIcon } from "@oreilla/ui/icons/setup";
+import { ToggleGroup, ToggleGroupItem } from "@featul/ui/components/toggle-group";
+import { cn } from "@featul/ui/lib/utils";
+import { CardAccent, CardTag, AccentBar } from "@featul/ui/components/cardElements";
+import { ChartIcon } from "@featul/ui/icons/chart";
+import { UsersIcon } from "@featul/ui/icons/users";
+import { SetupIcon } from "@featul/ui/icons/setup";
 import FeatureCard from "./featureCard";
 
 

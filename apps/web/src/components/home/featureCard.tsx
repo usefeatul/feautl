@@ -1,8 +1,8 @@
-import { Card } from "@oreilla/ui/components/card";
+import { Card } from "@featul/ui/components/card";
 import { Container } from "../global/container";
-import { LoveIcon } from "@oreilla/ui/icons/love";
-import FaceIcon from "@oreilla/ui/icons/face";
-import FoundedIcon from "@oreilla/ui/icons/founded";
+import { LoveIcon } from "@featul/ui/icons/love";
+import FaceIcon from "@featul/ui/icons/face";
+import FoundedIcon from "@featul/ui/icons/founded";
 
 export default function FeatureCard({ withinContainer = true }: { withinContainer?: boolean }) {
   const content = (

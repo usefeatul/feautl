@@ -1,9 +1,9 @@
 "use client"
 
 import React from "react"
-import { Input } from "@oreilla/ui/components/input"
-import { Button } from "@oreilla/ui/components/button"
-import BoardDialogIcon from "@oreilla/ui/icons/board-dialog"
+import { Input } from "@featul/ui/components/input"
+import { Button } from "@featul/ui/components/button"
+import BoardDialogIcon from "@featul/ui/icons/board-dialog"
 import { SettingsDialogShell } from "@/components/settings/global/SettingsDialogShell"
 import { toSlug } from "@/lib/slug"
 

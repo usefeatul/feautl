@@ -1,4 +1,4 @@
-import { db, workspace, board } from "@oreilla/db";
+import { db, workspace, board } from "@featul/db";
 import { and, eq } from "drizzle-orm";
 import { getBrandingBySlug } from "@/lib/workspace";
 

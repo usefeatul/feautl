@@ -1,9 +1,9 @@
 "use client"
 
 import React from "react"
-import { SearchIcon } from "@oreilla/ui/icons/search"
+import { SearchIcon } from "@featul/ui/icons/search"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@oreilla/ui/components/button"
+import { Button } from "@featul/ui/components/button"
 import {
   CommandDialog,
   CommandInput,
@@ -11,9 +11,9 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandItem,
-} from "@oreilla/ui/components/command"
+} from "@featul/ui/components/command"
 import { useQuery } from "@tanstack/react-query"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 
 export interface SearchActionProps {
   slug: string

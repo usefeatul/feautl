@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@oreilla/ui/components/button";
-import { TagIcon } from "@oreilla/ui/icons/tag";
+import { Button } from "@featul/ui/components/button";
+import { TagIcon } from "@featul/ui/icons/tag";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
   PopoverList,
   PopoverListItem,
-} from "@oreilla/ui/components/popover";
+} from "@featul/ui/components/popover";
 
 interface TagSelectorProps {
   availableTags: any[];

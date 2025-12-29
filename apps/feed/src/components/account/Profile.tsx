@@ -1,14 +1,14 @@
 "use client"
 
 import React from "react"
-import { Avatar, AvatarImage, AvatarFallback } from "@oreilla/ui/components/avatar"
+import { Avatar, AvatarImage, AvatarFallback } from "@featul/ui/components/avatar"
 import { LoadingButton } from "@/components/global/loading-button"
 import SectionCard from "@/components/settings/global/SectionCard"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getInitials, getDisplayUser } from "@/utils/user-utils"
-import { Input } from "@oreilla/ui/components/input"
+import { Input } from "@featul/ui/components/input"
 import { toast } from "sonner"
-import { authClient } from "@oreilla/auth/client"
+import { authClient } from "@featul/auth/client"
 
 export default function Profile({ initialUser }: { initialUser?: { name?: string; email?: string; image?: string | null } | null }) {
   const queryClient = useQueryClient()

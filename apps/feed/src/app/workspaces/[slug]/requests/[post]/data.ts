@@ -1,6 +1,6 @@
-import { db, workspace, board, post, user, workspaceMember, postTag, tag, postMerge } from "@oreilla/db"
+import { db, workspace, board, post, user, workspaceMember, postTag, tag, postMerge } from "@featul/db"
 import { and, eq, sql } from "drizzle-orm"
-import { client } from "@oreilla/api/client"
+import { client } from "@featul/api/client"
 import { readHasVotedForPost } from "@/lib/vote.server"
 import { getPostNavigation, normalizeStatus } from "@/lib/workspace"
 import { readInitialCollapsedCommentIds } from "@/lib/comments.server"

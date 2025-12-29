@@ -3,10 +3,10 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { Container } from "../global/container";
 import { Logo } from "../global/logo";
-import { Button } from "@oreilla/ui/components/button";
-import { MenuIcon } from "@oreilla/ui/icons/menu";
+import { Button } from "@featul/ui/components/button";
+import { MenuIcon } from "@featul/ui/icons/menu";
 import { navigationConfig } from "@/config/homeNav";
-import { useIsMobile } from "@oreilla/ui/hooks/use-mobile";
+import { useIsMobile } from "@featul/ui/hooks/use-mobile";
 
 type MobileMenuProps = {
   open: boolean;
@@ -33,7 +33,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
       <div className="flex items-center justify-between h-14  px-4 sm:px-12 lg:px-16 xl:px-18">
         <span className="inline-flex items-center gap-2">
           <Logo />
-          <span className="text-md font-medium">oreilla</span>
+          <span className="text-md font-medium">featul</span>
         </span>
         <Button
           type="button"

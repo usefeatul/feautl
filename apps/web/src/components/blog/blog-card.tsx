@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { MarblePost } from "@/types/marble";
-import { Card, CardContent } from "@oreilla/ui/components/card";
+import { Card, CardContent } from "@featul/ui/components/card";
 import Image from "next/image";
 
 type BlogCardProps = {

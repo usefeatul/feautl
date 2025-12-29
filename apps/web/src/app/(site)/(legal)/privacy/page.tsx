@@ -6,7 +6,7 @@ import LegalMarkdown from "@/components/legal/legal-markdown"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Privacy Policy",
-  description: "How oreilla collects, uses, and protects personal data in line with GDPR.",
+  description: "How featul collects, uses, and protects personal data in line with GDPR.",
   path: "/privacy",
 })
 

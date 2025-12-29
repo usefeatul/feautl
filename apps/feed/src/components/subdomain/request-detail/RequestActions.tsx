@@ -8,8 +8,8 @@ import {
   PopoverContent,
   PopoverList,
   PopoverSeparator,
-} from "@oreilla/ui/components/popover";
-import { Button } from "@oreilla/ui/components/button";
+} from "@featul/ui/components/popover";
+import { Button } from "@featul/ui/components/button";
 import { RequestEditAction } from "./actions/RequestEditAction";
 import { RequestShareAction } from "./actions/RequestShareAction";
 import { RequestReportAction } from "./actions/RequestReportAction";

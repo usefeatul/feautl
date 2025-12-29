@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Verify Email",
-  description: "Verify your oreilla email.",
+  description: "Verify your featul email.",
   path: "/auth/verify",
   indexable: false,
 })

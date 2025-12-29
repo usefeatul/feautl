@@ -2,9 +2,9 @@
 
 import React from "react"
 import { useQuery } from "@tanstack/react-query"
-import { client } from "@oreilla/api/client"
-import { CommentsIcon } from "@oreilla/ui/icons/comments"
-import { cn } from "@oreilla/ui/lib/utils"
+import { client } from "@featul/api/client"
+import { CommentsIcon } from "@featul/ui/icons/comments"
+import { cn } from "@featul/ui/lib/utils"
 
 interface CommentCounterProps {
   postId: string

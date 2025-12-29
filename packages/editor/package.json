@@ -1,5 +1,5 @@
 {
-  "name": "@oreilla/editor",
+  "name": "@featul/editor",
   "version": "0.1.0",
   "private": true,
   "exports": {
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@floating-ui/dom": "^1.6.0",
-    "@oreilla/ui": "workspace:*",
+    "@featul/ui": "workspace:*",
     "@phosphor-icons/react": "^2.1.10",
     "@tiptap/core": "^3.13.0",
     "@tiptap/extension-code-block-lowlight": "^3.13.0",
@@ -43,7 +43,7 @@
     "tippy.js": "^6.3.7"
   },
   "devDependencies": {
-    "@oreilla/tsconfig": "workspace:*",
+    "@featul/tsconfig": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",

@@ -9,10 +9,10 @@ import {
   CardDescription,
   CardContent,
   CardAction,
-} from "@oreilla/ui/components/card";
-import { Label } from "@oreilla/ui/components/label";
-import { Input } from "@oreilla/ui/components/input";
-import { Button } from "@oreilla/ui/components/button";
+} from "@featul/ui/components/card";
+import { Label } from "@featul/ui/components/label";
+import { Input } from "@featul/ui/components/input";
+import { Button } from "@featul/ui/components/button";
 import { Plus, Trash } from "lucide-react";
 
 type Cohort = {

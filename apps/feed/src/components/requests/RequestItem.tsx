@@ -12,7 +12,7 @@ import { randomAvatarUrl } from "@/utils/avatar"
 import RoleBadge from "@/components/global/RoleBadge"
 import { UpvoteButton } from "@/components/upvote/UpvoteButton"
 
-export type RequestItemData = {
+export interface RequestItemData {
   id: string
   title: string
   slug: string
@@ -33,15 +33,7 @@ export type RequestItemData = {
   isOwner?: boolean
 }
 
-function RequestItemBase({
-  item,
-  workspaceSlug,
-  linkBase,
-  isSelecting,
-  isSelected,
-  onToggle,
-  disableLink,
-}: {
+interface RequestItemProps {
   item: RequestItemData
   workspaceSlug: string
   linkBase?: string
@@ -49,7 +41,9 @@ function RequestItemBase({
   isSelected?: boolean
   onToggle?: (checked: boolean) => void
   disableLink?: boolean
-}) {
+}
+
+function RequestItemBase({ item, workspaceSlug, linkBase, isSelecting, isSelected, onToggle, disableLink }: RequestItemProps) {
   const searchParams = useSearchParams()
   const queryString = searchParams.toString() ? `?${searchParams.toString()}` : ""
   const base = linkBase || `/workspaces/${workspaceSlug}`

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useMemo, useRef, useState, useTransition } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react"
 import RequestItem, { type RequestItemData } from "./RequestItem"
 import EmptyRequests from "./EmptyRequests"
 import { Button } from "@oreilla/ui/components/button"
@@ -20,7 +20,48 @@ import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 import { useSelection, setSelecting, toggleSelectionId, selectAllForKey, getSelectedIds, removeSelectedIds } from "@/lib/selection-store"
 
-function RequestListBase({ items, workspaceSlug, linkBase }: { items: RequestItemData[]; workspaceSlug: string; linkBase?: string }) {
+interface RequestListProps {
+  items: RequestItemData[]
+  workspaceSlug: string
+  linkBase?: string
+}
+
+interface SelectionToolbarProps {
+  allSelected: boolean
+  selectedCount: number
+  isPending: boolean
+  onToggleAll: () => void
+  onConfirmDelete: () => void
+}
+
+function SelectionToolbar({ allSelected, selectedCount, isPending, onToggleAll, onConfirmDelete }: SelectionToolbarProps) {
+  return (
+    <div className="flex items-center gap-2 px-4 py-2 border-b border-border/60 bg-muted/50">
+      <Checkbox
+        checked={allSelected}
+        onCheckedChange={onToggleAll}
+        aria-label="Select all"
+        className="cursor-pointer border-border dark:border-border data-[state=checked]:border-primary"
+      />
+      <span className="text-xs text-accent">Selected {selectedCount}</span>
+      <Button type="button" variant="secondary" size="sm" className="h-7 px-3" onClick={onToggleAll}>
+        {allSelected ? "Clear" : "Select All"}
+      </Button>
+      <Button
+        type="button"
+        variant="destructive"
+        size="sm"
+        className="h-7 px-3 ml-auto"
+        disabled={selectedCount === 0 || isPending}
+        onClick={onConfirmDelete}
+      >
+        {isPending ? "Deleting…" : "Delete Selected"}
+      </Button>
+    </div>
+  )
+}
+
+function RequestListBase({ items, workspaceSlug, linkBase }: RequestListProps) {
   const [listItems, setListItems] = useState<RequestItemData[]>(items)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
@@ -51,19 +92,22 @@ function RequestListBase({ items, workspaceSlug, linkBase }: { items: RequestIte
   const allSelected = useMemo(() => listItems.length > 0 && listItems.every((i) => selection.selectedIds.includes(i.id)), [selection, listItems])
   const selectedCount = selection.selectedIds.length
 
-  const toggleId = (id: string, checked?: boolean) => {
-    toggleSelectionId(listKey, id, checked)
-  }
+  const toggleId = useCallback(
+    (id: string, checked?: boolean) => {
+      toggleSelectionId(listKey, id, checked)
+    },
+    [listKey]
+  )
 
-  const toggleAll = () => {
+  const toggleAll = useCallback(() => {
     if (allSelected) {
       removeSelectedIds(listKey, listItems.map((i) => i.id))
       return
     }
     selectAllForKey(listKey, listItems.map((i) => i.id))
-  }
+  }, [allSelected, listItems, listKey])
 
-  const handleBulkDelete = () => {
+  const handleBulkDelete = useCallback(() => {
     startTransition(async () => {
       try {
         const ids = getSelectedIds(listKey)
@@ -106,7 +150,7 @@ function RequestListBase({ items, workspaceSlug, linkBase }: { items: RequestIte
         setSelecting(listKey, false)
       }
     })
-  }
+  }, [listKey, queryClient, allSelected])
 
   if (listItems.length === 0) {
     return <EmptyRequests workspaceSlug={workspaceSlug} />
@@ -115,28 +159,13 @@ function RequestListBase({ items, workspaceSlug, linkBase }: { items: RequestIte
   return (
     <div className="overflow-hidden rounded-sm ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-card dark:bg-black/40 border border-border">
       {isSelecting && (
-        <div className="flex items-center gap-2 px-4 py-2 border-b border-border/60 bg-muted/50">
-          <Checkbox
-            checked={allSelected}
-            onCheckedChange={() => toggleAll()}
-            aria-label="Select all"
-            className="cursor-pointer border-border dark:border-border data-[state=checked]:border-primary"
-          />
-          <span className="text-xs text-accent">Selected {selectedCount}</span>
-          <Button type="button" variant="secondary" size="sm" className="h-7 px-3" onClick={toggleAll}>
-            {allSelected ? "Clear" : "Select All"}
-          </Button>
-          <Button
-            type="button"
-            variant="destructive"
-            size="sm"
-            className="h-7 px-3 ml-auto"
-            disabled={selectedCount === 0 || isPending}
-            onClick={() => setConfirmOpen(true)}
-          >
-            {isPending ? "Deleting…" : "Delete Selected"}
-          </Button>
-        </div>
+        <SelectionToolbar
+          allSelected={allSelected}
+          selectedCount={selectedCount}
+          isPending={isPending}
+          onToggleAll={toggleAll}
+          onConfirmDelete={() => setConfirmOpen(true)}
+        />
       )}
       <ul className="m-0 list-none p-0">
         {listItems.map((p) => (

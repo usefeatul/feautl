@@ -63,7 +63,7 @@ function RequestItemBase({
           checked={!!isSelected}
           onCheckedChange={(v) => onToggle?.(!!v)}
           aria-label="Select post"
-          className="mr-1 cursor-pointer"
+          className="mr-1 cursor-pointer border-border dark:border-border data-[state=checked]:border-primary"
         />
       ) : null}
       <StatusIcon status={item.roadmapStatus || undefined} className="size-5 text-foreground/80" />

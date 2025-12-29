@@ -115,8 +115,13 @@ function RequestListBase({ items, workspaceSlug, linkBase }: { items: RequestIte
   return (
     <div className="overflow-hidden rounded-sm ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-card dark:bg-black/40 border border-border">
       {isSelecting && (
-        <div className="flex items-center gap-2 px-3 py-2 border-b border-border/60 bg-muted/50">
-          <Checkbox checked={allSelected} onCheckedChange={() => toggleAll()} aria-label="Select all" className="cursor-pointer" />
+        <div className="flex items-center gap-2 px-4 py-2 border-b border-border/60 bg-muted/50">
+          <Checkbox
+            checked={allSelected}
+            onCheckedChange={() => toggleAll()}
+            aria-label="Select all"
+            className="cursor-pointer border-border dark:border-border data-[state=checked]:border-primary"
+          />
           <span className="text-xs text-accent">Selected {selectedCount}</span>
           <Button type="button" variant="secondary" size="sm" className="h-7 px-3" onClick={toggleAll}>
             {allSelected ? "Clear" : "Select All"}

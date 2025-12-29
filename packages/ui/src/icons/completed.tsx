@@ -11,7 +11,7 @@ export const CompletedIcon: React.FC<CompleteIconProps> = ({ className = '', siz
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" className={className} opacity={0.9} style={{ color }}>
       <title>completed</title>
       <circle cx="12" cy="12" r="10" fill="currentColor" fillOpacity={1} />
-      <path d="m9 12 2 2 4-4" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8 12.5 11 15.5 16 9.5" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }

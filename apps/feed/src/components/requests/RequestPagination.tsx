@@ -6,18 +6,20 @@ import { Button } from "@oreilla/ui/components/button"
 import { buildRequestsUrl, buildWorkspaceUrl } from "@/utils/request-filters"
 import PaginationHotkeys from "@/components/pagination/PaginationHotkeys"
 import type { RequestPaginationProps as Props } from "@/types/pagination"
-import type { PostDeletedEventDetail } from "@/types/events"
+import type { PostDeletedEventDetail, RequestsPageRefreshingDetail } from "@/types/events"
 
 export default function RequestPagination({ workspaceSlug, page, pageSize, totalCount, variant = "requests" }: Props) {
   const router = useRouter()
   const params = useSearchParams()
   const [deletedCount, setDeletedCount] = useState(0)
+  const [isPageRefreshing, setIsPageRefreshing] = useState(false)
   const mk = variant === "workspace" ? buildWorkspaceUrl : buildRequestsUrl
 
   const effectiveTotal = Math.max(totalCount - deletedCount, 0)
 
   useEffect(() => {
     setDeletedCount(0)
+    setIsPageRefreshing(false)
   }, [workspaceSlug, totalCount])
 
   useEffect(() => {
@@ -32,6 +34,18 @@ export default function RequestPagination({ workspaceSlug, page, pageSize, total
     return () => window.removeEventListener("post:deleted", handlePostDeleted)
   }, [workspaceSlug])
 
+  useEffect(() => {
+    if (!workspaceSlug) return
+    if (typeof window === "undefined") return
+    const handlePageRefreshing = (event: Event) => {
+      const detail = (event as CustomEvent<RequestsPageRefreshingDetail>).detail
+      if (!detail || detail.workspaceSlug !== workspaceSlug) return
+      setIsPageRefreshing(true)
+    }
+    window.addEventListener("requests:page-refreshing", handlePageRefreshing)
+    return () => window.removeEventListener("requests:page-refreshing", handlePageRefreshing)
+  }, [workspaceSlug])
+
   const { totalPages, prevHref, nextHref } = useMemo(() => {
     const tp = Math.max(1, Math.ceil(Math.max(effectiveTotal, 0) / Math.max(pageSize, 1)))
     const pPrev = Math.max(page - 1, 1)
@@ -43,6 +57,7 @@ export default function RequestPagination({ workspaceSlug, page, pageSize, total
     }
   }, [workspaceSlug, page, pageSize, effectiveTotal, params, mk])
 
+  if (isPageRefreshing) return null
   if (effectiveTotal <= pageSize) return null
 
   return (

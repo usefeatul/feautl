@@ -4,3 +4,6 @@ export interface PostDeletedEventDetail {
   status?: string | null
 }
 
+export interface RequestsPageRefreshingDetail {
+  workspaceSlug: string
+}

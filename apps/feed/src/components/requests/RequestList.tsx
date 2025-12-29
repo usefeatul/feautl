@@ -10,7 +10,7 @@ import { client } from "@oreilla/api/client"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 import { useSelection, setSelecting, toggleSelectionId, selectAllForKey, getSelectedIds, removeSelectedIds } from "@/lib/selection-store"
-import type { PostDeletedEventDetail } from "../../types/events"
+import type { PostDeletedEventDetail, RequestsPageRefreshingDetail } from "../../types/events"
 import { BulkDeleteConfirmDialog } from "./BulkDeleteConfirmDialog"
 
 interface RequestListProps {
@@ -140,6 +140,8 @@ function useBulkDeleteRequests({
           if (nextLength === 0 && typeof nextTotal === "number" && nextTotal > 0) {
             setIsRefetching(true)
             try {
+              const detail: RequestsPageRefreshingDetail = { workspaceSlug }
+              window.dispatchEvent(new CustomEvent<RequestsPageRefreshingDetail>("requests:page-refreshing", { detail }))
               router.refresh()
             } catch {}
           }

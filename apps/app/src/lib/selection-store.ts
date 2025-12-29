@@ -11,10 +11,47 @@ const selections = new Map<string, SelectionState>()
 const listeners = new Set<Listener>()
 const snapshots = new Map<string, SelectionSnapshot>()
 
+function selectingStorageKey(key: string): string {
+  return `requests:isSelecting:${key}`
+}
+
+function selectingCookieName(key: string): string {
+  return `requests_isSelecting_${key}`
+}
+
+function readSelectingInitial(key: string): boolean {
+  let initialSelecting = false
+  try {
+    if (typeof document !== "undefined") {
+      const name = `${selectingCookieName(key)}=`
+      const parts = document.cookie.split(";")
+      for (let i = 0; i < parts.length; i++) {
+        const part = parts[i]?.trim()
+        if (!part || !part.startsWith(name)) continue
+        const value = part.substring(name.length)
+        if (value === "1" || value === "true") {
+          return true
+        }
+        if (value === "0" || value === "false") {
+          return false
+        }
+      }
+    }
+    if (typeof window !== "undefined") {
+      const v = window.localStorage.getItem(selectingStorageKey(key))
+      if (v === "1" || v === "true") {
+        initialSelecting = true
+      }
+    }
+  } catch {}
+  return initialSelecting
+}
+
 function ensure(key: string): SelectionState {
   const s = selections.get(key)
   if (s) return s
-  const next: SelectionState = { isSelecting: false, selected: new Set() }
+  const initialSelecting = readSelectingInitial(key)
+  const next: SelectionState = { isSelecting: initialSelecting, selected: new Set() }
   selections.set(key, next)
   return next
 }
@@ -52,6 +89,16 @@ function getSnapshotCached(key: string): SelectionSnapshot {
 export function setSelecting(key: string, selecting: boolean) {
   const s = ensure(key)
   s.isSelecting = selecting
+  try {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(selectingStorageKey(key), selecting ? "1" : "0")
+    }
+    if (typeof document !== "undefined") {
+      const maxAge = 60 * 60 * 24 * 30
+      const value = selecting ? "1" : "0"
+      document.cookie = `${selectingCookieName(key)}=${value}; path=/; max-age=${maxAge}`
+    }
+  } catch {}
   notify()
 }
 

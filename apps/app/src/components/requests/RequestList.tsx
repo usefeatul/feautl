@@ -18,6 +18,7 @@ interface RequestListProps {
   workspaceSlug: string
   linkBase?: string
   initialTotalCount?: number
+  initialIsSelecting?: boolean
 }
 
 interface SelectionToolbarProps {
@@ -175,13 +176,14 @@ function useBulkDeleteRequests({
   }
 }
 
-function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount }: RequestListProps) {
+function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount, initialIsSelecting }: RequestListProps) {
   const [listItems, setListItems] = useState<RequestItemData[]>(items)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const listKey = workspaceSlug
   const selection = useSelection(listKey)
   const isSelecting = selection.isSelecting
   const selectingRef = useRef(isSelecting)
+  const [hydrated, setHydrated] = useState(false)
 
   const { isPending, isRefetching, handleBulkDelete } = useBulkDeleteRequests({
     workspaceSlug,
@@ -199,6 +201,26 @@ function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount }: 
   useEffect(() => {
     setListItems(items)
   }, [items])
+
+  useEffect(() => {
+    setHydrated(true)
+  }, [])
+
+  const didInitialSyncRef = useRef(false)
+
+  useEffect(() => {
+    if (didInitialSyncRef.current) return
+    if (typeof initialIsSelecting !== "boolean") {
+      didInitialSyncRef.current = true
+      return
+    }
+    if (isSelecting !== initialIsSelecting) {
+      setSelecting(listKey, initialIsSelecting)
+    }
+    didInitialSyncRef.current = true
+  }, [initialIsSelecting, isSelecting, listKey])
+
+  const isSelectingForRender = hydrated ? isSelecting : initialIsSelecting ?? isSelecting
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -257,7 +279,7 @@ function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount }: 
 
   return (
     <div className="overflow-hidden rounded-sm ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-card dark:bg-black/40 border border-border">
-      {isSelecting && (
+      {isSelectingForRender && (
         <SelectionToolbar
           allSelected={allSelected}
           selectedCount={selectedCount}
@@ -273,10 +295,10 @@ function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount }: 
             item={p}
             workspaceSlug={workspaceSlug}
             linkBase={linkBase}
-            isSelecting={isSelecting}
+            isSelecting={isSelectingForRender}
             isSelected={selection.selectedIds.includes(p.id)}
             onToggle={(checked) => toggleId(p.id, checked)}
-            disableLink={isSelecting}
+            disableLink={isSelectingForRender}
           />
         ))}
       </ul>

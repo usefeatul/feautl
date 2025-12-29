@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 import RequestList from "@/components/requests/RequestList";
 import PostCountSeed from "@/components/requests/PostCountSeed";
 import RequestPagination from "@/components/requests/RequestPagination";
@@ -25,6 +26,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function RequestsPage({ params, searchParams }: Props) {
   const { slug } = await params;
+  const cookieStore = await cookies();
+  const cookieName = `requests_isSelecting_${slug}`;
+  const cookieValue = cookieStore.get(cookieName)?.value;
+  const initialIsSelecting = cookieValue === "1" || cookieValue === "true";
 
   let sp: RequestsSearchParams | undefined;
   if (searchParams) {
@@ -48,7 +53,12 @@ export default async function RequestsPage({ params, searchParams }: Props) {
         search={data.search}
         count={data.totalCount}
       />
-      <RequestList items={data.rows as any} workspaceSlug={slug} initialTotalCount={data.totalCount} />
+      <RequestList
+        items={data.rows as any}
+        workspaceSlug={slug}
+        initialTotalCount={data.totalCount}
+        initialIsSelecting={initialIsSelecting}
+      />
       <RequestPagination
         workspaceSlug={slug}
         page={data.page}

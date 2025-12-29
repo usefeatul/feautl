@@ -14,6 +14,18 @@ export default async function WorkspacePage({ params, searchParams }: Props) {
   const cookieName = `requests_isSelecting_${slug}`;
   const cookieValue = cookieStore.get(cookieName)?.value;
   const initialIsSelecting = cookieValue === "1" || cookieValue === "true";
+  const selectedCookieName = `requests_selected_${slug}`;
+  const selectedRaw = cookieStore.get(selectedCookieName)?.value;
+  let initialSelectedIds: string[] | undefined;
+  if (selectedRaw) {
+    try {
+      const decoded = decodeURIComponent(selectedRaw);
+      const parsed = JSON.parse(decoded);
+      if (Array.isArray(parsed)) {
+        initialSelectedIds = parsed.filter((v) => typeof v === "string") as string[];
+      }
+    } catch {}
+  }
   const ws = await getWorkspaceBySlug(slug);
   if (!ws) return notFound();
 
@@ -38,6 +50,7 @@ export default async function WorkspacePage({ params, searchParams }: Props) {
         workspaceSlug={slug}
         initialTotalCount={totalCount}
         initialIsSelecting={initialIsSelecting}
+        initialSelectedIds={initialSelectedIds}
       />
       <RequestPagination workspaceSlug={slug} page={page} pageSize={pageSize} totalCount={totalCount} variant="workspace" />
     </section>

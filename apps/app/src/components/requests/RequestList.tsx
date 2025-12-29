@@ -19,6 +19,7 @@ interface RequestListProps {
   linkBase?: string
   initialTotalCount?: number
   initialIsSelecting?: boolean
+  initialSelectedIds?: string[]
 }
 
 interface SelectionToolbarProps {
@@ -176,7 +177,8 @@ function useBulkDeleteRequests({
   }
 }
 
-function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount, initialIsSelecting }: RequestListProps) {
+function RequestListBase(props: RequestListProps) {
+  const { items, workspaceSlug, linkBase, initialTotalCount, initialIsSelecting, initialSelectedIds } = props
   const [listItems, setListItems] = useState<RequestItemData[]>(items)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const listKey = workspaceSlug
@@ -206,21 +208,12 @@ function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount, in
     setHydrated(true)
   }, [])
 
-  const didInitialSyncRef = useRef(false)
-
-  useEffect(() => {
-    if (didInitialSyncRef.current) return
-    if (typeof initialIsSelecting !== "boolean") {
-      didInitialSyncRef.current = true
-      return
-    }
-    if (isSelecting !== initialIsSelecting) {
-      setSelecting(listKey, initialIsSelecting)
-    }
-    didInitialSyncRef.current = true
-  }, [initialIsSelecting, isSelecting, listKey])
-
   const isSelectingForRender = hydrated ? isSelecting : initialIsSelecting ?? isSelecting
+  const selectedIdsForRender = hydrated
+    ? selection.selectedIds
+    : initialSelectedIds && Array.isArray(initialSelectedIds)
+      ? initialSelectedIds
+      : selection.selectedIds
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -252,8 +245,11 @@ function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount, in
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [listKey, isSelecting, isPending, selection.selectedIds.length])
 
-  const allSelected = useMemo(() => listItems.length > 0 && listItems.every((i) => selection.selectedIds.includes(i.id)), [selection, listItems])
-  const selectedCount = selection.selectedIds.length
+  const allSelected = useMemo(
+    () => listItems.length > 0 && listItems.every((i) => selectedIdsForRender.includes(i.id)),
+    [listItems, selectedIdsForRender],
+  )
+  const selectedCount = selectedIdsForRender.length
 
   const toggleId = useCallback(
     (id: string, checked?: boolean) => {
@@ -296,7 +292,7 @@ function RequestListBase({ items, workspaceSlug, linkBase, initialTotalCount, in
             workspaceSlug={workspaceSlug}
             linkBase={linkBase}
             isSelecting={isSelectingForRender}
-            isSelected={selection.selectedIds.includes(p.id)}
+            isSelected={selectedIdsForRender.includes(p.id)}
             onToggle={(checked) => toggleId(p.id, checked)}
             disableLink={isSelectingForRender}
           />

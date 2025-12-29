@@ -40,7 +40,7 @@ function CommandDialog({
   // description = "Search for a command to run...",
   children,
   width = "default",
-  offsetY = "10%",
+  offsetY = "15%",
   icon,
   ...props
 }: CommandDialogProps) {
@@ -90,7 +90,7 @@ function CommandList({
   return (
     <CommandPrimitive.List
       data-slot="command-list"
-      className={cn("max-h-[520px] scroll-py-1 overflow-x-hidden overflow-y-auto", className)}
+      className={cn("max-h-[500px] scroll-py-1 overflow-x-hidden overflow-y-auto", className)}
       {...props}
     />
   )

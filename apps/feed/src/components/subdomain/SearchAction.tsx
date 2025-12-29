@@ -106,7 +106,7 @@ export function SearchAction({ slug, className = "" }: SearchActionProps) {
           {isLoading ? null : results.length > 0 ? (
             <CommandGroup>
               {results.map((r) => (
-                <CommandItem key={r.id} onSelect={() => router.push(`/p/${r.slug}`)}>
+                <CommandItem key={r.id} onSelect={() => router.push(`/board/p/${r.slug}`)}>
                   {r.title}
                 </CommandItem>
               ))}

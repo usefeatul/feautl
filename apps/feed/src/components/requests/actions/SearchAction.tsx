@@ -89,7 +89,13 @@ export default function SearchAction({ className = "" }: { className?: string })
           {isLoading ? null : results.length > 0 ? (
             <CommandGroup>
               {results.map((r) => (
-                <CommandItem key={r.id} onSelect={() => router.push(`/workspaces/${slug}/requests/${r.slug}`)}>
+                <CommandItem
+                  key={r.id}
+                  onSelect={() => {
+                    setOpen(false)
+                    router.push(`/workspaces/${slug}/requests/${r.slug}`)
+                  }}
+                >
                   {r.title}
                 </CommandItem>
               ))}

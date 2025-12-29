@@ -91,7 +91,7 @@ export default function Sidebar({
             className="h-6 w-6"
             priority
           />
-          <div className="text-md font-semibold ">Loreila</div>
+          <div className="text-md font-semibold ">Featul</div>
         </div>
         <WorkspaceSwitcher
           className="mt-5.5"

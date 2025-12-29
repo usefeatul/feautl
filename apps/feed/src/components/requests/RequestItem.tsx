@@ -82,7 +82,7 @@ function RequestItemBase({ item, workspaceSlug, linkBase, isSelecting, isSelecte
         </div>
         <span>{new Intl.DateTimeFormat(undefined, { month: "short", day: "2-digit" }).format(new Date(item.publishedAt ?? item.createdAt))}</span>
         <div className="relative">
-          <Avatar className="size-6 bg-muted ring-1 ring-border rounded-md relative overflow-visible">
+          <Avatar className="size-6 bg-muted ring-1 ring-border relative overflow-visible">
             <AvatarImage src={item.authorImage || randomAvatarUrl(item.id || item.slug)} alt={item.isAnonymous ? "Guest" : (item.authorName || "Guest")} />
             <AvatarFallback>{getInitials(item.isAnonymous ? "Guest" : (item.authorName || "Guest"))}</AvatarFallback>
             <RoleBadge role={item.role} isOwner={item.isOwner} />

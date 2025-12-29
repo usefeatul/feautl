@@ -73,7 +73,7 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
               ) : (
                 <AvatarFallback className="text-xs bg-muted text-muted-foreground">{authorInitials}</AvatarFallback>
               )}
-              <RoleBadge role={post.role} isOwner={post.isOwner} className="-bottom-1 -right-1" />
+              <RoleBadge role={post.role} isOwner={post.isOwner} className="-bottom-1 -right-0.5" />
             </Avatar>
           </div>
           <div className="flex flex-col">

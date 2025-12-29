@@ -146,7 +146,7 @@ export function CreatePostModal({
       onOpenChange={onOpenChange}
       title="Create post"
       width="widest"
-      offsetY="20%"
+      offsetY="10%"
       icon={<DocumentTextIcon className="size-3.5" />}
     >
       <form onSubmit={handleSubmit}>

@@ -462,7 +462,7 @@ function renderActivityDescription(it: any) {
 
 export function MemberActivity({ items, hasNextPage, isFetchingNextPage, onLoadMore, isLoading }: MemberActivityProps) {
   return (
-    <div className="rounded-sm bg-card dark:bg-black/40 border ring-1 ring-border/60 ring-offset-1 ring-offset-background p-4 lg:col-span-2">
+    <div className="lg:col-span-2 lg:pr-4 lg:border-r lg:border-border/60">
       <div className="flex items-center justify-between mb-3">
         <div className="font-semibold">Activity</div>
       </div>

@@ -84,10 +84,10 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
   }, [activityData?.pages, initialActivity])
 
   return (
-    <div className="space-y-4">
+    <div className="rounded-sm border bg-card dark:bg-black/40 p-4 lg:p-6 space-y-4 ring-1 ring-border/60 ring-offset-1 ring-offset-background">
       <MemberHeader member={member} userId={userId} stats={stats} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="pt-4 mt-2 border-t grid grid-cols-1 lg:grid-cols-3 gap-4">
         <MemberActivity
           items={items}
           hasNextPage={hasNextPage}

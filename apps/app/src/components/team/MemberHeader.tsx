@@ -35,14 +35,14 @@ function StatCard({ label, value }: StatCardProps) {
 
 export function MemberHeader({ member, userId, stats }: MemberHeaderProps) {
   return (
-    <div className="rounded-sm border bg-card dark:bg-black/40 p-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between ring-1 ring-border/60 ring-offset-1 ring-offset-background">
+    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div className="flex items-center gap-4">
         <div className="relative">
           <Avatar className="size-12">
             <AvatarImage src={member?.image || ""} alt={member?.name || member?.email || ""} />
             <AvatarFallback>{getInitials(member?.name || member?.email || "")}</AvatarFallback>
           </Avatar>
-          <RoleBadge role={member?.role} isOwner={member?.isOwner} />
+          <RoleBadge role={member?.role} isOwner={member?.isOwner} className="-bottom-0 -right-0" />
         </div>
         <div className="min-w-0 space-y-1">
           <div className="text-base font-semibold truncate">{member?.name || member?.email || userId}</div>
@@ -65,4 +65,3 @@ export function MemberHeader({ member, userId, stats }: MemberHeaderProps) {
     </div>
   )
 }
-

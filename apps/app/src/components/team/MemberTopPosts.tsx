@@ -16,7 +16,7 @@ export function MemberTopPosts({ slug, topPosts, isLoading }: MemberTopPostsProp
   const hasPosts = topPosts.length > 0
 
   return (
-    <div className="space-y-3 lg:pl-4">
+    <div className="hidden lg:block space-y-3 lg:pl-4">
       <div className="font-semibold">Top posts</div>
       {isLoading && !hasPosts ? (
         <LoadingSpinner label="Loading top posts..." />

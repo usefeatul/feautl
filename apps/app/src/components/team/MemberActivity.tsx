@@ -466,7 +466,7 @@ export function MemberActivity({ items, hasNextPage, isFetchingNextPage, onLoadM
       <div className="flex items-center justify-between mb-3">
         <div className="font-semibold">Activity</div>
       </div>
-      <ul className="divide-y divide-border/50">
+      <ul className="divide-y divide-border">
         {isLoading && items.length === 0 ? (
           <li className="py-6">
             <LoadingSpinner label="Loading activity..." />

@@ -96,7 +96,7 @@ export default function RequestDetail({
   const [editOpen, setEditOpen] = useState(false)
   const canEdit = (post.role === "admin" || post.isOwner) && !readonly
 
-  const MAX_TITLE_LINE_LENGTH = 30
+  const MAX_TITLE_LINE_LENGTH = 20
   const formattedTitle = formatTextWithLineBreaks(post.title, MAX_TITLE_LINE_LENGTH)
 
   return (

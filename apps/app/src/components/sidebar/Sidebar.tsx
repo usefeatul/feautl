@@ -82,8 +82,8 @@ export default function Sidebar({
       )}
     >
       <div className="p-2">
-        <div className="group flex items-center gap-2 rounded-md px-1 py-1">
-          <FeatulLogoIcon className="size-5 rounded-md" size={24} />
+        <div className="group flex items-center gap-2 px-1.5 py-1.5">
+          <FeatulLogoIcon className="size-5.5" size={24} />
           <div className="text-md font-semibold ">Featul</div>
         </div>
         <WorkspaceSwitcher

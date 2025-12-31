@@ -12,7 +12,7 @@ export const FeatulLogoIcon: React.FC<FeatulLogoIconProps> = ({ className = '', 
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      transform="matrix(-1.8369701987210297e-16,-1,1,1.8369701987210297e-16,0,0)"
+      transform="rotate(-90)"
       className={className}
     >
       <path

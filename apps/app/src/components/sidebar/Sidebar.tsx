@@ -11,13 +11,13 @@ import {
 } from "../../utils/useSidebarHotkeys";
 import WorkspaceSwitcher from "./WorkspaceSwitcher";
 import UserDropdown from "@/components/account/UserDropdown";
-import Image from "next/image";
 import Timezone from "./Timezone";
 import SidebarItem from "./SidebarItem";
 import SidebarSection from "./SidebarSection";
 import { useWorkspaceNav } from "@/hooks/useWorkspaceNav";
 import { Button } from "@featul/ui/components/button";
 import { PlusIcon } from "@featul/ui/icons/plus";
+import { FeatulLogoIcon } from "@featul/ui/icons/featul-logo";
 import { CreatePostModal } from "../post/CreatePostModal";
 
 const secondaryNav: NavItem[] = buildBottomNav();
@@ -83,14 +83,7 @@ export default function Sidebar({
     >
       <div className="p-2">
         <div className="group flex items-center gap-2 rounded-md px-1 py-1">
-          <Image
-            src="/logo.svg"
-            alt="feedback"
-            width={24}
-            height={24}
-            className="h-6 w-6 rounded-md"
-            priority
-          />
+          <FeatulLogoIcon className="h-6 w-6 rounded-md" size={24} />
           <div className="text-md font-semibold ">Featul</div>
         </div>
         <WorkspaceSwitcher

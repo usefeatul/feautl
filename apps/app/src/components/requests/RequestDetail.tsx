@@ -19,7 +19,6 @@ import { MergePopover } from "./MergePopover"
 import { DeletePostButton } from "./DeletePostButton"
 import { useIsMobile } from "@featul/ui/hooks/use-mobile"
 import EditPostModal from "../subdomain/request-detail/EditPostModal"
-import { formatTextWithLineBreaks } from "@/utils/text"
 
 export type RequestDetailData = {
   id: string
@@ -96,14 +95,11 @@ export default function RequestDetail({
   const [editOpen, setEditOpen] = useState(false)
   const canEdit = (post.role === "admin" || post.isOwner) && !readonly
 
-  const MAX_TITLE_LINE_LENGTH = 20
-  const formattedTitle = formatTextWithLineBreaks(post.title, MAX_TITLE_LINE_LENGTH)
-
   return (
     <section>
       <div className="overflow-hidden rounded-sm ring-1 ring-border/60 ring-offset-1 ring-offset-background bg-card dark:bg-black/40 border border-border">
         <div className="grid items-stretch gap-0 md:grid-cols-[0.7fr_0.3fr]">
-          <article className="relative  px-4 py-4 md:px-6 md:py-5">
+          <article className="relative min-w-0 px-4 py-4 md:px-6 md:py-5">
             <div aria-hidden className="absolute right-0 top-0 hidden h-full w-px bg-border/50 md:block" />
             <header className="pb-4">
               {isMobile ? (
@@ -122,16 +118,16 @@ export default function RequestDetail({
                       </div>
                     </div>
                   </div>
-                  <h1 className="text-lg font-semibold leading-tight break-words whitespace-pre-line text-foreground">
-                    {formattedTitle}
+                  <h1 className="text-lg font-semibold leading-tight break-words text-foreground">
+                    {post.title}
                   </h1>
                 </div>
               ) : (
                 <div className="flex flex-col gap-4">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="space-y-1">
-                      <h1 className="text-lg font-semibold leading-snug break-words whitespace-pre-line text-foreground md:text-xl">
-                        {formattedTitle}
+                    <div className="space-y-1 min-w-0 flex-1">
+                      <h1 className="text-lg font-semibold leading-snug break-words text-foreground md:text-xl">
+                        {post.title}
                       </h1>
                     </div>
                     <RequestNavigation

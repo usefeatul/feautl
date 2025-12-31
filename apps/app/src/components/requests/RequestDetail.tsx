@@ -124,7 +124,7 @@ export default function RequestDetail({
                 <div className="flex flex-col gap-4">
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1">
-                      <h1 className="text-lg font-semibold leading-snug text-foreground md:text-xl">{post.title}</h1>
+                      <h1 className="text-lg font-semibold leading-snug wrap-break-word text-foreground md:text-xl">{post.title}</h1>
                     </div>
                     <RequestNavigation
                       postId={post.id}

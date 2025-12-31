@@ -39,7 +39,7 @@ export function PostContent({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
-        maxLength={128}
+        maxLength={100}
         className="text-lg md:text-xl  font-semibold h-auto py-2 placeholder:text-accent "
       />
       <TextareaAutosize

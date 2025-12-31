@@ -22,7 +22,7 @@ export const votePostSchema = z.object({
 })
 
 export const createPostSchema = z.object({
-  title: z.string().min(1).max(128),
+  title: z.string().min(1).max(100),
   content: z.string().min(1),
   image: z.string().url().optional(),
   workspaceSlug: z.string().min(1),
@@ -34,7 +34,7 @@ export const createPostSchema = z.object({
 
 export const updatePostSchema = z.object({
   postId: z.string().uuid(),
-  title: z.string().min(1).max(128).optional(),
+  title: z.string().min(1).max(100).optional(),
   content: z.string().min(1).optional(),
   image: z.string().url().optional().nullable(),
   boardSlug: z.string().min(1).optional(),

@@ -24,6 +24,12 @@ export function usePostSubmission({ workspaceSlug, onSuccess, onCreated, skipDef
   const submitPost = async (selectedBoard: { slug: string } | null, user: any, image?: string | null, roadmapStatus?: string, tags?: string[]) => {
     if (!title || !content || !selectedBoard) return
 
+    const MAX_TITLE_LENGTH = 100
+    if (title.length > MAX_TITLE_LENGTH) {
+      toast.error(`Title must be at most ${MAX_TITLE_LENGTH} characters`)
+      return
+    }
+
     const fingerprint = await getBrowserFingerprint()
 
     startTransition(async () => {

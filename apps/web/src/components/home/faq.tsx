@@ -12,7 +12,7 @@ export default function FAQsFour() {
             <section className="py-16 md:py-24" data-component="FAQ">
                 <div className="max-w-5xl px-1 sm:px-6">
                 <div className="max-w-xl text-left">
-                    <h2 className="text-balance text-2xl font-semibold">Questions &amp; Answers</h2>
+                    <h2 className="text-balance text-3xl font-semibold">Questions &amp; Answers</h2>
                 </div>
 
                 <div className="mt-4 max-w-xl">
@@ -30,14 +30,14 @@ export default function FAQsFour() {
                                     <AccordionItem
                                         value={item.id}
                                         className="border-none px-0 py-3">
-                                        <AccordionTrigger className="group cursor-pointer text-left text-sm  font-medium !no-underline hover:!no-underline justify-start [&>svg]:hidden">
+                                        <AccordionTrigger className="group cursor-pointer text-left text-md  font-medium !no-underline hover:!no-underline justify-start [&>svg]:hidden">
                                             <span className="inline-flex items-center gap-2">
                                                 <ChevronDownIcon className="size-4 text-primary transition-transform duration-200 group-data-[state=open]:rotate-180" />
                                                 <span>{item.question}</span>
                                             </span>
                                         </AccordionTrigger>
                                         <AccordionContent className="pl-6">
-                                            <p className="text-left text-accent text-sm leading-relaxed">{item.answer}</p>
+                                            <p className="text-left text-accent text-md leading-relaxed">{item.answer}</p>
                                         </AccordionContent>
                                     </AccordionItem>
                                 </div>

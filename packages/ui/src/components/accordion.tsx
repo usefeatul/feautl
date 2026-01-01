@@ -6,10 +6,26 @@ import { ChevronDownIcon } from "lucide-react"
 
 import { cn } from "@featul/ui/lib/utils"
 
+interface AccordionProps
+  extends React.ComponentProps<typeof BaseAccordion.Root> {
+  type?: "single" | "multiple"
+  collapsible?: boolean
+}
+
 function Accordion({
+  type = "single",
+  collapsible,
   ...props
-}: React.ComponentProps<typeof BaseAccordion.Root>) {
-  return <BaseAccordion.Root data-slot="accordion" {...props} />
+}: AccordionProps) {
+  const multiple = type === "multiple"
+
+  return (
+    <BaseAccordion.Root
+      data-slot="accordion"
+      multiple={multiple}
+      {...props}
+    />
+  )
 }
 
 function AccordionItem({

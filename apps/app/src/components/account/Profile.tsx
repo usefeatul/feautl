@@ -9,12 +9,15 @@ import { getInitials, getDisplayUser } from "@/utils/user-utils"
 import { Input } from "@featul/ui/components/input"
 import { toast } from "sonner"
 import { authClient } from "@featul/auth/client"
+import { client } from "@featul/api/client"
 
 export default function Profile({ initialUser }: { initialUser?: { name?: string; email?: string; image?: string | null } | null }) {
   const queryClient = useQueryClient()
   const [name, setName] = React.useState(() => String(initialUser?.name || "").trim())
   const [image, setImage] = React.useState(() => String(initialUser?.image || ""))
   const [saving, setSaving] = React.useState(false)
+  const [uploadingImage, setUploadingImage] = React.useState(false)
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null)
   const { data } = useQuery<{ user: { name?: string; email?: string; image?: string | null } | null }>({
     queryKey: ["me"],
     queryFn: async () => {
@@ -44,6 +47,81 @@ export default function Profile({ initialUser }: { initialUser?: { name?: string
 
   const d = getDisplayUser(user || undefined)
   const initials = getInitials(d.name || "U")
+
+  const pickImage = React.useCallback(() => {
+    if (uploadingImage) return
+    fileInputRef.current?.click()
+  }, [uploadingImage])
+
+  const onAvatarFile = React.useCallback(async (file: File) => {
+    const allowed = ["image/png", "image/jpeg", "image/webp", "image/gif"]
+    if (!allowed.includes(file.type)) {
+      toast.error("Unsupported file type")
+      return
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("File too large")
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        setImage(reader.result)
+      }
+    }
+    reader.readAsDataURL(file)
+
+    setUploadingImage(true)
+    const toastId = toast.loading("Uploading avatar...")
+    try {
+      const res = await client.storage.getAvatarUploadUrl.$post({
+        fileName: file.name,
+        contentType: file.type,
+      })
+      const data = await res.json()
+      const uploadUrl = (data as any)?.uploadUrl as string
+      const publicUrl = (data as any)?.publicUrl as string
+      if (!uploadUrl || !publicUrl) {
+        throw new Error("Upload failed")
+      }
+
+      const put = await fetch(uploadUrl, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: file,
+      })
+      if (!put.ok) {
+        throw new Error("Upload failed")
+      }
+
+      const { error, data: updated } = await authClient.updateUser({ image: publicUrl })
+      if (error) {
+        throw new Error(error.message || "Failed to save avatar")
+      }
+      const updatedUser = (updated as any)?.user || {
+        ...(user || {}),
+        image: publicUrl,
+      }
+      setImage(publicUrl)
+      try {
+        queryClient.setQueryData(["me"], { user: updatedUser })
+      } catch {}
+      toast.success("Avatar updated", { id: toastId })
+    } catch (e: any) {
+      toast.error(e?.message || "Failed to upload avatar", { id: toastId })
+      if (user?.image) {
+        setImage(String(user.image))
+      }
+    } finally {
+      setUploadingImage(false)
+    }
+  }, [user, queryClient])
+
+  const onAvatarInputChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((e) => {
+    const f = e.currentTarget.files?.[0]
+    if (f) void onAvatarFile(f)
+  }, [onAvatarFile])
 
   const onSave = React.useCallback(async () => {
     if (saving) return
@@ -81,20 +159,25 @@ export default function Profile({ initialUser }: { initialUser?: { name?: string
         <div className="flex items-center justify-between p-4">
           <div className="text-sm">Avatar</div>
           <div className="w-full max-w-md flex items-center justify-end">
-            <div className="flex items-center gap-3">
-              <Input
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-                className="h-9 w-[220px] text-right"
-                placeholder="Image URL"
-              />
-              <div className="rounded-md  border ring-1 ring-border overflow-hidden">
-                <Avatar className="size-8">
-                  {image.trim() || d.image ? <AvatarImage src={image.trim() || d.image || ""} alt={d.name} /> : null}
-                  <AvatarFallback className="text-lg">{initials}</AvatarFallback>
-                </Avatar>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={pickImage}
+              className="rounded-md  border ring-1 ring-border overflow-hidden"
+              aria-label="Change avatar"
+              disabled={uploadingImage}
+            >
+              <Avatar className="size-8">
+                {image.trim() || d.image ? <AvatarImage src={image.trim() || d.image || ""} alt={d.name} /> : null}
+                <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+              </Avatar>
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/gif"
+              className="hidden"
+              onChange={onAvatarInputChange}
+            />
           </div>
         </div>
         <div className="flex items-center justify-between p-4">

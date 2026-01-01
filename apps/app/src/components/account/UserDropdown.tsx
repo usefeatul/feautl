@@ -13,6 +13,7 @@ import { client } from "@featul/api/client"
 import { LogoutIcon } from "@featul/ui/icons/logout"
 import { SettingIcon } from "@featul/ui/icons/setting"
 import { AccountIcon } from "@featul/ui/icons/account"
+import { useQuery } from "@tanstack/react-query"
 
 export default function UserDropdown({ className = "", initialUser }: { className?: string; initialUser?: { name?: string; email?: string; image?: string | null } }) {
   const router = useRouter()
@@ -26,19 +27,25 @@ export default function UserDropdown({ className = "", initialUser }: { classNam
   }, [pathname])
   const [open, setOpen] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
-  const [user, setUser] = React.useState<{ name?: string; email?: string; image?: string | null } | null>(initialUser ?? null)
 
-  React.useEffect(() => {
-    let active = true
-    ;(async () => {
-      try {
-        const s = await authClient.getSession()
-        if (!active) return
-        setUser((s as any)?.data?.user || null)
-      } catch {}
-    })()
-    return () => { active = false }
-  }, [])
+  const { data } = useQuery<{ user: { name?: string; email?: string; image?: string | null } | null }>({
+    queryKey: ["me"],
+    queryFn: async () => {
+      const s = await authClient.getSession()
+      const u = (s as any)?.data?.user || null
+      return { user: u }
+    },
+    initialData: () => ({ user: (initialUser as any) || null }),
+    placeholderData: (prev) => prev as any,
+    staleTime: 300_000,
+    gcTime: 900_000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    enabled: !initialUser,
+  })
+
+  const user = data?.user || null
 
   const d = getDisplayUser(user || undefined)
   const initials = getInitials(d.name || "U")

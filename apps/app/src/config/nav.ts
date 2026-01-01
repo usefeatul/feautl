@@ -9,6 +9,7 @@ import { ChangelogIcon } from "@featul/ui/icons/changelog"
 import { BoardIcon } from "@featul/ui/icons/board"
 import { SettingIcon } from "@featul/ui/icons/setting"
 import { DocIcon } from "@featul/ui/icons/doc"
+import MemberIcon from "@featul/ui/icons/member"
 import type { NavItem } from "../types/nav"
 
 function w(slug: string, p: string) {
@@ -46,7 +47,7 @@ export function buildMiddleNav(slug: string, customDomain?: string | null): NavI
   return [
     { label: "Roadmap", href: w(slug, "/roadmap"), icon: RoadmapIcon },
     { label: "Changelog", href: w(slug, "/changelog"), icon: ChangelogIcon },
-    { label: "Members", href: w(slug, "/members"), icon: SettingIcon },
+    { label: "Members", href: w(slug, "/members"), icon: MemberIcon },
     { label: "My Board", href: publicBoardUrlForWorkspace(slug, customDomain), icon: BoardIcon, external: true },
     { label: "Settings", href: w(slug, "/settings/branding"), icon: SettingIcon },
   ]

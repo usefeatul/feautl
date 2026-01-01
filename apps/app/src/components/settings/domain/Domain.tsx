@@ -75,10 +75,10 @@ export default function DomainSection({ slug, initialPlan, initialInfo, initialD
               }
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 px-1 py-1 rounded-md  bg-muted/70 ring-1 ring-border text-xs hover:bg-muted/80"
+              className="inline-flex items-center gap-1 px-1 py-1 rounded-sm  bg-muted/70 ring-1 ring-border text-xs hover:bg-muted/80"
             >
               <span>Visit</span>
-              <ArrowIcon width={14} height={14} />
+              <ArrowIcon className="size-4" />
             </a>
           </div>
         </div>

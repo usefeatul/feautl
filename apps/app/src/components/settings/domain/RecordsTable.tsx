@@ -1,19 +1,12 @@
 "use client";
 
 import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@featul/ui/components/table";
-
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@featul/ui/components/table";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import type { DomainInfo } from "../../../types/domain";
 import { dnsStatusBadgeClass } from "../../../types/domain";
+import { Button } from "@featul/ui/components/button";
 
 
 export default function RecordsTable({ info }: { info: DomainInfo }) {
@@ -34,10 +27,11 @@ export default function RecordsTable({ info }: { info: DomainInfo }) {
           <TableCell className="px-3">
             <div className="flex items-center gap-2 min-w-0">
               <span className="truncate">{info.cnameName}</span>
-              <button
+              <Button
                 type="button"
                 aria-label="Copy"
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-md  bg-muted text-xs cursor-pointer"
+                variant="card"
+                size="xs"
                 onClick={() => {
                   try {
                     navigator.clipboard.writeText(info.cnameName);
@@ -46,16 +40,17 @@ export default function RecordsTable({ info }: { info: DomainInfo }) {
                 }}
               >
                 <Copy className="size-4" />
-              </button>
+              </Button>
             </div>
           </TableCell>
           <TableCell className="px-3">
             <div className="flex items-center gap-2 min-w-0">
               <span className="truncate">{info.cnameTarget}</span>
-              <button
+              <Button
                 type="button"
                 aria-label="Copy"
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-md  bg-muted text-xs cursor-pointer"
+                variant="card"
+                size="xs"
                 onClick={() => {
                   try {
                     navigator.clipboard.writeText(info.cnameTarget);
@@ -64,11 +59,11 @@ export default function RecordsTable({ info }: { info: DomainInfo }) {
                 }}
               >
                 <Copy className="size-4" />
-              </button>
+              </Button>
             </div>
           </TableCell>
           <TableCell className="px-3 text-center">
-            <span className={`text-xs px-2 py-0.5 rounded-md  ${dnsStatusBadgeClass(info.status || "pending")}`}>
+            <span className={`text-xs font-medium ${dnsStatusBadgeClass(info.status || "pending")}`}>
               {info.status === "verified" ? "VALID" : "PENDING"}
             </span>
           </TableCell>
@@ -78,10 +73,11 @@ export default function RecordsTable({ info }: { info: DomainInfo }) {
           <TableCell className="px-3">
             <div className="flex items-center gap-2 min-w-0">
               <span className="truncate">{info.txtName}</span>
-              <button
+              <Button
                 type="button"
                 aria-label="Copy"
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-md  bg-muted text-xs cursor-pointer"
+                variant="card"
+                size="xs"
                 onClick={() => {
                   try {
                     navigator.clipboard.writeText(info.txtName);
@@ -90,16 +86,17 @@ export default function RecordsTable({ info }: { info: DomainInfo }) {
                 }}
               >
                 <Copy className="size-4" />
-              </button>
+              </Button>
             </div>
           </TableCell>
           <TableCell className="px-3">
             <div className="flex items-center gap-2 min-w-0">
               <span className="truncate">{info.txtValue}</span>
-              <button
+              <Button
                 type="button"
                 aria-label="Copy"
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-md  bg-muted text-xs cursor-pointer"
+                variant="card"
+                size="xs"
                 onClick={() => {
                   try {
                     navigator.clipboard.writeText(info.txtValue);
@@ -108,11 +105,11 @@ export default function RecordsTable({ info }: { info: DomainInfo }) {
                 }}
               >
                 <Copy className="size-4" />
-              </button>
+              </Button>
             </div>
           </TableCell>
           <TableCell className="px-3 text-center">
-            <span className={`text-xs px-2 py-0.5 rounded-md  ${dnsStatusBadgeClass(info.status || "pending")}`}>
+            <span className={`text-xs font-medium ${dnsStatusBadgeClass(info.status || "pending")}`}>
               {info.status === "verified" ? "VALID" : "PENDING"}
             </span>
           </TableCell>

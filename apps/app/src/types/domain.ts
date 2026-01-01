@@ -11,7 +11,7 @@ export type DomainInfo = {
 export type DNSStatus = "pending" | "verified" | "error"
 
 export function dnsStatusBadgeClass(status: DNSStatus) {
-  if (status === "pending") return "bg-orange-50 text-orange-500"
-  if (status === "verified") return "bg-green-50 text-green-500"
-  return "bg-card text-accent"
+  if (status === "pending") return "text-orange-500"
+  if (status === "verified") return "text-green-500"
+  return "text-red-500"
 }

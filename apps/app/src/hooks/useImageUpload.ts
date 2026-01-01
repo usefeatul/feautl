@@ -1,15 +1,7 @@
 import { useState, useRef } from "react"
 import { toast } from "sonner"
 import { getCommentImageUploadUrl } from "@/lib/comment-service"
-
-const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"]
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024 // 5MB
-
-export interface UploadedImage {
-  url: string
-  name: string
-  type: string
-}
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE, UploadedImage } from "./usePostImageUpload"
 
 export function useImageUpload(postId: string) {
   const [uploadedImage, setUploadedImage] = useState<UploadedImage | null>(null)

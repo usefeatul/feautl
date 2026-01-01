@@ -10,6 +10,7 @@ import { Input } from "@featul/ui/components/input"
 import { toast } from "sonner"
 import { authClient } from "@featul/auth/client"
 import { client } from "@featul/api/client"
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE } from "@/hooks/usePostImageUpload"
 
 export default function Profile({ initialUser }: { initialUser?: { name?: string; email?: string; image?: string | null } | null }) {
   const queryClient = useQueryClient()
@@ -54,13 +55,12 @@ export default function Profile({ initialUser }: { initialUser?: { name?: string
   }, [uploadingImage])
 
   const onAvatarFile = React.useCallback(async (file: File) => {
-    const allowed = ["image/png", "image/jpeg", "image/webp", "image/gif"]
-    if (!allowed.includes(file.type)) {
-      toast.error("Unsupported file type")
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      toast.error("Unsupported file type. Please use PNG, JPEG, WebP, or GIF.")
       return
     }
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error("File too large")
+    if (file.size > MAX_IMAGE_SIZE) {
+      toast.error("Image too large. Maximum size is 5MB.")
       return
     }
 
@@ -174,7 +174,7 @@ export default function Profile({ initialUser }: { initialUser?: { name?: string
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/png,image/jpeg,image/webp,image/gif"
+              accept={ALLOWED_IMAGE_TYPES.join(",")}
               className="hidden"
               onChange={onAvatarInputChange}
             />

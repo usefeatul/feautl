@@ -2,8 +2,8 @@ import { useState, useRef } from "react"
 import { toast } from "sonner"
 import { getPostImageUploadUrl } from "@/lib/post-service"
 
-const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"]
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024 // 5MB
+export const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"]
+export const MAX_IMAGE_SIZE = 5 * 1024 * 1024
 
 export interface UploadedImage {
   url: string

@@ -43,10 +43,6 @@ export default function Appearance() {
   return (
     <SectionCard title="Appearance" description="Choose light, dark, or system theme">
       <div className="space-y-4">
-        <div className="space-y-1">
-          <div className="text-sm font-medium">Theme</div>
-          <div className="text-xs text-accent">Pick how the app should look.</div>
-        </div>
         <div className="grid gap-4 md:grid-cols-3">
           {options.map(({ key, label, description, Preview }) => {
             const isActive = currentTheme === key

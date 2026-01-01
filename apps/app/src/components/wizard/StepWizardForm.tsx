@@ -169,6 +169,7 @@ export default function StepWizardForm({
               placeholder="My workspace"
               className="h-10 bg-muted/50 placeholder:text-accent"
               autoFocus
+              maxLength={15}
             />
           </div>
         )}

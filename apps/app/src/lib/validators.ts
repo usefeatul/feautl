@@ -33,14 +33,14 @@ export const suggestDomainFix = (domain: string) => {
   return null
 }
 
-export const isNameValid = (name: string) => z.string().min(1).safeParse(name.trim()).success
+export const isNameValid = (name: string) => z.string().min(1).max(15).safeParse(name.trim()).success
 
 export const isSlugValid = (slug: string) => z.string().min(5).regex(/^[a-z]+$/).safeParse(slug.trim()).success
 
 export const isTimezoneValid = (tz: string) => z.string().min(1).safeParse(String(tz)).success
 
 export const workspaceSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1).max(15),
   domain: z.string().min(1).refine(isDomainValid),
   slug: z.string().min(5).regex(/^[a-z]+$/),
   timezone: z.string().min(1),

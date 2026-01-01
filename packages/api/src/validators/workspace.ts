@@ -11,7 +11,7 @@ export const checkSlugInputSchema = z.object({
 })
 
 export const createWorkspaceInputSchema = z.object({
-  name: z.string().min(1).max(64),
+  name: z.string().min(1).max(15),
   domain: z
     .string()
     .trim()
@@ -43,7 +43,7 @@ export const verifyDomainInputSchema = z.object({
 
 export const updateWorkspaceNameInputSchema = z.object({
   slug: slugSchema,
-  name: z.string().trim().min(1).max(64),
+  name: z.string().trim().min(1).max(15),
 })
 
 export const deleteWorkspaceInputSchema = z.object({

@@ -191,6 +191,7 @@ export default function BrandingSection({ slug, initialHidePoweredBy, initialPla
               value={workspaceName}
               onChange={(e) => setWorkspaceName(e.target.value)}
               className="h-9 w-[220px] text-right"
+              maxLength={15}
             />
           </div>
         </div>

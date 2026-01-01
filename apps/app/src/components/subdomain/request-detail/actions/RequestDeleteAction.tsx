@@ -38,7 +38,7 @@ export function RequestDeleteAction({
         if (res.ok) {
           toast.success("Post deleted successfully");
           try {
-            const detail: PostDeletedEventDetail = { postId, workspaceSlug };
+            const detail: PostDeletedEventDetail = { postId, workspaceSlug: workspaceSlug || "", status: "deleted" };
             window.dispatchEvent(
               new CustomEvent<PostDeletedEventDetail>("post:deleted", { detail })
             );
@@ -76,27 +76,46 @@ export function RequestDeleteAction({
         <TrashIcon className="ml-auto size-4" />
       </PopoverListItem>
 
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription className="text-sm text-accent">
-              Are you sure you want to delete this post?
-            </AlertDialogDescription>
+      <AlertDialog
+        open={open}
+        onOpenChange={(next) => {
+          if (isPending) return;
+          setOpen(next);
+        }}
+      >
+        <AlertDialogContent className="p-1 bg-muted rounded-xl gap-2">
+          <AlertDialogHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
+            <AlertDialogTitle className="flex items-center gap-2 px-2 mt-1 py-1 text-sm font-normal">
+              <TrashIcon width={18} height={18} className="opacity-80" />
+              Are you absolutely sure?
+            </AlertDialogTitle>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={(e) => {
-                e.preventDefault();
-                handleDelete();
-              }}
-              disabled={isPending}
-              className="bg-red-500 hover:bg-red-600 text-white"
-            >
-              {isPending ? "Deleting..." : "Delete"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
+          <div className="bg-card rounded-lg p-2 dark:bg-black/40 border border-border">
+            <AlertDialogDescription className="space-y-3 text-sm text-accent mb-2">
+              <span className="block">
+                This will permanently delete this post. This action cannot be
+                undone.
+              </span>
+            </AlertDialogDescription>
+            <AlertDialogFooter className="flex justify-end gap-2 mt-4">
+              <AlertDialogCancel
+                disabled={isPending}
+                className="h-8 px-3 text-sm"
+              >
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDelete();
+                }}
+                disabled={isPending}
+                className="h-8 px-4 text-sm bg-red-500 hover:bg-red-600 text-white"
+              >
+                {isPending ? "Deleting..." : "Delete"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </div>
         </AlertDialogContent>
       </AlertDialog>
     </>

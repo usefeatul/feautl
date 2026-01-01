@@ -29,7 +29,7 @@ const buttonVariants = cva(
           "border bg-card text-foreground border-muted hover:bg-muted/50 hover:text-accent-foreground hover:border-accent/20 dark:bg-black/40 dark:hover:bg-black/50 ring-1 ring-border/60 ring-offset-1 ring-offset-background"
         ),
         plain: cn(
-          "bg-background text-foreground hover:bg-muted hover:text-accent-foreground dark:hover:bg-black/50 ring-1 ring-border/60 ring-offset-1 ring-offset-background"
+          "bg-background text-foreground hover:bg-muted hover:text-accent-foreground dark:hover:bg-black/50 "
         ),
         card: cn(
           "bg-card dark:bg-black/5 text-foreground hover:bg-muted/30 hover:text-accent-foreground dark:hover:bg-black/30"

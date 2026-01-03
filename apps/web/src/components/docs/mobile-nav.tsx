@@ -92,7 +92,7 @@ export function DocsMobileNav() {
       {/* Floating Bottom Navigation Pill / Expanded Menu */}
       <div 
         className={cn(
-          "md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-70 w-auto max-w-[calc(100vw-32px)] transition-all duration-300 ease-in-out",
+          "md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] w-auto max-w-[calc(100vw-32px)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
           !open && !showBottomNav ? "translate-y-24 opacity-0" : "translate-y-0 opacity-100"
         )}
       >
@@ -100,7 +100,13 @@ export function DocsMobileNav() {
           {open ? (
             <motion.div
               layoutId="nav-pill"
-              className="bg-[#0A0A0A] border border-white/10 rounded-4xl shadow-2xl overflow-hidden w-[340px] max-h-[80vh] flex flex-col"
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 25,
+                mass: 0.8
+              }}
+              className="bg-[#0A0A0A] border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden w-[90vw] max-w-[420px] max-h-[80vh] flex flex-col"
             >
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
                 <div className="flex flex-col">
@@ -158,6 +164,12 @@ export function DocsMobileNav() {
           ) : (
             <motion.button
               layoutId="nav-pill"
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 25,
+                mass: 0.8
+              }}
               onClick={() => setOpen(true)}
               className="bg-[#1A1A1A] text-white rounded-full px-1 py-1 flex items-center shadow-lg border border-white/10 min-w-[260px]"
             >

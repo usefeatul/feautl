@@ -1,5 +1,11 @@
 import type { ReactNode } from "react"
 import { DocsSidebar } from "./sidebar"
+import { FeatulLogoIcon } from "@featul/ui/icons/featul-logo"
+import Link from "next/link"
+import { Menu } from "lucide-react"
+import { Button } from "@featul/ui/components/button"
+import { Sheet, SheetContent, SheetTrigger } from "@featul/ui/components/sheet"
+import { DocsMobileNav } from "./mobile-nav"
 
 interface DocsLayoutShellProps {
   children: ReactNode
@@ -15,10 +21,12 @@ export function DocsLayoutShell({ children, rightColumn }: DocsLayoutShellProps)
         </div>
       </aside>
 
-      <main className="flex-1 flex flex-col min-w-0 pt-2 lg:pt-3">
-        <div className="flex-1 bg-background rounded-tl-2xl shadow-[0_0_0_1px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col relative">
+      <DocsMobileNav />
+
+      <main className="flex-1 flex flex-col min-w-0 pt-14 md:pt-2 lg:pt-3">
+        <div className="flex-1 bg-background md:rounded-tl-2xl shadow-[0_0_0_1px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col relative">
           <div className="flex-1 overflow-y-auto">
-            <div className="container mx-auto px-6 pt-8 pb-12 md:px-12 lg:px-16 max-w-[90rem]">
+            <div className="container mx-auto px-6 pt-8 pb-24 md:pb-12 md:px-12 lg:px-16 max-w-[90rem]">
               <div className="flex flex-col xl:flex-row xl:justify-center xl:gap-12">
                 {/* Left Spacer for Perfect Centering on large screens */}
                 {rightColumn && <div className="hidden 2xl:block w-64 shrink-0" />}

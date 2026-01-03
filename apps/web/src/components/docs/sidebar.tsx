@@ -5,17 +5,17 @@ import { usePathname } from "next/navigation"
 import { cn } from "@featul/ui/lib/utils"
 import { FeatulLogoIcon } from "@featul/ui/icons/featul-logo"
 
-interface DocsNavItem {
+export interface DocsNavItem {
   label: string
   href: string
 }
 
-interface DocsNavSection {
+export interface DocsNavSection {
   label: string
   items: DocsNavItem[]
 }
 
-const docsSections: DocsNavSection[] = [
+export const docsSections: DocsNavSection[] = [
   {
     label: "Getting started",
     items: [

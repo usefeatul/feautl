@@ -39,7 +39,7 @@ export default function RecordsTable({ info }: { info: DomainInfo }) {
                   } catch {}
                 }}
               >
-                <Copy className="size-4" />
+                <Copy className="size-3" />
               </Button>
             </div>
           </TableCell>
@@ -58,7 +58,7 @@ export default function RecordsTable({ info }: { info: DomainInfo }) {
                   } catch {}
                 }}
               >
-                <Copy className="size-4" />
+                <Copy className="size-3" />
               </Button>
             </div>
           </TableCell>
@@ -85,7 +85,7 @@ export default function RecordsTable({ info }: { info: DomainInfo }) {
                   } catch {}
                 }}
               >
-                <Copy className="size-4" />
+                <Copy className="size-3" />
               </Button>
             </div>
           </TableCell>
@@ -104,7 +104,7 @@ export default function RecordsTable({ info }: { info: DomainInfo }) {
                   } catch {}
                 }}
               >
-                <Copy className="size-4" />
+                <Copy className="size-3" />
               </Button>
             </div>
           </TableCell>

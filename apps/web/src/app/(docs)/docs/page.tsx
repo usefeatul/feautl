@@ -30,7 +30,7 @@ export default function DocsIndexPage() {
         />
       }
     >
-      <section className="py-8 md:py-12 lg:py-16">
+      <section>
         <div className="max-w-2xl lg:max-w-3xl space-y-6">
           <div className="space-y-3">
             <div className="inline-flex items-center rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-accent">

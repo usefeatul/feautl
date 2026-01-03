@@ -55,9 +55,6 @@ export function DocsMobileNav(): ReactElement {
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isBottomNavVisible, setIsBottomNavVisible] = useState<boolean>(true)
-  const [isZooming, setIsZooming] = useState<boolean>(false)
-
-  const openTimeoutIdRef = useRef<number | null>(null)
   const lastScrollYRef = useRef<number>(0)
 
   const currentPageLabel = useMemo(
@@ -71,46 +68,20 @@ export function DocsMobileNav(): ReactElement {
   )
 
   function handleOpen(): void {
-    setIsZooming(true)
-
-    if (openTimeoutIdRef.current !== null) {
-      window.clearTimeout(openTimeoutIdRef.current)
-    }
-
-    openTimeoutIdRef.current = window.setTimeout(() => {
-      setIsOpen(true)
-      setIsZooming(false)
-    }, 150)
+    setIsOpen(true)
   }
 
   function handleClose(): void {
     setIsOpen(false)
-    setIsZooming(false)
-
-    if (openTimeoutIdRef.current !== null) {
-      window.clearTimeout(openTimeoutIdRef.current)
-      openTimeoutIdRef.current = null
-    }
   }
-
-  useEffect(
-    () => () => {
-      if (openTimeoutIdRef.current !== null) {
-        window.clearTimeout(openTimeoutIdRef.current)
-      }
-    },
-    [],
-  )
 
   useEffect(() => {
     if (!pathname) {
       setIsOpen(false)
-      setIsZooming(false)
       return
     }
 
     setIsOpen(false)
-    setIsZooming(false)
   }, [pathname])
 
   useEffect(() => {
@@ -168,23 +139,43 @@ export function DocsMobileNav(): ReactElement {
       {/* Floating Bottom Navigation Pill / Expanded Menu */}
       <div
         className={cn(
-          "md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] w-auto max-w-[calc(100vw-32px)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+          "md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] w-auto max-w-[calc(100vw-32px)]",
           !isOpen && !isBottomNavVisible ? "translate-y-24 opacity-0" : "translate-y-0 opacity-100",
         )}
       >
-        <AnimatePresence mode="wait">
+        <motion.div
+          role="button"
+          aria-label="Docs navigation"
+          aria-expanded={isOpen}
+          aria-controls="docs-mobile-nav-panel"
+          onClick={!isOpen ? handleOpen : undefined}
+          initial={false}
+          animate={{
+            width: isOpen ? "90vw" : "70vw",
+            height: isOpen ? "80vh" : "3rem",
+            transition: isOpen
+              ? {
+                  width: { duration: 0.3, ease: "easeOut" },
+                  height: { delay: 0.3, duration: 0.2, ease: "easeIn" },
+                }
+              : {
+                  height: { duration: 0.2, ease: "easeIn" },
+                  width: { delay: 0.2, duration: 0.3, ease: "easeOut" },
+                },
+          }}
+          style={{ originY: 1 }}
+          className={cn(
+            "bg-black text-white rounded-2xl shadow-lg border border-white/10 overflow-hidden flex flex-col mx-auto",
+            "max-w-[380px]",
+            isOpen ? "shadow-2xl rounded-4xl" : "",
+          )}
+        >
           {isOpen ? (
-            <motion.div
-              layoutId="nav-pill"
-              transition={{
-                type: "spring",
-                stiffness: 260,
-                damping: 25,
-                mass: 0.8,
-              }}
-              className="bg-black text-white rounded-4xl shadow-2xl border border-white/10 w-[90vw] max-w-[420px] max-h-[80vh] flex flex-col"
-            >
-              <div className="overflow-y-auto flex-1 p-4 space-y-6">
+            <>
+              <div
+                id="docs-mobile-nav-panel"
+                className="overflow-y-auto flex-1 p-4 space-y-6"
+              >
                 {docsSections.map((section) => (
                   <div key={section.label} className="space-y-2">
                     <div className="text-xs font-medium uppercase tracking-wider text-white/40 px-2">
@@ -224,37 +215,32 @@ export function DocsMobileNav(): ReactElement {
               <button
                 type="button"
                 onClick={handleClose}
-                className="flex items-center justify-center gap-2 px-4 py-3 border-t border-white/10 text-sm font-medium"
+                className="flex w-full items-center border-t border-white/10"
               >
-                <span className="text-white/60 text-xs">{currentSectionLabel}</span>
-                <motion.span layoutId="nav-page-label">{currentPageLabel}</motion.span>
-                <ChevronUp className="w-4 h-4 text-white/60 rotate-180" />
+                <div className="flex-1 flex items-center justify-start gap-2 px-4 py-3 text-sm font-medium">
+                  <span className="text-white/60 text-xs">{currentSectionLabel}</span>
+                  <span>{currentPageLabel}</span>
+                </div>
+                <div className="flex items-center pl-1 pr-3">
+                  <ChevronUp className="w-4 h-4 text-white/60 rotate-180" />
+                </div>
               </button>
-            </motion.div>
+            </>
           ) : (
-            <motion.button
-              layoutId="nav-pill"
-              animate={{ scale: isZooming ? 1.15 : 1 }}
-              whileTap={{ scale: 1.15 }}
-              transition={{
-                type: "spring",
-                stiffness: 260,
-                damping: 25,
-                mass: 0.8,
-              }}
-              onClick={handleOpen}
-              className="bg-black text-white rounded-2xl px-1 py-1 flex items-center shadow-lg border border-white/10 min-w-[280px]"
+            <button
+              type="button"
+              className="flex items-center w-full px-1 py-1"
             >
               <div className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium">
                 <span className="text-white/60 text-xs">{currentSectionLabel}</span>
-                <motion.span layoutId="nav-page-label">{currentPageLabel}</motion.span>
+                <span>{currentPageLabel}</span>
               </div>
               <div className="flex items-center pl-1 pr-3">
                 <ChevronUp className="w-4 h-4 text-white/60" />
               </div>
-            </motion.button>
+            </button>
           )}
-        </AnimatePresence>
+        </motion.div>
       </div>
     </>
   )

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 @import "@featul/ui/globals.css";
 @import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
-
 
 html {
   scroll-behavior: smooth;
@@ -12,15 +12,3 @@ html {
     scroll-behavior: auto;
   }
 }
-/* 
-@layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family:
-      var(--font-playfair), ui-serif, Georgia, "Times New Roman", Times, serif;
-  }
-} */

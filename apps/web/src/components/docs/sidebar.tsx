@@ -5,16 +5,26 @@ import { usePathname } from "next/navigation"
 import { cn } from "@featul/ui/lib/utils"
 import { FeatulLogoIcon } from "@featul/ui/icons/featul-logo"
 
+/**
+ * Single navigable item within a docs navigation section.
+ */
 export interface DocsNavItem {
   label: string
   href: string
 }
 
+/**
+ * Group of related docs navigation items rendered under a shared label.
+ */
 export interface DocsNavSection {
   label: string
   items: DocsNavItem[]
 }
 
+/**
+ * Static configuration of docs navigation sections shared by the desktop
+ * sidebar and the mobile docs navigation.
+ */
 export const docsSections: DocsNavSection[] = [
   {
     label: "Getting started",
@@ -47,6 +57,9 @@ export const docsSections: DocsNavSection[] = [
   },
 ]
 
+/**
+ * Desktop sidebar navigation for docs pages.
+ */
 export function DocsSidebar() {
   const pathname = usePathname()
 

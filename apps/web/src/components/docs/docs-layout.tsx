@@ -1,17 +1,19 @@
 import type { ReactNode } from "react"
 import { DocsSidebar } from "./sidebar"
-import { FeatulLogoIcon } from "@featul/ui/icons/featul-logo"
-import Link from "next/link"
-import { Menu } from "lucide-react"
-import { Button } from "@featul/ui/components/button"
-import { Sheet, SheetContent, SheetTrigger } from "@featul/ui/components/sheet"
 import { DocsMobileNav } from "./mobile-nav"
 
+/**
+ * Props for the DocsLayoutShell component.
+ */
 interface DocsLayoutShellProps {
   children: ReactNode
   rightColumn?: ReactNode
 }
 
+/**
+ * Shared layout shell for documentation pages, providing the desktop sidebar,
+ * mobile navigation, and optional right-hand column for contextual content.
+ */
 export function DocsLayoutShell({ children, rightColumn }: DocsLayoutShellProps) {
   return (
     <div className="flex h-screen overflow-hidden bg-muted">

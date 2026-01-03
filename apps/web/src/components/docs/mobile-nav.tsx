@@ -159,14 +159,13 @@ export function DocsMobileNav() {
             <motion.button
               layoutId="nav-pill"
               onClick={() => setOpen(true)}
-              className="bg-[#1A1A1A] text-white rounded-full px-1 py-1 flex items-center shadow-lg border border-white/10 min-w-[200px]"
+              className="bg-[#1A1A1A] text-white rounded-full px-1 py-1 flex items-center shadow-lg border border-white/10 min-w-[260px]"
             >
               <div className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium">
                 <span className="text-white/60 text-xs">{getCurrentSection()}</span>
-                <span className="w-1 h-1 rounded-full bg-white/40" />
                 <span>{getCurrentPageLabel()}</span>
               </div>
-              <div className="flex items-center border-l border-white/10 pl-1 pr-3">
+              <div className="flex items-center pl-1 pr-3">
                 <ChevronUp className="w-4 h-4 text-white/60" />
               </div>
             </motion.button>

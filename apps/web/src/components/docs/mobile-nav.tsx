@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@featul/ui/lib/utils"
-import { BookOpen, ChevronUp, X } from "lucide-react"
+import { BookOpen, ChevronUp } from "lucide-react"
 import type { ReactElement } from "react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@featul/ui/components/button"
@@ -180,66 +180,56 @@ export function DocsMobileNav(): ReactElement {
                 type: "spring",
                 stiffness: 260,
                 damping: 25,
-                mass: 0.8
+                mass: 0.8,
               }}
-              className="bg-black border border-border/30 rounded-4xl shadow-2xl overflow-hidden w-[90vw] max-w-[420px] max-h-[80vh] flex flex-col"
+              className="bg-black text-white rounded-4xl shadow-2xl border border-white/10 w-[90vw] max-w-[420px] max-h-[80vh] flex flex-col"
             >
-              <div className="flex items-center justify-between px-6 py-4 border-b border-border/30">
-                <div className="flex flex-col">
-                  <motion.span
-                    layoutId="nav-page-label"
-                    className="text-white font-medium"
-                  >
-                    {currentPageLabel}
-                  </motion.span>
-                </div>
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleClose()
-                  }}
-                  className="p-2 -mr-2 text-white/60 hover:text-white transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              
-              <div className="overflow-y-auto p-4 space-y-6">
+              <div className="overflow-y-auto flex-1 p-4 space-y-6">
                 {docsSections.map((section) => (
                   <div key={section.label} className="space-y-2">
-                  <div className="text-xs font-medium uppercase tracking-wider text-white/40 px-2">
-                    {section.label}
-                  </div>
-                  <ul className="space-y-1">
-                    {section.items.map((item) => {
-                      const isActive = pathname === item.href
-                      return (
-                        <li key={item.href}>
-                          <Link
-                            href={item.href}
-                            onClick={handleClose}
-                            className={cn(
-                              "flex items-center gap-3 rounded-4xl px-3 py-2 text-sm transition-colors",
-                              isActive
-                                ? "bg-white/10 text-white font-medium"
-                                : "text-white/60 hover:text-white hover:bg-white/5",
-                            )}
-                          >
-                            <span
+                    <div className="text-xs font-medium uppercase tracking-wider text-white/40 px-2">
+                      {section.label}
+                    </div>
+                    <ul className="space-y-1">
+                      {section.items.map((item) => {
+                        const isActive = pathname === item.href
+                        return (
+                          <li key={item.href}>
+                            <Link
+                              href={item.href}
+                              onClick={handleClose}
                               className={cn(
-                                "size-1.5 rounded-sm transition-colors",
-                                isActive ? "bg-primary text-white" : "bg-white/20",
+                                "flex items-center gap-3 rounded-4xl px-3 py-2 text-sm transition-colors",
+                                isActive
+                                  ? "bg-white/10 text-white font-medium"
+                                  : "text-white/60 hover:text-white hover:bg-white/5",
                               )}
-                            />
-                            {item.label}
-                          </Link>
-                        </li>
-                      )
-                    })}
+                            >
+                              <span
+                                className={cn(
+                                  "size-1.5 rounded-sm transition-colors",
+                                  isActive ? "bg-primary text-white" : "bg-white/20",
+                                )}
+                              />
+                              {item.label}
+                            </Link>
+                          </li>
+                        )
+                      })}
                     </ul>
                   </div>
                 ))}
               </div>
+
+              <button
+                type="button"
+                onClick={handleClose}
+                className="flex items-center justify-center gap-2 px-4 py-3 border-t border-white/10 text-sm font-medium"
+              >
+                <span className="text-white/60 text-xs">{currentSectionLabel}</span>
+                <motion.span layoutId="nav-page-label">{currentPageLabel}</motion.span>
+                <ChevronUp className="w-4 h-4 text-white/60 rotate-180" />
+              </button>
             </motion.div>
           ) : (
             <motion.button
@@ -250,7 +240,7 @@ export function DocsMobileNav(): ReactElement {
                 type: "spring",
                 stiffness: 260,
                 damping: 25,
-                mass: 0.8
+                mass: 0.8,
               }}
               onClick={handleOpen}
               className="bg-black text-white rounded-2xl px-1 py-1 flex items-center shadow-lg border border-white/10 min-w-[280px]"

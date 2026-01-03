@@ -15,8 +15,8 @@ export function DocsLayoutShell({ children, rightColumn }: DocsLayoutShellProps)
         </div>
       </div>
 
-      <main className="flex-1 flex flex-col min-w-0 pt-2 pr-2 lg:pt-3 lg:pr-3">
-        <div className="flex-1 bg-background rounded-t-2xl border border-border/50 border-b-0 overflow-hidden relative flex flex-col">
+      <main className="flex-1 flex flex-col min-w-0 pt-2 lg:pt-3">
+        <div className="flex-1 bg-background rounded-tl-2xl border-l border-t border-border/50  overflow-hidden relative flex flex-col">
           <div className="flex-1 overflow-y-auto pt-12 pb-16 px-8 sm:px-12 lg:px-16">
             <div className="mx-auto max-w-6xl flex gap-12">
               <div className="flex-1 min-w-0 max-w-3xl">

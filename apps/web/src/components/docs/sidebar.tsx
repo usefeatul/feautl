@@ -72,7 +72,7 @@ export function DocsSidebar() {
                     href={item.href}
                     className={cn(
                       "group flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-accent hover:text-foreground hover:bg-background/50 transition-colors",
-                      isActive && "bg-background text-foreground shadow-sm"
+                      isActive && "bg-background text-foreground"
                     )}
                   >
                     <span

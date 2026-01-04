@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@featul/ui/lib/utils"
-import { BookOpen } from "lucide-react"
+import { FeatulLogoIcon } from "@featul/ui/icons/featul-logo"
 import ChevronExpandIcon from "@featul/ui/icons/chevron-expand"
 import type { ReactElement } from "react"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -109,7 +109,7 @@ export function DocsMobileNav(): ReactElement {
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-background border-b border-border h-14 flex items-center px-4 justify-between">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 font-medium text-sm">
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
+            <FeatulLogoIcon className="text-muted-foreground" size={16} />
             <span>Docs</span>
           </div>
         </div>
@@ -124,32 +124,16 @@ export function DocsMobileNav(): ReactElement {
         </div>
       </div>
 
-      {/* Backdrop */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={handleClose}
-            className="md:hidden fixed inset-0 z-60 bg-black/40"
-          />
-        )}
-      </AnimatePresence>
-
       {/* Floating Bottom Navigation Pill / Expanded Menu */}
       <div
         className={cn(
-          "md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] w-auto max-w-[calc(100vw-32px)]",
+          "md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-70 w-auto max-w-[calc(100vw-32px)]",
           !isOpen && !isBottomNavVisible ? "translate-y-24 opacity-0" : "translate-y-0 opacity-100",
         )}
       >
         <motion.div
-          role="button"
+          role="group"
           aria-label="Docs navigation"
-          aria-expanded={isOpen}
-          aria-controls="docs-mobile-nav-panel"
-          onClick={!isOpen ? handleOpen : undefined}
           initial={false}
           animate={{
             width: isOpen ? "90vw" : "50vw",
@@ -170,76 +154,71 @@ export function DocsMobileNav(): ReactElement {
             "max-w-[380px]",
           )}
         >
-          {isOpen ? (
-            <>
-              <div
-                id="docs-mobile-nav-panel"
-                className="overflow-y-auto flex-1 p-4 space-y-6"
-              >
-                {docsSections.map((section) => (
-                  <div key={section.label} className="space-y-2">
-                    <div className="text-xs font-medium uppercase tracking-wider text-white/40 px-2">
-                      {section.label}
-                    </div>
-                    <ul className="space-y-1">
-                      {section.items.map((item) => {
-                        const isActive = pathname === item.href
-                        return (
-                          <li key={item.href}>
-                            <Link
-                              href={item.href}
-                              onClick={handleClose}
-                              className={cn(
-                                "flex items-center gap-3 rounded-4xl px-3 py-2 text-sm transition-colors",
-                                isActive
-                                  ? "bg-white/10 text-white font-medium"
-                                  : "text-white/60 hover:text-white hover:bg-white/5",
-                              )}
-                            >
-                              <span
-                                className={cn(
-                                  "size-1.5 rounded-sm transition-colors",
-                                  isActive ? "bg-primary text-white" : "bg-white/20",
-                                )}
-                              />
-                              {item.label}
-                            </Link>
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={handleClose}
-                className="flex w-full items-center"
-              >
-                <div className="flex-1 flex items-center justify-start gap-2 px-4 py-3 text-sm font-medium">
-                  <span className="text-white/60 text-xs">{currentSectionLabel}</span>
-                  <span>{currentPageLabel}</span>
-                </div>
-                <div className="flex items-center pl-1 pr-3">
-                  <ChevronExpandIcon className="w-4 h-4 text-white/60" />
-                </div>
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              className="flex items-center w-full px-1 py-1"
+          {isOpen && (
+            <div
+              id="docs-mobile-nav-panel"
+              className="overflow-y-auto flex-1 p-4 space-y-6"
             >
-              <div className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium">
-                <span className="text-white/60 text-xs">{currentSectionLabel}</span>
+              {docsSections.map((section) => (
+                <div key={section.label} className="space-y-2">
+                  <div className="text-xs font-medium uppercase tracking-wider text-white/40 px-2">
+                    {section.label}
+                  </div>
+                  <ul className="space-y-1">
+                    {section.items.map((item) => {
+                      const isActive = pathname === item.href
+                      return (
+                        <li key={item.href}>
+                          <Link
+                            href={item.href}
+                            onClick={handleClose}
+                            className={cn(
+                              "flex items-center gap-3 rounded-4xl px-3 py-2 text-sm transition-colors",
+                              isActive
+                                ? "bg-white/10 text-white font-medium"
+                                : "text-accent hover:text-white hover:bg-white/5",
+                            )}
+                          >
+                            <span
+                              className={cn(
+                                "size-1.5 rounded-sm transition-colors",
+                                isActive ? "bg-primary text-white" : "bg-white/20",
+                              )}
+                            />
+                            {item.label}
+                          </Link>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <button
+            type="button"
+            onClick={isOpen ? handleClose : handleOpen}
+            className="flex w-full items-center px-1 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            aria-label={`Toggle docs navigation, currently on ${currentSectionLabel} – ${currentPageLabel}`}
+            aria-expanded={isOpen}
+            aria-controls="docs-mobile-nav-panel"
+          >
+            <div
+              className={cn(
+                "flex w-full items-center px-4 py-2 text-sm font-medium text-white transition-all duration-300 ease-out",
+                isOpen ? "justify-between" : "justify-center",
+              )}
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-accent text-xs">{currentSectionLabel}</span>
                 <span>{currentPageLabel}</span>
               </div>
-              <div className="flex items-center pl-1 pr-3">
-                <ChevronExpandIcon className="w-4 h-4 text-white/60" />
+              <div className="flex items-center pl-2 pr-1">
+                <ChevronExpandIcon className="w-4 h-4 text-accent" />
               </div>
-            </button>
-          )}
+            </div>
+          </button>
         </motion.div>
       </div>
     </>

@@ -25,7 +25,7 @@ export function DocsLayoutShell({ children, rightColumn }: DocsLayoutShellProps)
 
       <DocsMobileNav />
 
-      <main className="flex-1 flex flex-col min-w-0 pt-14 md:pt-2 lg:pt-3">
+      <main className="flex-1 flex flex-col min-w-0 pt-8 md:pt-1 lg:pt-2">
         <div className="flex-1 bg-background md:rounded-tl-2xl shadow-[0_0_0_1px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col relative">
           <div className="flex-1 overflow-y-auto">
             <div className="container mx-auto px-6 pt-8 pb-24 md:pb-12 md:px-12 lg:px-16 max-w-[90rem]">

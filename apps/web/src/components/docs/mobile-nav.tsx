@@ -3,7 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@featul/ui/lib/utils"
-import { BookOpen, ChevronUp } from "lucide-react"
+import { BookOpen } from "lucide-react"
+import ChevronExpandIcon from "@featul/ui/icons/chevron-expand"
 import type { ReactElement } from "react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@featul/ui/components/button"
@@ -131,7 +132,7 @@ export function DocsMobileNav(): ReactElement {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="md:hidden fixed inset-0 z-60 bg-black/40 backdrop-blur-sm"
+            className="md:hidden fixed inset-0 z-60 bg-black/40"
           />
         )}
       </AnimatePresence>
@@ -151,7 +152,7 @@ export function DocsMobileNav(): ReactElement {
           onClick={!isOpen ? handleOpen : undefined}
           initial={false}
           animate={{
-            width: isOpen ? "90vw" : "60vw",
+            width: isOpen ? "90vw" : "50vw",
             height: isOpen ? "80vh" : "3rem",
             transition: isOpen
               ? {
@@ -214,14 +215,14 @@ export function DocsMobileNav(): ReactElement {
               <button
                 type="button"
                 onClick={handleClose}
-                className="flex w-full items-center border-t border-white/10"
+                className="flex w-full items-center"
               >
                 <div className="flex-1 flex items-center justify-start gap-2 px-4 py-3 text-sm font-medium">
                   <span className="text-white/60 text-xs">{currentSectionLabel}</span>
                   <span>{currentPageLabel}</span>
                 </div>
                 <div className="flex items-center pl-1 pr-3">
-                  <ChevronUp className="w-4 h-4 text-white/60 rotate-180" />
+                  <ChevronExpandIcon className="w-4 h-4 text-white/60" />
                 </div>
               </button>
             </>
@@ -235,7 +236,7 @@ export function DocsMobileNav(): ReactElement {
                 <span>{currentPageLabel}</span>
               </div>
               <div className="flex items-center pl-1 pr-3">
-                <ChevronUp className="w-4 h-4 text-white/60" />
+                <ChevronExpandIcon className="w-4 h-4 text-white/60" />
               </div>
             </button>
           )}

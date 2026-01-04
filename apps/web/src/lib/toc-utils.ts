@@ -19,12 +19,10 @@ export function getScrollTargetY(el: HTMLElement): number {
 }
 
 function getElementScrollTargetY(container: HTMLElement, el: HTMLElement): number {
-  const marginTopRaw = getComputedStyle(el).scrollMarginTop;
-  const marginTop = parseFloat(marginTopRaw || "0") || 0;
   const containerRect = container.getBoundingClientRect();
   const elRect = el.getBoundingClientRect();
   const offsetInContainer = elRect.top - containerRect.top;
-  return offsetInContainer + container.scrollTop - marginTop;
+  return offsetInContainer + container.scrollTop;
 }
 
 export function smoothScrollTo(

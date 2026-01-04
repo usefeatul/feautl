@@ -11,12 +11,6 @@ As feedback volume grows it becomes hard to see patterns if everything sits in a
 - **Tags** for flexible labelling.
 - **Roadmap statuses** for delivery stages.
 
-These are backed by:
-
-- `board` and its `roadmapStatuses` configuration.
-- `tag` and `postTag` in `@featul/db/schema/post.ts`.
-- `post.roadmapStatus` and `post.status` fields.
-
 ## Grouping with boards
 
 Boards are the first layer of grouping. Use them to separate:
@@ -25,11 +19,11 @@ Boards are the first layer of grouping. Use them to separate:
 - Public vs internal feedback.
 - Roadmap, changelog, and idea intake.
 
-Every post is linked to exactly one board via `post.boardId`.
+Every post is linked to exactly one board.
 
 ## Grouping with tags
 
-Tags are workspace-wide labels stored in the `tag` table. They are linked to posts through the `postTag` join table.
+Tags are workspace-wide labels you can attach to posts.
 
 Typical examples:
 
@@ -45,10 +39,10 @@ You can:
 
 ## Grouping with statuses
 
-Two status fields help you keep a clear picture:
+Two kinds of status help you keep a clear picture:
 
-- `post.status` – content lifecycle (`draft`, `published`, `archived`, `spam`, `pending_approval`).
-- `post.roadmapStatus` – delivery stage on roadmap boards.
+- **Post status** – content lifecycle (for example draft, published, archived).
+- **Roadmap status** – delivery stage on roadmap boards.
 
 In the UI you will typically:
 
@@ -57,10 +51,9 @@ In the UI you will typically:
 
 ## De-duplicating related feedback
 
-For overlapping feedback, featul uses the `postMerge` table:
+For overlapping feedback you can merge related posts:
 
 - Group duplicate posts into a single primary request.
-- Preserve metadata about consolidation (votes, comments, tags).
+- Preserve votes, comments, and tags when consolidating.
 
 This keeps your grouping clean even when many customers ask for the same thing in different words.
-

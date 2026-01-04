@@ -15,13 +15,13 @@ featul supports this through flexible metadata fields and an activity log.
 
 ## Post metadata
 
-The `post` table in `@featul/db/schema/post.ts` includes a `metadata` JSON field with optional properties:
+Each post can carry extra metadata, including:
 
-- `attachments` – files or links associated with a request.
-- `integrations` – references to systems such as GitHub or Jira.
-- `customFields` – arbitrary key–value pairs.
+- Attachments such as files or links associated with a request.
+- References to systems such as GitHub or Jira.
+- Custom fields that store any additional context you need.
 
-You can use `customFields` to persist additional context for a post, for example:
+You can use custom fields to persist additional context for a post, for example:
 
 ```json
 {
@@ -31,15 +31,11 @@ You can use `customFields` to persist additional context for a post, for example
 }
 ```
 
-These fields are available to your application code when rendering requests, building filters, or exporting data.
+34→These fields are available when rendering requests, building filters, or exporting data.
 
 ## Activity log
 
-The `activityLog` table records events that happen inside a workspace:
-
-- `action` and `actionType` describe what occurred.
-- `entity` and `entityId` point to the affected object (for example `post` or `comment`).
-- `metadata` holds additional event-specific context.
+The activity log records important events that happen inside a workspace and can include extra context for each event.
 
 This lets you:
 
@@ -49,10 +45,9 @@ This lets you:
 
 ## Designing your own event schema
 
-Because both `post.metadata` and `activityLog.metadata` are JSON fields, you can define your own structure per workspace or integration. A common pattern is to:
+Because metadata is flexible, you can define your own structure per workspace or integration. A common pattern is to:
 
 - Keep top-level keys stable (for example `source`, `segment`, `featureArea`).
 - Nest integration-specific payloads under namespaced keys (for example `jira`, `github`).
 
-This gives you a consistent way to reason about custom events without having to alter the underlying database schema.
-
+This gives you a consistent way to reason about custom events without having to change the underlying data model.

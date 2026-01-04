@@ -1,36 +1,26 @@
 ---
 title: Invite members
-description: Bring your team into featul with roles and fine-grained permissions.
+description: Bring your team into featul with roles and clear permissions.
 ---
-
-## Member model
-
-Team access in featul is based on three main tables in `@featul/db/schema/workspace.ts`:
-
-- `workspace` – the workspace itself.
-- `workspace_member` – active members with roles and permissions.
-- `workspace_invite` – pending invitations.
-
-Each member is linked to a user account from the `user` table and to a workspace by `workspaceId`.
 
 ## Roles and permissions
 
+Team access in featul is based on roles and optional extra permissions.
+
 Every member has a **role**:
 
-- `admin`
-- `member`
-- `viewer`
+- **Admin** – full access to settings, billing, and workspace configuration.
+- **Member** – can work with feedback, boards, roadmap, and changelog.
+- **Viewer** – can browse feedback and roadmap but has limited editing access.
 
-On top of the role there is a `permissions` JSON field on `workspace_member` that can enable or disable capabilities:
+You can further refine access with additional permissions, for example:
 
-- `canManageWorkspace`
-- `canManageBilling`
-- `canManageMembers`
-- `canManageBoards`
-- `canModerateAllBoards`
-- `canConfigureBranding`
+- Managing the workspace and billing.
+- Managing other members and boards.
+- Moderating all boards.
+- Configuring branding and appearance.
 
-The UI uses these flags to decide which settings sections and actions to show for a given user.
+These controls keep sensitive areas restricted while still letting teammates work with feedback day to day.
 
 ## Inviting a new member
 
@@ -39,28 +29,17 @@ The UI uses these flags to decide which settings sections and actions to show fo
 3. Click **Invite member**.
 4. Enter the teammate’s email address.
 5. Choose a **role** (admin, member, viewer).
-6. Send the invite.
+6. Adjust any advanced permissions if available.
+7. Send the invite.
 
-This creates a record in `workspace_invite` with:
-
-- `workspaceId`
-- `email`
-- `role`
-- `token`
-- `expiresAt`
-
-When the recipient accepts the invite:
-
-- A corresponding `workspace_member` record is created.
-- The invite is marked as accepted with `acceptedAt`.
+The teammate receives an email with a link to join your workspace. Once they accept, they appear in your members list with the role you selected.
 
 ## Managing membership
 
 From the team settings page you can:
 
 - Change a member’s role and permissions.
-- Deactivate a member (sets `isActive = false`).
+- Temporarily deactivate a member.
 - Resend or revoke pending invites.
 
-These actions are reflected directly in the `workspace_member` and `workspace_invite` tables and control what each user can see and do across boards, roadmap, and changelog.
-
+These actions control what each user can see and do across boards, roadmap, and changelog.

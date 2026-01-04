@@ -22,7 +22,7 @@ The simplest way to transition users is to point existing UserJot surfaces to yo
 
 On the featul side:
 
-- Make sure you have at least one public board (`isPublic = true` in the `board` table).
+- Make sure you have at least one public board where users can submit new ideas.
 - Consider a dedicated board for migrated or legacy feedback.
 
 ## Linking from featul back to UserJot
@@ -32,15 +32,14 @@ During a transition period you might also want to link back to existing UserJot 
 - Include a short section in your **Getting Started** or **Migration** posts with a link to the legacy board.
 - Use regular markdown links in your posts, like `[View legacy board](https://...)`.
 
-These links are purely navigational and do not require any special database fields. They are stored as part of the `post.content` field.
+These links are purely navigational and do not require any special database fields. They are stored as part of the post content in your workspace.
 
 ## Gradual migration
 
 Over time you can:
 
-- Recreate key categories and tags in featul using the `tag` and `postTag` tables.
-- Re-enter or import high-value requests as new `post` records.
+- Recreate key categories and tags in featul so content stays familiar.
+- Re-enter or import high-value requests as new posts.
 - Close down legacy boards once you are confident everything important has moved.
 
 This approach lets you avoid a hard cut-over while still guiding users toward the new experience.
-

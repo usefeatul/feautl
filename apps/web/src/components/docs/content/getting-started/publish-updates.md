@@ -5,19 +5,17 @@ description: Share release notes and progress updates through a dedicated change
 
 ## Changelog boards
 
-Changelog boards use `systemType = 'changelog'` on the `board` table in `@featul/db/schema/feedback.ts`.
-
-They are designed for:
+Changelog boards are designed for:
 
 - Public release notes.
 - Internal change logs.
 - Linking updates back to feedback and roadmap items.
 
-Posts on a changelog board are regular entries in the `post` table, often with shorter, announcement-style content.
+Posts on a changelog board are announcement-style updates that explain what changed and why it matters.
 
 ## Changelog tags
 
-The `board` table includes a `changelogTags` JSON field, which lets you define reusable tags such as:
+Changelog boards can use reusable tags such as:
 
 - Feature
 - Improvement
@@ -25,7 +23,7 @@ The `board` table includes a `changelogTags` JSON field, which lets you define r
 - Performance
 - Security
 
-These tags are used when you publish an update so readers can quickly scan the type of change.
+28→These tags are used when you publish an update so readers can quickly scan the type of change.
 
 ## Creating a changelog entry
 
@@ -35,24 +33,17 @@ These tags are used when you publish an update so readers can quickly scan the t
 4. Provide:
    - A clear **title**.
    - A concise **summary** of what changed.
-   - Optional **tags** from `changelogTags`.
+   - Optional **tags** that describe the type of change.
 5. Publish the entry.
-
-This creates a `post` and optionally associated `postUpdate` record for the detailed content.
+The entry appears on your changelog board and can also be linked from roadmap items or individual requests.
 
 ## Linking updates to feedback
 
 When you ship a feature that originated from user feedback:
 
-- Keep related requests in sync by updating their `roadmapStatus` (for example, to `Completed`).
-- Reference relevant posts directly in the changelog content.
-- Use `postUpdate` to maintain an audit trail of what changed and when.
-
-Internally, these actions update:
-
-- `post` rows for the affected requests.
-- `postUpdate` rows for release notes.
-- `activityLog` entries so you can see who published the change.
+- Keep related requests in sync by updating their roadmap status (for example, to **Completed**).
+- Reference relevant requests directly in the changelog content.
+- Include links back to feedback so users can see which ideas were addressed.
 
 ## Surfacing updates on your portal
 
@@ -62,4 +53,3 @@ Changelog boards can be exposed on:
 - Custom domains configured via `workspaceDomain`.
 
 This gives your users a single place to discover what changed and why, without needing a separate release notes tool.
-

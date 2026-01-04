@@ -5,42 +5,30 @@ description: Route feedback through workspace subdomains and custom domains.
 
 ## Workspace subdomains
 
-Every workspace has a unique `slug` in the `workspace` table (`@featul/db/schema/workspace.ts`). This slug is used to build default subdomains such as:
+Every workspace has a unique subdomain such as:
 
 - `your-workspace.featul.com`
 
-Routes in the app under `apps/app/src/app/[subdomain]/` use this slug to render:
-
-- Public boards and requests.
-- Roadmap and changelog pages.
-- Request detail views with voting and comments.
+This subdomain is used to route visitors to the correct workspace so they see the right boards, roadmap, and changelog.
 
 ## Custom domains
 
-For branded portals you can attach custom domains using the `workspaceDomain` table:
+For branded portals you can attach custom domains such as:
 
-- `host` – the full hostname (for example, `feedback.yourdomain.com`).
-- `cnameName` and `cnameTarget` – CNAME details to point traffic to featul.
-- `txtName` and `txtValue` – TXT record used for domain verification.
-- `status` – one of `pending`, `verified`, or `error`.
+- `feedback.yourdomain.com`
 
 The domain setup flow guides you through:
 
-1. Adding DNS records with your provider.
+1. Adding DNS records with your DNS provider.
 2. Waiting for verification.
-3. Serving your workspace under the verified domain.
+3. Serving your workspace under the verified domain once everything is configured.
 
 ## How tracking works
 
-Regardless of whether traffic comes through a slug-based subdomain or a custom domain:
-
-- Requests are scoped to a workspace via `workspaceId`.
-- Boards, posts, tags, and comments always reference the workspace and board IDs.
-- Activity records use the `activityLog` table with `workspaceId` to keep an audit trail.
+Regardless of whether traffic comes through a workspace subdomain or a custom domain, requests are always scoped to a single workspace.
 
 This means you can safely:
 
 - Run multiple workspaces side by side.
 - Serve portals on different domains.
 - Keep data separation and tracking intact.
-

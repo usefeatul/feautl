@@ -5,7 +5,9 @@ description: Understand how featul stores workspaces, feedback, and activity ove
 
 ## Core persistence model
 
-featul uses PostgreSQL (via Drizzle ORM in `@featul/db`) to persist everything in your workspace:
+featul stores everything in your workspace in a durable database so that feedback, configuration, and history are kept safe over time.
+
+This includes:
 
 - Workspaces and domains.
 - Members, invites, and branding.
@@ -13,61 +15,46 @@ featul uses PostgreSQL (via Drizzle ORM in `@featul/db`) to persist everything i
 - Comments, reactions, and mentions.
 - Activity logs and reports.
 
-Key tables include:
-
-- `workspace` and `workspaceDomain` in `@featul/db/schema/workspace.ts`.
-- `board` in `@featul/db/schema/feedback.ts`.
-- `post`, `tag`, `postTag`, `postUpdate`, `postReport`, `postMerge`, and `activityLog` in `@featul/db/schema/post.ts`.
-- `comment`, `commentReaction`, `commentMention`, and `commentReport` in `@featul/db/schema/comment.ts`.
-- `brandingConfig` in `@featul/db/schema/branding.ts`.
-
-Each table uses `createdAt` and `updatedAt` timestamps so you can audit when records were created and last changed.
+Each record includes timestamps so you can see when it was created and last changed.
 
 ## Workspace lifecycle
 
-When you create a workspace:
+When you create a workspace, featul:
 
-- A row is created in `workspace` with name, slug, domain, plan, and theme.
-- Branding defaults are stored in `brandingConfig`.
-- The owner is linked via `ownerId` and `workspaceMember` records.
+- Stores your workspace name, slug, domain, plan, and theme.
+- Saves default branding options.
+- Links the owner and initial members to the workspace.
 
-Workspaces can also reserve slugs ahead of time using `workspaceSlugReservation` in `@featul/db/schema/reservation.ts`. This makes sure a desired slug is not taken while a user completes sign‑up.
+Workspaces can also reserve slugs ahead of time so a desired address is not taken while a user completes sign‑up.
 
 ## Feedback and comments
 
-Feedback is stored in the `post` table:
+Feedback is stored as posts that:
 
-- `boardId` ties the post to a specific board.
-- `title`, `content`, and optional `image` hold the main body of the request.
-- `status` and `roadmapStatus` track moderation and delivery stages.
-- `metadata` provides a flexible JSON field for attachments, integrations, and custom fields.
+- Belong to a specific board.
+- Include a title, main content, and optional image.
+- Track moderation and roadmap status.
+- Support metadata for attachments, integrations, and custom fields.
 
-Comments are stored in the `comment` table with:
+Comments are stored alongside posts and support:
 
-- `postId` pointing to the parent request.
-- `parentId` for nested threads.
-- `content` with the comment text.
-- `status`, `isPinned`, and `isEdited` for moderation and presentation.
-
-Reactions and mentions are tracked in dedicated tables so you can keep a clean audit trail and avoid double‑counting.
+- Nested threads.
+- Status flags for moderation and pinning.
+- Reactions and mentions for richer discussion.
 
 ## Activity and moderation history
 
-Important actions across the app are recorded in `activityLog`:
+Important actions across the app are recorded in an activity log so you can see what changed over time and who made the change.
 
-- Each row includes `workspaceId`, `userId`, `action`, `actionType`, `entity`, and `entityId`.
-- Optional `metadata` gives extra detail, such as previous and new statuses.
+Reports for posts and comments include:
 
-Reports for posts and comments are stored in `postReport` and `commentReport`:
-
-- `reason`, `status`, and `resolution` fields help you manage moderation workflows.
-- `reviewedBy` and `reviewedAt` track who handled each report.
+- Reasons, status, and resolution details to manage moderation workflows.
+- Information about who handled each report and when.
 
 ## Why this matters for you
 
-Because all of this data is persisted in well‑structured tables, you can:
+Because all of this data is persisted in a well‑structured way, you can:
 
 - Rely on **consistent history** for requests, comments, and updates.
 - Build exports, analytics, or custom dashboards on top of the same schema.
 - Confidently self‑host or migrate data in the future if needed.
-

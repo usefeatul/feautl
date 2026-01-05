@@ -73,38 +73,39 @@ export function DocsMobileFloatingNav() {
           : "translate-y-0 opacity-100",
       )}
     >
-      {/* Unified floating container */}
+      {/* Container that morphs between states */}
       <motion.div
         role="group"
         aria-label="Docs navigation"
+        layout
         initial={false}
-        animate={{
-          width: isOpen ? "min(90vw, 340px)" : "auto",
-          height: isOpen ? "min(70vh, 440px)" : 44,
-        }}
         transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 32,
-          mass: 0.8,
+          layout: {
+            type: "spring",
+            stiffness: 400,
+            damping: 30,
+          },
         }}
-        className="bg-[#0a0a0a] rounded-2xl border border-white/[0.08] shadow-2xl overflow-hidden flex flex-col"
+        className={cn(
+          "bg-[#0a0a0a] rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col",
+          isOpen && "w-[calc(100vw-32px)] max-w-[380px]",
+        )}
       >
-        <AnimatePresence mode="wait" initial={false}>
-          {isOpen ? (
+        {/* Open state content */}
+        <AnimatePresence initial={false}>
+          {isOpen && (
             <motion.div
-              key="open-content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="flex flex-col h-full"
+              key="nav-content"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "min(60vh, 380px)" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{
+                opacity: { duration: 0.15 },
+                height: { type: "spring", stiffness: 400, damping: 30 },
+              }}
+              className="overflow-hidden"
             >
-              {/* Navigation content */}
-              <div
-                id="docs-mobile-nav-panel"
-                className="flex-1 overflow-y-auto overscroll-contain"
-              >
+              <div className="h-[min(60vh,380px)] overflow-y-auto overscroll-contain">
                 <div className="py-2">
                   {docsSections.map((section, sectionIdx) => (
                     <motion.div
@@ -150,7 +151,7 @@ export function DocsMobileFloatingNav() {
                                   : "text-white/50 hover:text-white/80 hover:bg-white/[0.04] active:bg-white/[0.06]",
                               )}
                             >
-                              <span className="truncate">{item.label}</span>
+                              {item.label}
                             </Link>
                           </motion.div>
                         )
@@ -159,47 +160,69 @@ export function DocsMobileFloatingNav() {
                   ))}
                 </div>
               </div>
-
-              {/* Footer with title and close - at bottom */}
-              <button
-                type="button"
-                onClick={handleClose}
-                className="flex items-center justify-between gap-3 px-4 h-12 shrink-0 border-t border-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-inset w-full"
-                aria-label="Close navigation"
-              >
-                <span className="text-[10px] uppercase tracking-[0.15em] text-white/30 font-medium">
-                  Navigation
-                </span>
-                <div className="flex items-center gap-2">
-                  <span className="text-[13px] text-white/50 font-medium">Close</span>
-                  <XMarkIcon className="text-white/50" size={16} />
-                </div>
-              </button>
             </motion.div>
-          ) : (
-            <motion.button
-              key="closed-trigger"
-              type="button"
-              onClick={handleToggle}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="flex items-center gap-1.5 min-w-0 overflow-hidden h-11 px-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-inset"
-              aria-label={`Toggle docs navigation, currently on ${currentSectionLabel} – ${currentPageLabel}`}
-              aria-expanded={isOpen}
-              aria-controls="docs-mobile-nav-panel"
-            >
-              <span className="text-[11px] text-white/35 shrink-0">
-                {currentSectionLabel}
-              </span>
-              <span className="text-white/20">/</span>
-              <span className="text-[13px] text-white/80 font-medium truncate">
-                {currentPageLabel}
-              </span>
-            </motion.button>
           )}
         </AnimatePresence>
+
+        {/* Bottom bar - always visible, changes content based on state */}
+        <motion.div
+          layout
+          className={cn(
+            "shrink-0",
+            isOpen && "border-t border-white/[0.06]",
+          )}
+        >
+          <button
+            type="button"
+            onClick={handleToggle}
+            className="flex items-center justify-between gap-3 px-4 h-11 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-inset"
+            aria-label={
+              isOpen
+                ? "Close navigation"
+                : `Toggle docs navigation, currently on ${currentSectionLabel} – ${currentPageLabel}`
+            }
+            aria-expanded={isOpen}
+            aria-controls="docs-mobile-nav-panel"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {isOpen ? (
+                <motion.div
+                  key="close-content"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.1 }}
+                  className="flex items-center justify-between w-full"
+                >
+                  <span className="text-[10px] uppercase tracking-[0.15em] text-white/30 font-medium">
+                    Navigation
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[13px] text-white/50 font-medium">Close</span>
+                    <XMarkIcon className="text-white/50" size={16} />
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="trigger-content"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.1 }}
+                  className="flex items-center gap-1.5 whitespace-nowrap"
+                >
+                  <span className="text-[11px] text-white/35">
+                    {currentSectionLabel}
+                  </span>
+                  <span className="text-white/20">/</span>
+                  <span className="text-[13px] text-white/80 font-medium">
+                    {currentPageLabel}
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </button>
+        </motion.div>
       </motion.div>
     </div>
   )

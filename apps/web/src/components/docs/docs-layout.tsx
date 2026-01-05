@@ -17,8 +17,8 @@ interface DocsLayoutShellProps {
 export function DocsLayoutShell({ children, rightColumn }: DocsLayoutShellProps) {
   return (
     <div className="flex h-screen overflow-hidden bg-muted">
-      <aside className="hidden md:flex w-64 flex-col shrink-0">
-        <div className="sticky top-0 h-screen py-8 pl-6 pr-6">
+      <aside className="hidden md:flex w-52 flex-col shrink-0">
+        <div className="sticky top-0 h-screen py-8 pl-6 pr-4">
           <DocsSidebar />
         </div>
       </aside>
@@ -26,7 +26,7 @@ export function DocsLayoutShell({ children, rightColumn }: DocsLayoutShellProps)
       <DocsMobileNav />
 
       <main className="flex-1 flex flex-col min-w-0 pt-8 md:pt-1 lg:pt-2 min-h-0">
-        <div className="flex-1 min-h-0 bg-background md:rounded-tl-2xl shadow-[0_0_0_1px_rgba(0,0,0,0.05)] flex flex-col relative">
+        <div className="flex-1 min-h-0 bg-background md:rounded-tl-2xl shadow-sm ring-1 ring-border/20 flex flex-col relative">
           <div
             className="flex-1 min-h-0 overflow-y-auto"
             data-docs-scroll-container="true"

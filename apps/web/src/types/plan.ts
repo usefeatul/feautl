@@ -17,7 +17,7 @@ export const topPlans: PricingPlan[] = [
     price: '$0/mo',
     note: 'Free forever',
     ctaLabel: 'Start for free',
-    href: '/signup',
+    href: 'https://app.featul.com/auth/sign-up',
     features: [
       '100 feedback items/month',
       '3 team members',
@@ -33,7 +33,7 @@ export const topPlans: PricingPlan[] = [
     price: '$19/mo',
     note: 'Save 20% annually',
     ctaLabel: 'Start 14-day trial',
-    href: '/signup',
+    href: 'https://app.featul.com/auth/sign-up',
     features: [
       '1,000 feedback items/month',
       '10 team members',

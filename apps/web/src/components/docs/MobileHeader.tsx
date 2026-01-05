@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Button } from "@featul/ui/components/button"
 import { FeatulLogoIcon } from "@featul/ui/icons/featul-logo"
 
@@ -14,10 +15,12 @@ export function DocsMobileHeader() {
       </div>
 
       <div className="flex items-center gap-2">
-        <Button variant="ghost" className="text-md">
-          Log in
+        <Button variant="ghost" className="text-md" asChild>
+          <Link href="https://app.featul.com/auth/sign-in">Log in</Link>
         </Button>
-        <Button>Register</Button>
+        <Button asChild>
+          <Link href="https://app.featul.com/auth/sign-up">Register</Link>
+        </Button>
       </div>
     </div>
   )

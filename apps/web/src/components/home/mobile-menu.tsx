@@ -71,7 +71,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             ))}
             <Button asChild className="font-semibold w-full">
               <Link
-                href="/signup"
+                href="https://app.featul.com/auth/sign-up"
                 data-sln-event="cta: start for free clicked"
                 onClick={onClose}
               >

@@ -7,7 +7,7 @@ Featul helps you collect user feedback, prioritize feature requests, and share p
 
 ## 1. Create a Free Account
 
-Sign up with [Google](/auth/sign-up), [GitHub](/auth/sign-up), or [email](/auth/sign-up). If you use email, verify your account with the code sent to your inbox.
+Sign up with Google, GitHub, or email. If you use email, verify your account with the code sent to your inbox.
 
 ## 2. Create Your Workspace
 
@@ -23,7 +23,7 @@ Share your workspace URL (`yourworkspace.featul.com`) with customers to start co
 
 ## Next Steps
 
-- **[Create Boards](/docs/getting-started/create-boards)** – Structure boards for different use cases
-- **[Invite Members](/docs/getting-started/invite-members)** – Add team members
-- **[Plan Roadmap](/docs/getting-started/plan-roadmap)** – Set up your roadmap
-- **[Publish Updates](/docs/getting-started/publish-updates)** – Share release notes
+- **Create Boards** – Structure boards for different use cases
+- **Invite Members** – Add team members
+- **Plan Roadmap** – Set up your roadmap
+- **Publish Updates** – Share release notes

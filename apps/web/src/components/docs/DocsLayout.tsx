@@ -4,25 +4,25 @@ import { DocsMobileNav } from "./MobileNav"
 
 interface DocsLayoutShellProps {
   children: ReactNode
-  rightColumn?: ReactNode
 }
 
-
-export function DocsLayoutShell({ children, rightColumn }: DocsLayoutShellProps) {
+export function DocsLayoutShell({ children }: DocsLayoutShellProps) {
   return (
-    <div className="flex h-screen overflow-hidden bg-muted">
+    <div className="fixed inset-0 flex bg-muted">
+      {/* Fixed sidebar */}
       <aside className="hidden md:flex w-52 flex-col shrink-0">
-        <div className="sticky top-0 h-screen py-8 pl-6 pr-4">
+        <div className="h-full py-8 pl-6 pr-4 overflow-y-auto">
           <DocsSidebar />
         </div>
       </aside>
 
       <DocsMobileNav />
 
-      <main className="flex-1 flex flex-col min-w-0 pt-14 md:pt-1 lg:pt-2 min-h-0 bg-background md:bg-transparent">
-        <div className="flex-1 min-h-0 bg-background md:rounded-tl-2xl shadow-sm ring-1 ring-border/20 flex flex-col relative">
+      {/* Main content area - only this scrolls */}
+      <main className="flex-1 flex flex-col min-w-0 pt-14 md:pt-1 lg:pt-2 bg-background md:bg-transparent overflow-hidden">
+        <div className="flex-1 bg-background md:rounded-tl-2xl shadow-sm ring-1 ring-border/20 flex flex-col relative overflow-hidden">
           <div
-            className="flex-1 min-h-0 overflow-y-auto"
+            className="flex-1 overflow-y-auto"
             data-docs-scroll-container="true"
           >
             <div className="container mx-auto px-6 pt-8 pb-24 md:pb-12 md:px-12 lg:px-16 max-w-[90rem]">
@@ -33,14 +33,6 @@ export function DocsLayoutShell({ children, rightColumn }: DocsLayoutShellProps)
           </div>
         </div>
       </main>
-
-      {rightColumn && (
-        <aside className="hidden xl:block pointer-events-none fixed top-10 right-1 sm:right-1 lg:right-2 2xl:right-3 z-20">
-          <div className="w-64 max-w-xs pointer-events-auto">
-            {rightColumn}
-          </div>
-        </aside>
-      )}
     </div>
   )
 }

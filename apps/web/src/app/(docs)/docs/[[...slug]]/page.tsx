@@ -1,11 +1,10 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { DocsLayoutShell } from "@/components/docs/DocsLayout"
-import { DocsToc } from "@/components/docs/DocsToc"
 import type { TocItem as TocItemType } from "@/lib/toc"
 import { docsSections } from "@/config/docsNav"
 import { readDocsMarkdown, type DocsPageId } from "@/lib/docs-markdown"
 import { DocsMarkdown, extractDocsToc } from "@/components/docs/DocsMarkdown"
+import { DocsToc } from "@/components/docs/DocsToc"
 
 type DocsPageParams = {
   slug?: string[]
@@ -68,11 +67,14 @@ export default async function DocsPage(props: DocsPageProps) {
   const tocItems: TocItemType[] = toTocItems(docs.content)
 
   return (
-    <DocsLayoutShell
-      rightColumn={
-        <DocsToc items={tocItems} />
-      }
-    >
+    <>
+      {/* Fixed TOC on the right */}
+      <aside className="hidden xl:block pointer-events-none fixed top-10 right-1 sm:right-1 lg:right-2 2xl:right-3 z-20">
+        <div className="w-64 max-w-xs pointer-events-auto">
+          <DocsToc items={tocItems} />
+        </div>
+      </aside>
+
       <section>
         <div className="max-w-2xl lg:max-w-3xl space-y-6">
           <div className="space-y-3">
@@ -91,6 +93,6 @@ export default async function DocsPage(props: DocsPageProps) {
           <DocsMarkdown markdown={docs.content} />
         </div>
       </section>
-    </DocsLayoutShell>
+    </>
   )
 }

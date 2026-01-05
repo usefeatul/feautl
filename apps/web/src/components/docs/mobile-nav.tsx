@@ -134,16 +134,15 @@ export function DocsMobileNav(): ReactElement {
         <motion.div
           role="group"
           aria-label="Docs navigation"
-          layout
           initial={false}
           animate={{
             width: isOpen ? "min(90vw, 380px)" : "280px",
             height: isOpen ? "min(80vh, 500px)" : "48px",
           }}
           transition={{
-            type: "spring",
-            stiffness: 400,
-            damping: 30,
+            type: "tween",
+            duration: 0.2,
+            ease: "easeOut",
           }}
           className="bg-black text-white rounded-3xl shadow-lg border border-white/10 overflow-hidden flex flex-col"
         >
@@ -208,9 +207,8 @@ export function DocsMobileNav(): ReactElement {
             type="button"
             onClick={isOpen ? handleClose : handleOpen}
             className={cn(
-              "flex items-center justify-between gap-3 px-4 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-inset h-12",
+              "flex items-center justify-between gap-3 px-4 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-inset h-12 w-full",
               isOpen && "border-t border-white/10",
-              !isOpen && "max-w-[280px]",
             )}
             aria-label={`Toggle docs navigation, currently on ${currentSectionLabel} – ${currentPageLabel}`}
             aria-expanded={isOpen}

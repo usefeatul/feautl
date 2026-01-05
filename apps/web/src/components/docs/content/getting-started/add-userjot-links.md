@@ -1,45 +1,61 @@
 ---
-title: Add UserJot links
-description: Help users move from existing UserJot boards into your new featul portal.
+title: Migrate from UserJot
+description: Transition your feedback collection from UserJot to Featul.
 ---
 
-## When this is useful
+## Overview
 
-If you previously collected feedback in UserJot, you may want to:
+If you're moving from UserJot (or a similar feedback tool), this guide helps you transition smoothly without losing your existing feedback or confusing your users.
 
-- Keep legacy boards available for reference.
-- Gradually move users toward your new featul workspace.
-- Avoid breaking old email links or bookmarks immediately.
+## Migration strategy
 
-This page focuses on linking strategies rather than full data migration.
+There are two approaches to migration:
 
-## Linking from UserJot to featul
+### Option 1: Gradual transition
 
-The simplest way to transition users is to point existing UserJot surfaces to your new feedback portal:
+Keep both platforms running temporarily while you move users over:
 
-- Add a **banner** or **pinned post** in UserJot that links to your featul workspace subdomain or custom domain.
-- Use wording such as “New feedback portal” or “We’ve moved feedback to featul”.
+1. Set up your Featul workspace with matching boards
+2. Add links in UserJot pointing to your new Featul portal
+3. Encourage new feedback in Featul while keeping UserJot for reference
+4. Eventually sunset UserJot once traffic has shifted
 
-On the featul side:
+### Option 2: Quick cutover
 
-- Make sure you have at least one public board where users can submit new ideas.
-- Consider a dedicated board for migrated or legacy feedback.
+Move everything at once:
 
-## Linking from featul back to UserJot
+1. Export key feedback from UserJot
+2. Recreate important posts in Featul
+3. Redirect users to your new portal
+4. Archive or close your UserJot boards
 
-During a transition period you might also want to link back to existing UserJot content:
+## Linking from UserJot to Featul
 
-- Include a short section in your **Getting Started** or **Migration** posts with a link to the legacy board.
-- Use regular markdown links in your posts, like `[View legacy board](https://...)`.
+To guide users to your new feedback portal:
 
-These links are purely navigational and do not require any special database fields. They are stored as part of the post content in your workspace.
+1. Add a **pinned post** or **banner** in UserJot
+2. Include a clear message like: "We've moved! Submit new feedback at [your Featul URL]"
+3. Link to your Featul workspace subdomain or custom domain
 
-## Gradual migration
+## Setting up Featul for migrated users
 
-Over time you can:
+On the Featul side:
 
-- Recreate key categories and tags in featul so content stays familiar.
-- Re-enter or import high-value requests as new posts.
-- Close down legacy boards once you are confident everything important has moved.
+- Create boards that match your UserJot categories
+- Use similar tags and naming so users feel familiar
+- Consider a "Migrated Feedback" board for imported historical requests
 
-This approach lets you avoid a hard cut-over while still guiding users toward the new experience.
+## Recreating important feedback
+
+For high-value requests you want to preserve:
+
+1. Create new posts in Featul with the same title and description
+2. Add relevant tags and assign appropriate status
+3. Link back to the original UserJot post in the content (if you want to preserve history)
+
+## Tips for a smooth transition
+
+- **Communicate early** – Let users know the change is coming
+- **Keep URLs working** – If possible, redirect old URLs to Featul
+- **Preserve context** – Use post content to reference original feedback sources
+- **Monitor both** – Check UserJot periodically during transition for stragglers

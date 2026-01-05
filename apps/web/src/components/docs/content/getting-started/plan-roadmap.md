@@ -3,50 +3,57 @@ title: Plan roadmap
 description: Turn feedback into an actionable roadmap with clear statuses.
 ---
 
-## Roadmap boards
+## What is a roadmap board?
 
-Roadmap boards are designed to show where requests sit in your product development funnel, from idea to shipped.
+A roadmap board shows where feature requests and ideas sit in your development pipeline. It gives customers visibility into what's planned, what's being worked on, and what's been shipped.
 
-Each post on a roadmap board has an associated **roadmap status**. The roadmap view groups posts into columns based on these statuses.
+## How it works
 
-## Default stages
+Each post on a roadmap board has a **roadmap status**. The roadmap view displays posts in columns based on their status, making it easy to see progress at a glance.
 
-By default, a roadmap board ships with the following statuses:
+## Default statuses
 
-- `Pending`
-- `Review`
-- `Planned`
-- `Progress`
-- `Completed`
-- `Closed`
+New roadmap boards include these statuses:
 
-30→Each status has a name and colour that the UI uses to render columns and badges.
+| Status | Purpose |
+|--------|---------|
+| **Pending** | New requests that need review |
+| **Review** | Under consideration by your team |
+| **Planned** | Committed to building |
+| **Progress** | Currently being developed |
+| **Completed** | Shipped and available |
+| **Closed** | Won't be implemented |
 
-## Configuring your roadmap
+Each status has a name and color used throughout the UI.
 
-1. Open your workspace.
-2. Go to **Settings → Boards** and select your roadmap board.
-3. Edit the **Roadmap statuses**:
-   - Rename stages to match your process.
-   - Change colors to align with your brand.
-   - Reorder stages to fit how you work.
-4. Save changes.
+## Customizing your roadmap
 
-Your changes are used wherever roadmap status is displayed: board views, request cards, and detail pages.
+To match your team's workflow:
 
-## Moving requests through the roadmap
+1. Go to **Settings → Boards** and select your roadmap board
+2. Click **Edit roadmap statuses**
+3. Make your changes:
+   - Rename statuses to match your process (e.g., "In Development" instead of "Progress")
+   - Change colors to align with your brand
+   - Reorder statuses to fit your workflow
+4. Click **Save**
 
-From the roadmap UI you can:
+Your changes apply everywhere roadmap status is displayed—board views, post cards, and detail pages.
 
-- Drag and drop posts between columns.
-- Update the roadmap status via dropdowns or actions.
-- Pin or feature key requests to keep them visible.
+## Moving posts through the roadmap
 
-## Connecting roadmap and changelog
+From the roadmap view, you can:
 
-When a request is moved to a “Completed” or “Closed” state you can:
+- **Drag and drop** posts between columns to change their status
+- **Use the dropdown** on individual posts to update status
+- **Pin important posts** to keep them visible at the top
 
-- Link it to a changelog entry.
-- Publish a public update on your changelog board.
+## Connecting roadmap to changelog
 
-This keeps the roadmap, feedback, and release notes aligned without duplicating work.
+When you complete a feature:
+
+1. Move the post to **Completed** status
+2. Create a changelog entry to announce the release
+3. Link the changelog entry to the original post
+
+This keeps your roadmap, feedback, and release notes connected without duplicating work. Users who requested the feature can see that it shipped.

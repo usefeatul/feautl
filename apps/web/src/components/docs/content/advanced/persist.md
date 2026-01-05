@@ -1,60 +1,73 @@
 ---
-title: Persist data
-description: Understand how featul stores workspaces, feedback, and activity over time.
+title: Data persistence
+description: How Featul stores your workspaces, feedback, and activity.
 ---
 
-## Core persistence model
+## Overview
 
-featul stores everything in your workspace in a durable database so that feedback, configuration, and history are kept safe over time.
+Featul stores all your data in a durable database. Your feedback, settings, and history are preserved reliably over time.
 
-This includes:
+## What gets stored
 
-- Workspaces and domains.
-- Members, invites, and branding.
-- Boards, posts, tags, and votes.
-- Comments, reactions, and mentions.
-- Activity logs and reports.
+| Category | Data |
+|----------|------|
+| **Workspace** | Name, slug, domain, plan, theme, branding |
+| **Team** | Members, roles, permissions, invites |
+| **Boards** | Settings, privacy, statuses, tags |
+| **Feedback** | Posts, votes, comments, reactions |
+| **Activity** | Status changes, moderation actions, history |
 
-Each record includes timestamps so you can see when it was created and last changed.
+Every record includes timestamps for creation and last modification.
 
-## Workspace lifecycle
+## Workspace data
 
-When you create a workspace, featul:
+When you create a workspace, Featul stores:
 
-- Stores your workspace name, slug, domain, plan, and theme.
-- Saves default branding options.
-- Links the owner and initial members to the workspace.
+- **Identity** – Name, slug, subdomain
+- **Configuration** – Plan, theme, feature flags
+- **Branding** – Logo, colors, custom CSS
+- **Team** – Owner, members, their roles and permissions
 
-Workspaces can also reserve slugs ahead of time so a desired address is not taken while a user completes sign‑up.
+Workspace slugs can be reserved ahead of time so your desired URL isn't taken while completing setup.
 
-## Feedback and comments
+## Feedback data
 
-Feedback is stored as posts that:
+Posts include:
 
-- Belong to a specific board.
-- Include a title, main content, and optional image.
-- Track moderation and roadmap status.
-- Support metadata for attachments, integrations, and custom fields.
+- **Content** – Title, body, optional images
+- **Organization** – Board assignment, tags, roadmap status
+- **State** – Moderation status (draft, published, archived, spam)
+- **Engagement** – Vote counts, comment threads
+- **Metadata** – Custom fields, attachments, integration references
 
-Comments are stored alongside posts and support:
+Comments support:
 
-- Nested threads.
-- Status flags for moderation and pinning.
-- Reactions and mentions for richer discussion.
+- Nested threads (replies to replies)
+- Moderation and pinning
+- Reactions and mentions
+- Author attribution
 
-## Activity and moderation history
+## Activity and audit trail
 
-Important actions across the app are recorded in an activity log so you can see what changed over time and who made the change.
+Important actions are recorded in an activity log:
 
-Reports for posts and comments include:
+- Who made changes and when
+- Status transitions (roadmap, moderation)
+- Merge operations
+- Team member actions
 
-- Reasons, status, and resolution details to manage moderation workflows.
-- Information about who handled each report and when.
+Reports (for spam, harassment, etc.) track:
 
-## Why this matters for you
+- Reporter and reason
+- Resolution status
+- Who handled the report
 
-Because all of this data is persisted in a well‑structured way, you can:
+## Why this matters
 
-- Rely on **consistent history** for requests, comments, and updates.
-- Build exports, analytics, or custom dashboards on top of the same schema.
-- Confidently self‑host or migrate data in the future if needed.
+Reliable data persistence means you can:
+
+- **Trust your history** – Feedback, comments, and changes are preserved
+- **Build on top** – Export data for analytics or custom dashboards
+- **Stay flexible** – Migrate or self-host in the future if needed
+
+Your feedback data is yours—it's stored in a well-structured format that you can access and export.

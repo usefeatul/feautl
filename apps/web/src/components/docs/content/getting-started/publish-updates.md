@@ -1,55 +1,61 @@
 ---
 title: Publish updates
-description: Share release notes and progress updates through a dedicated changelog.
+description: Share release notes and product updates through your changelog.
 ---
 
-## Changelog boards
+## What is a changelog board?
 
-Changelog boards are designed for:
+A changelog board is where you announce what you've shipped. It's a dedicated space for release notes that keeps your customers informed about new features, improvements, and fixes.
 
-- Public release notes.
-- Internal change logs.
-- Linking updates back to feedback and roadmap items.
+## Use cases
 
-Posts on a changelog board are announcement-style updates that explain what changed and why it matters.
+Changelog boards are perfect for:
+
+- **Public release notes** – Let customers know what's new
+- **Internal change logs** – Keep your team informed
+- **Connecting updates to feedback** – Show users their requests were heard
 
 ## Changelog tags
 
-Changelog boards can use reusable tags such as:
+Organize your updates with tags that describe the type of change:
 
-- Feature
-- Improvement
-- Fix
-- Performance
-- Security
+| Tag | Use for |
+|-----|---------|
+| **Feature** | New functionality |
+| **Improvement** | Enhancements to existing features |
+| **Fix** | Bug fixes |
+| **Performance** | Speed and optimization updates |
+| **Security** | Security patches and updates |
 
-28→These tags are used when you publish an update so readers can quickly scan the type of change.
+Tags help readers quickly scan and find relevant updates.
 
 ## Creating a changelog entry
 
-1. Open your workspace.
-2. Navigate to your **Changelog** board or open **Settings → Changelog**.
-3. Click **New entry**.
-4. Provide:
-   - A clear **title**.
-   - A concise **summary** of what changed.
-   - Optional **tags** that describe the type of change.
-5. Publish the entry.
-The entry appears on your changelog board and can also be linked from roadmap items or individual requests.
+1. Open your workspace and navigate to your **Changelog** board
+2. Click **New entry**
+3. Fill in the details:
+   - **Title** – A clear headline for the update
+   - **Content** – Explain what changed and why it matters
+   - **Tags** – Select the type of change
+4. Click **Publish**
+
+Your entry appears on the changelog board and can be linked from related roadmap items or feedback posts.
 
 ## Linking updates to feedback
 
-When you ship a feature that originated from user feedback:
+When you ship something that came from user feedback:
 
-- Keep related requests in sync by updating their roadmap status (for example, to **Completed**).
-- Reference relevant requests directly in the changelog content.
-- Include links back to feedback so users can see which ideas were addressed.
+1. Update the original request's roadmap status to **Completed**
+2. Reference the request in your changelog content
+3. Include a link back to the feedback post
 
-## Surfacing updates on your portal
+This closes the loop with users and shows that their feedback led to real changes.
 
-Changelog boards can be exposed on:
+## Displaying your changelog
 
-- Your workspace subdomain (for example, `your-product.featul.com`).
-- Custom domains configured via `workspaceDomain`.
+Your changelog is available at:
 
-This gives your users a single place to discover what changed and why, without needing a separate release notes tool.
+- Your workspace subdomain: `yourproduct.featul.com/changelog`
+- Your custom domain (if configured): `feedback.yourdomain.com/changelog`
+
+This gives customers a single place to discover what's new without needing a separate release notes tool.

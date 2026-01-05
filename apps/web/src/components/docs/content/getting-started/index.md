@@ -1,39 +1,46 @@
 ---
-title: Getting started with featul
-description: Learn the core pieces of featul and how to set up your workspace.
+title: Getting started with Featul
+description: Learn the core concepts of Featul and set up your workspace in minutes.
 ---
 
-## What featul gives you
+## What is Featul?
 
-featul is a workspace for collecting user feedback, prioritising requests, and publishing roadmap updates in one place.
+Featul is a customer feedback platform that helps you collect user feedback, prioritize feature requests, and share product updates—all in one place.
 
-There are a few core concepts:
+### Core concepts
 
-- **Workspaces** group everything for a product or company.
-- **Boards** organise feedback into public or private spaces.
-- **Posts** represent individual requests, ideas, or changelog entries.
-- **Members** collaborate on review, triage, and delivery.
+- **Workspaces** – A workspace is your home base. It contains all your boards, team members, and settings for a single product or company.
+- **Boards** – Boards organize feedback into focused areas. You can create public boards for customer ideas, private boards for internal discussions, or specialized boards for your roadmap and changelog.
+- **Posts** – Posts are individual pieces of feedback, feature requests, or changelog entries. Users can vote on posts to help you prioritize.
+- **Members** – Your team members who collaborate on reviewing feedback, managing the roadmap, and publishing updates.
 
-## Recommended first steps
+## Quick start guide
 
-1. **Create your first workspace**  
-   Sign in to the app and create a workspace for your product. This sets up default branding, feedback, and roadmap settings.
+### 1. Create your workspace
 
-2. **Create at least one public board**  
-   Use the workspace settings to create a feedback board where customers can share ideas and vote.
+Sign in to Featul and create a workspace for your product. This sets up your feedback portal with default branding and settings.
 
-3. **Invite your team**  
-   Invite team members so they can triage feedback, manage boards, and publish updates together.
+### 2. Set up your first board
 
-4. **Connect a roadmap and changelog**  
-   For most teams we recommend enabling a roadmap board and a changelog board to show what is planned and what has shipped.
+Go to **Settings → Boards** and create a public feedback board. This is where your customers will submit ideas and vote on features they want.
 
-5. **Share your feedback portal**  
-   Share your workspace subdomain or custom domain with customers so they can start submitting feedback and voting on existing ideas.
+### 3. Invite your team
 
-From here you can dive into each section:
+Add team members so they can help triage feedback, respond to users, and manage your roadmap. Go to **Settings → Team** to send invites.
 
-- **Create Boards** explains how to model your product areas.
-- **Invite Members** covers roles and permissions.
-- **Plan Roadmap** shows how to use roadmap statuses.
-- **Publish Updates** walks through the changelog flow.
+### 4. Enable roadmap and changelog
+
+Most teams benefit from having a public roadmap (to show what's planned) and a changelog (to announce what shipped). Enable these from your board settings.
+
+### 5. Share with customers
+
+Share your workspace URL with customers so they can start submitting feedback. You can use your default subdomain (`yourproduct.featul.com`) or set up a custom domain.
+
+## Next steps
+
+Ready to dive deeper? Explore these guides:
+
+- **[Create Boards](/docs/getting-started/create-boards)** – Learn how to structure boards for different use cases
+- **[Invite Members](/docs/getting-started/invite-members)** – Understand roles and permissions
+- **[Plan Roadmap](/docs/getting-started/plan-roadmap)** – Set up roadmap statuses and workflows
+- **[Publish Updates](/docs/getting-started/publish-updates)** – Share release notes through your changelog

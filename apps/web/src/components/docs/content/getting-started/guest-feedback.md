@@ -1,42 +1,58 @@
 ---
 title: Guest feedback
-description: Collect feedback from guests without forcing account creation.
+description: Collect feedback from visitors without requiring account creation.
 ---
 
-## Anonymous feedback settings
+## What is guest feedback?
 
-Guest feedback is controlled at the board level. Each board has options that decide whether guests can submit ideas and whether comments are allowed.
+Guest feedback lets visitors submit ideas without signing up for an account. This removes friction and can increase the volume of feedback you receive.
+
+## How it works
+
+Guest feedback is controlled at the board level. Each public board can allow or disallow anonymous submissions independently.
+
+When enabled:
+- Visitors can submit posts without creating an account
+- You can optionally ask for name or email (but it's not required)
+- Identity settings control what's shown publicly
 
 ## Enabling guest submissions
 
-1. Open **Settings → Boards**.
-2. Choose a public board where you want to allow guest feedback.
-3. Enable **Allow anonymous submissions**.
-4. Decide whether to keep comments open on the board.
+1. Go to **Settings → Boards**
+2. Select a public board
+3. Enable **Allow anonymous submissions**
+4. Choose whether to allow comments from guests
+5. Save your changes
 
-Once enabled:
+## Moderation tools
 
-- Guests can submit posts without an account.
-- The system can store basic context (like name or email if you request it) alongside the post.
-- Identity settings decide how much is shown on public boards.
+Even with guest access, you have full control over content:
 
-## Moderation and quality
+| Tool | Purpose |
+|------|---------|
+| **Approval queue** | Hold submissions for review before publishing |
+| **Spam flagging** | Mark posts or comments as spam |
+| **Archive** | Remove content from public view |
+| **Reports** | Review user-submitted reports |
 
-Even with guest access, moderation tools remain available:
+Use these tools to maintain quality while keeping the submission barrier low.
 
-- You can hold submissions for approval before they appear.
-- You can mark posts or comments as spam or archive them.
-- You can review and resolve reports from your team or users.
+## When to enable guest feedback
 
-Use these tools to keep your public boards healthy while still keeping friction low for new feedback.
+Guest feedback works well when:
 
-## When to use guest feedback
+- You want the lowest possible friction for new ideas
+- You're in early stages and building your feedback base
+- You're capturing feedback from marketing pages or embedded widgets
+- Your users aren't likely to create accounts
 
-Guest feedback is useful when:
+## When to require sign-in
 
-- You want a very low-friction entry point to collect ideas.
-- You are early in the product lifecycle and do not want to require login.
-- You are capturing feedback from marketing pages or embedded widgets.
+Keep guest feedback disabled when:
 
-For high-sensitivity boards (for example, security or private roadmap), keep `allowAnonymous` disabled so that only signed-in users can contribute.
-For high-sensitivity boards (for example, security or private roadmap), keep anonymous submissions disabled so that only signed‑in users can contribute.
+- You need to know who's submitting (for follow-up or segmentation)
+- The board handles sensitive topics
+- You're experiencing spam issues
+- You want to link feedback to customer accounts
+
+For high-sensitivity boards (such as security or private roadmaps), keep anonymous submissions disabled so only signed-in users can contribute.

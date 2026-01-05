@@ -1,44 +1,76 @@
 ---
 title: Identify users
-description: Link feedback to user accounts while respecting privacy settings.
+description: Link feedback to user accounts for better context and follow-up.
 ---
 
-## User identity
+## Why identify users?
 
-User identity links feedback back to the people who created it. This allows you to:
+Linking feedback to user accounts lets you:
 
-- Filter feedback by customer or account.
-- See which team member responded or updated a request.
-- Power notifications and activity summaries.
+- Filter feedback by customer, plan, or segment
+- Follow up with specific users when features ship
+- See who on your team responded to requests
+- Power notifications and activity summaries
 
-## Anonymous vs identified posts
+## Anonymous vs identified feedback
 
-Posts and comments can be created either as identified or anonymous.
+| Type | You know who submitted | Best for |
+|------|----------------------|----------|
+| **Anonymous** | No | Low-friction public feedback |
+| **Identified** | Yes | Customer relationships, follow-up |
 
-When a user is signed in and not posting anonymously:
-
-- Their name and profile details can be shown in the interface.
-
-When a user posts anonymously:
-
-- Public views rely on generic labels such as “Guest” or “Anonymous”.
-
-Board-level options such as identity masking control how much identity is exposed on public portals.
+When users are signed in and not posting anonymously:
+- Their profile details are stored with the post
+- You can see their information internally
+- Board settings control what's shown publicly
 
 ## Identifying users from your product
 
-In many setups you will:
+If you embed Featul or link to it from your app, you can pass user information:
 
-- Authenticate users in your own app.
-- Mount a feedback widget or link to a feedback portal.
-- Pass user identifiers into the widget or feedback creation calls.
+1. Authenticate users in your own application
+2. Pass user identifiers when opening the feedback widget or portal
+3. This data is stored with their posts and comments
 
-This information is stored with posts and comments so you can later:
+Example user context:
 
-- Filter feedback by plan, segment, or account.
-- Follow up with specific users when features ship.
+```json
+{
+  "user_id": "user_12345",
+  "email": "customer@example.com",
+  "name": "Jane Doe",
+  "plan": "professional",
+  "company": "Acme Inc"
+}
+```
 
-Always make sure your implementation respects:
+## What you can do with identified feedback
 
-- Your privacy policy.
-- GDPR or other regional requirements.
+### Filter and segment
+
+- View all feedback from Enterprise customers
+- See requests from a specific account
+- Identify patterns by customer segment
+
+### Follow up
+
+- Notify users when their requested feature ships
+- Reach out for clarification or user research
+- Close the loop on resolved requests
+
+### Analyze trends
+
+- Which customer segments request what features?
+- How does feedback vary by plan tier?
+- What are your most engaged customers asking for?
+
+## Privacy considerations
+
+When identifying users, ensure you:
+
+- Follow your privacy policy
+- Comply with GDPR and other regulations
+- Only collect data you actually need
+- Use identity masking if you want to hide user info publicly
+
+See [Mask identities](/docs/getting-started/mask-identities) to learn how to hide user information on public boards while preserving it internally.

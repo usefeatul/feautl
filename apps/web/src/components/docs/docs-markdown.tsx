@@ -1,5 +1,6 @@
 import React from "react"
 import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import { Prose } from "@/components/blog/prose"
 
 function slugifyHeading(input: string) {
@@ -33,6 +34,7 @@ export function DocsMarkdown({ markdown }: { markdown: string }) {
   return (
     <Prose>
       <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
         components={{
           h2: ({ children }) => {
             const text = extractTextFromChildren(children)
@@ -66,6 +68,58 @@ export function DocsMarkdown({ markdown }: { markdown: string }) {
               </a>
             )
           },
+          table: ({ children }) => (
+            <div className="my-6 w-full overflow-x-auto">
+              <table className="w-full border-collapse text-sm">
+                {children}
+              </table>
+            </div>
+          ),
+          thead: ({ children }) => (
+            <thead className="border-b border-border bg-muted/50">
+              {children}
+            </thead>
+          ),
+          tbody: ({ children }) => (
+            <tbody className="divide-y divide-border">
+              {children}
+            </tbody>
+          ),
+          tr: ({ children }) => (
+            <tr className="border-b border-border last:border-0">
+              {children}
+            </tr>
+          ),
+          th: ({ children }) => (
+            <th className="px-4 py-3 text-left text-xs font-semibold text-foreground">
+              {children}
+            </th>
+          ),
+          td: ({ children }) => (
+            <td className="px-4 py-3 text-left text-accent">
+              {children}
+            </td>
+          ),
+          code: ({ children, className }) => {
+            const isInline = !className
+            if (isInline) {
+              return (
+                <code className="rounded bg-muted px-1.5 py-0.5 text-sm font-mono text-foreground">
+                  {children}
+                </code>
+              )
+            }
+            return (
+              <code className={className}>
+                {children}
+              </code>
+            )
+          },
+          pre: ({ children }) => (
+            <pre className="my-4 overflow-x-auto rounded-lg bg-muted p-4 text-sm">
+              {children}
+            </pre>
+          ),
         }}
       >
         {markdown}

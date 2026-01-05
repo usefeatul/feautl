@@ -1,53 +1,94 @@
 ---
-title: Custom events
-description: Attach structured context to feedback using metadata and activity logs.
+title: Custom metadata
+description: Attach structured context to feedback with custom fields and metadata.
 ---
 
-## Why custom events
+## Why use custom metadata?
 
-Beyond simple posts and votes, many teams want to attach structured context to feedback, such as:
+Beyond basic feedback, you often need additional context:
 
-- Which plan or segment a user is on.
-- Where in the product a request originated.
-- Which internal system or ticket it relates to.
+- Which customer plan or segment submitted this?
+- Where in your product did this request originate?
+- What related tickets exist in other systems?
 
-featul supports this through flexible metadata fields and an activity log.
+Featul supports flexible metadata to capture this information.
 
 ## Post metadata
 
-Each post can carry extra metadata, including:
+Every post can carry additional data:
 
-- Attachments such as files or links associated with a request.
-- References to systems such as GitHub or Jira.
-- Custom fields that store any additional context you need.
+| Type | Description |
+|------|-------------|
+| **Attachments** | Files, screenshots, or links |
+| **Integration references** | Links to GitHub issues, Jira tickets, etc. |
+| **Custom fields** | Any additional context you need |
 
-You can use custom fields to persist additional context for a post, for example:
+## Using custom fields
+
+Custom fields let you store structured data with each post. Example:
 
 ```json
 {
   "source": "in_app_widget",
   "plan": "professional",
-  "featureArea": "billing"
+  "feature_area": "billing",
+  "customer_id": "cust_12345"
 }
 ```
 
-34→These fields are available when rendering requests, building filters, or exporting data.
+These fields are available when:
+
+- Viewing post details
+- Building filters and segments
+- Exporting data for analysis
 
 ## Activity log
 
-The activity log records important events that happen inside a workspace and can include extra context for each event.
+Featul records important events in an activity log:
 
-This lets you:
+- Status changes (roadmap updates, moderation actions)
+- Merge operations
+- Team member actions
+- Vote and comment activity
 
-- Track when roadmap statuses change.
-- Capture moderation and merge actions.
-- Analyse how feedback flows through your process over time.
+This creates an audit trail of how feedback flows through your process.
 
-## Designing your own event schema
+## Designing your metadata schema
 
-Because metadata is flexible, you can define your own structure per workspace or integration. A common pattern is to:
+Since metadata is flexible, plan your structure:
 
-- Keep top-level keys stable (for example `source`, `segment`, `featureArea`).
-- Nest integration-specific payloads under namespaced keys (for example `jira`, `github`).
+### Keep top-level keys consistent
 
-This gives you a consistent way to reason about custom events without having to change the underlying data model.
+Use stable field names across all posts:
+
+```json
+{
+  "source": "...",
+  "segment": "...",
+  "feature_area": "..."
+}
+```
+
+### Namespace integration data
+
+Group external system data under namespaced keys:
+
+```json
+{
+  "github": {
+    "issue_url": "...",
+    "repo": "..."
+  },
+  "jira": {
+    "ticket_id": "...",
+    "project": "..."
+  }
+}
+```
+
+## Use cases
+
+- **Segmentation** – Filter feedback by customer plan, company size, or region
+- **Source tracking** – Know which widget, page, or campaign generated feedback
+- **Integration sync** – Link feedback to development tools
+- **Analytics** – Export metadata for deeper analysis

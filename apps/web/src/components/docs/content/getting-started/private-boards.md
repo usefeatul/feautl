@@ -1,47 +1,63 @@
 ---
 title: Private boards
-description: Run internal feedback and prioritisation on boards that users cannot see.
+description: Create internal boards that only your team can access.
 ---
 
-## Public vs private
+## Public vs private boards
 
-Each board has two important visibility options:
+Every board has a privacy setting:
 
-- Whether the board is accessible on your public feedback portal.
-- Whether the board appears in navigation, even if it is public.
+| Type | Who can access |
+|------|----------------|
+| **Public** | Anyone can view and submit feedback on your portal |
+| **Private** | Only workspace members can access through the app |
 
-A **private board** is a board that is not exposed on the public portal. Only authenticated workspace members can access it through the internal app.
+You can also create "unlisted" public boards—accessible via direct link but not shown in navigation.
 
-You can also create “hidden public” boards that can be visited via a direct link without being listed everywhere.
+## When to use private boards
+
+Private boards are useful for:
+
+- **Internal feedback** – Collect ideas from customer-facing teams before they're ready to share publicly
+- **Backlog grooming** – Discuss and prioritize requests before committing
+- **Early-stage ideas** – Test concepts internally before opening for public feedback
+- **Sensitive topics** – Handle feedback about confidential features or issues
 
 ## Creating a private board
 
-1. Open your workspace.
-2. Go to **Settings → Boards**.
-3. Create a new board or edit an existing one.
-4. Turn off the **Public** option.
-5. Save changes.
+1. Go to **Settings → Boards**
+2. Click **Create board** (or edit an existing board)
+3. Turn off the **Public** toggle
+4. Save your changes
 
-From this point:
+Once private:
 
-- New posts on the board are only visible to workspace members.
-- Public users will not see the board listed or be able to submit feedback to it.
+- The board won't appear on your public portal
+- Only workspace members can view posts and submit feedback
+- All posts and comments remain internal
 
-## Use cases
+## Converting between public and private
 
-Private boards work well for:
+You can change a board's privacy at any time:
 
-- Internal feedback from customer-facing teams.
-- Backlog grooming and triage discussions.
-- Experiments and early-stage ideas that you are not ready to share.
+1. Go to **Settings → Boards**
+2. Select the board you want to change
+3. Toggle the **Public** setting
+4. Save changes
 
-All posts and comments still follow the same workflow as other boards. The difference is that access is enforced at the board level based on visibility and the current user’s membership.
+When you make a board public:
+- Existing posts become visible to everyone
+- Customers can start submitting new feedback
 
-## Converting boards later
+When you make a board private:
+- Posts are hidden from the public portal
+- Only team members can access the content
 
-You can switch a board from private to public (or the reverse) at any time:
+Existing content stays on the board—only the visibility changes.
 
-- Changing the public setting updates who can read and create posts.
-- Existing posts remain on the board; only visibility changes.
+## Tips
 
-This lets you start with a private board while you refine your workflow and then open it up once you are ready to share more with customers.
+- Start private while you're still setting up your workflow
+- Move to public when you're ready for customer feedback
+- Use private boards for internal prioritization meetings
+- Consider unlisted boards for beta users or specific customer groups

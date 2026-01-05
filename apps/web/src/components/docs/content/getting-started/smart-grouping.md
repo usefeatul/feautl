@@ -1,59 +1,76 @@
 ---
 title: Smart grouping
-description: Use boards, tags, and statuses to keep feedback organised at scale.
+description: Organize feedback with boards, tags, and statuses as your volume grows.
 ---
 
 ## Why grouping matters
 
-As feedback volume grows it becomes hard to see patterns if everything sits in a single list. featul uses a combination of:
+When feedback volume grows, a single list becomes overwhelming. Featul gives you three ways to organize:
 
-- **Boards** for high-level separation.
-- **Tags** for flexible labelling.
-- **Roadmap statuses** for delivery stages.
+1. **Boards** – High-level separation
+2. **Tags** – Flexible labels
+3. **Statuses** – Workflow stages
 
-## Grouping with boards
+## Organizing with boards
 
-Boards are the first layer of grouping. Use them to separate:
+Boards are your first layer of organization. Each post belongs to exactly one board.
 
-- Product areas or modules.
-- Public vs internal feedback.
-- Roadmap, changelog, and idea intake.
+Use boards to separate:
 
-Every post is linked to exactly one board.
+- Product areas (e.g., "Mobile", "Web", "API")
+- Feedback types (e.g., "Feature Requests", "Bug Reports")
+- Visibility levels (public customer feedback vs. internal ideas)
+- Content types (feedback, roadmap, changelog)
 
-## Grouping with tags
+## Organizing with tags
 
-Tags are workspace-wide labels you can attach to posts.
+Tags are workspace-wide labels you can attach to any post. Unlike boards, a post can have multiple tags.
 
-Typical examples:
+Common tagging strategies:
 
-- Segment (`SMB`, `Enterprise`, `Pro`, `Free`).
-- Area (`Onboarding`, `Billing`, `Reporting`).
-- Theme (`UX`, `Reliability`, `Performance`).
+| Category | Example tags |
+|----------|--------------|
+| **Customer segment** | `Enterprise`, `SMB`, `Free`, `Pro` |
+| **Product area** | `Onboarding`, `Billing`, `Reporting`, `API` |
+| **Theme** | `UX`, `Performance`, `Reliability`, `Security` |
+| **Priority** | `High-impact`, `Quick-win`, `Long-term` |
 
-You can:
+### Managing tags
 
-- Create and manage tags from feedback or settings screens.
-- Attach multiple tags to a single post.
-- Filter and sort lists of posts by tag.
+- Create tags from the settings page or while editing posts
+- Apply multiple tags to a single post
+- Filter and sort by tags in list views
+- Use consistent naming for easier filtering
 
-## Grouping with statuses
+## Organizing with statuses
 
-Two kinds of status help you keep a clear picture:
+Two types of status help track content:
 
-- **Post status** – content lifecycle (for example draft, published, archived).
-- **Roadmap status** – delivery stage on roadmap boards.
+### Post status
+Tracks the content lifecycle:
+- **Draft** – Not yet visible
+- **Published** – Live and visible
+- **Archived** – Hidden but preserved
+- **Spam** – Flagged as unwanted
 
-In the UI you will typically:
+### Roadmap status
+Tracks delivery stage (on roadmap boards):
+- **Pending** → **Review** → **Planned** → **Progress** → **Completed**
 
-- Filter lists by roadmap status on roadmap views.
-- Filter by post status when moderating or cleaning up content.
+## Merging duplicate feedback
 
-## De-duplicating related feedback
+When multiple customers request the same thing:
 
-For overlapping feedback you can merge related posts:
+1. Identify related posts
+2. Merge them into a single primary post
+3. Votes and comments from merged posts are preserved
+4. Original submitters are linked to the merged post
 
-- Group duplicate posts into a single primary request.
-- Preserve votes, comments, and tags when consolidating.
+Merging keeps your board clean while preserving all the context and engagement.
 
-This keeps your grouping clean even when many customers ask for the same thing in different words.
+## Best practices
+
+- **Start simple** – Don't over-organize early. Add structure as patterns emerge.
+- **Be consistent** – Use the same tag names across your team.
+- **Review regularly** – Archive resolved posts and clean up unused tags.
+- **Combine methods** – Use boards for major divisions, tags for cross-cutting concerns.

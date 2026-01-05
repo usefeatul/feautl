@@ -127,97 +127,104 @@ export function DocsMobileNav(): ReactElement {
       {/* Floating Bottom Navigation Pill / Expanded Menu */}
       <div
         className={cn(
-          "md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-70 w-auto max-w-[calc(100vw-32px)]",
+          "md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-70 transition-all duration-300 ease-out",
           !isOpen && !isBottomNavVisible ? "translate-y-24 opacity-0" : "translate-y-0 opacity-100",
         )}
       >
         <motion.div
           role="group"
           aria-label="Docs navigation"
+          layout
           initial={false}
           animate={{
-            width: isOpen ? "90vw" : "50vw",
-            height: isOpen ? "80vh" : "3rem",
-            transition: isOpen
-              ? {
-                  width: { duration: 0.3, ease: "easeOut" },
-                  height: { delay: 0.3, duration: 0.2, ease: "easeIn" },
-                }
-              : {
-                  height: { duration: 0.2, ease: "easeIn" },
-                  width: { delay: 0.2, duration: 0.3, ease: "easeOut" },
-                },
+            width: isOpen ? "min(90vw, 380px)" : "auto",
+            height: isOpen ? "min(80vh, 500px)" : "48px",
           }}
-          style={{ originY: 1 }}
-          className={cn(
-            "bg-black text-white rounded-4xl shadow-lg border border-white/10 overflow-hidden flex flex-col mx-auto",
-            "max-w-[380px]",
-          )}
+          transition={{
+            type: "spring",
+            stiffness: 400,
+            damping: 30,
+          }}
+          className="bg-black text-white rounded-3xl shadow-lg border border-white/10 overflow-hidden flex flex-col"
         >
-          {isOpen && (
-            <div
-              id="docs-mobile-nav-panel"
-              className="overflow-y-auto flex-1 p-4 space-y-6"
-            >
-              {docsSections.map((section) => (
-                <div key={section.label} className="space-y-2">
-                  <div className="text-xs font-medium uppercase tracking-wider text-white/40 px-2">
-                    {section.label}
-                  </div>
-                  <ul className="space-y-1">
-                    {section.items.map((item) => {
-                      const isActive = pathname === item.href
-                      return (
-                        <li key={item.href}>
-                          <Link
-                            href={item.href}
-                            onClick={handleClose}
-                            className={cn(
-                              "flex items-center gap-3 rounded-4xl px-3 py-2 text-sm transition-colors",
-                              isActive
-                                ? "bg-white/10 text-white font-medium"
-                                : "text-accent hover:text-white hover:bg-white/5",
-                            )}
-                          >
-                            <span
+          {/* Nav content - expands above the trigger */}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                id="docs-mobile-nav-panel"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15, delay: isOpen ? 0.1 : 0 }}
+                className="overflow-y-auto flex-1 p-4 space-y-5"
+              >
+                {docsSections.map((section, sectionIdx) => (
+                  <motion.div
+                    key={section.label}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2, delay: 0.05 * sectionIdx }}
+                    className="space-y-2"
+                  >
+                    <div className="text-[11px] font-medium uppercase tracking-wider text-white/40 px-2">
+                      {section.label}
+                    </div>
+                    <ul className="space-y-0.5">
+                      {section.items.map((item) => {
+                        const isActive = pathname === item.href
+                        return (
+                          <li key={item.href}>
+                            <Link
+                              href={item.href}
+                              onClick={handleClose}
                               className={cn(
-                                "size-1.5 rounded-sm transition-colors",
-                                isActive ? "bg-primary text-white" : "bg-white/20",
+                                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors",
+                                isActive
+                                  ? "bg-white/10 text-white font-medium"
+                                  : "text-white/60 hover:text-white hover:bg-white/5",
                               )}
-                            />
-                            {item.label}
-                          </Link>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          )}
+                            >
+                              <span
+                                className={cn(
+                                  "size-1.5 rounded-full shrink-0 transition-colors",
+                                  isActive ? "bg-primary" : "bg-white/20",
+                                )}
+                              />
+                              {item.label}
+                            </Link>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
+          {/* Bottom trigger bar - stays at bottom */}
           <button
             type="button"
             onClick={isOpen ? handleClose : handleOpen}
-            className="flex w-full items-center px-1 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            className={cn(
+              "flex items-center justify-between gap-3 px-4 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-inset h-12",
+              isOpen && "border-t border-white/10",
+            )}
             aria-label={`Toggle docs navigation, currently on ${currentSectionLabel} – ${currentPageLabel}`}
             aria-expanded={isOpen}
             aria-controls="docs-mobile-nav-panel"
           >
-            <div
-              className={cn(
-                "flex w-full items-center px-4 py-2 text-sm font-medium text-white transition-all duration-300 ease-out",
-                isOpen ? "justify-between" : "justify-center",
-              )}
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-accent text-xs">{currentSectionLabel}</span>
-                <span>{currentPageLabel}</span>
-              </div>
-              <div className="flex items-center pl-2 pr-1">
-                <ChevronExpandIcon className="w-4 h-4 text-accent" />
-              </div>
+            <div className="flex items-center gap-2 text-sm font-medium text-white min-w-0">
+              <span className="text-white/50 text-xs shrink-0">{currentSectionLabel}</span>
+              <span className="truncate">{currentPageLabel}</span>
             </div>
+            <motion.div
+              animate={{ rotate: isOpen ? 180 : 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="shrink-0"
+            >
+              <ChevronExpandIcon className="w-4 h-4 text-white/50" />
+            </motion.div>
           </button>
         </motion.div>
       </div>

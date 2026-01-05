@@ -4,11 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@featul/ui/lib/utils";
 import { FeatulLogoIcon } from "@featul/ui/icons/featul-logo";
-import { docsSections } from "@/config/docsNav";
+import { docsSections } from "../../config/docsNav";
+import React from "react";
 
-/**
- * Desktop sidebar navigation for docs pages.
- */
 export function DocsSidebar() {
   const pathname = usePathname();
 

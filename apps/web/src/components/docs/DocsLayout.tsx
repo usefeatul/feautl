@@ -19,13 +19,13 @@ export function DocsLayoutShell({ children }: DocsLayoutShellProps) {
       <DocsMobileNav />
 
       {/* Main content area - only this scrolls */}
-      <main className="flex-1 flex flex-col min-w-0 pt-14 md:pt-1 lg:pt-2 bg-background md:bg-transparent overflow-hidden">
-        <div className="flex-1 bg-background md:rounded-tl-2xl shadow-sm ring-1 ring-border/20 flex flex-col relative overflow-hidden">
+      <main className="flex-1 flex flex-col min-w-0 pt-14 md:pt-1 lg:pt-2 bg-background md:bg-transparent overflow-hidden ">
+        <div className="flex-1 bg-background md:rounded-tl-2xl shadow-sm ring-1 ring-border/60 ring-offset-1 ring-offset-background flex flex-col relative overflow-hidden">
           <div
             className="flex-1 overflow-y-auto"
             data-docs-scroll-container="true"
           >
-            <div className="container mx-auto px-6 pt-8 pb-24 md:pb-12 md:px-12 lg:px-16 max-w-[90rem]">
+            <div className="container mx-auto px-6 pt-8 pb-24 md:pb-12 md:px-12 lg:px-16 max-w-[45rem]">
               <div className="flex justify-center">
                 <div className="min-w-0 w-full max-w-3xl">{children}</div>
               </div>

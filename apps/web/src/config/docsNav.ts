@@ -11,9 +11,14 @@ export interface DocsNavSection {
 
 export const docsSections: DocsNavSection[] = [
   {
-    label: "Getting Started",
+    label: "Intro",
     items: [
       { id: "getting-started/index", label: "Getting Started", href: "/docs/getting-started" },
+    ],
+  },
+  {
+    label: "Getting Started",
+    items: [
       { id: "getting-started/create-boards", label: "Create Boards", href: "/docs/getting-started/create-boards" },
       { id: "getting-started/invite-members", label: "Invite Members", href: "/docs/getting-started/invite-members" },
       { id: "getting-started/plan-roadmap", label: "Plan Roadmap", href: "/docs/getting-started/plan-roadmap" },
@@ -26,7 +31,7 @@ export const docsSections: DocsNavSection[] = [
     ],
   },
   {
-    label: "Advanced",
+    label: "Branding & Setup",
     items: [],
   },
 ]

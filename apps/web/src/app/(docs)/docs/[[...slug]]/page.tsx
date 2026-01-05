@@ -42,16 +42,36 @@ function toTocItems(markdown: string): TocItemType[] {
   }))
 }
 
+// Pre-generate all docs pages at build time for SEO
+export async function generateStaticParams(): Promise<DocsPageParams[]> {
+  const params: DocsPageParams[] = []
+  
+  for (const section of docsSections) {
+    for (const item of section.items) {
+      // Remove "/docs/" prefix and split into segments
+      const segments = item.href.replace("/docs/", "").split("/").filter(Boolean)
+      params.push({ slug: segments.length ? segments : undefined })
+    }
+  }
+  
+  return params
+}
+
 export async function generateMetadata(props: DocsPageProps): Promise<Metadata> {
   const params = await props.params
   const pathname = resolvePathname(params)
   const nav = findNavItem(pathname)
-  if (!nav) {
-    notFound()
-  }
+  if (!nav) notFound()
+
+  const docs = await readDocsMarkdown(nav.item.id as DocsPageId)
 
   return {
-    title: nav.item.label,
+    title: docs.frontmatter.title ?? nav.item.label,
+    description: docs.frontmatter.description,
+    openGraph: {
+      title: docs.frontmatter.title ?? nav.item.label,
+      description: docs.frontmatter.description,
+    },
   }
 }
 

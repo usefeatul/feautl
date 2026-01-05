@@ -37,7 +37,7 @@ export function DocsSidebar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "group flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-accent hover:text-black transition-colors",
+                      "group flex items-center gap-2 rounded-md py-1.5 text-xs text-accent hover:text-black transition-colors",
                       isActive && "text-black"
                     )}
                   >

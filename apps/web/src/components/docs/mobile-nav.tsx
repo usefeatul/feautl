@@ -118,7 +118,7 @@ export function DocsMobileNav(): ReactElement {
           <Button variant="ghost" size="sm" className="text-xs h-8">
             Log in
           </Button>
-          <Button size="sm" className="text-xs h-8 rounded-full bg-foreground text-background hover:bg-foreground/90">
+          <Button >
             Register
           </Button>
         </div>

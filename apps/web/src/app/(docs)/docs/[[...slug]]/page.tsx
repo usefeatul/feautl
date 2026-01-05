@@ -69,8 +69,8 @@ export default async function DocsPage(props: DocsPageProps) {
   return (
     <>
       {/* Fixed TOC on the right */}
-      <aside className="hidden xl:block pointer-events-none fixed top-10 right-1 sm:right-1 lg:right-2 2xl:right-3 z-20">
-        <div className="w-64 max-w-xs pointer-events-auto">
+      <aside className="hidden xl:block pointer-events-none fixed top-10 right-1 z-20">
+        <div className="w-50 max-w-xs pointer-events-auto">
           <DocsToc items={tocItems} />
         </div>
       </aside>

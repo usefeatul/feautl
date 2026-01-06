@@ -28,7 +28,12 @@ function AvatarImage({
   return (
     <BaseAvatar.Image
       data-slot="avatar-image"
-      className={cn("aspect-square bg-accent/10 dark:bg-black/50 rounded-full size-full", className)}
+      className={cn(
+        "aspect-square bg-accent/10 dark:bg-black/50 rounded-full size-full",
+        // Invert white SVGs in light mode for proper contrast (e.g., FeatulLogoIcon data URIs)
+        "[[src*='data:image/svg+xml']]:dark:brightness-100 [[src*='data:image/svg+xml']]:brightness-0",
+        className
+      )}
       {...props}
     />
   )

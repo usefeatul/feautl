@@ -59,7 +59,7 @@ function AlertDialogContent({
       <BaseAlertDialog.Popup
         data-slot="alert-dialog-content"
         className={cn(
-          "bg-background fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border-2 p-6 shadow-lg duration-200 sm:max-w-sm",
+          "bg-background fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-2 rounded-2xl border-2 p-6 shadow-lg duration-200 sm:max-w-sm",
           className
         )}
         {...props}
@@ -68,7 +68,7 @@ function AlertDialogContent({
         {showCloseButton && (
           <BaseAlertDialog.Close
             data-slot="alert-dialog-close"
-            className="ring-offset-background focus:ring-ring absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer"
+            className="ring-offset-background focus:ring-ring absolute top-2 right-2 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer"
           >
             <XMarkIcon />
             <span className="sr-only">Close</span>

@@ -41,9 +41,9 @@ export function SettingsDialogShell({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent fluid style={{ ...styleWidth, ...positionStyle }} className={`max-w-none sm:max-w-none p-1 bg-muted rounded-xl gap-2`}>
-        <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
-          <DialogTitle className="flex items-center gap-2 px-2 mt-1 py-1 text-sm font-normal">
+      <DialogContent fluid style={{ ...styleWidth, ...positionStyle }} className={`max-w-none sm:max-w-none p-1 bg-muted rounded-2xl gap-1`}>
+        <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
+          <DialogTitle className="flex items-center gap-2 px-2 mt-0.5 py-0.5 text-sm font-normal">
             {icon}
             {title}
           </DialogTitle>

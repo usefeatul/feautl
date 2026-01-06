@@ -76,6 +76,7 @@ export default function RequestDetailSidebar({
               <RoleBadge
                 role={post.role}
                 isOwner={post.isOwner}
+                isFeatul={post.isFeatul}
                 className="-bottom-1 -right-1 bg-card"
               />
             </Avatar>

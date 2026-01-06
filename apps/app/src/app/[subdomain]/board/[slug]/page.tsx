@@ -64,10 +64,12 @@ export default async function BoardPage({
       boardName: r.boardName,
       authorImage: r.authorImage,
       authorName: r.authorName,
+      authorId: r.authorId,
       isAnonymous: r.isAnonymous,
       hasVoted: await readHasVotedForPost(r.id),
       role: r.role,
       isOwner: false,
+      isFeatul: r.authorId === "featul-founder",
     }))
   )
 

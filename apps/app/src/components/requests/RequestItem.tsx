@@ -27,10 +27,12 @@ export interface RequestItemData {
   boardName: string
   authorImage?: string | null
   authorName?: string | null
+  authorId?: string | null
   isAnonymous?: boolean
   hasVoted?: boolean
   role?: "admin" | "member" | "viewer" | null
   isOwner?: boolean
+  isFeatul?: boolean
 }
 
 interface RequestItemProps {
@@ -85,7 +87,7 @@ function RequestItemBase({ item, workspaceSlug, linkBase, isSelecting, isSelecte
           <Avatar className="size-6 bg-muted ring-1 ring-border relative overflow-visible">
             <AvatarImage src={item.authorImage || randomAvatarUrl(item.id || item.slug)} alt={item.isAnonymous ? "Guest" : (item.authorName || "Guest")} />
             <AvatarFallback>{getInitials(item.isAnonymous ? "Guest" : (item.authorName || "Guest"))}</AvatarFallback>
-            <RoleBadge role={item.role} isOwner={item.isOwner} />
+            <RoleBadge role={item.role} isOwner={item.isOwner} isFeatul={item.isFeatul} />
           </Avatar>
         </div>
       </div>

@@ -38,6 +38,7 @@ export type RequestDetailData = {
   hasVoted?: boolean
   role?: "admin" | "member" | "viewer" | null
   isOwner?: boolean
+  isFeatul?: boolean
   duplicateOfId?: string | null
   mergedInto?: {
     id: string

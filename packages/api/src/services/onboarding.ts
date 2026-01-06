@@ -26,7 +26,7 @@ export async function seedWorkspaceOnboarding(db: any, workspaceId: string, crea
   if (!founder) {
     await db.insert(user).values({
       id: founderId,
-      name: "Jean Daly",
+      name: "Featul team",
       email: founderEmail,
       emailVerified: true,
       image: FEATUL_LOGO_DATA_URI,
@@ -37,7 +37,7 @@ export async function seedWorkspaceOnboarding(db: any, workspaceId: string, crea
   } else {
     await db
       .update(user)
-      .set({ name: "Jean Daly", image: FEATUL_LOGO_DATA_URI, updatedAt: new Date() })
+      .set({ name: "Featul team", image: FEATUL_LOGO_DATA_URI, updatedAt: new Date() })
       .where(eq(user.id, founderId))
   }
 

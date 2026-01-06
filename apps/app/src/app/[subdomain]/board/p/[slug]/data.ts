@@ -58,6 +58,7 @@ export async function loadPublicBoardRequestDetailPageData({
     ...postWithAuthor,
     hasVoted,
     isOwner,
+    isFeatul: rawPost.authorId === "featul-founder",
   };
 
   return {

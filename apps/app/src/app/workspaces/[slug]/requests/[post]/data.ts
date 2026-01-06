@@ -78,6 +78,7 @@ export async function loadRequestDetailPageData({
     ...postWithAuthor,
     role,
     isOwner,
+    isFeatul: rawPost.authorId === "featul-founder",
     tags,
     hasVoted,
   }

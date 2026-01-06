@@ -126,7 +126,7 @@ export function RequestContent({
             <AvatarFallback className="text-xs bg-muted text-muted-foreground">
               {getInitials(displayAuthor.name)}
             </AvatarFallback>
-            <RoleBadge role={post.role} isOwner={post.isOwner} />
+            <RoleBadge role={post.role} isOwner={post.isOwner} isFeatul={post.isFeatul} />
           </Avatar>
           <span className="text-xs text-accent whitespace-nowrap mt-2 max-w-[180px] truncate">
             {displayAuthor.name}

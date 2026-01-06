@@ -16,6 +16,7 @@ export type SubdomainRequestDetailData = {
   hasVoted?: boolean;
   role?: "admin" | "member" | "viewer" | null;
   isOwner?: boolean;
+  isFeatul?: boolean;
   duplicateOfId?: string | null;
   mergedInto?:
     | {

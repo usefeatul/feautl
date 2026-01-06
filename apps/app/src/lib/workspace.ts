@@ -333,6 +333,7 @@ export async function getWorkspacePosts(
     return {
       ...r,
       isOwner: r.authorId === ws.ownerId,
+      isFeatul: r.authorId === "featul-founder",
       authorImage: !r.isAnonymous
         ? r.authorImage || randomAvatarUrl(r.id || r.slug)
         : randomAvatarUrl(avatarSeed),

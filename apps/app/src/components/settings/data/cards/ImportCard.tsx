@@ -39,7 +39,7 @@ export default function ImportCard({
         </Button>
       </div>
       {/* Description section */}
-      <div className="px-4 py-3 bg-card ring-1 ring-border/60 ring-offset-1 ring-offset-background rounded-lg mx-2 mb-2">
+      <div className="px-4 py-3 bg-card ring-1 ring-border/60 ring-offset-1 ring-offset-background rounded-lg mx-2 mb-2 min-h-[60px]">
         <p className="text-sm text-muted-foreground leading-relaxed">
           {description}
         </p>

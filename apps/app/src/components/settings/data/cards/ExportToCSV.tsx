@@ -1,6 +1,6 @@
 import React from "react";
 import ImportCard from "./ImportCard";
-import { Download } from "lucide-react";
+import { FileExportIcon } from "@featul/ui/icons/file-export";
 
 type Props = {
   onExport?: () => void;
@@ -9,7 +9,7 @@ type Props = {
 export default function ExportToCSV({ onExport }: Props) {
   return (
     <ImportCard
-      icon={<Download className="w-5 h-5" />}
+      icon={<FileExportIcon className="w-5 h-5" />}
       title="Export to CSV"
       description="Export all your feedback submissions and their details to a downloadable CSV file."
       buttonLabel="Export"

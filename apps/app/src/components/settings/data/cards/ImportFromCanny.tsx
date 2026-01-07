@@ -1,6 +1,6 @@
 import React from "react";
 import ImportCard from "./ImportCard";
-import { RefreshCw } from "lucide-react";
+import { CannyIcon } from "@featul/ui/icons/canny";
 
 type Props = {
   onImport?: () => void;
@@ -9,7 +9,7 @@ type Props = {
 export default function ImportFromCanny({ onImport }: Props) {
   return (
     <ImportCard
-      icon={<RefreshCw className="w-5 h-5" />}
+      icon={<CannyIcon className="w-5 h-5" />}
       title="Import from Canny"
       description="Import your feedback, feature requests, and comments directly from Canny."
       buttonLabel="Import"

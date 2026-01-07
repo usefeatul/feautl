@@ -82,7 +82,7 @@ function RequestItemBase({ item, workspaceSlug, linkBase, isSelecting, isSelecte
           <CommentsIcon aria-hidden className="size-3.5" />
           <span className="tabular-nums">{item.commentCount}</span>
         </div>
-        <span>{new Intl.DateTimeFormat(undefined, { month: "short", day: "2-digit" }).format(new Date(item.publishedAt ?? item.createdAt))}</span>
+        <span>{new Intl.DateTimeFormat("en-US", { month: "short", day: "2-digit" }).format(new Date(item.publishedAt ?? item.createdAt))}</span>
         <div className="relative">
           <Avatar className="size-6 bg-muted ring-1 ring-border relative overflow-visible">
             <AvatarImage src={item.authorImage || randomAvatarUrl(item.id || item.slug)} alt={item.isAnonymous ? "Guest" : (item.authorName || "Guest")} />

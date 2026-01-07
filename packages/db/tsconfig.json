@@ -3,8 +3,14 @@
   "compilerOptions": {
     "composite": true,
     "incremental": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "types": []
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

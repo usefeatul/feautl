@@ -8,6 +8,7 @@
     "./extensions/*": "./src/extensions/*"
   },
   "scripts": {
+    "check-types": "tsc --noEmit",
     "lint": "biome check .",
     "format": "biome --write ."
   },

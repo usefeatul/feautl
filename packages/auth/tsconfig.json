@@ -1,13 +1,24 @@
 {
   "extends": "@featul/tsconfig/base.json",
   "compilerOptions": {
-    "composite": true,
+    "composite": false,
     "incremental": true,
+    "declaration": false,
+    "declarationMap": false,
     "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "types": [
+      "node"
+    ]
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

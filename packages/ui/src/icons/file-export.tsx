@@ -9,33 +9,15 @@ export const FileExportIcon: React.FC<FileExportIconProps> = ({ className = '', 
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 12 12"
+      viewBox="0 0 18 18"
       className={className}
       width={size}
       height={size}
-      fill="none"
-      stroke="currentColor"
+      fill="currentColor"
     >
       <path
-        d="m6.75,4.25h3.5c0-.321-.127-.627-.353-.853l-2.295-2.295c-.226-.226-.532-.353-.851-.353v3.5Z"
+        d="M15.487,5.427l-3.914-3.914c-.331-.331-.77-.513-1.237-.513H4.75c-1.517,0-2.75,1.233-2.75,2.75V14.25c0,1.517,1.233,2.75,2.75,2.75H13.25c1.517,0,2.75-1.233,2.75-2.75V6.664c0-.467-.182-.907-.513-1.237Zm-1.053,1.068l-.002,.005h-2.932c-.55,0-1-.45-1-1V2.579l.013-.005,3.921,3.921Z"
         fill="currentColor"
-        strokeWidth="0"
-      />
-      <polyline
-        points="6.75 .75 6.75 4.25 10.25 4.25"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="m7.603,1.103l2.294,2.294c.226.226.353.532.353.852v5.001c0,1.105-.895,2-2,2H3.75c-1.105,0-2-.895-2-2V2.75C1.75,1.645,2.645.75,3.75.75h3.001c.32,0,.626.127.852.353Z"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
       />
     </svg>
   )

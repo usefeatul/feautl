@@ -19,9 +19,9 @@ export default function ImportCard({
   disabled = false,
 }: Props) {
   return (
-    <div className="rounded-xl bg-muted/40 dark:bg-muted/20 overflow-hidden">
+    <div className="rounded-xl bg-muted/40 dark:bg-muted/20 overflow-hidden p-2">
       {/* Header row */}
-      <div className="flex items-center justify-between px-4 py-3">
+      <div className="flex items-center justify-between py-2">
         <div className="flex items-center gap-3">
           <div className="w-5 h-5 text-muted-foreground">
             {icon}
@@ -39,8 +39,8 @@ export default function ImportCard({
         </Button>
       </div>
       {/* Description section */}
-      <div className="px-4 py-3 bg-card ring-1 ring-border/60 ring-offset-1 ring-offset-background rounded-lg mx-2 mb-2 min-h-[60px]">
-        <p className="text-sm text-muted-foreground leading-relaxed">
+      <div className="px-4 py-3 bg-card ring-1 ring-border/60 ring-offset-1 ring-offset-background rounded-lg min-h-[60px]">
+        <p className="text-sm text-accent leading-relaxed">
           {description}
         </p>
       </div>

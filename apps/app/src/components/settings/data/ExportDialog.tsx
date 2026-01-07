@@ -5,9 +5,9 @@ import { SettingsDialogShell } from "../global/SettingsDialogShell";
 import { Button } from "@featul/ui/components/button";
 import { client } from "@featul/api/client";
 import { toast } from "sonner";
-import { Download } from "lucide-react";
 import { FileExportIcon } from "@featul/ui/icons/file-export";
 import { LoaderIcon } from "@featul/ui/icons/loader";
+import { DownloadIcon } from "@featul/ui/icons/download";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Props = {
@@ -90,7 +90,7 @@ export function ExportDialog({ slug, open, onOpenChange }: Props) {
       open={open}
       onOpenChange={handleClose}
       title="Export to CSV"
-      icon={<FileExportIcon className="w-4 h-4" />}
+      icon={<FileExportIcon className="size-5" />}
     >
       <div className="p-4 space-y-4 overflow-hidden">
         <AnimatePresence mode="wait">
@@ -124,7 +124,7 @@ export function ExportDialog({ slug, open, onOpenChange }: Props) {
                 className="text-center"
               >
                 <p className="text-sm font-medium text-foreground">Export ready!</p>
-                <p className="text-sm text-accent mt-1">
+                <p className="text-sm text-accent mt-0.5">
                   Your CSV file is ready to download.
                 </p>
               </motion.div>
@@ -134,7 +134,7 @@ export function ExportDialog({ slug, open, onOpenChange }: Props) {
                 transition={{ delay: 0.2 }}
               >
                 <Button onClick={handleDownload} className="gap-2">
-                  <Download className="w-4 h-4" />
+                  <DownloadIcon className="size-4" />
                   Download CSV
                 </Button>
               </motion.div>

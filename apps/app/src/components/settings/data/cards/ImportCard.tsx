@@ -19,7 +19,7 @@ export default function ImportCard({
   disabled = false,
 }: Props) {
   return (
-    <div className="rounded-xl bg-muted/40 dark:bg-muted/20 overflow-hidden p-2">
+    <div className="rounded-xl bg-muted/40 dark:bg-muted/20 overflow-hidden p-2 border border-border">
       {/* Header row */}
       <div className="flex items-center justify-between py-2">
         <div className="flex items-center gap-3">
@@ -29,11 +29,11 @@ export default function ImportCard({
           <span className="text-sm font-medium text-foreground">{title}</span>
         </div>
         <Button
-          variant="outline"
+          variant="card"
           size="sm"
           onClick={onAction}
           disabled={disabled}
-          className="h-7 px-3 text-xs font-medium bg-background"
+          className="h-7 px-3 text-xs font-medium"
         >
           {buttonLabel}
         </Button>

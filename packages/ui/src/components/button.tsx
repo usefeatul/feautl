@@ -32,7 +32,7 @@ const buttonVariants = cva(
           "bg-background text-foreground hover:bg-muted hover:text-accent-foreground dark:hover:bg-black/50 "
         ),
         card: cn(
-          "bg-card dark:bg-black/5 text-foreground hover:bg-muted/20 hover:text-accent-foreground dark:hover:bg-black/30"
+          "bg-card dark:bg-black/5 text-foreground border border-border hover:bg-muted/20 hover:text-accent-foreground dark:hover:bg-black/30"
         ),
       },
       size: {

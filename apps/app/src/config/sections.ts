@@ -9,7 +9,7 @@ export const SECTIONS: SettingsSection[] = [
   { value: "billing", label: "Billing", desc: "Subscriptions and invoices" },
   { value: "domain", label: "Domain", desc: "Custom domain settings" },
   { value: "integrations", label: "Integrations", desc: "Connect external tools" },
-  { value: "sso", label: "SSO", desc: "Single sign-on setup" },
+
   { value: "data", label: "Data", desc: "Export and data controls" },
 ]
 

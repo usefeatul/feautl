@@ -6,7 +6,7 @@ import ChangelogSection from "../changelog/Changelog";
 import BillingSection from "../billing/Billing";
 import DomainSection from "../domain/Domain";
 import IntegrationsSection from "../integrations/Integrations";
-import SSOSection from "../sso/SSO";
+
 import DataSection from "../data/Data";
 import BoardSettings from "../board/Board";
 import type { Member, Invite } from "../../../types/team";
@@ -166,8 +166,7 @@ function SectionRenderer({
       );
     case "integrations":
       return <IntegrationsSection />;
-    case "sso":
-      return <SSOSection />;
+
     case "data":
       return (
         <DataSection

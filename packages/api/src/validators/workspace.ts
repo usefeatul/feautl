@@ -51,3 +51,8 @@ export const deleteWorkspaceInputSchema = z.object({
   // Name must be provided and will be validated server-side against the actual workspace name
   confirmName: z.string().trim().min(1),
 })
+
+export const importCsvInputSchema = z.object({
+  slug: slugSchema,
+  csvContent: z.string(),
+})

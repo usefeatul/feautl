@@ -522,5 +522,96 @@ export function createWorkspaceRouter() {
           await ctx.db.delete(workspace).where(eq(workspace.id, ws.id))
           return c.superjson({ ok: true })
         }),
+
+      exportCsv: privateProcedure
+        .input(checkSlugInputSchema)
+        .get(async ({ ctx, input, c }) => {
+          const [ws] = await ctx.db
+            .select({ id: workspace.id, name: workspace.name, ownerId: workspace.ownerId })
+            .from(workspace)
+            .where(eq(workspace.slug, input.slug))
+            .limit(1)
+          if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
+
+          // Check permissions
+          const meId = ctx.session.user.id
+          let allowed = ws.ownerId === meId
+          if (!allowed) {
+            const [me] = await ctx.db
+              .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
+              .from(workspaceMember)
+              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
+              .limit(1)
+            const perms = (me?.permissions || {}) as Record<string, boolean>
+            if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
+          }
+          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+
+          // Query all posts with board info and author
+          const posts = await ctx.db
+            .select({
+              id: post.id,
+              title: post.title,
+              content: post.content,
+              status: post.roadmapStatus,
+              upvotes: post.upvotes,
+              boardName: board.name,
+              metadata: post.metadata,
+              createdAt: post.createdAt,
+              updatedAt: post.updatedAt,
+              authorName: user.name,
+              authorEmail: user.email,
+            })
+            .from(post)
+            .innerJoin(board, eq(post.boardId, board.id))
+            .leftJoin(user, eq(post.authorId, user.id))
+            .where(eq(board.workspaceId, ws.id))
+            .orderBy(post.createdAt)
+
+          // Build CSV
+          const escapeCell = (val: string | null | undefined) => {
+            if (val == null) return ""
+            const str = String(val).replace(/"/g, '""')
+            return str.includes(",") || str.includes('"') || str.includes("\n") ? `"${str}"` : str
+          }
+
+          type PostRow = {
+            id: string
+            title: string
+            content: string
+            status: string | null
+            upvotes: number | null
+            boardName: string
+            metadata: { attachments?: { name: string; url: string; type: string }[] } | null
+            createdAt: Date | null
+            updatedAt: Date | null
+            authorName: string | null
+            authorEmail: string | null
+          }
+
+          const headers = ["ID", "Title", "Description", "Status", "Upvotes", "Board", "Author Name", "Author Email", "Attachments", "Created At", "Updated At"]
+          const rows = posts.map((p: PostRow) => {
+            const attachments = p.metadata?.attachments?.map((a) => a.url).join("; ") || ""
+            return [
+              escapeCell(p.id),
+              escapeCell(p.title),
+              escapeCell(p.content),
+              escapeCell(p.status),
+              String(p.upvotes || 0),
+              escapeCell(p.boardName),
+              escapeCell(p.authorName),
+              escapeCell(p.authorEmail),
+              escapeCell(attachments),
+              p.createdAt ? new Date(p.createdAt).toISOString() : "",
+              p.updatedAt ? new Date(p.updatedAt).toISOString() : "",
+            ]
+          })
+
+          const csv = [headers.join(","), ...rows.map((r: string[]) => r.join(","))].join("\n")
+
+          c.header("Content-Type", "text/csv; charset=utf-8")
+          c.header("Content-Disposition", `attachment; filename="${input.slug}-export.csv"`)
+          return c.body(csv)
+        }),
   })
 }

@@ -18,7 +18,7 @@ export default function DataSection({ slug, workspaceId, workspaceName }: Props)
     <SectionCard title="Data" description="Manage your workspace data.">
       <div className="space-y-10">
         <DataImportSection />
-        <DataExportSection />
+        <DataExportSection slug={slug} />
         <WorkspaceIdSection workspaceId={workspaceId} />
         <DangerZoneSection slug={slug} workspaceName={workspaceName} />
       </div>

@@ -27,7 +27,12 @@ export function ExportDialog({ slug, open, onOpenChange }: Props) {
     toast.loading("Exporting your data...", { id: "export-csv" });
 
     try {
-      const res = await client.workspace.exportCsv.$get({ slug });
+      // Run export and minimum delay in parallel
+      const [res] = await Promise.all([
+        client.workspace.exportCsv.$get({ slug }),
+        new Promise((resolve) => setTimeout(resolve, 1500)), // Minimum 1.5s delay
+      ]);
+      
       if (!res.ok) {
         throw new Error("Failed to export data");
       }

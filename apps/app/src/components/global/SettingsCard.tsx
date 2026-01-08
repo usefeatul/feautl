@@ -7,6 +7,7 @@ type Props = {
   description: string;
   buttonLabel?: string;
   onAction?: () => void;
+  href?: string;
   disabled?: boolean;
   isConnected?: boolean;
   onTest?: () => void;
@@ -18,6 +19,7 @@ export default function SettingsCard({
   description,
   buttonLabel = "Import",
   onAction,
+  href,
   disabled = false,
   isConnected = false,
   onTest,
@@ -41,27 +43,34 @@ export default function SettingsCard({
           {isConnected && onTest && (
             <Button
               variant="ghost"
-              size="sm"
               onClick={onTest}
               disabled={disabled}
-              className="h-7 px-3 text-xs font-medium"
             >
               Test
             </Button>
           )}
-          <Button
-            variant="card"
-            size="sm"
-            onClick={onAction}
-            disabled={disabled}
-            className="h-7 px-3 text-xs font-medium"
-          >
-            {buttonLabel}
-          </Button>
+          {href ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center h-7 px-3 text-xs font-medium rounded-md bg-card border border-border hover:bg-muted transition-colors"
+            >
+              {buttonLabel}
+            </a>
+          ) : (
+            <Button
+              variant="card"
+              onClick={onAction}
+              disabled={disabled}
+            >
+              {buttonLabel}
+            </Button>
+          )}
         </div>
       </div>
       {/* Description section */}
-      <div className="px-4 py-3 bg-card ring-1 ring-border/60 ring-offset-1 ring-offset-background rounded-lg min-h-[60px]">
+      <div className="px-4 py-3 bg-card dark:bg-background ring-1 ring-border/60 ring-offset-1 ring-offset-background rounded-lg min-h-[60px]">
         <p className="text-sm text-accent leading-relaxed">
           {description}
         </p>

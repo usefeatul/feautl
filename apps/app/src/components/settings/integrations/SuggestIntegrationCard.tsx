@@ -13,7 +13,7 @@ export default function SuggestIntegrationCard({ onSuggest }: Props) {
       title="Integrations?"
       description="Tell us what integrations would help improve your workflow."
       buttonLabel="Suggest Integration"
-      onAction={onSuggest}
+      href="https://feedback.featul.com"
     />
   );
 }

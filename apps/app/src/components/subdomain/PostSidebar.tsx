@@ -3,7 +3,7 @@
 import React from "react"
 import { useWorkspaceRole } from "@/hooks/useWorkspaceAccess"
 import { Avatar, AvatarImage, AvatarFallback } from "@featul/ui/components/avatar"
-import { getDisplayUser, getInitials } from "@/utils/user-utils"
+import { getDisplayUser, getInitials, getPrivacySafeDisplayUser } from "@/utils/user-utils"
 import { relativeTime } from "@/lib/time"
 import BoardPicker from "../requests/meta/BoardPicker"
 import StatusPicker from "../requests/meta/StatusPicker"
@@ -11,7 +11,6 @@ import FlagsPicker from "../requests/meta/FlagsPicker"
 import StatusIcon from "../requests/StatusIcon"
 import { PoweredBy } from "./PoweredBy"
 import RoleBadge from "../global/RoleBadge"
-import { MemberIcon } from "@featul/ui/icons/member"
 
 
 export type PostSidebarProps = {
@@ -51,24 +50,26 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
   })
   const [board, setBoard] = React.useState({ name: post.boardName, slug: post.boardSlug })
 
-  const rawDisplayAuthor = getDisplayUser(
+  const displayUser = getPrivacySafeDisplayUser(
     post.author
       ? {
         name: post.author.name ?? undefined,
         image: post.author.image ?? undefined,
         email: post.author.email ?? undefined,
       }
-      : undefined
+      : undefined,
+    post.hidePublicMemberIdentity
   )
 
-  // Apply hidePublicMemberIdentity - only hide if it's enabled AND user is not a guest
-  const isGuest = !post.author?.name || rawDisplayAuthor.name === "Guest"
+  // We still need to know if we are hiding identity to toggle RoleBadge
+  // We can infer it: if we asked to hide, and name is "Member" (and original wasn't Guest), then it's hidden.
+  // Or just re-use the simple boolean check for the badge
+  const isGuest = !post.author?.name || post.author.name === "Guest" // Original check
+  // Actually getPrivacySafeDisplayUser handles the "Guest" logic inside.
+  // If we pass hide=true and it returns "Member", then it was hidden.
   const showHiddenIdentity = post.hidePublicMemberIdentity && !isGuest
 
-  const displayAuthor = showHiddenIdentity
-    ? { name: "Member", image: null }
-    : rawDisplayAuthor
-  const authorInitials = getInitials(displayAuthor.name)
+  const authorInitials = getInitials(displayUser.name)
 
   const timeLabel = relativeTime(post.publishedAt ?? post.createdAt)
 
@@ -79,15 +80,11 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
         <div className="flex items-center gap-3 mb-6">
           <div className="relative">
             <Avatar className="size-10 relative overflow-visible">
-              {showHiddenIdentity ? (
-                <AvatarFallback className="bg-muted text-muted-foreground">
-                  <MemberIcon className="size-5" opacity={1} />
-                </AvatarFallback>
-              ) : displayAuthor.image ? (
+              {displayUser.image ? (
                 <AvatarImage
-                  src={displayAuthor.image}
-                  alt={displayAuthor.name}
-                  className={displayAuthor.image?.includes('data:image/svg+xml') ? 'p-1.5' : ''}
+                  src={displayUser.image}
+                  alt={displayUser.name}
+                  className={displayUser.image?.includes('data:image/svg+xml') ? 'p-1.5' : ''}
                 />
               ) : (
                 <AvatarFallback className="text-xs bg-muted text-muted-foreground">{authorInitials}</AvatarFallback>
@@ -96,7 +93,7 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
             </Avatar>
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-foreground">{displayAuthor.name}</span>
+            <span className="text-sm font-semibold text-foreground">{displayUser.name}</span>
             <span className="text-xs text-muted-foreground">{timeLabel}</span>
           </div>
         </div>

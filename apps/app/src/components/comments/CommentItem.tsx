@@ -6,12 +6,11 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "@featul/ui/components/avatar"
-import { MemberIcon } from "@featul/ui/icons/member"
 import { cn } from "@featul/ui/lib/utils"
 import CommentForm from "./CommentForm"
 import RoleBadge from "../global/RoleBadge"
 import { useWorkspaceRole } from "@/hooks/useWorkspaceAccess"
-import { getInitials } from "@/utils/user-utils"
+import { getInitials, getPrivacySafeDisplayUser } from "@/utils/user-utils"
 import CommentHeader from "./CommentHeader"
 import CommentContent from "./CommentContent"
 import CommentEditor from "./CommentEditor"
@@ -66,28 +65,28 @@ export default function CommentItem({
   })
 
   // Identity hiding logic
+  const displayUser = getPrivacySafeDisplayUser(
+    {
+      name: comment.authorName || "Guest",
+      image: comment.authorImage || "",
+      email: ""
+    },
+    hidePublicMemberIdentity
+  )
+
   const isGuest = !comment.authorName || comment.authorName === "Guest"
   const showHiddenIdentity = hidePublicMemberIdentity && !isGuest
-  const displayName = showHiddenIdentity ? "Member" : comment.authorName
-  const displayImage = showHiddenIdentity ? null : comment.authorImage
-  const initials = getInitials(displayName)
+
+  const initials = getInitials(displayUser.name)
 
   return (
     <div className={cn("flex gap-3 group", depth > 0 && "mt-2")}>
       <div className="relative flex-shrink-0">
         <Avatar className="size-8 relative overflow-visible">
-          {showHiddenIdentity ? (
-            <AvatarFallback className="bg-muted text-muted-foreground">
-              <MemberIcon className="size-4" opacity={1} />
-            </AvatarFallback>
-          ) : (
-            <>
-              <AvatarImage src={displayImage || undefined} alt={displayName} />
-              <AvatarFallback className="text-xs bg-muted text-muted-foreground">
-                {initials}
-              </AvatarFallback>
-            </>
-          )}
+          <AvatarImage src={displayUser.image} alt={displayUser.name} />
+          <AvatarFallback className="text-xs bg-muted text-muted-foreground">
+            {initials}
+          </AvatarFallback>
           {!showHiddenIdentity && <RoleBadge role={comment.role} isOwner={comment.isOwner} />}
         </Avatar>
       </div>

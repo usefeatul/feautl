@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { SettingsDialogShell } from "../global/SettingsDialogShell";
 import { Button } from "@featul/ui/components/button";
 import { Input } from "@featul/ui/components/input";
-import { Label } from "@featul/ui/components/label";
 import { DiscordIcon } from "@featul/ui/icons/discord";
 import { SlackIcon } from "@featul/ui/icons/slack";
 import type { IntegrationType } from "@/hooks/useIntegrations";
@@ -54,8 +53,8 @@ export default function WebhookDialog({
     if (!validateUrl(webhookUrl)) {
       setError(
         type === "discord"
-          ? "Invalid Discord webhook URL. It should look like: https://discord.com/api/webhooks/..."
-          : "Invalid Slack webhook URL. It should look like: https://hooks.slack.com/services/..."
+          ? "Invalid Discord webhook URL"
+          : "Invalid Slack webhook URL"
       );
       return;
     }
@@ -81,33 +80,32 @@ export default function WebhookDialog({
       open={open}
       onOpenChange={handleOpenChange}
       title={`Connect ${integrationName}`}
-      description={`Enter your ${integrationName} webhook URL to receive notifications when new submissions are posted.`}
       icon={<IntegrationIcon className="w-4 h-4" />}
       width="default"
     >
       <form onSubmit={handleSubmit}>
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="webhook-url" className="text-accent">Webhook URL</Label>
-            <Input
-              id="webhook-url"
-              type="url"
-              placeholder={
-                type === "discord"
-                  ? "https://discord.com/api/webhooks/..."
-                  : "https://hooks.slack.com/services/..."
-              }
-              value={webhookUrl}
-              onChange={(e) => {
-                setWebhookUrl(e.target.value);
-                setError(null);
-              }}
-              className="font-mono text-sm"
-            />
-            {error && (
-              <p className="text-sm text-red-500">{error}</p>
-            )}
-          </div>
+        <div className="space-y-3">
+          <p className="text-sm text-accent">
+            Enter your {integrationName} webhook URL to receive notifications when new submissions are posted.
+          </p>
+          <Input
+            id="webhook-url"
+            type="url"
+            placeholder={
+              type === "discord"
+                ? "https://discord.com/api/webhooks/..."
+                : "https://hooks.slack.com/services/..."
+            }
+            value={webhookUrl}
+            onChange={(e) => {
+              setWebhookUrl(e.target.value);
+              setError(null);
+            }}
+            className="font-mono text-sm"
+          />
+          {error && (
+            <p className="text-sm text-red-500">{error}</p>
+          )}
         </div>
 
         <div className="flex justify-end gap-2 mt-4">

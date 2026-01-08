@@ -161,6 +161,7 @@ export function createPostRouter() {
           workspaceSlug,
           authorName,
           status: newPost.roadmapStatus || "pending",
+          image: newPost.image,
           createdAt: newPost.createdAt,
         })
 

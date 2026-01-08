@@ -14,6 +14,7 @@ interface PostNotificationData {
   workspaceSlug: string
   authorName?: string
   status?: string
+  image?: string | null
   createdAt: Date
 }
 
@@ -58,6 +59,7 @@ export async function sendDiscordNotification(
       footer: {
         text: `${post.workspaceName} • Powered by Featul`,
       },
+      ...(post.image ? { image: { url: post.image } } : {}),
     }
 
     const response = await fetch(webhookUrl, {
@@ -137,6 +139,11 @@ export async function sendSlackNotification(
         {
           type: "divider",
         },
+        ...(post.image ? [{
+          type: "image",
+          image_url: post.image,
+          alt_text: post.title,
+        }] : []),
         {
           type: "context",
           elements: [

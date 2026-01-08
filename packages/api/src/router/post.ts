@@ -148,6 +148,7 @@ export function createPostRouter() {
           boardSlug,
           workspaceName: wsDetails?.name || workspaceSlug,
           workspaceSlug,
+          status: newPost.roadmapStatus || "pending",
           createdAt: newPost.createdAt,
         })
 

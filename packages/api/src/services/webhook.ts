@@ -13,6 +13,7 @@ interface PostNotificationData {
   workspaceName: string
   workspaceSlug: string
   authorName?: string
+  status?: string
   createdAt: Date
 }
 
@@ -40,6 +41,11 @@ export async function sendDiscordNotification(
         {
           name: "Board",
           value: `**${post.boardName}**`,
+          inline: true,
+        },
+        {
+          name: "Status",
+          value: `**${post.status ? post.status.charAt(0).toUpperCase() + post.status.slice(1) : "Pending"}**`,
           inline: true,
         },
         {
@@ -116,11 +122,15 @@ export async function sendSlackNotification(
           elements: [
             {
               type: "mrkdwn",
-              text: `📋 *Board:* ${post.boardName}`,
+              text: `*Board:* ${post.boardName}`,
             },
             {
               type: "mrkdwn",
-              text: `👤 *Submitted by:* ${post.authorName || "Anonymous"}`,
+              text: `*Status:* ${post.status ? post.status.charAt(0).toUpperCase() + post.status.slice(1) : "Pending"}`,
+            },
+            {
+              type: "mrkdwn",
+              text: `*Submitted by:* ${post.authorName || "Anonymous"}`,
             },
           ],
         },

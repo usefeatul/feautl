@@ -1,6 +1,6 @@
 import React from "react";
 import SettingsCard from "../../global/SettingsCard";
-import { ShieldIcon } from "@featul/ui/icons/shield";
+import { IntegrationIcon } from "@featul/ui/icons/integration";
 
 type Props = {
   onSuggest?: () => void;
@@ -9,7 +9,7 @@ type Props = {
 export default function SuggestIntegrationCard({ onSuggest }: Props) {
   return (
     <SettingsCard
-      icon={<ShieldIcon className="w-5 h-5" />}
+      icon={<IntegrationIcon className="size-5 text-primary" />}
       title="Integrations?"
       description="Tell us what integrations would help improve your workflow."
       buttonLabel="Suggest Integration"

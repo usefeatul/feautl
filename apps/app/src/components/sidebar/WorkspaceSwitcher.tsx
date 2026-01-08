@@ -92,7 +92,7 @@ export default function WorkspaceSwitcher({
                     onSelect={() => onSelectWorkspace(w.slug)}
                     className={cn(
                       "flex items-center gap-3 px-2 py-2 rounded-sm cursor-pointer",
-                      isCurrent ? "bg-muted" : "hover:bg-muted dark:hover:bg-black/40"
+                      isCurrent ? "bg-muted" : "hover:bg-muted"
                     )}
                   >
                     {logoUrl ? (
@@ -119,10 +119,12 @@ export default function WorkspaceSwitcher({
               })}
               <DropdownMenuItem
                 onSelect={onCreateNew}
-                className="text-sm flex items-center gap-2 px-2 py-2 rounded-md hover:bg-muted dark:hover:bg-black/40"
+                className="flex items-center gap-3 px-2 py-2 rounded-sm cursor-pointer hover:bg-muted"
               >
-                <PlusIcon className="size-4" />
-                Add workspace
+                <div className="relative w-8 h-8 flex-shrink-0 flex items-center justify-center">
+                  <PlusIcon className="size-5 text-muted-foreground" />
+                </div>
+                <span className="truncate text-sm font-medium">Add workspace</span>
               </DropdownMenuItem>
             </div>
           )}

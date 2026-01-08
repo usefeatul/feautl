@@ -32,6 +32,8 @@ export default function WorkspaceSwitcher({
   const slug = getSlugFromPath(pathname || "");
   const {
     all,
+    current,
+    wsInfo,
     currentLogo,
     currentName,
     handleSelectWorkspace,
@@ -51,27 +53,30 @@ export default function WorkspaceSwitcher({
     <div className={cn(className)}>
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger className="w-full cursor-pointer">
-          <div className="group flex items-center gap-2 rounded-md px-1.5 py-1.5 text-md text-accent hover:bg-muted dark:hover:bg-black/40 cursor-pointer">
-            <div className={cn("relative size-6 rounded-md border ring-1 ring-border overflow-hidden", currentLogo ? "bg-transparent" : "bg-muted")}>
+          <div className="group flex items-center gap-2 rounded-md px-1.5 py-1.5 text-md hover:bg-muted dark:hover:bg-black/40 cursor-pointer">
+            <div className={cn("relative size-8 rounded-md border ring-1 ring-border overflow-hidden", currentLogo ? "bg-transparent" : "bg-muted")}>
               {currentLogo ? (
                 <Image
                   src={currentLogo}
                   alt={currentName}
                   fill
-                  sizes="24px"
+                  sizes="32px"
                   className="object-cover"
                   priority
                 />
               ) : null}
             </div>
-            <span className="transition-colors">{currentName}</span>
+            <div className="flex flex-col items-start gap-1 overflow-hidden">
+              <span className="text-sm font-medium leading-none truncate text-foreground">{currentName}</span>
+              <span className="text-xs text-accent capitalize leading-none">{wsInfo?.plan || current?.plan || "Free"}</span>
+            </div>
             <ChevronIcon className="ml-auto size-3 text-foreground/80 transition-colors" />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-40 max-w-[95vw] max-h-[80vh] overflow-auto p-2"
+          className="w-56 max-w-[95vw] max-h-[80vh] overflow-auto p-2"
           side="bottom"
-          align="center"
+          align="start"
           sideOffset={8}
         >
           {all.length === 0 ? (
@@ -86,24 +91,29 @@ export default function WorkspaceSwitcher({
                     key={w.slug}
                     onSelect={() => onSelectWorkspace(w.slug)}
                     className={cn(
-                      "flex items-center gap-2 px-2 py-2 rounde-sm",
+                      "flex items-center gap-3 px-2 py-2 rounded-sm cursor-pointer",
                       isCurrent ? "bg-muted" : "hover:bg-muted dark:hover:bg-black/40"
                     )}
                   >
                     {logoUrl ? (
-                      <div className="relative w-6 h-6 rounded-md bg-muted border ring-1 ring-border overflow-hidden">
+                      <div className="relative w-8 h-8 flex-shrink-0 rounded-md bg-muted border ring-1 ring-border overflow-hidden">
                         <Image
                           src={logoUrl}
                           alt={w.name}
                           fill
-                          sizes="24px"
+                          sizes="32px"
                           className="object-cover"
                         />
                       </div>
                     ) : (
-                      <div className="w-6 h-6 rounded-md bg-muted border ring-1 ring-border" />
+                      <div className="w-8 h-8 flex-shrink-0 rounded-md bg-muted border ring-1 ring-border" />
                     )}
-                    <span className="truncate text-md">{w.name}</span>
+                    <div className="flex flex-col overflow-hidden">
+                      <span className="truncate text-sm font-medium">{w.name}</span>
+                      <span className="text-xs text-muted-foreground capitalize">
+                        {w.plan || "Free"}
+                      </span>
+                    </div>
                   </DropdownMenuItem>
                 );
               })}

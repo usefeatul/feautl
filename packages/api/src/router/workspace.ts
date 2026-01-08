@@ -68,11 +68,11 @@ export function createWorkspaceRouter() {
       const userId = ctx.session.user.id
       const [owned, member] = await Promise.all([
         ctx.db
-          .select({ id: workspace.id, name: workspace.name, slug: workspace.slug, logo: workspace.logo, domain: workspace.domain, customDomain: workspace.customDomain })
+          .select({ id: workspace.id, name: workspace.name, slug: workspace.slug, logo: workspace.logo, domain: workspace.domain, customDomain: workspace.customDomain, plan: workspace.plan })
           .from(workspace)
           .where(eq(workspace.ownerId, userId)),
         ctx.db
-          .select({ id: workspace.id, name: workspace.name, slug: workspace.slug, logo: workspace.logo, domain: workspace.domain, customDomain: workspace.customDomain })
+          .select({ id: workspace.id, name: workspace.name, slug: workspace.slug, logo: workspace.logo, domain: workspace.domain, customDomain: workspace.customDomain, plan: workspace.plan })
           .from(workspaceMember)
           .innerJoin(workspace, eq(workspaceMember.workspaceId, workspace.id))
           .where(and(eq(workspaceMember.userId, userId), eq(workspaceMember.isActive, true))),

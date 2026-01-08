@@ -13,6 +13,7 @@ export type Ws = {
   logo?: string | null
   domain?: string | null
   customDomain?: string | null
+  plan?: "free" | "starter" | "professional" | null
 }
 
 export function useWorkspaceSwitcher(slug: string, initialWorkspace?: Ws | null, initialWorkspaces?: Ws[]) {

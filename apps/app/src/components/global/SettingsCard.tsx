@@ -50,7 +50,7 @@ export default function SettingsCard({
             </Button>
           )}
           <Button
-            variant={isConnected ? "outline" : "card"}
+            variant="card"
             size="sm"
             onClick={onAction}
             disabled={disabled}

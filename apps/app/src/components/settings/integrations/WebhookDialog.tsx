@@ -1,17 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@featul/ui/components/dialog";
+import { SettingsDialogShell } from "../global/SettingsDialogShell";
 import { Button } from "@featul/ui/components/button";
 import { Input } from "@featul/ui/components/input";
 import { Label } from "@featul/ui/components/label";
+import { DiscordIcon } from "@featul/ui/icons/discord";
+import { SlackIcon } from "@featul/ui/icons/slack";
 import type { IntegrationType } from "@/hooks/useIntegrations";
 
 interface WebhookDialogProps {
@@ -36,6 +31,7 @@ export default function WebhookDialog({
   const [error, setError] = useState<string | null>(null);
 
   const integrationName = type === "discord" ? "Discord" : "Slack";
+  const IntegrationIcon = type === "discord" ? DiscordIcon : SlackIcon;
 
   const validateUrl = (url: string): boolean => {
     if (type === "discord") {
@@ -81,75 +77,53 @@ export default function WebhookDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Connect {integrationName}</DialogTitle>
-          <DialogDescription>
-            Enter your {integrationName} webhook URL to receive notifications when new
-            submissions are posted.
-          </DialogDescription>
-        </DialogHeader>
-
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="webhook-url">Webhook URL</Label>
-              <Input
-                id="webhook-url"
-                type="url"
-                placeholder={
-                  type === "discord"
-                    ? "https://discord.com/api/webhooks/..."
-                    : "https://hooks.slack.com/services/..."
-                }
-                value={webhookUrl}
-                onChange={(e) => {
-                  setWebhookUrl(e.target.value);
-                  setError(null);
-                }}
-                className="font-mono text-sm"
-              />
-              {error && (
-                <p className="text-sm text-red-500">{error}</p>
-              )}
-            </div>
-
-            <div className="text-sm text-muted-foreground space-y-2">
-              <p className="font-medium">How to get your webhook URL:</p>
-              {type === "discord" ? (
-                <ol className="list-decimal list-inside space-y-1 text-xs">
-                  <li>Go to your Discord server settings</li>
-                  <li>Navigate to Integrations → Webhooks</li>
-                  <li>Click "New Webhook" and configure it</li>
-                  <li>Copy the webhook URL</li>
-                </ol>
-              ) : (
-                <ol className="list-decimal list-inside space-y-1 text-xs">
-                  <li>Go to api.slack.com/apps</li>
-                  <li>Create or select an app for your workspace</li>
-                  <li>Enable Incoming Webhooks</li>
-                  <li>Add a new webhook to your channel</li>
-                </ol>
-              )}
-            </div>
+    <SettingsDialogShell
+      open={open}
+      onOpenChange={handleOpenChange}
+      title={`Connect ${integrationName}`}
+      description={`Enter your ${integrationName} webhook URL to receive notifications when new submissions are posted.`}
+      icon={<IntegrationIcon className="w-4 h-4" />}
+      width="default"
+    >
+      <form onSubmit={handleSubmit}>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="webhook-url" className="text-accent">Webhook URL</Label>
+            <Input
+              id="webhook-url"
+              type="url"
+              placeholder={
+                type === "discord"
+                  ? "https://discord.com/api/webhooks/..."
+                  : "https://hooks.slack.com/services/..."
+              }
+              value={webhookUrl}
+              onChange={(e) => {
+                setWebhookUrl(e.target.value);
+                setError(null);
+              }}
+              className="font-mono text-sm"
+            />
+            {error && (
+              <p className="text-sm text-red-500">{error}</p>
+            )}
           </div>
+        </div>
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleOpenChange(false)}
-              disabled={isPending}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isPending || !webhookUrl.trim()}>
-              {isPending ? "Connecting..." : "Connect"}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+        <div className="flex justify-end gap-2 mt-4">
+          <Button
+            type="button"
+            variant="card"
+            onClick={() => handleOpenChange(false)}
+            disabled={isPending}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" disabled={isPending || !webhookUrl.trim()}>
+            {isPending ? "Connecting..." : "Connect"}
+          </Button>
+        </div>
+      </form>
+    </SettingsDialogShell>
   );
 }

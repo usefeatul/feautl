@@ -255,7 +255,7 @@ export default function StepWizardForm({
           ) : (
             "Next"
           )}
-          {!isCreating && step !== steps.length - 1 && <ArrowRight className="ml-2 size-4 opacity-50" />}
+          {!isCreating && step !== steps.length - 1 && <ArrowRight className="size-4 opacity-50" />}
         </Button>
       </CardFooter>
     </Card>

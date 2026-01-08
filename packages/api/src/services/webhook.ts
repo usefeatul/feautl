@@ -38,6 +38,7 @@ export async function sendDiscordNotification(
       description: post.content.length > 300
         ? `${post.content.substring(0, 300)}...`
         : post.content,
+      ...(post.image ? { thumbnail: { url: post.image } } : {}),
       fields: [
         {
           name: "Board",
@@ -59,7 +60,6 @@ export async function sendDiscordNotification(
       footer: {
         text: `${post.workspaceName} • Powered by Featul`,
       },
-      ...(post.image ? { image: { url: post.image } } : {}),
     }
 
     const response = await fetch(webhookUrl, {

@@ -14,6 +14,7 @@ interface CommentListProps {
   workspaceSlug?: string
   initialComments?: CommentData[]
   initialCollapsedIds?: string[]
+  hidePublicMemberIdentity?: boolean
 }
 
 export default function CommentList({
@@ -22,6 +23,7 @@ export default function CommentList({
   workspaceSlug,
   initialComments,
   initialCollapsedIds,
+  hidePublicMemberIdentity,
 }: CommentListProps) {
   // const queryClient = useQueryClient();
   const { data: session } = useSession() as any
@@ -91,6 +93,7 @@ export default function CommentList({
               onUpdate={handleCommentSuccess}
               workspaceSlug={workspaceSlug}
               initialCollapsedIds={initialCollapsedIds}
+              hidePublicMemberIdentity={hidePublicMemberIdentity}
             />
           )}
         </div>

@@ -6,6 +6,7 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "@featul/ui/components/avatar"
+import { MemberIcon } from "@featul/ui/icons/member"
 import { cn } from "@featul/ui/lib/utils"
 import CommentForm from "./CommentForm"
 import RoleBadge from "../global/RoleBadge"
@@ -28,6 +29,7 @@ interface CommentItemProps {
   isCollapsed?: boolean
   onToggleCollapse?: () => void
   workspaceSlug?: string
+  hidePublicMemberIdentity?: boolean
 }
 
 export default function CommentItem({
@@ -40,6 +42,7 @@ export default function CommentItem({
   isCollapsed = false,
   onToggleCollapse,
   workspaceSlug,
+  hidePublicMemberIdentity,
 }: CommentItemProps) {
   const [showReplyForm, setShowReplyForm] = useState(false)
 
@@ -62,17 +65,30 @@ export default function CommentItem({
     onUpdate,
   })
 
-  const initials = getInitials(comment.authorName)
+  // Identity hiding logic
+  const isGuest = !comment.authorName || comment.authorName === "Guest"
+  const showHiddenIdentity = hidePublicMemberIdentity && !isGuest
+  const displayName = showHiddenIdentity ? "Member" : comment.authorName
+  const displayImage = showHiddenIdentity ? null : comment.authorImage
+  const initials = getInitials(displayName)
 
   return (
     <div className={cn("flex gap-3 group", depth > 0 && "mt-2")}>
       <div className="relative flex-shrink-0">
         <Avatar className="size-8 relative overflow-visible">
-          <AvatarImage src={comment.authorImage} alt={comment.authorName} />
-          <AvatarFallback className="text-xs bg-muted text-muted-foreground">
-            {initials}
-          </AvatarFallback>
-          <RoleBadge role={comment.role} isOwner={comment.isOwner} />
+          {showHiddenIdentity ? (
+            <AvatarFallback className="bg-muted text-muted-foreground">
+              <MemberIcon className="size-4" opacity={1} />
+            </AvatarFallback>
+          ) : (
+            <>
+              <AvatarImage src={displayImage || undefined} alt={displayName} />
+              <AvatarFallback className="text-xs bg-muted text-muted-foreground">
+                {initials}
+              </AvatarFallback>
+            </>
+          )}
+          {!showHiddenIdentity && <RoleBadge role={comment.role} isOwner={comment.isOwner} />}
         </Avatar>
       </div>
 
@@ -89,6 +105,7 @@ export default function CommentItem({
             onToggleCollapse={onToggleCollapse}
             onEdit={() => setIsEditing(true)}
             onDeleteSuccess={onUpdate}
+            hidePublicMemberIdentity={showHiddenIdentity}
           />
 
           {isEditing ? (

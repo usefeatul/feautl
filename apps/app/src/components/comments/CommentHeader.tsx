@@ -16,6 +16,7 @@ interface CommentHeaderProps {
   onToggleCollapse?: () => void
   onEdit: () => void
   onDeleteSuccess?: () => void
+  hidePublicMemberIdentity?: boolean
 }
 
 export default function CommentHeader({
@@ -29,12 +30,15 @@ export default function CommentHeader({
   onToggleCollapse,
   onEdit,
   onDeleteSuccess,
+  hidePublicMemberIdentity,
 }: CommentHeaderProps) {
+  const displayName = hidePublicMemberIdentity && comment.authorName !== "Guest" ? "Member" : comment.authorName
+
   return (
     <div className="flex items-start justify-between gap-2">
       <div className="flex items-center gap-2 flex-wrap leading-none">
         <span className="text-sm font-semibold text-foreground">
-          {comment.authorName}
+          {displayName}
         </span>
         <span className="text-xs text-muted-foreground/60">
           {relativeTime(comment.createdAt)}

@@ -12,6 +12,7 @@ interface CommentThreadProps {
   onUpdate?: () => void
   workspaceSlug?: string
   initialCollapsedIds?: string[]
+  hidePublicMemberIdentity?: boolean
 }
 
 export default function CommentThread({
@@ -21,6 +22,7 @@ export default function CommentThread({
   onUpdate,
   workspaceSlug,
   initialCollapsedIds = [],
+  hidePublicMemberIdentity,
 }: CommentThreadProps) {
   const [collapsedIds, setCollapsedIds] = React.useState<Set<string>>(
     new Set(initialCollapsedIds)
@@ -29,14 +31,14 @@ export default function CommentThread({
   const toggleCollapse = async (commentId: string) => {
     const next = new Set(collapsedIds)
     const isCollapsed = !next.has(commentId)
-    
+
     if (isCollapsed) {
       next.add(commentId)
     } else {
       next.delete(commentId)
     }
     setCollapsedIds(next)
-    
+
     try {
       await updateCommentCollapseState(postId, commentId, isCollapsed)
     } catch (error) {
@@ -67,6 +69,7 @@ export default function CommentThread({
           collapsedIds={collapsedIds}
           onToggleCollapse={toggleCollapse}
           workspaceSlug={workspaceSlug}
+          hidePublicMemberIdentity={hidePublicMemberIdentity}
         />
       ))}
     </div>
@@ -82,6 +85,7 @@ interface ThreadItemProps {
   collapsedIds: Set<string>
   onToggleCollapse: (id: string) => void
   workspaceSlug?: string
+  hidePublicMemberIdentity?: boolean
 }
 
 function ThreadItem({
@@ -93,6 +97,7 @@ function ThreadItem({
   collapsedIds,
   onToggleCollapse,
   workspaceSlug,
+  hidePublicMemberIdentity,
 }: ThreadItemProps) {
   const replies = getReplies(comment.id)
   const isCollapsed = collapsedIds.has(comment.id)
@@ -109,6 +114,7 @@ function ThreadItem({
         isCollapsed={isCollapsed}
         onToggleCollapse={() => onToggleCollapse(comment.id)}
         workspaceSlug={workspaceSlug}
+        hidePublicMemberIdentity={hidePublicMemberIdentity}
       />
       {replies.length > 0 && (
         <AnimatedReplies isOpen={!isCollapsed}>
@@ -127,6 +133,7 @@ function ThreadItem({
                   collapsedIds={collapsedIds}
                   onToggleCollapse={onToggleCollapse}
                   workspaceSlug={workspaceSlug}
+                  hidePublicMemberIdentity={hidePublicMemberIdentity}
                 />
               ))}
             </div>

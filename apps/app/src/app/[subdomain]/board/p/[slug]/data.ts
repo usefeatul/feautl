@@ -100,6 +100,7 @@ async function loadPostWithAuthorAndBoard(
       createdAt: post.createdAt,
       boardName: board.name,
       boardSlug: board.slug,
+      hidePublicMemberIdentity: board.hidePublicMemberIdentity,
       duplicateOfId: post.duplicateOfId,
       metadata: post.metadata,
       role: workspaceMember.role,

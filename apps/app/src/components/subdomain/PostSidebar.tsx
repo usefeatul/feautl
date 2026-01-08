@@ -11,6 +11,7 @@ import FlagsPicker from "../requests/meta/FlagsPicker"
 import StatusIcon from "../requests/StatusIcon"
 import { PoweredBy } from "./PoweredBy"
 import RoleBadge from "../global/RoleBadge"
+import { MemberIcon } from "@featul/ui/icons/member"
 
 
 export type PostSidebarProps = {
@@ -27,6 +28,7 @@ export type PostSidebarProps = {
     role?: "admin" | "member" | "viewer" | null
     isOwner?: boolean
     isFeatul?: boolean
+    hidePublicMemberIdentity?: boolean
     author?: {
       name: string | null
       image: string | null
@@ -49,17 +51,25 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
   })
   const [board, setBoard] = React.useState({ name: post.boardName, slug: post.boardSlug })
 
-  const displayAuthor = getDisplayUser(
+  const rawDisplayAuthor = getDisplayUser(
     post.author
       ? {
-          name: post.author.name ?? undefined,
-          image: post.author.image ?? undefined,
-          email: post.author.email ?? undefined,
-        }
+        name: post.author.name ?? undefined,
+        image: post.author.image ?? undefined,
+        email: post.author.email ?? undefined,
+      }
       : undefined
   )
+
+  // Apply hidePublicMemberIdentity - only hide if it's enabled AND user is not a guest
+  const isGuest = !post.author?.name || rawDisplayAuthor.name === "Guest"
+  const showHiddenIdentity = post.hidePublicMemberIdentity && !isGuest
+
+  const displayAuthor = showHiddenIdentity
+    ? { name: "Member", image: null }
+    : rawDisplayAuthor
   const authorInitials = getInitials(displayAuthor.name)
-  
+
   const timeLabel = relativeTime(post.publishedAt ?? post.createdAt)
 
   return (
@@ -69,16 +79,20 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
         <div className="flex items-center gap-3 mb-6">
           <div className="relative">
             <Avatar className="size-10 relative overflow-visible">
-              {displayAuthor.image ? (
-                <AvatarImage 
-                  src={displayAuthor.image} 
+              {showHiddenIdentity ? (
+                <AvatarFallback className="bg-muted text-muted-foreground">
+                  <MemberIcon className="size-5" opacity={1} />
+                </AvatarFallback>
+              ) : displayAuthor.image ? (
+                <AvatarImage
+                  src={displayAuthor.image}
                   alt={displayAuthor.name}
                   className={displayAuthor.image?.includes('data:image/svg+xml') ? 'p-1.5' : ''}
                 />
               ) : (
                 <AvatarFallback className="text-xs bg-muted text-muted-foreground">{authorInitials}</AvatarFallback>
               )}
-              <RoleBadge role={post.role} isOwner={post.isOwner} isFeatul={post.isFeatul} className="-bottom-1 -right-0.5" />
+              {!showHiddenIdentity && <RoleBadge role={post.role} isOwner={post.isOwner} isFeatul={post.isFeatul} className="-bottom-1 -right-0.5" />}
             </Avatar>
           </div>
           <div className="flex flex-col">
@@ -120,26 +134,26 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
 
           {/* Flags */}
           {(canEdit || meta.isPinned || meta.isLocked || meta.isFeatured) && (
-             <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground font-medium">Flags</span>
-                {canEdit ? (
-                  <FlagsPicker
-                    postId={post.id}
-                    value={meta}
-                    onChange={(v) => setMeta((m) => ({ ...m, ...v }))}
-                  />
-                ) : (
-                  <div className="flex gap-1 ">
-                    {[
-                      meta.isPinned ? "Pinned" : null,
-                      meta.isLocked ? "Locked" : null,
-                      meta.isFeatured ? "Featured" : null,
-                    ].filter(Boolean).map(f => (
-                       <span key={f} className="text-xs bg-muted px-1.5 py-0.5 rounded-md border text-muted-foreground ">{f}</span>
-                    ))}
-                  </div>
-                )}
-             </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground font-medium">Flags</span>
+              {canEdit ? (
+                <FlagsPicker
+                  postId={post.id}
+                  value={meta}
+                  onChange={(v) => setMeta((m) => ({ ...m, ...v }))}
+                />
+              ) : (
+                <div className="flex gap-1 ">
+                  {[
+                    meta.isPinned ? "Pinned" : null,
+                    meta.isLocked ? "Locked" : null,
+                    meta.isFeatured ? "Featured" : null,
+                  ].filter(Boolean).map(f => (
+                    <span key={f} className="text-xs bg-muted px-1.5 py-0.5 rounded-md border text-muted-foreground ">{f}</span>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

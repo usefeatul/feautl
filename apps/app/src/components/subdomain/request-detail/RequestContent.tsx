@@ -17,6 +17,7 @@ import { SubdomainRequestDetailData } from "../../../types/subdomain";
 import ContentImage from "@/components/global/ContentImage";
 import { RequestActions } from "./RequestActions";
 import RoleBadge from "../../global/RoleBadge";
+import { MemberIcon } from "@featul/ui/icons/member";
 
 interface RequestContentProps {
   post: SubdomainRequestDetailData;
@@ -31,15 +32,23 @@ export function RequestContent({
   initialComments,
   initialCollapsedIds,
 }: RequestContentProps) {
-  const displayAuthor = getDisplayUser(
+  const rawDisplayAuthor = getDisplayUser(
     post.author
       ? {
-          name: post.author.name ?? undefined,
-          image: post.author.image ?? undefined,
-          email: post.author.email ?? undefined,
-        }
+        name: post.author.name ?? undefined,
+        image: post.author.image ?? undefined,
+        email: post.author.email ?? undefined,
+      }
       : undefined
   );
+
+  // Apply hidePublicMemberIdentity - only hide if it's enabled AND user is not a guest
+  const isGuest = !post.author?.name || rawDisplayAuthor.name === "Guest"
+  const showHiddenIdentity = post.hidePublicMemberIdentity && !isGuest
+
+  const displayAuthor = showHiddenIdentity
+    ? { name: "Member", image: null }
+    : rawDisplayAuthor
 
   return (
     <div className="rounded-lg border bg-card p-6 ring-1 ring-border/60 ring-offset-1 ring-offset-background">
@@ -119,14 +128,22 @@ export function RequestContent({
       <div className="flex items-center justify-between pt-2">
         <div className="inline-flex items-center gap-2">
           <Avatar className="size-8 relative overflow-visible">
-            <AvatarImage
-              src={displayAuthor.image || randomAvatarUrl(post.id)}
-              alt={displayAuthor.name}
-            />
-            <AvatarFallback className="text-xs bg-muted text-muted-foreground">
-              {getInitials(displayAuthor.name)}
-            </AvatarFallback>
-            <RoleBadge role={post.role} isOwner={post.isOwner} isFeatul={post.isFeatul} />
+            {showHiddenIdentity ? (
+              <AvatarFallback className="bg-muted text-muted-foreground">
+                <MemberIcon className="size-4" opacity={1} />
+              </AvatarFallback>
+            ) : (
+              <>
+                <AvatarImage
+                  src={displayAuthor.image || randomAvatarUrl(post.id)}
+                  alt={displayAuthor.name}
+                />
+                <AvatarFallback className="text-xs bg-muted text-muted-foreground">
+                  {getInitials(displayAuthor.name)}
+                </AvatarFallback>
+              </>
+            )}
+            {!showHiddenIdentity && <RoleBadge role={post.role} isOwner={post.isOwner} isFeatul={post.isFeatul} />}
           </Avatar>
           <span className="text-xs text-accent whitespace-nowrap mt-2 max-w-[180px] truncate">
             {displayAuthor.name}
@@ -156,6 +173,7 @@ export function RequestContent({
           workspaceSlug={workspaceSlug}
           initialComments={initialComments}
           initialCollapsedIds={initialCollapsedIds}
+          hidePublicMemberIdentity={showHiddenIdentity}
         />
       </div>
     </div>

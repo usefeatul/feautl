@@ -1,6 +1,6 @@
 import { eq, and, sql, isNull, ilike, or, inArray } from "drizzle-orm"
 import { j, publicProcedure } from "../jstack"
-import { vote, post, workspace, board, postTag, workspaceMember, postReport, postMerge, comment, activityLog, tag } from "@featul/db"
+import { vote, post, workspace, board, postTag, workspaceMember, postReport, postMerge, comment, activityLog, tag, user } from "@featul/db"
 import { votePostSchema, createPostSchema, updatePostSchema, byIdSchema, reportPostSchema, getSimilarSchema, mergePostSchema, mergeHerePostSchema, searchMergeCandidatesSchema } from "../validators/post"
 import { HTTPException } from "hono/http-exception"
 import { auth } from "@featul/auth"
@@ -126,7 +126,7 @@ export function createPostRouter() {
         })
 
         // Trigger webhook notifications (fire and forget)
-        // We need board name and workspace name for the notification
+        // We need board name, workspace name, and author name for the notification
         const [boardDetails] = await ctx.db
           .select({ name: board.name })
           .from(board)
@@ -139,6 +139,17 @@ export function createPostRouter() {
           .where(eq(workspace.id, ws.id))
           .limit(1)
 
+        // Get author name if user is logged in
+        let authorName: string | undefined
+        if (userId) {
+          const [authorDetails] = await ctx.db
+            .select({ name: user.name })
+            .from(user)
+            .where(eq(user.id, userId))
+            .limit(1)
+          authorName = authorDetails?.name || undefined
+        }
+
         triggerPostWebhooks(ctx.db, ws.id, {
           id: newPost.id,
           title: newPost.title,
@@ -148,6 +159,7 @@ export function createPostRouter() {
           boardSlug,
           workspaceName: wsDetails?.name || workspaceSlug,
           workspaceSlug,
+          authorName,
           status: newPost.roadmapStatus || "pending",
           createdAt: newPost.createdAt,
         })

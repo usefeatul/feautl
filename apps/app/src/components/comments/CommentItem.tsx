@@ -71,7 +71,8 @@ export default function CommentItem({
       image: comment.authorImage || "",
       email: ""
     },
-    hidePublicMemberIdentity
+    hidePublicMemberIdentity,
+    comment.id // Use comment ID as seed
   )
 
   const isGuest = !comment.authorName || comment.authorName === "Guest"

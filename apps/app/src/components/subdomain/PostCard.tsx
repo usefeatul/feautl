@@ -33,12 +33,13 @@ function PostCardBase({
 
   // Determine display values based on hidePublicMemberIdentity setting
   const displayUser = getPrivacySafeDisplayUser(
-    item.isAnonymous ? null : {
-      name: item.authorName || undefined,
+    {
+      name: item.authorName || "Guest",
       image: item.authorImage || undefined,
       email: ""
     },
-    hidePublicMemberIdentity
+    hidePublicMemberIdentity,
+    item.id || item.slug // Fallback seed
   )
 
   const showHiddenIdentity = hidePublicMemberIdentity && !item.isAnonymous

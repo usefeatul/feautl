@@ -58,7 +58,8 @@ export default function PostSidebar({ post, workspaceSlug }: PostSidebarProps) {
         email: post.author.email ?? undefined,
       }
       : undefined,
-    post.hidePublicMemberIdentity
+    post.hidePublicMemberIdentity,
+    post.id // Use post ID as seed
   )
 
   // We still need to know if we are hiding identity to toggle RoleBadge

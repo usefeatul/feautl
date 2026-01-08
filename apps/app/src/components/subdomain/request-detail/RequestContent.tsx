@@ -6,17 +6,11 @@ import CommentCounter from "../../comments/CommentCounter";
 import type { CommentData } from "../../../types/comment";
 import StatusIcon from "@/components/requests/StatusIcon";
 import { statusLabel } from "@/lib/roadmap";
-import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-} from "@featul/ui/components/avatar";
-import { getInitials, getDisplayUser } from "@/utils/user-utils";
-import { randomAvatarUrl } from "@/utils/avatar";
+import { getDisplayUser } from "@/utils/user-utils";
 import { SubdomainRequestDetailData } from "../../../types/subdomain";
 import ContentImage from "@/components/global/ContentImage";
 import { RequestActions } from "./RequestActions";
-import RoleBadge from "../../global/RoleBadge";
+
 
 
 interface RequestContentProps {
@@ -125,26 +119,7 @@ export function RequestContent({
         </div>
       ) : null}
       {/* Footer: Author & Upvotes */}
-      <div className="flex items-center justify-between pt-2">
-        {showHiddenIdentity ? (
-          <div />
-        ) : (
-          <div className="inline-flex items-center gap-2">
-            <Avatar className="size-8 relative overflow-visible">
-              <AvatarImage
-                src={displayAuthor.image || randomAvatarUrl(post.id)}
-                alt={displayAuthor.name}
-              />
-              <AvatarFallback className="text-xs bg-muted text-muted-foreground">
-                {getInitials(displayAuthor.name)}
-              </AvatarFallback>
-              <RoleBadge role={post.role} isOwner={post.isOwner} isFeatul={post.isFeatul} />
-            </Avatar>
-            <span className="text-xs text-accent whitespace-nowrap mt-2 max-w-[180px] truncate">
-              {displayAuthor.name}
-            </span>
-          </div>
-        )}
+      <div className="flex items-center justify-end pt-2">
         <div className="flex items-center gap-3 text-xs text-accent">
           <UpvoteButton
             postId={post.id}

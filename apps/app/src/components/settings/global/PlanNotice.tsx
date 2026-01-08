@@ -16,43 +16,43 @@ function buildMessage(feature: Feature, plan: PlanKey, limits: PlanLimits, count
     return { title: "Branding enabled", detail: "Some options are limited on this plan" }
   }
   if (feature === "domain") {
-    if (plan === "free") return { title: "Custom domain available on Starter or Professional" }
-    return { title: "Custom domain included in your plan" }
+    if (plan === "free") return { title: "Custom domain available on Starter or Professional", detail: "Upgrade to add a custom domain" }
+    return { title: "Custom domain included in your plan", detail: "You can configure a custom domain" }
   }
   if (feature === "team") {
     if (typeof limits.maxMembers === "number") {
       const used = counts?.members ?? 0
       return { title: `Up to ${limits.maxMembers} members`, detail: `${used} currently in workspace` }
     }
-    if (limits.maxMembers == null) return { title: "Unlimited members" }
+    if (limits.maxMembers == null) return { title: "Unlimited members", detail: "No limits on this plan" }
   }
-  
+
   if (feature === "tags") {
     if (typeof limits.maxTags === "number") {
       const used = counts?.tags ?? 0
       return { title: `Up to ${limits.maxTags} tags`, detail: `${used} currently in workspace` }
     }
-    if (limits.maxTags == null) return { title: "Unlimited tags" }
+    if (limits.maxTags == null) return { title: "Unlimited tags", detail: "No limits on this plan" }
   }
   if (feature === "changelog_tags") {
     if (typeof limits.maxChangelogTags === "number") {
       const used = counts?.changelogTags ?? 0
       return { title: `Up to ${limits.maxChangelogTags} changelog tags`, detail: `${used} currently on changelog` }
     }
-    if (limits.maxChangelogTags == null) return { title: "Unlimited changelog tags" }
+    if (limits.maxChangelogTags == null) return { title: "Unlimited changelog tags", detail: "No limits on this plan" }
   }
   if (feature === "boards") {
     if (typeof limits.maxNonSystemBoards === "number") {
       const used = counts?.boards ?? 0
       return { title: `Up to ${limits.maxNonSystemBoards} boards`, detail: `${used} currently in workspace` }
     }
-    if (limits.maxNonSystemBoards == null) return { title: "Unlimited boards" }
+    if (limits.maxNonSystemBoards == null) return { title: "Unlimited boards", detail: "No limits on this plan" }
   }
   if (feature === "integrations") {
     if (plan === "free") return { title: "Integrations are only available on our paid plans", detail: "Upgrade to Starter or Professional" }
-    return { title: "Integrations included in your plan" }
+    return { title: "Integrations included in your plan", detail: "You can use all available integrations" }
   }
-  return { title: `Your plan: ${plan}` }
+  return { title: `Your plan: ${plan}`, detail: "View plan details" }
 }
 
 export default function PlanNotice({ slug, feature, className, plan: rawPlan, membersCount, tagsCount, changelogTagsCount, boardsCount }: { slug: string; feature: Feature; className?: string; plan?: string; membersCount?: number; tagsCount?: number; changelogTagsCount?: number; boardsCount?: number }) {

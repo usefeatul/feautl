@@ -4,6 +4,13 @@ import { loadRequestDetailPageData, type RequestDetailSearchParams } from "./dat
 
 export const revalidate = 0
 
+import { createPageMetadata } from "@/lib/seo"
+
+export const metadata = createPageMetadata({
+  title: "Request",
+  description: "Request details",
+})
+
 type Props = { params: Promise<{ slug: string; post: string }>; searchParams?: Promise<Record<string, string | string[] | undefined>> }
 
 export default async function RequestDetailPage({ params, searchParams }: Props) {

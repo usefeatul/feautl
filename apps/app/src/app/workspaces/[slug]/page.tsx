@@ -1,4 +1,10 @@
 import { getWorkspaceBySlug, getWorkspacePosts, getWorkspacePostsCount } from "@/lib/workspace";
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata({
+  title: "Request",
+  description: "All requests",
+});
 import RequestList from "@/components/requests/RequestList";
 import RequestPagination from "@/components/requests/RequestPagination";
 import { cookies } from "next/headers";
@@ -24,7 +30,7 @@ export default async function WorkspacePage({ params, searchParams }: Props) {
       if (Array.isArray(parsed)) {
         initialSelectedIds = parsed.filter((v) => typeof v === "string") as string[];
       }
-    } catch {}
+    } catch { }
   }
   const ws = await getWorkspaceBySlug(slug);
   if (!ws) return notFound();
@@ -33,7 +39,7 @@ export default async function WorkspacePage({ params, searchParams }: Props) {
   if (searchParams) {
     try {
       sp = await searchParams;
-    } catch {}
+    } catch { }
   }
   const PAGE_SIZE = 20;
   const pageSize = PAGE_SIZE;

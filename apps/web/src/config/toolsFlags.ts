@@ -13,6 +13,13 @@ export const NEW_TOOL_SLUGS = new Set<string>([
   "sprint-velocity-calculator",
   "quick-ratio",
   "net-revenue-retention",
+  // Additional new tools
+  "reading-time-calculator",
+  "cta-generator",
+  "response-rate-calculator",
+  "margin-of-error-calculator",
+  "salary-calculator",
+  "project-timeline-estimator",
 ])
 
 export function isToolNew(slug: string) {

@@ -349,6 +349,18 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
         description: "Score headlines for engagement and emotional impact.",
         isNew: true,
       },
+      {
+        slug: "reading-time-calculator",
+        name: "Reading Time Calculator",
+        description: "Calculate reading time based on word count and content type.",
+        isNew: true,
+      },
+      {
+        slug: "cta-generator",
+        name: "CTA Generator",
+        description: "Generate and score effective call-to-action text.",
+        isNew: true,
+      },
     ],
   },
   // Feedback & Survey — 3 tools
@@ -375,6 +387,18 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
         description: "Calculate required sample size for statistically significant surveys.",
         isNew: true,
       },
+      {
+        slug: "response-rate-calculator",
+        name: "Response Rate Calculator",
+        description: "Calculate survey response rate and compare to benchmarks.",
+        isNew: true,
+      },
+      {
+        slug: "margin-of-error-calculator",
+        name: "Margin of Error Calculator",
+        description: "Calculate margin of error for survey results.",
+        isNew: true,
+      },
     ],
   },
   // Team & Productivity — 2 tools
@@ -393,6 +417,18 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
         slug: "sprint-velocity-calculator",
         name: "Sprint Velocity",
         description: "Calculate sprint velocity and predict future capacity.",
+        isNew: true,
+      },
+      {
+        slug: "salary-calculator",
+        name: "Salary Calculator",
+        description: "Convert salary to hourly rate with pay period breakdowns.",
+        isNew: true,
+      },
+      {
+        slug: "project-timeline-estimator",
+        name: "Project Timeline Estimator",
+        description: "Estimate project completion with velocity and risk buffers.",
         isNew: true,
       },
     ],

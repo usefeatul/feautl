@@ -52,6 +52,14 @@ import SampleSizeCalculatorTool from '../components/tools/feedback/sample-size-c
 // Team & Productivity tools
 import MeetingCostCalculatorTool from '../components/tools/team/meeting-cost-calculator'
 import SprintVelocityCalculatorTool from '../components/tools/team/sprint-velocity-calculator'
+import SalaryCalculatorTool from '../components/tools/team/salary-calculator'
+import ProjectTimelineEstimatorTool from '../components/tools/team/project-timeline-estimator'
+// Additional Content tools
+import ReadingTimeCalculatorTool from '../components/tools/content/reading-time-calculator'
+import CtaGeneratorTool from '../components/tools/content/cta-generator'
+// Additional Feedback tools
+import ResponseRateCalculatorTool from '../components/tools/feedback/response-rate-calculator'
+import MarginOfErrorCalculatorTool from '../components/tools/feedback/margin-of-error-calculator'
 
 export const TOOL_COMPONENTS: Record<string, Record<string, ComponentType>> = {
   'product-feature-analytics': {
@@ -112,14 +120,20 @@ export const TOOL_COMPONENTS: Record<string, Record<string, ComponentType>> = {
     'word-counter': WordCounterTool,
     'readability-score': ReadabilityScoreTool,
     'headline-analyzer': HeadlineAnalyzerTool,
+    'reading-time-calculator': ReadingTimeCalculatorTool,
+    'cta-generator': CtaGeneratorTool,
   },
   'feedback-survey': {
     'csat-calculator': CsatCalculatorTool,
     'ces-calculator': CesCalculatorTool,
     'sample-size-calculator': SampleSizeCalculatorTool,
+    'response-rate-calculator': ResponseRateCalculatorTool,
+    'margin-of-error-calculator': MarginOfErrorCalculatorTool,
   },
   'team-productivity': {
     'meeting-cost-calculator': MeetingCostCalculatorTool,
     'sprint-velocity-calculator': SprintVelocityCalculatorTool,
+    'salary-calculator': SalaryCalculatorTool,
+    'project-timeline-estimator': ProjectTimelineEstimatorTool,
   },
 }

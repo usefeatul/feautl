@@ -1,11 +1,13 @@
 "use client";
 import { Container } from "../global/container";
 import { SetupIcon } from "@featul/ui/icons/setup";
+import { DotPattern } from "@/components/dot-pattern";
 
 export default function Setup() {
   return (
-    <Container maxWidth="6xl" className="px-4 sm:px-12 lg:px-16 xl:px-18">
-      <section className="" data-component="Setup">
+    <section className="relative" data-component="Setup">
+      <DotPattern className="z-0" />
+      <Container maxWidth="6xl" className="relative z-10 px-4 sm:px-12 lg:px-16 xl:px-18">
         <div className="mx-auto w-full max-w-6xl px-1 sm:px-6">
           <SetupIcon aria-hidden className="size-5 text-primary mb-2 sm:mb-3" opacity={1} />
           <h2 className="mt-6 text-foreground text-balance text-2xl sm:text-3xl font-semibold">
@@ -25,7 +27,7 @@ export default function Setup() {
                     <span className="inline rounded-md  bg-primary/50 px-2 py-0 text-black tracking-widest ml-1">
                       feedback.yourbrand.com
                     </span>
-                    or use featul’s hosted space. Customers can browse ideas, vote on favorites, and submit new requests. No code required—just share the link.
+                    or use featul's hosted space. Customers can browse ideas, vote on favorites, and submit new requests. No code required—just share the link.
                   </p>
                 </div>
               </div>
@@ -50,7 +52,7 @@ export default function Setup() {
             </div>
           </div>
         </div>
-      </section>
-    </Container>
+      </Container>
+    </section>
   );
 }

@@ -21,6 +21,7 @@ export function Hero() {
     changelog: "/image/dashboard.png",
   }[active];
 
+  
   return (
     <section className="relative overflow-hidden" data-component="Hero">
       <DotPattern className="z-0" />

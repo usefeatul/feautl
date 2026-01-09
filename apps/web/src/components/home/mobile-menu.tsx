@@ -30,10 +30,9 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
   return (
     <div className="md:hidden fixed inset-0 z-60 bg-background" data-component="MobileMenu">
       {/* Sheet header */}
-      <div className="flex items-center justify-between h-14  px-4 sm:px-12 lg:px-16 xl:px-18">
+      <div className="flex items-center justify-between h-14 px-4 sm:px-12 lg:px-16 xl:px-18">
         <span className="inline-flex items-center gap-2">
           <FeatulLogoIcon />
-          <span className="text-md font-medium">featul</span>
         </span>
         <Button
           type="button"

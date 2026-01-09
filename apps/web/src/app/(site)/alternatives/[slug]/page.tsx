@@ -12,6 +12,8 @@ import {
   getAlternativeBySlug,
   getAlternativeSlugs,
 } from "@/config/alternatives";
+import { VerticalLines } from "@/components/vertical-lines";
+import { SectionStack } from "@/components/layout/section-stack";
 
 export async function generateStaticParams() {
   return getAlternativeSlugs().map((slug) => ({ slug }));
@@ -45,13 +47,17 @@ export default async function AlternativePage({
   if (!alt) return notFound();
 
   return (
-    <main className="min-h-screen pt-16">
-      <AlternativeHero alt={alt} />
-      <TLDR alt={alt} />
-      <Compare alt={alt} />
-      <WhyBetter alt={alt} />
-      <AlternativeFAQs alt={alt} />
-      <StatsSection />
+    <main className="min-h-screen pt-16 relative">
+      <div className="mx-auto max-w-6xl">
+        <SectionStack>
+          <AlternativeHero alt={alt} />
+          <TLDR alt={alt} />
+          <Compare alt={alt} />
+          <WhyBetter alt={alt} />
+          <AlternativeFAQs alt={alt} />
+          <StatsSection />
+        </SectionStack>
+      </div>
     </main>
   );
 }

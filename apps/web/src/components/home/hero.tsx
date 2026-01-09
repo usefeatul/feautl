@@ -30,13 +30,14 @@ export function Hero() {
             <HeroContent />
             <div className="mt-4 w-full rounded-md  shadow-black shadow-2xl">
               <div className="relative">
-                <div className="relative z-0 aspect-[16/9] w-full overflow-hidden bg-muted rounded-md  shadow-2xl shadow-zinc-950/50 translate-y-[3px] outline-none ring-2 ring-border/60 ring-offset-2 ring-offset-background">
+                <div className="relative z-0 w-full overflow-hidden bg-muted rounded-md  shadow-2xl shadow-zinc-950/50 translate-y-[3px] outline-none ring-2 ring-border/60 ring-offset-2 ring-offset-background">
                   <Image
                     src={imageSrc}
                     alt={`featul ${active} preview`}
-                    fill
+                    width={1200}
+                    height={675}
                     priority
-                    className="object-cover"
+                    className="w-full h-auto"
                   />
                 </div>
                 <PreviewSwitchPill active={active} onChange={setActive} showHint={showPillHint} />

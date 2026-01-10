@@ -6,10 +6,14 @@ import { authClient } from "@featul/auth/client";
 import { Button } from "@featul/ui/components/button";
 import { Input } from "@featul/ui/components/input";
 import { Label } from "@featul/ui/components/label";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@featul/ui/components/opt";
 import Link from "next/link";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/global/loading-button";
-import { OtpStep } from "./OtpStep";
 import {
   strongPasswordPattern,
   getPasswordError,
@@ -18,10 +22,11 @@ import {
 export default function ForgotPassword() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [verifiedCode, setVerifiedCode] = useState("");
+  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [step, setStep] = useState<"request" | "otp" | "password">("request");
@@ -29,6 +34,7 @@ export default function ForgotPassword() {
   const sendResetCode = async () => {
     setIsSending(true);
     setError("");
+    setSubmitted(false);
     try {
       const { error } = await authClient.emailOtp.sendVerificationOtp({
         email: email.trim(),
@@ -50,23 +56,41 @@ export default function ForgotPassword() {
     }
   };
 
-  const handleVerifyOtp = async (code: string) => {
+  const verifyOtp = async () => {
+    setIsVerifying(true);
+    setError("");
+    setSubmitted(true);
+
+    if (code.trim().length !== 6) {
+      setError("Please enter the 6-digit code.");
+      setIsVerifying(false);
+      return;
+    }
+
     try {
-      const { error } = await authClient.emailOtp.verifyEmail({
+      // Verify the OTP using better-auth's checkVerificationOtp with forget-password type
+      const { error } = await (authClient.emailOtp as any).checkVerificationOtp({
         email: email.trim(),
-        otp: code,
+        otp: code.trim(),
+        type: "forget-password",
       });
+
       if (error) {
+        setError(error.message || "Invalid or expired code");
         toast.error(error.message || "Invalid or expired code");
-        return { success: false, error: error.message || "Invalid or expired code" };
+        return;
       }
-      setVerifiedCode(code);
+
+      // OTP is valid, proceed to password step
       setStep("password");
-      return { success: true };
+      setSubmitted(false);
+      setError("");
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Invalid or expired code";
+      setError(msg);
       toast.error(msg);
-      return { success: false, error: msg };
+    } finally {
+      setIsVerifying(false);
     }
   };
 
@@ -74,19 +98,29 @@ export default function ForgotPassword() {
     setIsResetting(true);
     setError("");
     setSubmitted(true);
+
+    // Validate password
+    const pwdErr = getPasswordError(password);
+    if (pwdErr) {
+      setError(pwdErr);
+      toast.error(pwdErr);
+      setIsResetting(false);
+      return;
+    }
+
     try {
-      const pwdErr = getPasswordError(password);
-      if (pwdErr) {
-        setError(pwdErr);
-        toast.error(pwdErr);
-        return;
-      }
+      // Reset the password with the already-verified OTP
       const { error } = await authClient.emailOtp.resetPassword({
         email: email.trim(),
-        otp: verifiedCode,
+        otp: code.trim(),
         password,
       });
       if (error) {
+        // If OTP expired between verify and reset, go back to OTP step
+        if (error.message?.toLowerCase().includes("invalid") || error.message?.toLowerCase().includes("expired")) {
+          setStep("otp");
+          setCode("");
+        }
         setError(error.message || "Reset failed");
         toast.error(error.message || "Reset failed");
         return;
@@ -99,7 +133,9 @@ export default function ForgotPassword() {
           onError: (ctx) => {
             if (ctx.error.status === 403) {
               toast.info("Please verify your email");
-              router.push(`/auth/verify?email=${encodeURIComponent(email.trim())}`);
+              router.push(
+                `/auth/verify?email=${encodeURIComponent(email.trim())}`
+              );
               return;
             }
             setError(ctx.error.message);
@@ -120,33 +156,38 @@ export default function ForgotPassword() {
     }
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (step === "request") {
+      sendResetCode();
+    } else if (step === "otp") {
+      verifyOtp();
+    } else {
+      resetPassword();
+    }
+  };
+
   return (
     <section className="flex min-h-screen bg-background px-4 sm:px-6 py-8 sm:py-12">
       <form
         noValidate
         className="bg-background m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border shadow-md shadow-zinc-950/5 dark:[--color-muted:var(--color-zinc-900)]"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (step === "request") {
-            sendResetCode();
-          } else if (step === "password") {
-            resetPassword();
-          }
-        }}
+        onSubmit={handleSubmit}
       >
         <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-6 sm:p-8 pb-5 sm:pb-6">
           <div className="text-left">
             <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-left">
-              {step === "password" ? "Set new password" : "Forgot your password"}
+              Forgot your password
             </h1>
             <p className="text-xs sm:text-sm text-accent mb-2 text-left">
               {step === "request" && "Enter your email to receive a reset code"}
               {step === "otp" && "Enter the code sent to your email"}
-              {step === "password" && "Choose a strong password"}
+              {step === "password" && "Enter your new password"}
             </p>
           </div>
 
           <div className="mt-6 space-y-6">
+            {/* Step 1: Email Input */}
             {step === "request" && (
               <>
                 <div className="space-y-2">
@@ -172,16 +213,64 @@ export default function ForgotPassword() {
               </>
             )}
 
+            {/* Step 2: OTP Verification */}
             {step === "otp" && (
-              <OtpStep
-                onVerify={handleVerifyOtp}
-                onResend={sendResetCode}
-                isResending={isSending}
-              />
+              <div className="space-y-4">
+                <div className="space-y-3">
+                  <InputOTP
+                    maxLength={6}
+                    value={code}
+                    onChange={(value) => {
+                      setCode(value);
+                      setSubmitted(false);
+                      setError("");
+                    }}
+                    containerClassName="justify-center gap-2"
+                    aria-label="One-time password"
+                    aria-invalid={submitted && Boolean(error)}
+                    aria-describedby={
+                      submitted && error ? "code-error" : undefined
+                    }
+                  >
+                    <InputOTPGroup>
+                      {Array.from({ length: 6 }).map((_, index) => (
+                        <InputOTPSlot
+                          key={index}
+                          index={index}
+                          className="h-10 w-9 text-base"
+                        />
+                      ))}
+                    </InputOTPGroup>
+                  </InputOTP>
+                  <p className="text-xs text-accent text-center">
+                    Enter the 6-digit code from your email
+                  </p>
+                </div>
+
+                {submitted && error && (
+                  <p id="code-error" className="text-destructive text-center text-xs">
+                    {error}
+                  </p>
+                )}
+
+                <LoadingButton className="w-full" type="submit" loading={isVerifying}>
+                  Verify Code
+                </LoadingButton>
+                <LoadingButton
+                  className="w-full"
+                  type="button"
+                  variant="outline"
+                  onClick={sendResetCode}
+                  loading={isSending}
+                >
+                  Resend Code
+                </LoadingButton>
+              </div>
             )}
 
+            {/* Step 3: New Password */}
             {step === "password" && (
-              <>
+              <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="password" className="block text-sm">
                     New Password
@@ -194,29 +283,26 @@ export default function ForgotPassword() {
                     placeholder="••••••••"
                     className="placeholder:text-accent/50"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setSubmitted(false);
+                      setError("");
+                    }}
                     pattern={strongPasswordPattern}
                     title="8+ chars, uppercase, lowercase, number and symbol"
-                    aria-invalid={submitted && Boolean(getPasswordError(password))}
-                    aria-describedby={
-                      submitted && getPasswordError(password)
-                        ? "reset-password-error"
-                        : undefined
-                    }
                   />
-                  {submitted && getPasswordError(password) && (
-                    <p id="reset-password-error" className="text-destructive text-xs">
-                      {getPasswordError(password)}
-                    </p>
-                  )}
-                  {submitted && error && !getPasswordError(password) && (
-                    <p className="text-destructive text-xs">{error}</p>
-                  )}
                 </div>
+
+                {submitted && error && (
+                  <p id="password-error" className="text-destructive text-center text-xs">
+                    {error}
+                  </p>
+                )}
+
                 <LoadingButton className="w-full" type="submit" loading={isResetting}>
                   Reset Password
                 </LoadingButton>
-              </>
+              </div>
             )}
           </div>
         </div>

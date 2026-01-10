@@ -18,6 +18,11 @@ import {
   strongPasswordPattern,
   getPasswordError,
 } from "@featul/auth/password";
+import {
+  sendVerificationOtp,
+  checkVerificationOtp,
+  resetPassword as resetPasswordOtp,
+} from "./otp-utils";
 
 export default function ForgotPassword() {
   const router = useRouter();
@@ -36,10 +41,7 @@ export default function ForgotPassword() {
     setError("");
     setSubmitted(false);
     try {
-      const { error } = await authClient.emailOtp.sendVerificationOtp({
-        email: email.trim(),
-        type: "forget-password",
-      });
+      const { error } = await sendVerificationOtp(email, "forget-password");
       if (error) {
         setError(error.message || "Failed to send reset code");
         toast.error(error.message || "Failed to send reset code");
@@ -68,8 +70,7 @@ export default function ForgotPassword() {
     }
 
     try {
-      // Verify the OTP using better-auth's checkVerificationOtp with forget-password type
-      const { error } = await (authClient.emailOtp as any).checkVerificationOtp({
+      const { error } = await checkVerificationOtp({
         email: email.trim(),
         otp: code.trim(),
         type: "forget-password",
@@ -110,11 +111,7 @@ export default function ForgotPassword() {
 
     try {
       // Reset the password with the already-verified OTP
-      const { error } = await authClient.emailOtp.resetPassword({
-        email: email.trim(),
-        otp: code.trim(),
-        password,
-      });
+      const { error } = await resetPasswordOtp(email, code, password);
       if (error) {
         // If OTP expired between verify and reset, go back to OTP step
         if (error.message?.toLowerCase().includes("invalid") || error.message?.toLowerCase().includes("expired")) {

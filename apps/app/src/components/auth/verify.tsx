@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { authClient } from "@featul/auth/client";
 import { Button } from "@featul/ui/components/button";
 import {
   InputOTP,
@@ -12,6 +11,7 @@ import {
 import Link from "next/link";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/global/loading-button";
+import { sendVerificationOtp, verifyEmail } from "./otp-utils";
 
 export default function Verify() {
   const router = useRouter();
@@ -37,15 +37,18 @@ export default function Verify() {
     setInfo("");
     setSubmitted(false);
     try {
-      await authClient.emailOtp.sendVerificationOtp({
-        email: email.trim(),
-        type: "email-verification",
-      });
+      const { error } = await sendVerificationOtp(email, "email-verification");
+      if (error) {
+        setError(error.message || "Failed to send code");
+        toast.error(error.message || "Failed to send code");
+        return;
+      }
       setInfo("Verification code sent");
       toast.success("Verification code sent");
-    } catch (e: any) {
-      setError(e?.message || "Failed to send code");
-      toast.error(e?.message || "Failed to send code");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Failed to send code";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setIsResending(false);
     }
@@ -63,20 +66,18 @@ export default function Verify() {
       return;
     }
     try {
-      const { error } = await authClient.emailOtp.verifyEmail({
-        email: email.trim(),
-        otp: code.trim(),
-      });
+      const { error } = await verifyEmail(email, code);
       if (error) {
         setError(error.message || "Verification failed");
-        toast.error(error.message);
+        toast.error(error.message || "Verification failed");
         return;
       }
       toast.success("Email verified");
       router.push(redirect);
-    } catch (e: any) {
-      setError(e?.message || "Invalid or expired code");
-      toast.error(e?.message || "Invalid or expired code");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Invalid or expired code";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setIsVerifying(false);
     }

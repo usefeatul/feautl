@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/global/loading-button";
-import { sendVerificationOtp, verifyEmail } from "./otp-utils";
+import { sendVerificationOtp, verifyEmail } from "../../utils/otp-utils";
 
 export default function Verify() {
   const router = useRouter();

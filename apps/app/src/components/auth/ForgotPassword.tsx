@@ -9,6 +9,7 @@ import { Label } from "@featul/ui/components/label";
 import Link from "next/link";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/global/loading-button";
+import { OtpStep } from "./OtpStep";
 import {
   strongPasswordPattern,
   getPasswordError,
@@ -17,20 +18,17 @@ import {
 export default function ForgotPassword() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
+  const [verifiedCode, setVerifiedCode] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [info, setInfo] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [hasSent, setHasSent] = useState(false);
+  const [step, setStep] = useState<"request" | "otp" | "password">("request");
 
   const sendResetCode = async () => {
     setIsSending(true);
     setError("");
-    setInfo("");
-    setSubmitted(false);
     try {
       const { error } = await authClient.emailOtp.sendVerificationOtp({
         email: email.trim(),
@@ -41,21 +39,40 @@ export default function ForgotPassword() {
         toast.error(error.message || "Failed to send reset code");
         return;
       }
-      setHasSent(true);
-      setInfo("Reset code sent to your email");
+      setStep("otp");
       toast.success("Reset code sent");
-    } catch (e: any) {
-      setError(e?.message || "Failed to send reset code");
-      toast.error(e?.message || "Failed to send reset code");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Failed to send reset code";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setIsSending(false);
+    }
+  };
+
+  const handleVerifyOtp = async (code: string) => {
+    try {
+      const { error } = await authClient.emailOtp.verifyEmail({
+        email: email.trim(),
+        otp: code,
+      });
+      if (error) {
+        toast.error(error.message || "Invalid or expired code");
+        return { success: false, error: error.message || "Invalid or expired code" };
+      }
+      setVerifiedCode(code);
+      setStep("password");
+      return { success: true };
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Invalid or expired code";
+      toast.error(msg);
+      return { success: false, error: msg };
     }
   };
 
   const resetPassword = async () => {
     setIsResetting(true);
     setError("");
-    setInfo("");
     setSubmitted(true);
     try {
       const pwdErr = getPasswordError(password);
@@ -66,7 +83,7 @@ export default function ForgotPassword() {
       }
       const { error } = await authClient.emailOtp.resetPassword({
         email: email.trim(),
-        otp: code.trim(),
+        otp: verifiedCode,
         password,
       });
       if (error) {
@@ -82,9 +99,7 @@ export default function ForgotPassword() {
           onError: (ctx) => {
             if (ctx.error.status === 403) {
               toast.info("Please verify your email");
-              router.push(
-                `/auth/verify?email=${encodeURIComponent(email.trim())}`
-              );
+              router.push(`/auth/verify?email=${encodeURIComponent(email.trim())}`);
               return;
             }
             setError(ctx.error.message);
@@ -96,9 +111,10 @@ export default function ForgotPassword() {
           },
         }
       );
-    } catch (e: any) {
-      setError(e?.message || "Reset failed");
-      toast.error(e?.message || "Reset failed");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Reset failed";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setIsResetting(false);
     }
@@ -111,62 +127,61 @@ export default function ForgotPassword() {
         className="bg-background m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border shadow-md shadow-zinc-950/5 dark:[--color-muted:var(--color-zinc-900)]"
         onSubmit={(e) => {
           e.preventDefault();
-          hasSent ? resetPassword() : sendResetCode();
+          if (step === "request") {
+            sendResetCode();
+          } else if (step === "password") {
+            resetPassword();
+          }
         }}
       >
         <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-6 sm:p-8 pb-5 sm:pb-6">
           <div className="text-left">
             <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-left">
-              Forgot your password
+              {step === "password" ? "Set new password" : "Forgot your password"}
             </h1>
             <p className="text-xs sm:text-sm text-accent mb-2 text-left">
-              Enter your email to receive a reset code
+              {step === "request" && "Enter your email to receive a reset code"}
+              {step === "otp" && "Enter the code sent to your email"}
+              {step === "password" && "Choose a strong password"}
             </p>
           </div>
 
           <div className="mt-6 space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="block text-sm">
-                Email
-              </Label>
-              <Input
-                type="email"
-                required
-                id="email"
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-
-            {hasSent && (
+            {step === "request" && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="code" className="block text-sm">
-                    Verification Code
+                  <Label htmlFor="email" className="block text-sm">
+                    Email
                   </Label>
                   <Input
-                    type="text"
+                    type="email"
                     required
-                    id="code"
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                    inputMode="numeric"
-                    pattern="^[0-9]{6}$"
-                    title="Enter the 6-digit code"
-                    autoComplete="one-time-code"
-                    aria-invalid={submitted && Boolean(error)}
-                    aria-describedby={
-                      submitted && error ? "code-error" : undefined
-                    }
+                    id="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
-                  {submitted && error && (
-                    <p id="code-error" className="text-destructive text-xs">
-                      {error}
-                    </p>
-                  )}
                 </div>
+                <LoadingButton
+                  className="w-full"
+                  type="submit"
+                  loading={isSending}
+                >
+                  Send Reset Code
+                </LoadingButton>
+              </>
+            )}
 
+            {step === "otp" && (
+              <OtpStep
+                onVerify={handleVerifyOtp}
+                onResend={sendResetCode}
+                isResending={isSending}
+              />
+            )}
+
+            {step === "password" && (
+              <>
                 <div className="space-y-2">
                   <Label htmlFor="password" className="block text-sm">
                     New Password
@@ -182,9 +197,7 @@ export default function ForgotPassword() {
                     onChange={(e) => setPassword(e.target.value)}
                     pattern={strongPasswordPattern}
                     title="8+ chars, uppercase, lowercase, number and symbol"
-                    aria-invalid={
-                      submitted && Boolean(getPasswordError(password))
-                    }
+                    aria-invalid={submitted && Boolean(getPasswordError(password))}
                     aria-describedby={
                       submitted && getPasswordError(password)
                         ? "reset-password-error"
@@ -192,44 +205,18 @@ export default function ForgotPassword() {
                     }
                   />
                   {submitted && getPasswordError(password) && (
-                    <p
-                      id="reset-password-error"
-                      className="text-destructive text-xs"
-                    >
+                    <p id="reset-password-error" className="text-destructive text-xs">
                       {getPasswordError(password)}
                     </p>
                   )}
+                  {submitted && error && !getPasswordError(password) && (
+                    <p className="text-destructive text-xs">{error}</p>
+                  )}
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <LoadingButton
-                    className="w-full"
-                    type="button"
-                    variant="outline"
-                    onClick={sendResetCode}
-                    loading={isSending}
-                  >
-                    Resend Code
-                  </LoadingButton>
-                  <LoadingButton
-                    className="w-full"
-                    type="submit"
-                    loading={isResetting}
-                  >
-                    Reset Password
-                  </LoadingButton>
-                </div>
+                <LoadingButton className="w-full" type="submit" loading={isResetting}>
+                  Reset Password
+                </LoadingButton>
               </>
-            )}
-
-            {!hasSent && (
-              <LoadingButton
-                className="w-full"
-                type="submit"
-                loading={isSending}
-              >
-                Send Reset Code
-              </LoadingButton>
             )}
           </div>
         </div>

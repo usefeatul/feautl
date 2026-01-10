@@ -11,8 +11,10 @@ import {
   getDocsCurrentPageLabel,
   getDocsCurrentSectionLabel,
 } from "../../lib/mobile-nav-utils"
+import { useIsDocsMobile } from "@/hooks/use-docs-mobile"
 
 export function DocsMobileFloatingNav() {
+  const isMobile = useIsDocsMobile()
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isBottomNavVisible, setIsBottomNavVisible] = useState<boolean>(true)
@@ -67,8 +69,8 @@ export function DocsMobileFloatingNav() {
   return (
     <div
       className={cn(
-        "lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-70 transition-all duration-300 ease-out",
-        !isOpen && !isBottomNavVisible
+        "fixed bottom-6 left-1/2 -translate-x-1/2 z-70 transition-all duration-300 ease-out",
+        !isOpen && (!isBottomNavVisible || !isMobile)
           ? "translate-y-24 opacity-0"
           : "translate-y-0 opacity-100",
       )}

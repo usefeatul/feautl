@@ -66,13 +66,13 @@ export type RequestDetailData = {
     color?: string | null
   }>
   author?:
-    | {
-        name: string | null
-        image: string | null
-        email: string | null
-      }
-    | null
-  metadata?: Record<string, any> | null
+  | {
+    name: string | null
+    image: string | null
+    email: string | null
+  }
+  | null
+  metadata?: Record<string, unknown> | null
 }
 
 export default function RequestDetail({
@@ -181,10 +181,10 @@ export default function RequestDetail({
                     <CommentCounter postId={post.id} initialCount={post.commentCount} />
                   </div>
                   <div className="inline-flex items-center rounded-sm border bg-card overflow-hidden">
-                    <Button 
-                      asChild 
-                      variant="nav" 
-                      size="sm" 
+                    <Button
+                      asChild
+                      variant="nav"
+                      size="sm"
                       className="h-8 px-3 gap-2 rounded-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:bg-card"
                       disabled={!prevHref}
                     >
@@ -201,10 +201,10 @@ export default function RequestDetail({
                       )}
                     </Button>
                     <div className="mx-0.5 h-5 w-px bg-border" />
-                    <Button 
-                      asChild 
-                      variant="nav" 
-                      size="sm" 
+                    <Button
+                      asChild
+                      variant="nav"
+                      size="sm"
                       className="h-8 px-3 gap-2 rounded-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:bg-card"
                       disabled={!nextHref}
                     >

@@ -19,6 +19,7 @@ import { MergePopover } from "./MergePopover"
 import { DeletePostButton } from "./DeletePostButton"
 import { useIsMobile } from "@featul/ui/hooks/use-mobile"
 import EditPostModal from "../subdomain/request-detail/EditPostModal"
+import { TriageBar } from "./TriageBar"
 
 export type RequestDetailData = {
   id: string
@@ -100,7 +101,7 @@ export default function RequestDetail({
     <section>
       <div className="overflow-hidden rounded-sm ring-1 ring-border/60 ring-offset-1 ring-offset-white dark:ring-offset-black bg-card dark:bg-black/40 border border-border">
         <div className="grid items-stretch gap-0 md:grid-cols-[0.7fr_0.3fr]">
-          <article className="relative min-w-0 px-4 py-4 md:px-6 md:py-5">
+          <article className="relative min-w-0 px-4 pt-4 pb-24 md:px-6 md:pt-5 md:pb-28">
             <div aria-hidden className="absolute right-0 top-0 hidden h-full w-px bg-border/50 md:block" />
             <header className="pb-4">
               {isMobile ? (
@@ -238,6 +239,7 @@ export default function RequestDetail({
                   initialCollapsedIds={initialCollapsedIds}
                 />
               </div>
+              {canEdit ? <TriageBar post={post} workspaceSlug={workspaceSlug} readonly={readonly} navigation={navigation} /> : null}
             </div>
           </article>
 

@@ -23,7 +23,7 @@ export function MergePopover({ postId, workspaceSlug }: MergePopoverProps) {
 
   const { data: candidates = [], isLoading } = useQuery({
     queryKey: ["merge-candidates", postId, query],
-    enabled: searchOpen && query.trim().length >= 2,
+    enabled: searchOpen,
     queryFn: async () => {
       const res = await client.post.searchMergeCandidates.$get({
         postId,
@@ -69,7 +69,7 @@ export function MergePopover({ postId, workspaceSlug }: MergePopoverProps) {
             <MergeIcon className="size-3.5" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent align="end" list className="w-52">
+        <PopoverContent align="end" list className="fit min-w-0">
           <PopoverList>
             <PopoverListItem onClick={() => start("merge_into")}>
               <span className="text-sm">Merge with other</span>
@@ -81,7 +81,7 @@ export function MergePopover({ postId, workspaceSlug }: MergePopoverProps) {
         </PopoverContent>
       </Popover>
 
-      <CommandDialog open={searchOpen} onOpenChange={setSearchOpen} title="Merge"  width="wide">
+      <CommandDialog open={searchOpen} onOpenChange={setSearchOpen} title="Merge" width="wide">
         <CommandInput
           value={query}
           onValueChange={(v) => setQuery(v)}

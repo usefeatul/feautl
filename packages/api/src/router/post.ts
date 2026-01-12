@@ -23,7 +23,7 @@ export function createPostRouter() {
           if (session?.user?.id) {
             userId = session.user.id
           }
-        } catch {}
+        } catch { }
 
         // Resolve Workspace
         const [ws] = await ctx.db
@@ -43,12 +43,12 @@ export function createPostRouter() {
 
         // Check permissions
         if (!userId) {
-            if (!b.allowAnonymous) {
-                throw new HTTPException(401, { message: "Anonymous posting is not allowed on this board" })
-            }
-            if (!fingerprint) {
-                throw new HTTPException(400, { message: "Fingerprint required for anonymous posting" })
-            }
+          if (!b.allowAnonymous) {
+            throw new HTTPException(401, { message: "Anonymous posting is not allowed on this board" })
+          }
+          if (!fingerprint) {
+            throw new HTTPException(400, { message: "Fingerprint required for anonymous posting" })
+          }
         }
 
         // Generate slug
@@ -58,15 +58,15 @@ export function createPostRouter() {
 
         // Create Post
         const [newPost] = await ctx.db.insert(post).values({
-            boardId: b.id,
-            title,
-            content,
-            image,
-            slug,
-            authorId: userId || null,
-            isAnonymous: !userId,
-            metadata: !userId ? { fingerprint } : undefined,
-            roadmapStatus: roadmapStatus || "pending",
+          boardId: b.id,
+          title,
+          content,
+          image,
+          slug,
+          authorId: userId || null,
+          isAnonymous: !userId,
+          metadata: !userId ? { fingerprint } : undefined,
+          roadmapStatus: roadmapStatus || "pending",
         }).returning()
 
         let tagSummaries: Array<{ id: string; name: string | null; color: string | null; slug: string | null }> = []
@@ -99,12 +99,12 @@ export function createPostRouter() {
 
         // Auto-upvote
         await ctx.db.insert(vote).values({
-            postId: newPost.id,
-            userId: userId || null,
-            fingerprint: userId ? null : fingerprint || null,
-            type: 'upvote'
+          postId: newPost.id,
+          userId: userId || null,
+          fingerprint: userId ? null : fingerprint || null,
+          type: 'upvote'
         })
-        
+
         // Update post upvotes
         await ctx.db.update(post).set({ upvotes: 1 }).where(eq(post.id, newPost.id))
         await ctx.db.insert(activityLog).values({
@@ -181,7 +181,7 @@ export function createPostRouter() {
           if (session?.user?.id) {
             userId = session.user.id
           }
-        } catch {}
+        } catch { }
 
         if (!userId) {
           throw new HTTPException(401, { message: "Unauthorized" })
@@ -201,66 +201,66 @@ export function createPostRouter() {
         // Check ownership and permissions
         let allowed = existingPost.authorId === userId
         if (!allowed) {
-            // Fetch workspace and check if user is admin/owner
-            const [b] = await ctx.db
-                .select({ workspaceId: board.workspaceId })
-                .from(board)
-                .where(eq(board.id, existingPost.boardId))
-                .limit(1)
-            
-            if (b) {
-                const [ws] = await ctx.db
-                    .select({ ownerId: workspace.ownerId })
-                    .from(workspace)
-                    .where(eq(workspace.id, b.workspaceId))
-                    .limit(1)
-                
-                if (ws) {
-                    if (ws.ownerId === userId) {
-                        allowed = true
-                    } else {
-                        const [member] = await ctx.db
-                            .select({ role: workspaceMember.role })
-                            .from(workspaceMember)
-                            .where(and(eq(workspaceMember.workspaceId, b.workspaceId), eq(workspaceMember.userId, userId)))
-                            .limit(1)
-                        
-                        if (member) {
-                            const perms = mapPermissions(member.role)
-                            if (perms.canModerateAllBoards) {
-                                allowed = true
-                            }
-                        }
-                    }
+          // Fetch workspace and check if user is admin/owner
+          const [b] = await ctx.db
+            .select({ workspaceId: board.workspaceId })
+            .from(board)
+            .where(eq(board.id, existingPost.boardId))
+            .limit(1)
+
+          if (b) {
+            const [ws] = await ctx.db
+              .select({ ownerId: workspace.ownerId })
+              .from(workspace)
+              .where(eq(workspace.id, b.workspaceId))
+              .limit(1)
+
+            if (ws) {
+              if (ws.ownerId === userId) {
+                allowed = true
+              } else {
+                const [member] = await ctx.db
+                  .select({ role: workspaceMember.role })
+                  .from(workspaceMember)
+                  .where(and(eq(workspaceMember.workspaceId, b.workspaceId), eq(workspaceMember.userId, userId)))
+                  .limit(1)
+
+                if (member) {
+                  const perms = mapPermissions(member.role)
+                  if (perms.canModerateAllBoards) {
+                    allowed = true
+                  }
                 }
+              }
             }
+          }
         }
 
         if (!allowed) {
-           throw new HTTPException(403, { message: "You don't have permission to edit this post" })
+          throw new HTTPException(403, { message: "You don't have permission to edit this post" })
         }
 
         // Resolve Board if changing
         let boardId = existingPost.boardId
         if (boardSlug) {
-           // First get the workspaceId from the current board of the post
-           const [currentBoard] = await ctx.db
-             .select({ workspaceId: board.workspaceId })
-             .from(board)
-             .where(eq(board.id, existingPost.boardId))
-             .limit(1)
+          // First get the workspaceId from the current board of the post
+          const [currentBoard] = await ctx.db
+            .select({ workspaceId: board.workspaceId })
+            .from(board)
+            .where(eq(board.id, existingPost.boardId))
+            .limit(1)
 
-           if (currentBoard) {
-             const [b] = await ctx.db
+          if (currentBoard) {
+            const [b] = await ctx.db
               .select({ id: board.id })
               .from(board)
               .where(and(
-                eq(board.workspaceId, currentBoard.workspaceId), 
+                eq(board.workspaceId, currentBoard.workspaceId),
                 eq(board.slug, boardSlug)
               ))
               .limit(1)
-             if (b) boardId = b.id
-           }
+            if (b) boardId = b.id
+          }
         }
 
         // Update Post
@@ -390,7 +390,7 @@ export function createPostRouter() {
           if (session?.user?.id) {
             userId = session.user.id
           }
-        } catch {}
+        } catch { }
 
         if (!userId) {
           throw new HTTPException(401, { message: "Unauthorized" })
@@ -410,43 +410,43 @@ export function createPostRouter() {
         // Check ownership and permissions
         let allowed = existingPost.authorId === userId
         if (!allowed) {
-            // Fetch workspace and check if user is admin/owner
-            const [b] = await ctx.db
-                .select({ workspaceId: board.workspaceId })
-                .from(board)
-                .where(eq(board.id, existingPost.boardId))
-                .limit(1)
-            
-            if (b) {
-                const [ws] = await ctx.db
-                    .select({ ownerId: workspace.ownerId })
-                    .from(workspace)
-                    .where(eq(workspace.id, b.workspaceId))
-                    .limit(1)
-                
-                if (ws) {
-                    if (ws.ownerId === userId) {
-                        allowed = true
-                    } else {
-                        const [member] = await ctx.db
-                            .select({ role: workspaceMember.role })
-                            .from(workspaceMember)
-                            .where(and(eq(workspaceMember.workspaceId, b.workspaceId), eq(workspaceMember.userId, userId)))
-                            .limit(1)
-                        
-                        if (member) {
-                            const perms = mapPermissions(member.role)
-                            if (perms.canModerateAllBoards) {
-                                allowed = true
-                            }
-                        }
-                    }
+          // Fetch workspace and check if user is admin/owner
+          const [b] = await ctx.db
+            .select({ workspaceId: board.workspaceId })
+            .from(board)
+            .where(eq(board.id, existingPost.boardId))
+            .limit(1)
+
+          if (b) {
+            const [ws] = await ctx.db
+              .select({ ownerId: workspace.ownerId })
+              .from(workspace)
+              .where(eq(workspace.id, b.workspaceId))
+              .limit(1)
+
+            if (ws) {
+              if (ws.ownerId === userId) {
+                allowed = true
+              } else {
+                const [member] = await ctx.db
+                  .select({ role: workspaceMember.role })
+                  .from(workspaceMember)
+                  .where(and(eq(workspaceMember.workspaceId, b.workspaceId), eq(workspaceMember.userId, userId)))
+                  .limit(1)
+
+                if (member) {
+                  const perms = mapPermissions(member.role)
+                  if (perms.canModerateAllBoards) {
+                    allowed = true
+                  }
                 }
+              }
             }
+          }
         }
 
         if (!allowed) {
-           throw new HTTPException(403, { message: "You don't have permission to delete this post" })
+          throw new HTTPException(403, { message: "You don't have permission to delete this post" })
         }
 
         const [boardRow] = await ctx.db
@@ -490,7 +490,7 @@ export function createPostRouter() {
           if (session?.user?.id) {
             userId = session.user.id
           }
-        } catch {}
+        } catch { }
 
         if (!userId) {
           throw new HTTPException(401, { message: "Unauthorized" })
@@ -553,7 +553,7 @@ export function createPostRouter() {
       .input(votePostSchema)
       .post(async ({ ctx, input, c }) => {
         const { postId, fingerprint } = input
-        
+
         let userId: string | null = null
         try {
           const session = await auth.api.getSession({
@@ -562,10 +562,10 @@ export function createPostRouter() {
           if (session?.user?.id) {
             userId = session.user.id
           }
-        } catch {}
+        } catch { }
 
         if (!userId && !fingerprint) {
-             throw new HTTPException(400, { message: "Missing identification" })
+          throw new HTTPException(400, { message: "Missing identification" })
         }
 
         // Check if post exists
@@ -579,7 +579,7 @@ export function createPostRouter() {
           .from(post)
           .where(eq(post.id, postId))
           .limit(1)
-        
+
         if (!targetPost) {
           throw new HTTPException(404, { message: "Post not found" })
         }
@@ -591,15 +591,15 @@ export function createPostRouter() {
           .limit(1)
 
         let existingVote
-        
+
         if (userId) {
-             [existingVote] = await ctx.db
+          [existingVote] = await ctx.db
             .select()
             .from(vote)
             .where(and(eq(vote.postId, postId), eq(vote.userId, userId)))
             .limit(1)
         } else if (fingerprint) {
-             [existingVote] = await ctx.db
+          [existingVote] = await ctx.db
             .select()
             .from(vote)
             .where(and(eq(vote.postId, postId), isNull(vote.userId), eq(vote.fingerprint, fingerprint)))
@@ -609,11 +609,11 @@ export function createPostRouter() {
         if (existingVote) {
           // Remove vote
           await ctx.db.delete(vote).where(eq(vote.id, existingVote.id))
-          
+
           const [updatedPost] = await ctx.db
             .update(post)
-            .set({ 
-              upvotes: sql`greatest(0, ${post.upvotes} - 1)` 
+            .set({
+              upvotes: sql`greatest(0, ${post.upvotes} - 1)`
             })
             .where(eq(post.id, postId))
             .returning({ upvotes: post.upvotes })
@@ -646,8 +646,8 @@ export function createPostRouter() {
 
           const [updatedPost] = await ctx.db
             .update(post)
-            .set({ 
-              upvotes: sql`${post.upvotes} + 1` 
+            .set({
+              upvotes: sql`${post.upvotes} + 1`
             })
             .where(eq(post.id, postId))
             .returning({ upvotes: post.upvotes })
@@ -676,7 +676,7 @@ export function createPostRouter() {
       .input(getSimilarSchema)
       .get(async ({ ctx, input, c }) => {
         const { title, boardSlug, workspaceSlug } = input
-        
+
         // Resolve Workspace first
         const [ws] = await ctx.db
           .select({ id: workspace.id })
@@ -685,7 +685,7 @@ export function createPostRouter() {
           .limit(1)
 
         if (!ws) {
-             return c.superjson({ posts: [] })
+          return c.superjson({ posts: [] })
         }
 
         // Resolve Board within Workspace
@@ -699,22 +699,22 @@ export function createPostRouter() {
           .limit(1)
 
         if (!b) {
-             return c.superjson({ posts: [] })
+          return c.superjson({ posts: [] })
         }
-        
+
         // Split title into words for better matching
         const words = title.trim().split(/\s+/).filter(w => w.length > 2)
-        
+
         let searchCondition = ilike(post.title, `%${title}%`)
-        
+
         if (words.length > 0) {
-            // If we have words, try to match ANY of them, but rank by relevance?
-            // For now, let's just find posts that contain ANY of the significant words
-            // This is broader than "phrase match"
-            searchCondition = or(
-                ilike(post.title, `%${title}%`), // Exact phrase match
-                ...words.map(w => ilike(post.title, `%${w}%`)) // Or any word match
-            ) as any
+          // If we have words, try to match ANY of them, but rank by relevance?
+          // For now, let's just find posts that contain ANY of the significant words
+          // This is broader than "phrase match"
+          searchCondition = or(
+            ilike(post.title, `%${title}%`), // Exact phrase match
+            ...words.map(w => ilike(post.title, `%${w}%`)) // Or any word match
+          ) as any
         }
 
         const similarPosts = await ctx.db
@@ -731,7 +731,7 @@ export function createPostRouter() {
             searchCondition
           ))
           .limit(3)
-          
+
         return c.superjson({ posts: similarPosts })
       }),
 
@@ -739,7 +739,7 @@ export function createPostRouter() {
       .input(votePostSchema)
       .get(async ({ ctx, input, c }) => {
         const { postId, fingerprint } = input
-        
+
         let userId: string | null = null
         try {
           const session = await auth.api.getSession({
@@ -748,26 +748,26 @@ export function createPostRouter() {
           if (session?.user?.id) {
             userId = session.user.id
           }
-        } catch {}
+        } catch { }
 
         let hasVoted = false
-        
+
         if (userId) {
-             const [existing] = await ctx.db
+          const [existing] = await ctx.db
             .select({ id: vote.id })
             .from(vote)
             .where(and(eq(vote.postId, postId), eq(vote.userId, userId)))
             .limit(1)
-            hasVoted = !!existing
+          hasVoted = !!existing
         } else if (fingerprint) {
-             const [existing] = await ctx.db
+          const [existing] = await ctx.db
             .select({ id: vote.id })
             .from(vote)
             .where(and(eq(vote.postId, postId), isNull(vote.userId), eq(vote.fingerprint, fingerprint)))
             .limit(1)
-            hasVoted = !!existing
+          hasVoted = !!existing
         }
-        
+
         return c.superjson({ hasVoted })
       }),
 
@@ -784,7 +784,7 @@ export function createPostRouter() {
           if (session?.user?.id) {
             userId = session.user.id
           }
-        } catch {}
+        } catch { }
 
         if (!userId) {
           throw new HTTPException(401, { message: "Unauthorized" })
@@ -850,7 +850,7 @@ export function createPostRouter() {
             .from(workspaceMember)
             .where(and(eq(workspaceMember.workspaceId, sourceBoard.workspaceId), eq(workspaceMember.userId, userId)))
             .limit(1)
-          
+
           if (member) {
             const perms = mapPermissions(member.role)
             if (perms.canModerateAllBoards) {
@@ -894,7 +894,7 @@ export function createPostRouter() {
         // Consolidate votes (transfer upvotes from source to target)
         await ctx.db
           .update(post)
-          .set({ 
+          .set({
             upvotes: sql`${post.upvotes} + ${sourcePost.upvotes}`
           })
           .where(eq(post.id, targetPost.id))
@@ -902,7 +902,7 @@ export function createPostRouter() {
         // Archive the source post
         await ctx.db
           .update(post)
-          .set({ 
+          .set({
             status: 'archived',
             duplicateOfId: targetPost.id
           })
@@ -969,7 +969,7 @@ export function createPostRouter() {
           if (session?.user?.id) {
             userId = session.user.id
           }
-        } catch {}
+        } catch { }
 
         if (!userId) {
           throw new HTTPException(401, { message: "Unauthorized" })
@@ -1057,7 +1057,7 @@ export function createPostRouter() {
           // Consolidate votes into target
           await ctx.db
             .update(post)
-            .set({ 
+            .set({
               upvotes: sql`${post.upvotes} + ${sourcePost.upvotes}`
             })
             .where(eq(post.id, targetPost.id))
@@ -1065,7 +1065,7 @@ export function createPostRouter() {
           // Archive the source post
           await ctx.db
             .update(post)
-            .set({ 
+            .set({
               status: 'archived',
               duplicateOfId: targetPost.id
             })
@@ -1145,7 +1145,21 @@ export function createPostRouter() {
           throw new HTTPException(404, { message: "Board not found" })
         }
 
-        const searchTerm = `%${query}%`
+        let searchCondition = sql`true`
+
+        if (query && query.trim().length > 0) {
+          const searchTerm = `%${query}%`
+          searchCondition = sql`(${post.title} ilike ${searchTerm} or ${post.content} ilike ${searchTerm})`
+        } else {
+          // Auto-suggest similar posts based on title
+          const words = currentPost.title.trim().split(/\s+/).filter((w: string) => w.length > 2)
+          if (words.length > 0) {
+            searchCondition = or(
+              ilike(post.title, `%${currentPost.title}%`),
+              ...words.map((w: string) => ilike(post.title, `%${w}%`))
+            ) as any
+          }
+        }
 
         let candidates = await ctx.db
           .select({
@@ -1163,7 +1177,7 @@ export function createPostRouter() {
             eq(board.workspaceId, currentBoard.workspaceId),
             eq(post.status, 'published'),
             excludeSelf ? sql`${post.id} != ${postId}` : sql`true`,
-            sql`(${post.title} ilike ${searchTerm} or ${post.content} ilike ${searchTerm})`
+            searchCondition
           ))
           .orderBy(sql`${post.upvotes} desc`)
           .limit(10)

@@ -69,6 +69,6 @@ export const mergeHerePostSchema = z.object({
 
 export const searchMergeCandidatesSchema = z.object({
   postId: z.string().min(1),
-  query: z.string().min(1).max(128),
+  query: z.string().max(128).optional(),
   excludeSelf: z.boolean().optional().default(true),
 })

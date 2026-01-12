@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { client } from "@featul/api/client";
 import { toast } from "sonner";
@@ -102,7 +102,7 @@ export function useIntegrations({
             resolve(true);
           } else {
             const error = await res.json();
-            toast.error((error as any)?.message || `Failed to connect ${type}`);
+            toast.error((error as { message?: string })?.message || `Failed to connect ${type}`);
             resolve(false);
           }
         } catch (error) {

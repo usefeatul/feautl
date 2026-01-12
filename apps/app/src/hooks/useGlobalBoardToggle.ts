@@ -65,7 +65,9 @@ export function useGlobalBoardToggle(
           it.slug !== "roadmap" && it.slug !== "changelog" ? { ...it, [key]: v } : it,
         )
       })
-    } catch {}
+    } catch {
+      setValue(allTrue(key))
+    }
     try {
       const res = await client.board.updateGlobalSettings.$post({ slug, patch: { [key]: v } })
       if (!res.ok) {

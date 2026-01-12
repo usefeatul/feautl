@@ -1,7 +1,7 @@
 export type NavItem = {
   label: string
   href: string
-  icon: React.ComponentType<any>
+  icon: React.ComponentType<{ className?: string }>
   external?: boolean
 }
 

@@ -72,7 +72,9 @@ export function useWizardLogic() {
           setSlugAvailable(true);
           setSlugChecking(false);
         }
-      } catch {}
+      } catch {
+        // ignore
+      }
     };
 
     checkReservation();
@@ -144,7 +146,7 @@ export function useWizardLogic() {
       
       // Update cache
       try {
-        queryClient.setQueryData(["workspaces"], (prev: any) => {
+        queryClient.setQueryData(["workspaces"], (prev: { workspaces: { id: string; slug: string; name: string; }[] }) => {
           const list = Array.isArray(prev) ? prev : prev?.workspaces || [];
           const next = [...list, data?.workspace].filter(Boolean);
           return prev && prev.workspaces ? { ...prev, workspaces: next } : next;
@@ -152,7 +154,9 @@ export function useWizardLogic() {
         if (data?.workspace) {
           queryClient.setQueryData(["workspace", createdSlug], data.workspace);
         }
-      } catch {}
+      } catch {
+        // ignore
+      }
 
       router.push(`/workspaces/${createdSlug}`);
     } catch (e: unknown) {

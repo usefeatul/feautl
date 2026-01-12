@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation"
 interface UsePostSubmissionProps {
   workspaceSlug: string
   onSuccess: () => void
-  onCreated?: (post: any) => void
+  onCreated?: (post: { post: { slug: string } }) => void
   skipDefaultRedirect?: boolean
 }
 
@@ -21,7 +21,7 @@ export function usePostSubmission({ workspaceSlug, onSuccess, onCreated, skipDef
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const submitPost = async (selectedBoard: { slug: string } | null, user: any, image?: string | null, roadmapStatus?: string, tags?: string[]) => {
+  const submitPost = async (selectedBoard: { slug: string } | null, user: { id: string } | null, image?: string | null, roadmapStatus?: string, tags?: string[]) => {
     if (!title || !content || !selectedBoard) return
 
     const MAX_TITLE_LENGTH = 100
@@ -55,7 +55,9 @@ export function usePostSubmission({ workspaceSlug, onSuccess, onCreated, skipDef
           try {
             queryClient.invalidateQueries({ queryKey: ["member-stats"] })
             queryClient.invalidateQueries({ queryKey: ["member-activity"] })
-          } catch {}
+          } catch {
+            // ignore
+          }
 
           if (onCreated) {
             onCreated(data.post)
@@ -68,7 +70,7 @@ export function usePostSubmission({ workspaceSlug, onSuccess, onCreated, skipDef
           if (res.status === 401) {
             toast.error("Anonymous posting is not allowed on this board")
           } else {
-            toast.error((err as any)?.message || "Failed to submit post")
+            toast.error((err as { message?: string })?.message || "Failed to submit post")
           }
         }
       } catch (error) {

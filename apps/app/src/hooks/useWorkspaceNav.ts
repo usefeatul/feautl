@@ -17,7 +17,8 @@ export function useWorkspaceNav(
       if (!slug) return null
       const res = await client.workspace.bySlug.$get({ slug })
       const data = (await res.json()) as { workspace: { id: string; name: string; slug: string; logo?: string | null; domain?: string | null; customDomain?: string | null } | null }
-      console.log("[client] workspace.bySlug", { slug, workspace: data.workspace })
+      // log the workspace data
+      // console.log("[client] workspace.bySlug", { slug, workspace: data.workspace })
       return data.workspace
     },
     enabled: !!slug,
@@ -33,7 +34,7 @@ export function useWorkspaceNav(
       if (!slug) return null
       const res = await client.workspace.domainInfo.$get({ slug })
       const data = (await res.json()) as { domain: { status: string; host?: string } | null }
-      console.log("[client] workspace.domainInfo", { slug, data })
+      // console.log("[client] workspace.domainInfo", { slug, data })
       return data
     },
     enabled: !!slug,
@@ -101,10 +102,14 @@ export function useWorkspaceNav(
           }
           return next
         })
-      } catch {}
+      } catch {
+        // ignore
+      }
       try {
         queryClient.invalidateQueries({ queryKey: ["status-counts", slug] })
-      } catch {}
+      } catch {
+        // ignore
+      }
     }
     window.addEventListener("post:deleted", handlePostDeleted)
     return () => {

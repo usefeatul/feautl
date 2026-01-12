@@ -15,14 +15,16 @@ function useWorkspaceRole(slug: string): { loading: boolean; role: Role | null; 
       try {
         const res = await client.team.membersByWorkspaceSlug.$get({ slug })
         const d = await res.json()
-        const meId = (d as any)?.meId
-        const members = (d as any)?.members || []
-        const me = Array.isArray(members) ? members.find((m: any) => m?.userId === meId) : null
+        const meId = (d as { meId: string })?.meId
+        const members = (d as { members: { userId: string; role: Role; isOwner: boolean }[] })?.members || []
+        const me = Array.isArray(members) ? members.find((m: { userId: string; role: Role; isOwner: boolean }) => m?.userId === meId) : null
         if (mounted) {
           setIsOwner(Boolean(me?.isOwner))
           setRole((me?.role as Role) || null)
         }
-      } catch {}
+      } catch {
+        // ignore
+      }
       finally {
         if (mounted) setLoading(false)
       }

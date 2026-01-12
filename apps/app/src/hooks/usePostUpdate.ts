@@ -40,12 +40,14 @@ export function usePostUpdate({ postId, onSuccess }: UsePostUpdateProps) {
           try {
             queryClient.invalidateQueries({ queryKey: ["member-stats"] })
             queryClient.invalidateQueries({ queryKey: ["member-activity"] })
-          } catch {}
+          } catch {
+            // ignore
+          }
 
           router.refresh()
         } else {
           const err = await res.json()
-          toast.error((err as any)?.message || "Failed to update post")
+          toast.error((err as { message?: string })?.message || "Failed to update post")
         }
       } catch (error) {
         console.error("Failed to update post:", error)

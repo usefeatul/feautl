@@ -2,7 +2,7 @@ import { useTransition } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { client } from "@featul/api/client"
-import  { UploadedImage } from "@/hooks/useImageUpload"
+import type { UploadedImage } from "@/hooks/useImageUpload"
 import { getBrowserFingerprint } from "@/utils/fingerprint"
 import type { CommentData } from "../types/comment"
 

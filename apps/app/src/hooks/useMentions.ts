@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo } from "react"
 import { toast } from "sonner"
 import { client } from "@featul/api/client"
 import { useSession } from "@featul/auth/client"
@@ -28,7 +28,7 @@ export function useMentions(
   const [mentionQuery, setMentionQuery] = useState("")
   const [mentionIndex, setMentionIndex] = useState(0)
   const [members, setMembers] = useState<Member[]>([])
-  const { data: session } = useSession() as any
+  const { data: session } = useSession() 
 
   // Filter members based on query
   const filteredCandidates = useMemo(() => {
@@ -68,7 +68,9 @@ export function useMentions(
       try {
         el.focus()
         el.setSelectionRange(pos, pos)
-      } catch {}
+      } catch {
+        el.focus()
+      }
     }, 0)
   }
 
@@ -107,7 +109,7 @@ export function useMentions(
             .then(async (res) => {
               if (res.ok) {
                 const data = await res.json()
-                setMembers((data as any)?.members || [])
+                setMembers((data as { members: Member[] })?.members || [])
               } else if (res.status === 403) {
                 toast.error("You must be a member of this workspace to mention users")
                 setMentionOpen(false)

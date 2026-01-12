@@ -20,16 +20,16 @@ export type SubdomainRequestDetailData = {
   isFeatul?: boolean;
   duplicateOfId?: string | null;
   mergedInto?:
-    | {
-        id: string;
-        slug: string;
-        title: string;
-        roadmapStatus?: string | null;
-        mergedAt?: string | null;
-        boardName?: string;
-        boardSlug?: string;
-      }
-    | null;
+  | {
+    id: string;
+    slug: string;
+    title: string;
+    roadmapStatus?: string | null;
+    mergedAt?: string | null;
+    boardName?: string;
+    boardSlug?: string;
+  }
+  | null;
   mergedCount?: number;
   mergedSources?: Array<{
     id: string;
@@ -45,5 +45,5 @@ export type SubdomainRequestDetailData = {
     image: string | null;
     email: string | null;
   } | null;
-  metadata?: Record<string, any> | null;
+  metadata?: Record<string, unknown> | null;
 };

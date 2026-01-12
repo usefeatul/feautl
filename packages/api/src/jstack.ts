@@ -3,7 +3,7 @@ import { auth } from "@featul/auth/auth"
 import { HTTPException } from "hono/http-exception"
 import { headers } from "next/headers"
 import { db } from "@featul/db"
-// import { limitPublic, limitPrivate } from "./services/ratemiliter"
+// import { limitPublic, limitPrivate } from "./services/ratelimiter"
 
 
 export const j = jstack.init()

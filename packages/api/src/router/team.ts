@@ -15,6 +15,7 @@ import {
   addExistingMemberInputSchema,
 } from "../validators/team"
 import { getPlanLimits, assertWithinLimit } from "../shared/plan"
+import { limitInvite } from "../services/ratelimiter"
 import { mapPermissions } from "../shared/permissions"
 
 async function getWorkspaceMemberEmails(
@@ -92,6 +93,8 @@ async function assertMemberLimitNotReached(ctx: any, wsId: string, plan: string)
     .limit(1)
   assertWithinLimit(Number(mc?.count || 0), limits.maxMembers, () => "Member limit reached for current plan")
 }
+
+
 
 export function createTeamRouter() {
   return j.router({
@@ -178,7 +181,7 @@ export function createTeamRouter() {
             gt(workspaceInvite.expiresAt, now),
             isNull(workspaceInvite.acceptedAt)
           ))
-        
+
         // Filter out invites for emails that are already members
         const filteredInvites = invites.filter((inv: { email: string }) => !memberEmails.has(inv.email.toLowerCase()))
 
@@ -189,6 +192,9 @@ export function createTeamRouter() {
     invite: privateProcedure
       .input(inviteMemberInputSchema)
       .post(async ({ ctx, input, c }) => {
+        const { success } = await limitInvite(ctx.session.user.id)
+        if (!success) throw new HTTPException(429, { message: "Too many invites. Please wait a minute." })
+
         const ws = await getWorkspaceBySlugOrThrow(ctx, input.slug)
         const { meId } = await requireCanManageMembers(ctx, ws)
 
@@ -205,7 +211,7 @@ export function createTeamRouter() {
           ))
           .limit(1)
         if (existingMember) throw new HTTPException(400, { message: "User is already a member of this workspace" })
-        
+
         // Check if email belongs to the workspace owner
         const [owner] = await ctx.db
           .select({ email: user.email })
@@ -213,7 +219,7 @@ export function createTeamRouter() {
           .where(eq(user.id, ws.ownerId))
           .limit(1)
         if (owner?.email?.toLowerCase() === inviteEmail) throw new HTTPException(400, { message: "User is already a member of this workspace" })
-        
+
         await assertMemberLimitNotReached(ctx, ws.id, ws.plan as "free" | "pro" | "enterprise")
 
         const token = crypto.randomUUID()
@@ -244,7 +250,7 @@ export function createTeamRouter() {
             textColor: undefined,
           }
           await sendWorkspaceInvite(input.email.trim().toLowerCase(), ws.name || "Workspace", url, brand)
-        } catch {}
+        } catch { }
 
         return c.superjson({ ok: true, token })
       }),
@@ -299,7 +305,7 @@ export function createTeamRouter() {
             textColor: undefined,
           }
           await sendWorkspaceInvite(inv.email.trim().toLowerCase(), ws.name || "Workspace", url, brand)
-        } catch {}
+        } catch { }
 
         return c.json({ ok: true })
       }),
@@ -342,7 +348,7 @@ export function createTeamRouter() {
             gt(workspaceInvite.expiresAt, now),
             isNull(workspaceInvite.acceptedAt)
           ))
-        
+
         // Filter out invites for emails that are already members
         const filteredInvites = invites.filter((inv: { email: string }) => !memberEmails.has(inv.email.toLowerCase()))
 
@@ -396,7 +402,7 @@ export function createTeamRouter() {
         if (u?.email) {
           try {
             await ctx.db.delete(workspaceInvite).where(and(eq(workspaceInvite.workspaceId, ws.id), eq(workspaceInvite.email, u.email)))
-          } catch {}
+          } catch { }
         }
 
         return c.json({ ok: true })

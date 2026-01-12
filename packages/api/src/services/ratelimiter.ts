@@ -32,3 +32,9 @@ export async function limitPrivate(req: Request, userId: string): Promise<RateLi
   const key = userId || getIp(req)
   return await ratelimitPrivate.limit(key)
 }
+
+const ratelimitInvite = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(5, "60 s"), analytics: false, prefix: "rl:invite" })
+
+export async function limitInvite(userId: string): Promise<RateLimitResult> {
+  return await ratelimitInvite.limit(userId)
+}

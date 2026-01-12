@@ -99,7 +99,6 @@ export const DarkMode = () => {
       <g transform="translate(76, 36)">
         <circle cx="8" cy="8" r="4" fill="#71717A" /> {/* Grey Icon */}
         <rect x="20" y="6" width="100" height="4" rx="2" fill="#3F3F46" />
-        <path d="M142 8L148 8" stroke="#52525B" strokeWidth="2" strokeLinecap="round" /> {/* Heart/Comment mockup */}
         <rect x="156" y="6" width="18" height="4" rx="1" fill="#52525B" /> {/* Date */}
         <circle cx="186" cy="8" r="4" fill="#3F3F46" /> {/* Avatar */}
         <line x1="0" y1="18" x2="190" y2="18" stroke="#27272A" />

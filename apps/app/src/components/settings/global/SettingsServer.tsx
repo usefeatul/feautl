@@ -8,6 +8,7 @@ import DomainSection from "../domain/Domain";
 import IntegrationsSection from "../integrations/Integrations";
 
 import DataSection from "../data/Data";
+import WorkspaceSection from "../workspace/Workspace";
 import BoardSettings from "../board/Board";
 import type { Member, Invite } from "../../../types/team";
 import type { BrandingConfig } from "../../../types/branding";
@@ -178,12 +179,18 @@ function SectionRenderer({
     case "integrations":
       return <IntegrationsSection slug={slug} plan={initialPlan} initialIntegrations={initialIntegrations} />;
 
+    case "workspace":
+      return (
+        <WorkspaceSection
+          slug={slug}
+          workspaceId={initialWorkspaceId}
+          workspaceName={initialWorkspaceName}
+        />
+      );
     case "data":
       return (
         <DataSection
           slug={slug}
-          workspaceId={initialWorkspaceId}
-          workspaceName={initialWorkspaceName}
         />
       );
     default:

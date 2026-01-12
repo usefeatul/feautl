@@ -32,11 +32,11 @@ type Props = {
   initialPlan?: string;
   initialBrandingConfig?: BrandingConfig | null;
   initialWorkspaceName?: string;
-  initialDomainInfo?: any;
+  initialDomainInfo?: DomainInfo;
   initialDefaultDomain?: string;
   initialFeedbackBoards?: FeedbackBoardSettings[];
   initialFeedbackTags?: FeedbackTag[];
-  initialIntegrations?: any[];
+  initialIntegrations?: Integration[];
 };
 
 export default function SettingsServer({
@@ -118,11 +118,11 @@ function SectionRenderer({
   initialPlan?: string;
   initialBrandingConfig?: BrandingConfig | null;
   initialWorkspaceName?: string;
-  initialDomainInfo?: any;
+  initialDomainInfo?: DomainInfo;
   initialDefaultDomain?: string;
   initialFeedbackBoards?: FeedbackBoardSettings[];
   initialFeedbackTags?: FeedbackTag[];
-  initialIntegrations?: any[];
+  initialIntegrations?: Integration[];
 }) {
 
   switch (section) {

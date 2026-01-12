@@ -49,10 +49,10 @@ export function useUpvote({
   });
 
   useEffect(() => {
-    if (statusData) {
+    if (statusData && statusData.hasVoted !== hasVoted) {
       setHasVoted(statusData.hasVoted);
     }
-  }, [statusData]);
+  }, [statusData, hasVoted]);
 
   const handleVote = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -86,7 +86,9 @@ export function useUpvote({
           try {
             queryClient.invalidateQueries({ queryKey: ["member-stats"] });
             queryClient.invalidateQueries({ queryKey: ["member-activity"] });
-          } catch {}
+          } catch {
+            // Silently ignore query invalidation errors - these are non-critical
+          }
         } else {
           // Revert optimistic update
           setUpvotes(previousUpvotes);

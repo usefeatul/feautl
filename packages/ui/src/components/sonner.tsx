@@ -10,13 +10,23 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
-      style={
-        {
-          "--normal-bg": "var(--popover)",
-          "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
-        } as React.CSSProperties
-      }
+      toastOptions={{
+        unstyled: true,
+        classNames: {
+          toast: "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg group-[.toaster]:rounded-xl group-[.toaster]:p-4 group-[.toaster]:backdrop-blur-md group-[.toaster]:backdrop-saturate-150 group-[.toaster]:border group-[.toaster]:border-border/50 group-[.toaster]:ring-1 group-[.toaster]:ring-border/60 group-[.toaster]:ring-offset-1 group-[.toaster]:ring-offset-white dark:group-[.toaster]:ring-offset-black group-[.toaster]:flex group-[.toaster]:items-center group-[.toaster]:gap-3 group-[.toaster]:min-w-[300px] group-[.toaster]:max-w-[420px] group-[.toaster]:overflow-hidden group-[.toaster]:relative group-[.toaster]:before:absolute group-[.toaster]:before:inset-0 group-[.toaster]:before:bg-gradient-to-br group-[.toaster]:before:from-white/10 group-[.toaster]:before:to-transparent group-[.toaster]:before:pointer-events-none group-[.toaster]:animate-in group-[.toaster]:slide-in-from-bottom-full",
+          description: "group-[.toast]:text-muted-foreground group-[.toast]:text-sm group-[.toast]:leading-relaxed",
+          actionButton: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground group-[.toast]:px-3 group-[.toast]:py-1.5 group-[.toast]:rounded-lg group-[.toast]:text-sm group-[.toast]:font-medium group-[.toast]:transition-all group-[.toast]:hover:bg-primary/90 group-[.toast]:hover:scale-105 group-[.toast]:active:scale-95",
+          cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground group-[.toast]:px-3 group-[.toast]:py-1.5 group-[.toast]:rounded-lg group-[.toast]:text-sm group-[.toast]:font-medium group-[.toast]:transition-all group-[.toast]:hover:bg-muted/80 group-[.toast]:hover:scale-105 group-[.toast]:active:scale-95",
+          closeButton: "group-[.toast]:bg-background/80 group-[.toast]:text-foreground/60 group-[.toast]:border-0 group-[.toast]:hover:bg-background group-[.toast]:hover:text-foreground group-[.toast]:rounded-lg group-[.toast]:transition-all group-[.toast]:hover:rotate-90",
+          error: "group toast group-[.toaster]:bg-red-500/10 group-[.toaster]:text-red-600 dark:group-[.toaster]:text-red-400 group-[.toaster]:border-red-500/30 group-[.toaster]:ring-red-500/60 group-[.toaster]:before:from-red-500/10",
+          success: "group toast group-[.toaster]:bg-emerald-500/10 group-[.toaster]:text-emerald-600 dark:group-[.toaster]:text-emerald-400 group-[.toaster]:border-emerald-500/30 group-[.toaster]:ring-emerald-500/60 group-[.toaster]:before:from-emerald-500/10",
+          warning: "group toast group-[.toaster]:bg-amber-500/10 group-[.toaster]:text-amber-600 dark:group-[.toaster]:text-amber-400 group-[.toaster]:border-amber-500/30 group-[.toaster]:ring-amber-500/60 group-[.toaster]:before:from-amber-500/10",
+          info: "group toast group-[.toaster]:bg-blue-500/10 group-[.toaster]:text-blue-600 dark:group-[.toaster]:text-blue-400 group-[.toaster]:border-blue-500/30 group-[.toaster]:ring-blue-500/60 group-[.toaster]:before:from-blue-500/10",
+          loading: "group toast group-[.toaster]:bg-slate-500/10 group-[.toaster]:border-slate-500/30 group-[.toaster]:ring-slate-500/60",
+          title: "group-[.toast]:text-sm group-[.toast]:font-semibold group-[.toast]:leading-tight",
+          icon: "group-[.toast]:flex-shrink-0",
+        },
+      }}
       {...props}
     />
   )

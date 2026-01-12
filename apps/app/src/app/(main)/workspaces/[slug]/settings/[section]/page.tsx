@@ -26,6 +26,7 @@ export default async function SettingsSectionPage({ params }: Props) {
     initialPlan,
     initialWorkspaceId,
     initialWorkspaceName,
+    initialTimezone,
     initialTeam,
     initialChangelogVisible,
     initialChangelogTags,
@@ -37,7 +38,7 @@ export default async function SettingsSectionPage({ params }: Props) {
     initialFeedbackTags,
     initialIntegrations,
   } = await getSettingsInitialData(slug, session?.user?.id)
-  
+
   return (
     <SettingsServer
       slug={slug}
@@ -47,6 +48,7 @@ export default async function SettingsSectionPage({ params }: Props) {
       initialPlan={initialPlan}
       initialWorkspaceId={initialWorkspaceId}
       initialWorkspaceName={initialWorkspaceName}
+      initialTimezone={initialTimezone}
       initialTeam={initialTeam as any}
       initialChangelogTags={initialChangelogTags}
       initialBrandingConfig={initialBrandingConfig}

@@ -2,21 +2,24 @@
 
 import React from "react";
 import SectionCard from "../global/SectionCard";
-import WorkspaceIdSection from "./WorkspaceIdSection";
-import DangerZoneSection from "./DangerZoneSection";
+import TimezoneCard from "./cards/TimezoneCard";
+import WorkspaceIdCard from "./cards/WorkspaceIdCard";
+import DangerZoneCard from "./cards/DangerZoneCard";
 
 type Props = {
     slug: string;
     workspaceId?: string;
     workspaceName?: string;
+    timezone?: string;
 };
 
-export default function WorkspaceSection({ slug, workspaceId, workspaceName }: Props) {
+export default function WorkspaceSection({ slug, workspaceId, workspaceName, timezone }: Props) {
     return (
         <SectionCard title="Workspace" description="Manage your workspace settings.">
-            <div className="space-y-10">
-                <WorkspaceIdSection workspaceId={workspaceId} />
-                <DangerZoneSection slug={slug} workspaceName={workspaceName} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <TimezoneCard slug={slug} initialTimezone={timezone} />
+                <WorkspaceIdCard workspaceId={workspaceId} />
+                <DangerZoneCard slug={slug} workspaceName={workspaceName} />
             </div>
         </SectionCard>
     );

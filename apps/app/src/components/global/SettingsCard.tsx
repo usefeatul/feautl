@@ -4,7 +4,7 @@ import { Button } from "@featul/ui/components/button";
 type Props = {
   icon: React.ReactNode;
   title: string;
-  description: string;
+  description: React.ReactNode;
   buttonLabel?: string;
   onAction?: () => void;
   href?: string;

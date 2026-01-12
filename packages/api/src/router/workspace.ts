@@ -2,7 +2,7 @@ import { HTTPException } from "hono/http-exception"
 import { eq, and, sql } from "drizzle-orm"
 import { j, privateProcedure, publicProcedure } from "../jstack"
 import { workspace, workspaceMember, board, brandingConfig, tag, post, workspaceDomain, workspaceSlugReservation, user } from "@featul/db"
-import { createWorkspaceInputSchema, checkSlugInputSchema, updateCustomDomainInputSchema, createDomainInputSchema, verifyDomainInputSchema, updateWorkspaceNameInputSchema, deleteWorkspaceInputSchema, importCsvInputSchema } from "../validators/workspace"
+import { createWorkspaceInputSchema, checkSlugInputSchema, updateCustomDomainInputSchema, createDomainInputSchema, verifyDomainInputSchema, updateWorkspaceNameInputSchema, deleteWorkspaceInputSchema, importCsvInputSchema, updateTimezoneInputSchema } from "../validators/workspace"
 import { Resolver } from "node:dns/promises"
 import { normalizeStatus } from "../shared/status"
 import { addDomainToProject, removeDomainFromProject } from "../services/vercel"
@@ -107,7 +107,7 @@ export function createWorkspaceRouter() {
           const key = normalizeStatus(String(r.status || "pending"))
           counts[key] = (counts[key] || 0) + Number(r.count || 0)
         }
-        for (const key of ["planned","progress","review","completed","pending","closed"]) {
+        for (const key of ["planned", "progress", "review", "completed", "pending", "closed"]) {
           if (typeof counts[key] !== "number") counts[key] = 0
         }
         c.header("Cache-Control", "private, no-store")
@@ -246,12 +246,12 @@ export function createWorkspaceRouter() {
                 .set({ status: "claimed", claimedAt: new Date(), claimedByUserId: ctx.session.user.id, updatedAt: new Date() })
                 .where(eq(workspaceSlugReservation.id, r.id))
             }
-          } catch {}
+          } catch { }
         } catch {
           if (created?.id) {
             try {
               await ctx.db.delete(workspace).where(eq(workspace.id, created.id))
-            } catch {}
+            } catch { }
           }
           throw new HTTPException(500, { message: "Failed to provision workspace" })
         }
@@ -259,390 +259,417 @@ export function createWorkspaceRouter() {
         return c.superjson({ workspace: created })
       }),
 
-      updateCustomDomain: privateProcedure
-        .input(updateCustomDomainInputSchema)
-        .post(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, plan: workspace.plan, domain: workspace.domain, ownerId: workspace.ownerId })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
+    updateCustomDomain: privateProcedure
+      .input(updateCustomDomainInputSchema)
+      .post(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, plan: workspace.plan, domain: workspace.domain, ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.json({ ok: false })
+        let allowed = ws.ownerId === ctx.session.user.id
+        if (!allowed) {
+          const [me] = await ctx.db
+            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
             .limit(1)
-          if (!ws) return c.json({ ok: false })
-          let allowed = ws.ownerId === ctx.session.user.id
-          if (!allowed) {
-            const [me] = await ctx.db
-              .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-              .from(workspaceMember)
-              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-              .limit(1)
-            const perms = (me?.permissions || {}) as Record<string, boolean>
-            if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
-          }
-          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+          const perms = (me?.permissions || {}) as Record<string, boolean>
+          if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
-          const planKey = normalizePlan(String(ws.plan || "free"))
-          if (!(planKey === "starter" || planKey === "professional")) {
-            throw new HTTPException(403, { message: "Custom domain available on Starter or Professional plans" })
-          }
+        const planKey = normalizePlan(String(ws.plan || "free"))
+        if (!(planKey === "starter" || planKey === "professional")) {
+          throw new HTTPException(403, { message: "Custom domain available on Starter or Professional plans" })
+        }
 
-          const host = (() => {
-            try { return new URL(String(ws.domain)).host } catch { return String(ws.domain).replace(/^https?:\/\//, "") }
-          })()
+        const host = (() => {
+          try { return new URL(String(ws.domain)).host } catch { return String(ws.domain).replace(/^https?:\/\//, "") }
+        })()
 
-          const desired = input.enabled ? String(input.customDomain || `feedback.${host}`).toLowerCase() : null
+        const desired = input.enabled ? String(input.customDomain || `feedback.${host}`).toLowerCase() : null
 
-          await ctx.db
-            .update(workspace)
-            .set({ customDomain: desired || null, updatedAt: new Date() })
-            .where(eq(workspace.id, ws.id))
+        await ctx.db
+          .update(workspace)
+          .set({ customDomain: desired || null, updatedAt: new Date() })
+          .where(eq(workspace.id, ws.id))
 
-          return c.superjson({ ok: true, customDomain: desired })
-        }),
+        return c.superjson({ ok: true, customDomain: desired })
+      }),
 
-      domainInfo: privateProcedure
-        .input(checkSlugInputSchema)
-        .get(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, domain: workspace.domain, plan: workspace.plan })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
+    domainInfo: privateProcedure
+      .input(checkSlugInputSchema)
+      .get(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, domain: workspace.domain, plan: workspace.plan })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.superjson({ domain: null })
+
+        const [d] = await ctx.db
+          .select({ id: workspaceDomain.id, host: workspaceDomain.host, cnameName: workspaceDomain.cnameName, cnameTarget: workspaceDomain.cnameTarget, txtName: workspaceDomain.txtName, txtValue: workspaceDomain.txtValue, status: workspaceDomain.status })
+          .from(workspaceDomain)
+          .where(eq(workspaceDomain.workspaceId, ws.id))
+          .limit(1)
+
+        return c.superjson({ domain: d || null, plan: ws.plan, defaultDomain: ws.domain })
+      }),
+
+    createDomain: privateProcedure
+      .input(createDomainInputSchema)
+      .post(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, plan: workspace.plan, ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.json({ ok: false })
+        let allowed = ws.ownerId === ctx.session.user.id
+        if (!allowed) {
+          const [me] = await ctx.db
+            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
             .limit(1)
-          if (!ws) return c.superjson({ domain: null })
+          const perms = (me?.permissions || {}) as Record<string, boolean>
+          if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+        const planKey = normalizePlan(String(ws.plan || "free"))
+        if (!(planKey === "starter" || planKey === "professional")) {
+          throw new HTTPException(403, { message: "Custom domain available on Starter or Professional plans" })
+        }
 
-          const [d] = await ctx.db
-            .select({ id: workspaceDomain.id, host: workspaceDomain.host, cnameName: workspaceDomain.cnameName, cnameTarget: workspaceDomain.cnameTarget, txtName: workspaceDomain.txtName, txtValue: workspaceDomain.txtValue, status: workspaceDomain.status })
-            .from(workspaceDomain)
-            .where(eq(workspaceDomain.workspaceId, ws.id))
+        const url = new URL(input.domain)
+        const host = url.host.toLowerCase()
+        const parts = host.split('.')
+        if (parts.length < 2) throw new HTTPException(400, { message: "Invalid domain host" })
+        const cnameName = parts[0]
+
+        const DEFAULT_CNAME_TARGET = process.env.CUSTOM_DOMAIN_CNAME_TARGET || 'origin.featul.com'
+        const txtName = `_acme-challenge.${host}`
+        const token = crypto.randomUUID()
+
+        const [existing] = await ctx.db
+          .select({ id: workspaceDomain.id })
+          .from(workspaceDomain)
+          .where(eq(workspaceDomain.workspaceId, ws.id))
+          .limit(1)
+        if (existing) throw new HTTPException(409, { message: 'A domain is already configured. Delete it before adding a new one.' })
+        await ctx.db.insert(workspaceDomain).values({ workspaceId: ws.id, host, cnameName, cnameTarget: DEFAULT_CNAME_TARGET, txtName, txtValue: token })
+
+        return c.superjson({ ok: true, host, records: { cname: { name: cnameName, value: DEFAULT_CNAME_TARGET }, txt: { name: txtName, value: token } } })
+      }),
+
+    verifyDomain: privateProcedure
+      .input(verifyDomainInputSchema)
+      .post(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.json({ ok: false })
+        let allowed = ws.ownerId === ctx.session.user.id
+        if (!allowed) {
+          const [me] = await ctx.db
+            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
             .limit(1)
+          const perms = (me?.permissions || {}) as Record<string, boolean>
+          if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
-          return c.superjson({ domain: d || null, plan: ws.plan, defaultDomain: ws.domain })
-        }),
+        const [d] = await ctx.db
+          .select({ id: workspaceDomain.id, host: workspaceDomain.host, cnameTarget: workspaceDomain.cnameTarget, txtName: workspaceDomain.txtName, txtValue: workspaceDomain.txtValue })
+          .from(workspaceDomain)
+          .where(eq(workspaceDomain.workspaceId, ws.id))
+          .limit(1)
+        if (!d) throw new HTTPException(404, { message: 'No domain configured' })
 
-      createDomain: privateProcedure
-        .input(createDomainInputSchema)
-        .post(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, plan: workspace.plan, ownerId: workspace.ownerId })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
+        let cnameValid = false
+        let txtValid = false
+        if (input.checkDns) {
+          const resolver = new Resolver()
+          try {
+            const cnames = await resolver.resolveCname(d.host)
+            cnameValid = cnames.includes(d.cnameTarget)
+          } catch { }
+          try {
+            const txts = await resolver.resolveTxt(d.txtName)
+            txtValid = txts.some((arr) => arr.join('') === d.txtValue)
+          } catch { }
+        }
+
+        const status: 'pending' | 'verified' | 'error' = cnameValid && txtValid ? 'verified' : 'pending'
+        await ctx.db.update(workspaceDomain).set({ status, lastVerifiedAt: new Date(), updatedAt: new Date() }).where(eq(workspaceDomain.id, d.id))
+
+        if (status === 'verified') {
+          try {
+            await ctx.db.update(workspace).set({ customDomain: d.host, updatedAt: new Date() }).where(eq(workspace.id, ws.id))
+          } catch { }
+          try {
+            await addDomainToProject(d.host)
+          } catch { }
+        }
+
+        return c.superjson({ ok: true, cnameValid, txtValid, status })
+      }),
+
+    deleteDomain: privateProcedure
+      .input(checkSlugInputSchema)
+      .post(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.json({ ok: false })
+        let allowed = ws.ownerId === ctx.session.user.id
+        if (!allowed) {
+          const [me] = await ctx.db
+            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
             .limit(1)
-          if (!ws) return c.json({ ok: false })
-          let allowed = ws.ownerId === ctx.session.user.id
-          if (!allowed) {
-            const [me] = await ctx.db
-              .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-              .from(workspaceMember)
-              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-              .limit(1)
-            const perms = (me?.permissions || {}) as Record<string, boolean>
-            if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
-          }
-          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
-          const planKey = normalizePlan(String(ws.plan || "free"))
-          if (!(planKey === "starter" || planKey === "professional")) {
-            throw new HTTPException(403, { message: "Custom domain available on Starter or Professional plans" })
-          }
+          const perms = (me?.permissions || {}) as Record<string, boolean>
+          if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
-          const url = new URL(input.domain)
-          const host = url.host.toLowerCase()
-          const parts = host.split('.')
-          if (parts.length < 2) throw new HTTPException(400, { message: "Invalid domain host" })
-          const cnameName = parts[0]
+        const [d] = await ctx.db
+          .select({ host: workspaceDomain.host, id: workspaceDomain.id })
+          .from(workspaceDomain)
+          .where(eq(workspaceDomain.workspaceId, ws.id))
+          .limit(1)
 
-          const DEFAULT_CNAME_TARGET = process.env.CUSTOM_DOMAIN_CNAME_TARGET || 'origin.featul.com'
-          const txtName = `_acme-challenge.${host}`
-          const token = crypto.randomUUID()
+        if (d?.host) {
+          try {
+            await removeDomainFromProject(d.host)
+          } catch { }
+        }
 
-          const [existing] = await ctx.db
-            .select({ id: workspaceDomain.id })
-            .from(workspaceDomain)
-            .where(eq(workspaceDomain.workspaceId, ws.id))
+        if (d?.id) {
+          await ctx.db.delete(workspaceDomain).where(eq(workspaceDomain.id, d.id))
+        } else {
+          await ctx.db.delete(workspaceDomain).where(eq(workspaceDomain.workspaceId, ws.id))
+        }
+        await ctx.db.update(workspace).set({ customDomain: null, updatedAt: new Date() }).where(eq(workspace.id, ws.id))
+        return c.superjson({ ok: true })
+      }),
+
+    updateName: privateProcedure
+      .input(updateWorkspaceNameInputSchema)
+      .post(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.json({ ok: false })
+
+        const meId = ctx.session.user.id
+        let allowed = ws.ownerId === meId
+        if (!allowed) {
+          const [me] = await ctx.db
+            .select({ id: workspaceMember.id, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
             .limit(1)
-          if (existing) throw new HTTPException(409, { message: 'A domain is already configured. Delete it before adding a new one.' })
-          await ctx.db.insert(workspaceDomain).values({ workspaceId: ws.id, host, cnameName, cnameTarget: DEFAULT_CNAME_TARGET, txtName, txtValue: token })
+          allowed = Boolean(me) && Boolean((me as any)?.permissions?.canManageWorkspace === true)
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
-          return c.superjson({ ok: true, host, records: { cname: { name: cnameName, value: DEFAULT_CNAME_TARGET }, txt: { name: txtName, value: token } } })
-        }),
+        const name = input.name.trim()
+        await ctx.db.update(workspace).set({ name, updatedAt: new Date() }).where(eq(workspace.id, ws.id))
+        return c.superjson({ ok: true, name })
+      }),
 
-      verifyDomain: privateProcedure
-        .input(verifyDomainInputSchema)
-        .post(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, ownerId: workspace.ownerId })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
+    updateTimezone: privateProcedure
+      .input(updateTimezoneInputSchema)
+      .post(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.json({ ok: false })
+
+        const meId = ctx.session.user.id
+        let allowed = ws.ownerId === meId
+        if (!allowed) {
+          const [me] = await ctx.db
+            .select({ id: workspaceMember.id, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
             .limit(1)
-          if (!ws) return c.json({ ok: false })
-          let allowed = ws.ownerId === ctx.session.user.id
-          if (!allowed) {
-            const [me] = await ctx.db
-              .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-              .from(workspaceMember)
-              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-              .limit(1)
-            const perms = (me?.permissions || {}) as Record<string, boolean>
-            if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
-          }
-          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+          allowed = Boolean(me) && Boolean((me as any)?.permissions?.canManageWorkspace === true)
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
-          const [d] = await ctx.db
-            .select({ id: workspaceDomain.id, host: workspaceDomain.host, cnameTarget: workspaceDomain.cnameTarget, txtName: workspaceDomain.txtName, txtValue: workspaceDomain.txtValue })
-            .from(workspaceDomain)
-            .where(eq(workspaceDomain.workspaceId, ws.id))
+        const timezone = input.timezone.trim()
+        await ctx.db.update(workspace).set({ timezone, updatedAt: new Date() }).where(eq(workspace.id, ws.id))
+        return c.superjson({ ok: true, timezone })
+      }),
+
+    delete: privateProcedure
+      .input(deleteWorkspaceInputSchema)
+      .post(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, ownerId: workspace.ownerId, name: workspace.name })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.json({ ok: false, message: "Workspace not found" })
+
+        const meId = ctx.session.user.id
+        let allowed = ws.ownerId === meId
+        if (!allowed) {
+          const [me] = await ctx.db
+            .select({ id: workspaceMember.id, role: workspaceMember.role, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
             .limit(1)
-          if (!d) throw new HTTPException(404, { message: 'No domain configured' })
+          const perms = (me?.permissions || {}) as Record<string, boolean>
+          if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
-          let cnameValid = false
-          let txtValid = false
-          if (input.checkDns) {
-            const resolver = new Resolver()
-            try {
-              const cnames = await resolver.resolveCname(d.host)
-              cnameValid = cnames.includes(d.cnameTarget)
-            } catch {}
-            try {
-              const txts = await resolver.resolveTxt(d.txtName)
-              txtValid = txts.some((arr) => arr.join('') === d.txtValue)
-            } catch {}
-          }
+        const expectedName = String(ws.name || "").trim().toLowerCase()
+        const provided = String(input.confirmName || "").trim().toLowerCase()
+        if (!expectedName || provided !== expectedName) {
+          throw new HTTPException(400, { message: "Workspace name does not match" })
+        }
 
-          const status: 'pending' | 'verified' | 'error' = cnameValid && txtValid ? 'verified' : 'pending'
-          await ctx.db.update(workspaceDomain).set({ status, lastVerifiedAt: new Date(), updatedAt: new Date() }).where(eq(workspaceDomain.id, d.id))
+        await ctx.db.delete(workspace).where(eq(workspace.id, ws.id))
+        return c.superjson({ ok: true })
+      }),
 
-          if (status === 'verified') {
-            try {
-              await ctx.db.update(workspace).set({ customDomain: d.host, updatedAt: new Date() }).where(eq(workspace.id, ws.id))
-            } catch {}
-            try {
-              await addDomainToProject(d.host)
-            } catch {}
-          }
+    exportCsv: privateProcedure
+      .input(checkSlugInputSchema)
+      .get(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, name: workspace.name, ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
 
-          return c.superjson({ ok: true, cnameValid, txtValid, status })
-        }),
-
-      deleteDomain: privateProcedure
-        .input(checkSlugInputSchema)
-        .post(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, ownerId: workspace.ownerId })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
+        // Check permissions
+        const meId = ctx.session.user.id
+        let allowed = ws.ownerId === meId
+        if (!allowed) {
+          const [me] = await ctx.db
+            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
             .limit(1)
-          if (!ws) return c.json({ ok: false })
-          let allowed = ws.ownerId === ctx.session.user.id
-          if (!allowed) {
-            const [me] = await ctx.db
-              .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-              .from(workspaceMember)
-              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, ctx.session.user.id)))
-              .limit(1)
-            const perms = (me?.permissions || {}) as Record<string, boolean>
-            if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
-          }
-          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+          const perms = (me?.permissions || {}) as Record<string, boolean>
+          if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
-          const [d] = await ctx.db
-            .select({ host: workspaceDomain.host, id: workspaceDomain.id })
-            .from(workspaceDomain)
-            .where(eq(workspaceDomain.workspaceId, ws.id))
-            .limit(1)
-
-          if (d?.host) {
-            try {
-              await removeDomainFromProject(d.host)
-            } catch {}
-          }
-
-          if (d?.id) {
-            await ctx.db.delete(workspaceDomain).where(eq(workspaceDomain.id, d.id))
-          } else {
-            await ctx.db.delete(workspaceDomain).where(eq(workspaceDomain.workspaceId, ws.id))
-          }
-          await ctx.db.update(workspace).set({ customDomain: null, updatedAt: new Date() }).where(eq(workspace.id, ws.id))
-          return c.superjson({ ok: true })
-        }),
-
-      updateName: privateProcedure
-        .input(updateWorkspaceNameInputSchema)
-        .post(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, ownerId: workspace.ownerId })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
-            .limit(1)
-          if (!ws) return c.json({ ok: false })
-
-          const meId = ctx.session.user.id
-          let allowed = ws.ownerId === meId
-          if (!allowed) {
-            const [me] = await ctx.db
-              .select({ id: workspaceMember.id, permissions: workspaceMember.permissions })
-              .from(workspaceMember)
-              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
-              .limit(1)
-            allowed = Boolean(me) && Boolean((me as any)?.permissions?.canManageWorkspace === true)
-          }
-          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
-
-          const name = input.name.trim()
-          await ctx.db.update(workspace).set({ name, updatedAt: new Date() }).where(eq(workspace.id, ws.id))
-          return c.superjson({ ok: true, name })
-        }),
-
-      delete: privateProcedure
-        .input(deleteWorkspaceInputSchema)
-        .post(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, ownerId: workspace.ownerId, name: workspace.name })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
-            .limit(1)
-          if (!ws) return c.json({ ok: false, message: "Workspace not found" })
-
-          const meId = ctx.session.user.id
-          let allowed = ws.ownerId === meId
-          if (!allowed) {
-            const [me] = await ctx.db
-              .select({ id: workspaceMember.id, role: workspaceMember.role, permissions: workspaceMember.permissions })
-              .from(workspaceMember)
-              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
-              .limit(1)
-            const perms = (me?.permissions || {}) as Record<string, boolean>
-            if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
-          }
-          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
-
-          const expectedName = String(ws.name || "").trim().toLowerCase()
-          const provided = String(input.confirmName || "").trim().toLowerCase()
-          if (!expectedName || provided !== expectedName) {
-            throw new HTTPException(400, { message: "Workspace name does not match" })
-          }
-
-          await ctx.db.delete(workspace).where(eq(workspace.id, ws.id))
-          return c.superjson({ ok: true })
-        }),
-
-      exportCsv: privateProcedure
-        .input(checkSlugInputSchema)
-        .get(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, name: workspace.name, ownerId: workspace.ownerId })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
-            .limit(1)
-          if (!ws) throw new HTTPException(404, { message: "Workspace not found" })
-
-          // Check permissions
-          const meId = ctx.session.user.id
-          let allowed = ws.ownerId === meId
-          if (!allowed) {
-            const [me] = await ctx.db
-              .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-              .from(workspaceMember)
-              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
-              .limit(1)
-            const perms = (me?.permissions || {}) as Record<string, boolean>
-            if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
-          }
-          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
-
-          // Query all posts with board info and author
-          const posts = await ctx.db
-            .select({
-              id: post.id,
-              title: post.title,
-              content: post.content,
-              status: post.roadmapStatus,
-              upvotes: post.upvotes,
-              boardName: board.name,
-              metadata: post.metadata,
-              createdAt: post.createdAt,
-              updatedAt: post.updatedAt,
-              authorName: user.name,
-              authorEmail: user.email,
-            })
-            .from(post)
-            .innerJoin(board, eq(post.boardId, board.id))
-            .leftJoin(user, eq(post.authorId, user.id))
-            .where(eq(board.workspaceId, ws.id))
-            .orderBy(post.createdAt)
-
-          // Build CSV
-          const escapeCell = (val: string | null | undefined) => {
-            if (val == null) return ""
-            const str = String(val).replace(/"/g, '""')
-            return str.includes(",") || str.includes('"') || str.includes("\n") ? `"${str}"` : str
-          }
-
-          type PostRow = {
-            id: string
-            title: string
-            content: string
-            status: string | null
-            upvotes: number | null
-            boardName: string
-            metadata: { attachments?: { name: string; url: string; type: string }[] } | null
-            createdAt: Date | null
-            updatedAt: Date | null
-            authorName: string | null
-            authorEmail: string | null
-          }
-
-          const headers = ["ID", "Title", "Description", "Status", "Upvotes", "Board", "Author Name", "Author Email", "Attachments", "Created At", "Updated At"]
-          const rows = posts.map((p: PostRow) => {
-            const attachments = p.metadata?.attachments?.map((a) => a.url).join("; ") || ""
-            return [
-              escapeCell(p.id),
-              escapeCell(p.title),
-              escapeCell(p.content),
-              escapeCell(p.status),
-              String(p.upvotes || 0),
-              escapeCell(p.boardName),
-              escapeCell(p.authorName),
-              escapeCell(p.authorEmail),
-              escapeCell(attachments),
-              p.createdAt ? new Date(p.createdAt).toISOString() : "",
-              p.updatedAt ? new Date(p.updatedAt).toISOString() : "",
-            ]
+        // Query all posts with board info and author
+        const posts = await ctx.db
+          .select({
+            id: post.id,
+            title: post.title,
+            content: post.content,
+            status: post.roadmapStatus,
+            upvotes: post.upvotes,
+            boardName: board.name,
+            metadata: post.metadata,
+            createdAt: post.createdAt,
+            updatedAt: post.updatedAt,
+            authorName: user.name,
+            authorEmail: user.email,
           })
+          .from(post)
+          .innerJoin(board, eq(post.boardId, board.id))
+          .leftJoin(user, eq(post.authorId, user.id))
+          .where(eq(board.workspaceId, ws.id))
+          .orderBy(post.createdAt)
 
-          const csv = [headers.join(","), ...rows.map((r: string[]) => r.join(","))].join("\n")
+        // Build CSV
+        const escapeCell = (val: string | null | undefined) => {
+          if (val == null) return ""
+          const str = String(val).replace(/"/g, '""')
+          return str.includes(",") || str.includes('"') || str.includes("\n") ? `"${str}"` : str
+        }
 
-          c.header("Content-Type", "text/csv; charset=utf-8")
-          c.header("Content-Disposition", `attachment; filename="${input.slug}-export.csv"`)
-          return c.body("\uFEFF" + csv)
-        }),
+        type PostRow = {
+          id: string
+          title: string
+          content: string
+          status: string | null
+          upvotes: number | null
+          boardName: string
+          metadata: { attachments?: { name: string; url: string; type: string }[] } | null
+          createdAt: Date | null
+          updatedAt: Date | null
+          authorName: string | null
+          authorEmail: string | null
+        }
 
-      importCsv: privateProcedure
-        .input(importCsvInputSchema)
-        .post(async ({ ctx, input, c }) => {
-          const [ws] = await ctx.db
-            .select({ id: workspace.id, ownerId: workspace.ownerId })
-            .from(workspace)
-            .where(eq(workspace.slug, input.slug))
+        const headers = ["ID", "Title", "Description", "Status", "Upvotes", "Board", "Author Name", "Author Email", "Attachments", "Created At", "Updated At"]
+        const rows = posts.map((p: PostRow) => {
+          const attachments = p.metadata?.attachments?.map((a) => a.url).join("; ") || ""
+          return [
+            escapeCell(p.id),
+            escapeCell(p.title),
+            escapeCell(p.content),
+            escapeCell(p.status),
+            String(p.upvotes || 0),
+            escapeCell(p.boardName),
+            escapeCell(p.authorName),
+            escapeCell(p.authorEmail),
+            escapeCell(attachments),
+            p.createdAt ? new Date(p.createdAt).toISOString() : "",
+            p.updatedAt ? new Date(p.updatedAt).toISOString() : "",
+          ]
+        })
+
+        const csv = [headers.join(","), ...rows.map((r: string[]) => r.join(","))].join("\n")
+
+        c.header("Content-Type", "text/csv; charset=utf-8")
+        c.header("Content-Disposition", `attachment; filename="${input.slug}-export.csv"`)
+        return c.body("\uFEFF" + csv)
+      }),
+
+    importCsv: privateProcedure
+      .input(importCsvInputSchema)
+      .post(async ({ ctx, input, c }) => {
+        const [ws] = await ctx.db
+          .select({ id: workspace.id, ownerId: workspace.ownerId })
+          .from(workspace)
+          .where(eq(workspace.slug, input.slug))
+          .limit(1)
+        if (!ws) return c.json({ ok: false, importedCount: 0 })
+
+        const meId = ctx.session.user.id
+        let allowed = ws.ownerId === meId
+        if (!allowed) {
+          const [me] = await ctx.db
+            .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
+            .from(workspaceMember)
+            .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
             .limit(1)
-          if (!ws) return c.json({ ok: false, importedCount: 0 })
+          const perms = (me?.permissions || {}) as Record<string, boolean>
+          if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
+        }
+        if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
 
-          const meId = ctx.session.user.id
-          let allowed = ws.ownerId === meId
-          if (!allowed) {
-            const [me] = await ctx.db
-              .select({ role: workspaceMember.role, permissions: workspaceMember.permissions })
-              .from(workspaceMember)
-              .where(and(eq(workspaceMember.workspaceId, ws.id), eq(workspaceMember.userId, meId)))
-              .limit(1)
-            const perms = (me?.permissions || {}) as Record<string, boolean>
-            if (me?.role === "admin" || perms?.canManageWorkspace) allowed = true
-          }
-          if (!allowed) throw new HTTPException(403, { message: "Forbidden" })
+        // Basic CSV parsing (splitting by newline)
+        const rows = input.csvContent.split(/\r?\n/).filter((r) => r.trim().length > 0)
+        // TODO: Implement actual parsing and insertion logic
+        // For now, we simulate success to resolve the type error and basic flow
 
-          // Basic CSV parsing (splitting by newline)
-          const rows = input.csvContent.split(/\r?\n/).filter((r) => r.trim().length > 0)
-          // TODO: Implement actual parsing and insertion logic
-          // For now, we simulate success to resolve the type error and basic flow
-
-          return c.json({ ok: true, importedCount: rows.length - 1 }) // Subtract header
-        }),
+        return c.json({ ok: true, importedCount: rows.length - 1 }) // Subtract header
+      }),
   })
 }

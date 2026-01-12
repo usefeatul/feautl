@@ -260,7 +260,7 @@ export async function getWorkspacePosts(
   const search = (opts?.search || "").trim();
   const lim = Math.min(Math.max(Number(opts?.limit ?? 50), 1), 5000);
   const off = Math.max(Number(opts?.offset ?? 0), 0);
-   const publicOnly = Boolean(opts?.publicOnly);
+  const publicOnly = Boolean(opts?.publicOnly);
 
   let tagPostIds: string[] | null = null;
   if (tagSlugs.length > 0) {
@@ -557,6 +557,7 @@ export async function getSettingsInitialData(
   initialPlan?: string;
   initialWorkspaceId?: string;
   initialWorkspaceName?: string;
+  initialTimezone?: string;
   initialTeam?: { members: any[]; invites: any[]; meId: string | null };
   initialChangelogVisible?: boolean;
   initialChangelogTags?: any[];
@@ -576,6 +577,7 @@ export async function getSettingsInitialData(
       logo: workspace.logo,
       ownerId: workspace.ownerId,
       domain: workspace.domain,
+      timezone: workspace.timezone,
     })
     .from(workspace)
     .where(eq(workspace.slug, slug))
@@ -722,6 +724,7 @@ export async function getSettingsInitialData(
     initialPlan: String((ws as any)?.plan || "free"),
     initialWorkspaceId: ws.id,
     initialWorkspaceName: String((ws as any)?.name || ""),
+    initialTimezone: String((ws as any)?.timezone || "UTC"),
     initialTeam: {
       members: members.map((m) => ({
         ...m,

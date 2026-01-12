@@ -22,6 +22,7 @@ type Props = {
   slug: string;
   initialWorkspaceId?: string;
   selectedSection?: string;
+  initialTimezone?: string;
   initialTeam?: { members: Member[]; invites: Invite[]; meId: string | null };
   initialChangelogVisible?: boolean;
   initialChangelogTags?: ChangelogTag[];
@@ -40,6 +41,7 @@ export default function SettingsServer({
   slug,
   initialWorkspaceId,
   selectedSection,
+  initialTimezone,
   initialTeam,
   initialChangelogVisible,
   initialChangelogTags,
@@ -66,6 +68,7 @@ export default function SettingsServer({
           slug={slug}
           initialWorkspaceId={initialWorkspaceId}
           section={selected}
+          initialTimezone={initialTimezone}
           initialTeam={initialTeam}
           initialChangelogVisible={initialChangelogVisible}
           initialChangelogTags={initialChangelogTags}
@@ -88,6 +91,7 @@ function SectionRenderer({
   slug,
   initialWorkspaceId,
   section,
+  initialTimezone,
   initialTeam,
   initialChangelogVisible,
   initialChangelogTags,
@@ -104,6 +108,7 @@ function SectionRenderer({
   slug: string;
   initialWorkspaceId?: string;
   section: string;
+  initialTimezone?: string;
   initialTeam?: { members: Member[]; invites: Invite[]; meId: string | null };
   initialChangelogVisible?: boolean;
   initialChangelogTags?: ChangelogTag[];
@@ -185,6 +190,7 @@ function SectionRenderer({
           slug={slug}
           workspaceId={initialWorkspaceId}
           workspaceName={initialWorkspaceName}
+          timezone={initialTimezone}
         />
       );
     case "data":

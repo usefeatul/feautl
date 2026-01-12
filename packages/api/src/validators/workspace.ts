@@ -56,3 +56,8 @@ export const importCsvInputSchema = z.object({
   slug: slugSchema,
   csvContent: z.string(),
 })
+
+export const updateTimezoneInputSchema = z.object({
+  slug: slugSchema,
+  timezone: z.string().min(1),
+})

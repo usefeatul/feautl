@@ -13,16 +13,22 @@ async function safeJson<T = unknown>(res: Response): Promise<T | null> {
   }
 }
 
+interface DomainInfoResponse {
+  domain?: DomainInfo;
+  plan?: string;
+  defaultDomain?: string;
+}
+
 export function useDomain(slug: string, initial?: { info: DomainInfo | null; plan: string; defaultDomain: string }) {
   return useQuery({
     queryKey: ["domain", slug],
     queryFn: async () => {
       const res = await client.workspace.domainInfo.$get({ slug });
-      const data = await safeJson<any>(res);
+      const data = await safeJson<DomainInfoResponse>(res);
       return {
-        info: (data?.domain || null) as DomainInfo,
-        plan: (data?.plan || "free") as string,
-        defaultDomain: (data?.defaultDomain || "") as string,
+        info: data?.domain || null,
+        plan: data?.plan || "free",
+        defaultDomain: data?.defaultDomain || "",
       };
     },
     initialData: initial,
@@ -34,19 +40,37 @@ export function useDomain(slug: string, initial?: { info: DomainInfo | null; pla
   });
 }
 
+interface CreateDomainApiResponse {
+  message?: string;
+  host?: string;
+  records?: {
+    cname?: { name?: string; value?: string };
+    txt?: { name?: string; value?: string };
+  };
+}
+
 export async function createDomain(
   slug: string,
   baseDomain: string
-): Promise<{ ok: boolean; message?: string; host?: string; records?: { cname?: { name?: string; value?: string }; txt?: { name?: string; value?: string } } }> {
+): Promise<{ ok: boolean; message?: string; host?: string; records?: CreateDomainApiResponse["records"] }> {
   const res = await client.workspace.createDomain.$post({
     slug,
     domain: `https://feedback.${baseDomain.trim()}`,
   });
-  const data = await safeJson<any>(res);
-  const message = (data as { message?: string })?.message;
-  const host = (data as { host?: string })?.host;
-  const records = (data as { records?: { cname?: { name?: string; value?: string }; txt?: { name?: string; value?: string } } })?.records;
-  return { ok: res.ok, message, host, records };
+  const data = await safeJson<CreateDomainApiResponse>(res);
+  return {
+    ok: res.ok,
+    message: data?.message,
+    host: data?.host,
+    records: data?.records
+  };
+}
+
+interface VerifyDomainApiResponse {
+  status?: string;
+  cnameValid?: boolean;
+  txtValid?: boolean;
+  message?: string;
 }
 
 export async function verifyDomain(
@@ -62,20 +86,25 @@ export async function verifyDomain(
     slug,
     checkDns: true,
   });
-  const data = await safeJson(res);
-  const status = (data as { status?: string })?.status;
-  const cnameValid = (data as { cnameValid?: boolean })?.cnameValid;
-  const txtValid = (data as { txtValid?: boolean })?.txtValid;
-  return { ok: res.ok, status, cnameValid, txtValid };
+  const data = await safeJson<VerifyDomainApiResponse>(res);
+  return {
+    ok: res.ok,
+    status: data?.status,
+    cnameValid: data?.cnameValid,
+    txtValid: data?.txtValid
+  };
+}
+
+interface DeleteDomainApiResponse {
+  message?: string;
 }
 
 export async function deleteDomain(
   slug: string
 ): Promise<{ ok: boolean; message?: string }> {
   const res = await client.workspace.deleteDomain.$post({ slug });
-  const data = await safeJson(res);
-  const message = (data as { message?: string })?.message;
-  return { ok: res.ok, message };
+  const data = await safeJson<DeleteDomainApiResponse>(res);
+  return { ok: res.ok, message: data?.message };
 }
 
 type UseDomainActionsOptions = {
@@ -84,6 +113,12 @@ type UseDomainActionsOptions = {
   canUse: boolean;
   canEditDomain: boolean;
   onCreated?: () => void;
+};
+
+type UseDomainData = {
+  info: DomainInfo;
+  plan: string;
+  defaultDomain: string;
 };
 
 export function useDomainActions({ slug, info, canUse, canEditDomain, onCreated }: UseDomainActionsOptions) {
@@ -99,22 +134,25 @@ export function useDomainActions({ slug, info, canUse, canEditDomain, onCreated 
       toast.success("Domain added. Configure DNS and verify.");
       onCreated?.();
       try {
-        queryClient.setQueryData(["domain", slug], (prev: any) => {
-          const nextInfo = {
-            id: String(prev?.info?.id || ""),
-            host: String(result.host || prev?.info?.host || ""),
-            cnameName: String(result.records?.cname?.name || prev?.info?.cnameName || ""),
-            cnameTarget: String(result.records?.cname?.value || prev?.info?.cnameTarget || "origin.featul.com"),
-            txtName: String(result.records?.txt?.name || prev?.info?.txtName || ""),
-            txtValue: String(result.records?.txt?.value || prev?.info?.txtValue || ""),
-            status: "pending" as const,
-          }
+        queryClient.setQueryData<UseDomainData>(["domain", slug], (prev) => {
+          if (!prev) return prev;
+          const nextInfo: DomainInfo = {
+            id: String(prev.info?.id || ""),
+            host: String(result.host || prev.info?.host || ""),
+            cnameName: String(result.records?.cname?.name || prev.info?.cnameName || ""),
+            cnameTarget: String(result.records?.cname?.value || prev.info?.cnameTarget || "origin.featul.com"),
+            txtName: String(result.records?.txt?.name || prev.info?.txtName || ""),
+            txtValue: String(result.records?.txt?.value || prev.info?.txtValue || ""),
+            status: "pending",
+          };
           return {
-            ...(prev || {}),
+            ...prev,
             info: nextInfo,
-          }
+          };
         })
-      } catch {}
+      } catch { 
+        // error setting query data
+      }
       queryClient.invalidateQueries({ queryKey: ["domain", slug] });
     },
     onError: (e: unknown) => {
@@ -161,8 +199,12 @@ export function useDomainActions({ slug, info, canUse, canEditDomain, onCreated 
       }
       toast.success("Domain deleted");
       try {
-        queryClient.setQueryData(["domain", slug], (prev: any) => ({ ...(prev || {}), info: null }))
-      } catch {}
+        queryClient.setQueryData<UseDomainData>(["domain", slug], (prev) =>
+          prev ? { ...prev, info: null } : undefined
+        )
+      } catch {
+        // error setting query data
+      }
       queryClient.invalidateQueries({ queryKey: ["domain", slug] });
     },
     onError: (e: unknown) => {

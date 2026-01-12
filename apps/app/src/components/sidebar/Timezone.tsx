@@ -3,38 +3,19 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@featul/ui/lib/utils";
-import { client } from "@featul/api/client";
 import { getSlugFromPath } from "../../config/nav";
 import { formatTime12h } from "@/lib/time";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@featul/ui/components/tooltip";
+import { useWorkspaceTimezone } from "@/hooks/useWorkspaceTimezone";
 
 export default function Timezone({ className = "", initialTimezone, initialServerNow }: { className?: string; initialTimezone?: string | null; initialServerNow?: number }) {
   const pathname = usePathname();
   const slug = getSlugFromPath(pathname || "");
-  const [tz, setTz] = React.useState<string | null>(initialTimezone || null);
   const driftRef = React.useRef<number>(initialServerNow ? initialServerNow - Date.now() : 0);
-  const [time, setTime] = React.useState<string | null>(() => (initialTimezone ? formatTime12h(initialTimezone, new Date(Date.now() + driftRef.current)) : null));
+  const [time, setTime] = React.useState<string | null>(null);
 
-  React.useEffect(() => {
-    let active = true;
-    if (!slug) {
-      setTz(null);
-      return;
-    }
-    (async () => {
-      try {
-        const res = await client.workspace.bySlug.$get({ slug });
-        const data = await res.json();
-        const timezone = data?.workspace?.timezone || null;
-        if (active) setTz(timezone);
-      } catch {
-        if (active) setTz(null);
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, [slug]);
+  // Use the shared hook to get timezone from TanStack Query cache
+  const { timezone: tz } = useWorkspaceTimezone(slug || "", initialTimezone || undefined);
 
   React.useEffect(() => {
     if (!tz) return;

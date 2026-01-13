@@ -29,8 +29,6 @@ export const {
   commentMention,
   commentReport,
   vote,
-  voteAggregate,
-  userVoteHistory,
   brandingConfig,
   workspaceSlugReservation,
   changelogEntry,

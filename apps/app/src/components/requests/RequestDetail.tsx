@@ -177,7 +177,7 @@ export default function RequestDetail({
               {isMobile ? (
                 <div className="flex items-center justify-between gap-3 text-sm text-accent">
                   <div className="inline-flex items-center gap-3">
-                    <UpvoteButton postId={post.id} upvotes={post.upvotes} hasVoted={post.hasVoted} className="text-sm" activeBg />
+                    <UpvoteButton postId={post.id} upvotes={post.upvotes} hasVoted={post.hasVoted} className="text-sm" />
                     <CommentCounter postId={post.id} initialCount={post.commentCount} />
                   </div>
                   <div className="inline-flex items-center rounded-sm border bg-card overflow-hidden">
@@ -225,7 +225,7 @@ export default function RequestDetail({
               ) : null}
               {isMobile ? null : (
                 <div className="flex items-center justify-end gap-3 text-xs text-accent">
-                  <UpvoteButton postId={post.id} upvotes={post.upvotes} hasVoted={post.hasVoted} className="text-xs" activeBg />
+                  <UpvoteButton postId={post.id} upvotes={post.upvotes} hasVoted={post.hasVoted} className="text-xs" />
                   <CommentCounter postId={post.id} initialCount={post.commentCount} />
                 </div>
               )}

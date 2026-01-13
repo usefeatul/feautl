@@ -5,7 +5,7 @@ import { Button } from "@featul/ui/components/button"
 
 export default function UnauthorizedWorkspace({ slug, fallbackSlug }: { slug: string; fallbackSlug?: string | null }) {
   return (
-    <section className="flex min-h-screen items-center justify-center bg-background px-4 sm:px-5">
+    <section className="fixed inset-0 flex items-center justify-center overflow-hidden bg-background px-4 sm:px-5">
       <div className="w-full max-w-sm sm:max-w-md">
         <div className="text-center">
           <div className="flex items-center justify-center gap-2">
@@ -16,11 +16,11 @@ export default function UnauthorizedWorkspace({ slug, fallbackSlug }: { slug: st
           </p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
             {fallbackSlug ? (
-              <Button asChild size="lg" variant="quiet">
+              <Button asChild size="md" variant="quiet">
                 <a href={`/workspaces/${fallbackSlug}`}>Go to my workspace</a>
               </Button>
             ) : (
-              <Button asChild  size="lg" variant="quiet">
+              <Button asChild size="md" variant="quiet">
                 <a href="/workspaces/new">Create a workspace</a>
               </Button>
             )}

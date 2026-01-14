@@ -1,7 +1,7 @@
 import { HTTPException } from "hono/http-exception"
 import { eq, and, sql } from "drizzle-orm"
 import { j, privateProcedure, publicProcedure } from "../jstack"
-import { workspace, workspaceMember, board, brandingConfig, tag, post, workspaceDomain, workspaceSlugReservation, user } from "@featul/db"
+import { workspace, workspaceMember, board, brandingConfig, tag, post, workspaceDomain, workspaceSlugReservation, user, subscription } from "@featul/db"
 import { createWorkspaceInputSchema, checkSlugInputSchema, updateCustomDomainInputSchema, createDomainInputSchema, verifyDomainInputSchema, updateWorkspaceNameInputSchema, deleteWorkspaceInputSchema, importCsvInputSchema, updateTimezoneInputSchema } from "../validators/workspace"
 import { Resolver } from "node:dns/promises"
 import { normalizeStatus } from "../shared/status"
@@ -179,6 +179,14 @@ export function createWorkspaceRouter() {
               canConfigureBranding: true,
             },
             joinedAt: new Date(),
+          })
+
+          // Create subscription record (every workspace gets a free plan by default)
+          await ctx.db.insert(subscription).values({
+            workspaceId: ws.id,
+            plan: 'free',
+            status: 'active',
+            billingCycle: 'monthly',
           })
 
           await ctx.db.insert(brandingConfig).values({

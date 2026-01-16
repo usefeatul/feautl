@@ -21,7 +21,7 @@ We chose to make Featul open source because:
 
 The complete source code is available on GitHub. You're free to explore how Featul works, report issues, submit pull requests, or fork the project for your own needs.
 
-[View on GitHub](https://github.com/usefeatul/featul)
+[View on GitHub](https://github.com/usefeatul/feautl)
 
 ## Tech Stack
 

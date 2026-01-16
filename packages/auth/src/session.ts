@@ -3,12 +3,17 @@ import { auth } from "./auth";
 import { db, session as sessionTable } from "@featul/db";
 import { eq, desc } from "drizzle-orm";
 
-export async function getServerSession() {
+export type SessionData = {
+  session?: { token?: string }
+  user?: { id?: string; name?: string; email?: string; image?: string | null }
+} | null
+
+export async function getServerSession(): Promise<SessionData> {
   try {
     const session = await auth.api.getSession({
       headers: await headers(),
     });
-    return session;
+    return session as SessionData;
   } catch {
     return null;
   }
@@ -19,7 +24,7 @@ export async function listServerSessions(): Promise<
 > {
   try {
     const s = await getServerSession();
-    const userId = String((s as any)?.user?.id || "").trim();
+    const userId = String(s?.user?.id || "").trim();
     if (!userId) return [];
     const rows = await db
       .select({
@@ -49,7 +54,7 @@ export async function listServerAccounts(): Promise<
 > {
   try {
     const s = await getServerSession();
-    const userId = String((s as any)?.user?.id || "").trim();
+    const userId = String(s?.user?.id || "").trim();
     if (!userId) return [];
     const { account } = await import("@featul/db");
     const rows = await db

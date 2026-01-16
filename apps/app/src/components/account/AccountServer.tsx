@@ -5,12 +5,13 @@ import SecuritySection from "./Security"
 import NotificationsSection from "./Notifications"
 import AppearanceSection from "./Appearance"
 import { ACCOUNT_SECTIONS } from "@/config/account-sections"
+import type { SessionData } from "@featul/auth"
 
 type Props = {
   slug: string
   selectedSection?: string
   initialUser?: { name?: string; email?: string; image?: string | null } | null
-  initialMeSession?: any
+  initialMeSession?: SessionData
   initialSessions?: { token: string; userAgent?: string | null; ipAddress?: string | null; createdAt?: string; expiresAt?: string }[]
   initialAccounts?: { id: string; accountId: string; providerId: string }[]
 }
@@ -28,7 +29,7 @@ export default function AccountServer({ slug, selectedSection, initialUser, init
   )
 }
 
-function SectionRenderer({ section, initialUser, initialMeSession, initialSessions, initialAccounts }: { section: string; initialUser?: { name?: string; email?: string; image?: string | null }; initialMeSession?: any; initialSessions?: { token: string; userAgent?: string | null; ipAddress?: string | null; createdAt?: string; expiresAt?: string }[]; initialAccounts?: { id: string; accountId: string; providerId: string }[] }) {
+function SectionRenderer({ section, initialUser, initialMeSession, initialSessions, initialAccounts }: { section: string; initialUser?: { name?: string; email?: string; image?: string | null }; initialMeSession?: SessionData; initialSessions?: { token: string; userAgent?: string | null; ipAddress?: string | null; createdAt?: string; expiresAt?: string }[]; initialAccounts?: { id: string; accountId: string; providerId: string }[] }) {
   switch (section) {
     case "profile":
       return <ProfileSection initialUser={initialUser} initialAccounts={initialAccounts} />

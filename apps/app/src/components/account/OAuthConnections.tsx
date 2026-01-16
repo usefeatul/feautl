@@ -47,9 +47,9 @@ export default function OAuthConnections({ initialAccounts }: { initialAccounts?
                 : Array.isArray(result) ? result as Account[] : []
             return data.filter((a) => a.providerId !== "credential")
         },
-        staleTime: 60_000,
-        refetchOnMount: true,
-        refetchOnWindowFocus: false,
+        staleTime: 0,
+        refetchOnMount: "always",
+        refetchOnWindowFocus: true,
         initialData: initialAccounts,
         placeholderData: (prev) => prev,
     })
@@ -66,10 +66,39 @@ export default function OAuthConnections({ initialAccounts }: { initialAccounts?
             if (connecting) return
             setConnecting(providerId)
             try {
-                await authClient.linkSocial({
+                const result = await authClient.linkSocial({
                     provider: providerId as "google" | "github",
                     callbackURL: window.location.href,
                 })
+
+                // Check for error
+                if (result && typeof result === "object" && "error" in result && result.error) {
+                    const error = result.error as { message?: string }
+                    toast.error(error.message || `Failed to connect ${providerId}`)
+                    setConnecting(null)
+                    return
+                }
+
+                // Redirect to OAuth URL
+                if (result && typeof result === "object" && "data" in result && result.data) {
+                    const data = result.data as { url?: string }
+                    if (data.url) {
+                        window.location.href = data.url
+                        return
+                    }
+                }
+
+                // Fallback: check if url is directly on result
+                if (result && typeof result === "object" && "url" in result) {
+                    const url = (result as { url?: string }).url
+                    if (url) {
+                        window.location.href = url
+                        return
+                    }
+                }
+
+                toast.error(`Failed to get OAuth URL for ${providerId}`)
+                setConnecting(null)
             } catch (e: unknown) {
                 const msg = e instanceof Error ? e.message : `Failed to connect ${providerId}`
                 toast.error(msg)
@@ -87,10 +116,18 @@ export default function OAuthConnections({ initialAccounts }: { initialAccounts?
 
             setDisconnecting(providerId)
             try {
-                await authClient.unlinkAccount({ providerId })
+                const { error } = await authClient.unlinkAccount({
+                    providerId,
+                    accountId: account.accountId
+                })
+
+                if (error) {
+                    toast.error(error.message || `Failed to disconnect ${providerId}`)
+                    return
+                }
 
                 toast.success(`Disconnected from ${providerId}`)
-                queryClient.invalidateQueries({ queryKey: ["linked-accounts"] })
+                await queryClient.invalidateQueries({ queryKey: ["linked-accounts"] })
             } catch (e: unknown) {
                 const msg = e instanceof Error ? e.message : `Failed to disconnect ${providerId}`
                 toast.error(msg)

@@ -171,7 +171,7 @@ export default function Profile({ initialUser, initialAccounts }: { initialUser?
         }
       try { queryClient.setQueryData(["me"], { user: updatedUser }) } catch (e: unknown) {
         console.error(e)
-      } 
+      }
       toast.success("Saved", { id: toastId })
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to save"
@@ -234,10 +234,10 @@ export default function Profile({ initialUser, initialAccounts }: { initialUser?
               onChange={(e) => setName(e.target.value)}
               onBlur={() => { if (name.trim() !== (user?.name || "").trim()) void onSave() }}
               onKeyDown={(e) => { if (e.key === "Enter") { e.currentTarget.blur() } }}
-              className="h-8 w-[140px]"
+              className="h-8 w-[120px] text-center placeholder:text-accent"
               placeholder="Your name"
             />
-            <Input value={d.email || ""} disabled className="h-8 w-[140px]" />
+            <Input value={d.email || ""} disabled className="h-8 w-[180px] text-center" />
           </div>
         </SettingsCard>
 

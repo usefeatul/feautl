@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { motion, AnimatePresence } from "framer-motion"
+
 import { usePathname, useSearchParams, useRouter } from "next/navigation"
 import { TrashIcon } from "@featul/ui/icons/trash"
 import { XMarkIcon } from "@featul/ui/icons/xmark"
@@ -35,7 +35,7 @@ export default function FilterSummary({ className = "" }: { className?: string }
   const order = React.useMemo(() => (sp.get("order") || "newest").toLowerCase(), [sp])
   const count = status.length + boards.length + tags.length + (order === "oldest" ? 1 : 0)
   const hasAnyFilters = count > 0
-  const { isVisible, handleClearAll, handleBarExitComplete } = useFilterBarVisibility({
+  const { isVisible, handleClearAll } = useFilterBarVisibility({
     hasAnyFilters,
     buildClearAllHref: () => workspaceBase(slug),
   })
@@ -129,35 +129,14 @@ export default function FilterSummary({ className = "" }: { className?: string }
       )}
       aria-label="Active filters"
     >
-      <AnimatePresence
-        initial={false}
-        onExitComplete={handleBarExitComplete}
-      >
-        {isVisible ? (
-          <motion.div
-            key="filter-summary-bar"
-            className="bg-card dark:bg-black/60 pointer-events-auto mx-auto flex max-w-[90vw] items-center gap-2 border border-border  border-t-transparent overflow-hidden rounded-xs  px-1.5 py-0.5 shadow-sm  backdrop-blur supports-backdrop-filter:bg-background"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.16 }}
-          >
-        <div className="flex items-center gap-2 overflow-x-auto px-0.5 py-0.5 flex-1 scrollbar-hide">
-          <AnimatePresence initial={false} mode="sync">
+      {isVisible ? (
+        <div
+          key="filter-summary-bar"
+          className="bg-card dark:bg-black/60 pointer-events-auto mx-auto flex max-w-[90vw] items-center gap-2 border-t-transparent overflow-hidden rounded-xs  px-1 py-0.5  backdrop-blur supports-backdrop-filter:bg-background ring-1 ring-border/60 ring-offset-1 ring-offset-white dark:ring-offset-black border border-border"
+        >
+          <div className="flex items-center gap-2 overflow-x-auto px-0.5 py-0.5 flex-1 scrollbar-hide">
             {status.map((s) => (
-              <motion.div
-                key={`status-${s}`}
-                layout="position"
-                initial={{ opacity: 0, y: 3, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -3, scale: 0.94 }}
-                transition={{
-                  duration: 0.18,
-                  layout: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
-                }}
-                whileHover={{ y: -1 }}
-                whileTap={{ scale: 0.97 }}
-              >
+              <div key={`status-${s}`}>
                 <Button
                   type="button"
                   onClick={() => removeStatus(s)}
@@ -168,21 +147,10 @@ export default function FilterSummary({ className = "" }: { className?: string }
                   <span className="truncate">{statusLabel(s)}</span>
                   <XMarkIcon className="ml-1 size-3 opacity-60" />
                 </Button>
-              </motion.div>
+              </div>
             ))}
             {boards.map((b) => (
-              <motion.div
-                key={`board-${b}`}
-                layout="position"
-                initial={{ opacity: 0, y: 3, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -3, scale: 0.94 }}
-                transition={{
-                  duration: 0.18,
-                  layout: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
-                }}
-                whileTap={{ scale: 0.97 }}
-              >
+              <div key={`board-${b}`}>
                 <Button
                   type="button"
                   onClick={() => removeBoard(b)}
@@ -193,22 +161,10 @@ export default function FilterSummary({ className = "" }: { className?: string }
                   <span className="truncate">{boardsBySlug[b] || b}</span>
                   <XMarkIcon className="ml-1 size-3 opacity-60" />
                 </Button>
-              </motion.div>
+              </div>
             ))}
             {tags.map((t) => (
-              <motion.div
-                key={`tag-${t}`}
-                layout="position"
-                initial={{ opacity: 0, y: 3, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -3, scale: 0.94 }}
-                transition={{
-                  duration: 0.18,
-                  layout: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
-                }}
-                whileHover={{ y: -1 }}
-                whileTap={{ scale: 0.97 }}
-              >
+              <div key={`tag-${t}`}>
                 <Button
                   type="button"
                   onClick={() => removeTag(t)}
@@ -219,22 +175,10 @@ export default function FilterSummary({ className = "" }: { className?: string }
                   <span className="truncate">{tagsBySlug[t] || t}</span>
                   <XMarkIcon className="ml-1 size-3 opacity-60" />
                 </Button>
-              </motion.div>
+              </div>
             ))}
             {order === "oldest" ? (
-              <motion.div
-                key="order-oldest"
-                layout="position"
-                initial={{ opacity: 0, y: 3, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -3, scale: 0.94 }}
-                transition={{
-                  duration: 0.18,
-                  layout: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
-                }}
-                whileHover={{ y: -1 }}
-                whileTap={{ scale: 0.97 }}
-              >
+              <div key="order-oldest">
                 <Button
                   type="button"
                   onClick={removeOrder}
@@ -245,32 +189,27 @@ export default function FilterSummary({ className = "" }: { className?: string }
                   <span className="truncate">Oldest first</span>
                   <XMarkIcon className="ml-1 size-3" />
                 </Button>
-              </motion.div>
+              </div>
             ) : null}
-          </AnimatePresence>
-        </div>
+          </div>
 
-        <div className="flex items-center shrink-0 gap-2">
-          <div className="h-5 w-px bg-border/70" />
-          <Button
-            type="button"
-            onClick={handleClearAll}
-            variant="ghost"
-            size="icon-sm"
-            className="text-muted-foreground hover:text-destructive dark:hover:text-destructive transition-colors"
-            aria-label="Clear all filters"
-          >
-            <motion.span
-              whileHover={{ rotate: [0, -10, 10, -10, 10, 0] }}
-              transition={{ duration: 0.35 }}
+          <div className="flex items-center shrink-0 gap-2">
+            <div className="h-5 w-px bg-border/70" />
+            <Button
+              type="button"
+              onClick={handleClearAll}
+              variant="ghost"
+              size="icon-sm"
+              className="text-muted-foreground hover:text-destructive dark:hover:text-destructive transition-colors"
+              aria-label="Clear all filters"
             >
-              <TrashIcon className="size-4 opacity-70" />
-            </motion.span>
-          </Button>
+              <span>
+                <TrashIcon className="size-4 opacity-70" />
+              </span>
+            </Button>
+          </div>
         </div>
-      </motion.div>
-        ) : null}
-      </AnimatePresence>
+      ) : null}
     </div>
   )
 }

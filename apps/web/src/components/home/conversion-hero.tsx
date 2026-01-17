@@ -6,6 +6,9 @@ import { BoardIcon } from "@featul/ui/icons/board";
 import { RoadmapIcon } from "@featul/ui/icons/roadmap";
 import { ChangelogIcon } from "@featul/ui/icons/changelog";
 import { useIsMobile } from "@featul/ui/hooks/use-mobile";
+import { Button } from "@featul/ui/components/button";
+import { ArrowIcon } from "@featul/ui/icons/arrow";
+import Link from "next/link";
 
 export function ConversionHero() {
   const isMobile = useIsMobile();

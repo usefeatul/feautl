@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 import { AlternativeHero } from "@/components/alternatives/hero";
 import TLDR from "@/components/alternatives/tldr";
 import Compare from "@/components/alternatives/compare";
 import WhyBetter from "@/components/alternatives/why";
 import AlternativeFAQs from "@/components/alternatives/faq";
 import StatsSection from "@/components/home/cta";
+import RelatedLinks from "@/components/seo/RelatedLinks";
 import { getAltDescription } from "@/types/descriptions";
 import { createArticleMetadata } from "@/lib/seo";
+import { getRelatedPages } from "@/lib/seo/interlink";
+import { SITE_URL } from "@/config/seo";
 import {
   getAlternativeBySlug,
   getAlternativeSlugs,
 } from "@/config/alternatives";
-import { VerticalLines } from "@/components/vertical-lines";
 import { SectionStack } from "@/components/layout/section-stack";
 
 export async function generateStaticParams() {
@@ -46,8 +49,30 @@ export default async function AlternativePage({
   const alt = getAlternativeBySlug(slug);
   if (!alt) return notFound();
 
+  // Get related pages for internal linking
+  const relatedLinks = getRelatedPages({
+    currentSlug: slug,
+    currentType: "competitor",
+  });
+
+  // Build breadcrumb schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Alternatives", item: `${SITE_URL}/alternatives` },
+      { "@type": "ListItem", position: 2, name: `${alt.name} vs featul`, item: `${SITE_URL}/alternatives/${slug}` },
+    ],
+  };
+
   return (
     <main className="min-h-screen pt-16 relative">
+      <Script
+        id="alternative-breadcrumb-jsonld"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="mx-auto max-w-6xl">
         <SectionStack>
           <AlternativeHero alt={alt} />
@@ -55,9 +80,13 @@ export default async function AlternativePage({
           <Compare alt={alt} />
           <WhyBetter alt={alt} />
           <AlternativeFAQs alt={alt} />
+          <div className="px-4 sm:px-12 lg:px-16 xl:px-18">
+            <RelatedLinks links={relatedLinks} title="Explore More" />
+          </div>
           <StatsSection />
         </SectionStack>
       </div>
     </main>
   );
 }
+

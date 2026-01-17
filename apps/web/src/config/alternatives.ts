@@ -162,10 +162,53 @@ export const alternatives: Alternative[] = [
   },
 ]
 
+// Import from content-matrix for programmatic competitors
+import { COMPETITORS, type CompetitorEntry } from '@/lib/data/programmatic/content-matrix'
+
+/**
+ * Convert a CompetitorEntry from content-matrix to Alternative format
+ * This allows new competitors to work with existing custom components
+ */
+function competitorToAlternative(competitor: CompetitorEntry): Alternative {
+  return {
+    slug: competitor.slug,
+    name: competitor.name,
+    website: competitor.website,
+    summary: `${competitor.name} ${competitor.tagline.toLowerCase()}. Featul offers ${competitor.victoryPoints[0]?.toLowerCase() || 'a privacy-first alternative'}.`,
+    tags: ['feedback', 'roadmap', 'voting'],
+    pros: competitor.tradeoffs.slice(0, 2),
+    cons: [], // Neutral approach - show what they do well, not what they lack
+    image: '/image/image.jpeg',
+    features: withCompetitor({
+      eu_hosting: competitor.victoryPoints.some(v => v.toLowerCase().includes('eu')) ? 'partial' : false,
+      gdpr: competitor.victoryPoints.some(v => v.toLowerCase().includes('gdpr')) ? 'partial' : false,
+      feedback_boards: true,
+      feature_voting: true,
+      public_roadmap: competitor.victoryPoints.some(v => v.toLowerCase().includes('roadmap')) ? true : 'partial',
+      changelog: competitor.victoryPoints.some(v => v.toLowerCase().includes('changelog')) ? true : 'partial',
+      embeddable_widget: true,
+      api: 'partial',
+      sso: 'partial',
+      slack: competitor.victoryPoints.some(v => v.toLowerCase().includes('slack')) ? true : 'partial',
+    }),
+  }
+}
+
 export function getAlternativeBySlug(slug: string): Alternative | undefined {
-  return alternatives.find((a) => a.slug === slug)
+  // First, check manually defined alternatives
+  const manual = alternatives.find((a) => a.slug === slug)
+  if (manual) return manual
+
+  // Fall back to programmatic competitors from content-matrix
+  const competitor = COMPETITORS.find((c) => c.slug === slug)
+  if (competitor) return competitorToAlternative(competitor)
+
+  return undefined
 }
 
 export function getAlternativeSlugs(): string[] {
-  return alternatives.map((a) => a.slug)
+  // Combine both sources, removing duplicates
+  const manualSlugs = alternatives.map((a) => a.slug)
+  const programmaticSlugs = COMPETITORS.map((c) => c.slug)
+  return [...new Set([...manualSlugs, ...programmaticSlugs])]
 }

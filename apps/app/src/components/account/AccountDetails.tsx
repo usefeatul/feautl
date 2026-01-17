@@ -52,31 +52,51 @@ export default function AccountDetails({ initialUser }: AccountDetailsProps) {
     const onSave = React.useCallback(async () => {
         if (saving) return
         const nextName = name.trim()
-        if (!nextName && !user?.name) {
+        const previousName = (user?.name || "").trim()
+
+        // Skip if no change
+        if (nextName === previousName) return
+
+        if (!nextName && !previousName) {
             toast.error("Please enter a name")
             return
         }
+
         setSaving(true)
-        const toastId = toast.loading("Saving...")
+
+        // Optimistic update - instant UI feedback
+        const optimisticUser = { ...(user || {}), name: nextName || previousName }
+        try { queryClient.setQueryData(["me"], { user: optimisticUser }) } catch (e: unknown) {
+            console.error(e)
+        }
+        toast.success("Saved")
+
         try {
             const { error, data: saveData } = await authClient.updateUser({ name: nextName || undefined })
             if (error) {
-                toast.error(error.message || "Failed to save", { id: toastId })
+                // Revert on error
+                try { queryClient.setQueryData(["me"], { user }) } catch (e: unknown) {
+                    console.error(e)
+                }
+                setName(previousName)
+                toast.error(error.message || "Failed to save")
                 return
             }
+            // Update with server response if available
             const updatedUser = (saveData && typeof saveData === "object" && "user" in saveData)
                 ? saveData.user as { name?: string; email?: string; image?: string | null }
-                : {
-                    ...(user || {}),
-                    name: nextName || user?.name,
-                }
+                : optimisticUser
             try { queryClient.setQueryData(["me"], { user: updatedUser }) } catch (e: unknown) {
                 console.error(e)
             }
-            toast.success("Saved", { id: toastId })
         } catch (err: unknown) {
+            // Revert on error
+            try { queryClient.setQueryData(["me"], { user }) } catch (e: unknown) {
+                console.error(e)
+            }
+            setName(previousName)
             const msg = err instanceof Error ? err.message : "Failed to save"
-            toast.error(msg, { id: toastId })
+            toast.error(msg)
         } finally {
             setSaving(false)
         }
@@ -94,7 +114,7 @@ export default function AccountDetails({ initialUser }: AccountDetailsProps) {
                     onChange={(e) => setName(e.target.value)}
                     onBlur={() => { if (name.trim() !== (user?.name || "").trim()) void onSave() }}
                     onKeyDown={(e) => { if (e.key === "Enter") { e.currentTarget.blur() } }}
-                    className="h-8 w-[120px] text-center placeholder:text-accent"
+                    className="h-8 w-[100px]  placeholder:text-accent"
                     placeholder="Your name"
                 />
                 <Input value={d.email || ""} disabled className="h-8 w-[170px] text-center" />

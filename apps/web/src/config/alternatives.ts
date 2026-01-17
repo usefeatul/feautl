@@ -177,7 +177,8 @@ function competitorToAlternative(competitor: CompetitorEntry): Alternative {
     summary: `${competitor.name} ${competitor.tagline.toLowerCase()}. Featul offers ${competitor.victoryPoints[0]?.toLowerCase() || 'a privacy-first alternative'}.`,
     tags: ['feedback', 'roadmap', 'voting'],
     pros: competitor.tradeoffs.slice(0, 2),
-    cons: [], // Neutral approach - show what they do well, not what they lack
+    cons: [
+    ], // Neutral approach - show what they do well, not what they lack
     image: '/image/image.jpeg',
     features: withCompetitor({
       eu_hosting: competitor.victoryPoints.some(v => v.toLowerCase().includes('eu')) ? 'partial' : false,

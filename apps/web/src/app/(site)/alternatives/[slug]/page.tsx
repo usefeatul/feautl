@@ -47,7 +47,7 @@ export default async function AlternativePage({
   if (!alt) return notFound();
 
   return (
-    <main className="min-h-screen pt-16 relative">
+    <main className="pt-16">
       <div className="mx-auto max-w-6xl">
         <SectionStack>
           <AlternativeHero alt={alt} />

@@ -21,6 +21,9 @@ export function useWizardLogic() {
   const [slug, setSlug] = useState("");
   const [timezone, setTimezone] = useState<string>("UTC");
 
+  // Name State - track if user has manually edited the name
+  const [nameDirty, setNameDirty] = useState(false);
+
   // Slug State
   const [slugDirty, setSlugDirty] = useState(false);
   const [slugChecking, setSlugChecking] = useState(false);
@@ -43,6 +46,19 @@ export function useWizardLogic() {
     if (detected) setTimezone(detected);
   }, []);
 
+  // Auto-generate name from domain (e.g., "mantlz.com" -> "Mantlz")
+  useEffect(() => {
+    if (nameDirty) return; // User has manually edited the name
+    if (!domain) return;
+
+    // Extract the part before the first dot and capitalize first letter
+    const domainPart = domain.split(".")[0]?.trim() || "";
+    if (domainPart) {
+      const capitalizedName = domainPart.charAt(0).toUpperCase() + domainPart.slice(1).toLowerCase();
+      setName(capitalizedName);
+    }
+  }, [domain, nameDirty]);
+
   // Auto-generate slug from name
   useEffect(() => {
     if (slugDirty) return;
@@ -64,7 +80,7 @@ export function useWizardLogic() {
         const locked = String(data?.slugLocked || initialLocked || "")
           .trim()
           .toLowerCase();
-        
+
         if (locked && mounted) {
           setSlugLocked(locked);
           setSlugDirty(true);
@@ -141,9 +157,9 @@ export function useWizardLogic() {
 
       const data = await res.json();
       toast.success("Workspace created");
-      
+
       const createdSlug = data?.workspace?.slug || slug;
-      
+
       // Update cache
       try {
         queryClient.setQueryData(["workspaces"], (prev: { workspaces: { id: string; slug: string; name: string; }[] }) => {
@@ -185,6 +201,10 @@ export function useWizardLogic() {
     isCreating,
     domainValid,
     create,
+    handleNameChange: (v: string) => {
+      setNameDirty(true);
+      setName(v);
+    },
     handleSlugChange: (v: string) => {
       setSlugDirty(true);
       setSlug(cleanSlug(v));

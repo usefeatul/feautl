@@ -11,7 +11,7 @@ export default function WorkspaceWizard({
 }) {
   const {
     name,
-    setName,
+    handleNameChange,
     domain,
     setDomain,
     slug,
@@ -37,7 +37,7 @@ export default function WorkspaceWizard({
       >
         <StepWizardForm
           name={name}
-          setName={setName}
+          setName={handleNameChange}
           domain={domain}
           setDomain={setDomain}
           slug={slug}

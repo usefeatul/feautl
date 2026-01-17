@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -10,31 +10,33 @@ import {
   slugifyFromName,
 } from "../lib/validators";
 
+function extractNameFromDomain(domain: string): string {
+  const part = domain.split(".")[0]?.trim() || "";
+  if (!part) return "";
+  return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+}
+
 export function useWizardLogic() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
 
-  // Form State
   const [name, setName] = useState("");
   const [domain, setDomain] = useState("");
   const [slug, setSlug] = useState("");
-  const [timezone, setTimezone] = useState<string>("UTC");
+  const [timezone, setTimezone] = useState("UTC");
 
-  // Name State - track if user has manually edited the name
   const [nameDirty, setNameDirty] = useState(false);
-
-  // Slug State
   const [slugDirty, setSlugDirty] = useState(false);
   const [slugChecking, setSlugChecking] = useState(false);
   const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null);
   const [slugLocked, setSlugLocked] = useState<string | null>(null);
 
-  // Other State
   const [now, setNow] = useState<Date>(new Date());
   const [isCreating, setIsCreating] = useState(false);
 
-  // Clock
+  const domainValid = useMemo(() => isDomainValid(domain), [domain]);
+
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 60000);
     return () => clearInterval(id);
@@ -46,40 +48,26 @@ export function useWizardLogic() {
     if (detected) setTimezone(detected);
   }, []);
 
-  // Auto-generate name from domain (e.g., "mantlz.com" -> "Mantlz")
   useEffect(() => {
-    if (nameDirty) return; // User has manually edited the name
-    if (!domain) return;
-
-    // Extract the part before the first dot and capitalize first letter
-    const domainPart = domain.split(".")[0]?.trim() || "";
-    if (domainPart) {
-      const capitalizedName = domainPart.charAt(0).toUpperCase() + domainPart.slice(1).toLowerCase();
-      setName(capitalizedName);
-    }
+    if (nameDirty || !domain) return;
+    const extracted = extractNameFromDomain(domain);
+    if (extracted) setName(extracted);
   }, [domain, nameDirty]);
 
-  // Auto-generate slug from name
   useEffect(() => {
     if (slugDirty) return;
-    const s = slugifyFromName(name);
-    setSlug(s);
+    setSlug(slugifyFromName(name));
   }, [name, slugDirty]);
 
-  // Check for reserved slug
   useEffect(() => {
-    const initialLocked = (searchParams?.get("slug") || "")
-      .trim()
-      .toLowerCase();
+    const initialLocked = (searchParams?.get("slug") || "").trim().toLowerCase();
     let mounted = true;
 
-    const checkReservation = async () => {
+    (async () => {
       try {
         const res = await client.reservation.claimOnSignup.$get();
         const data = await res.json();
-        const locked = String(data?.slugLocked || initialLocked || "")
-          .trim()
-          .toLowerCase();
+        const locked = String(data?.slugLocked || initialLocked || "").trim().toLowerCase();
 
         if (locked && mounted) {
           setSlugLocked(locked);
@@ -89,22 +77,19 @@ export function useWizardLogic() {
           setSlugChecking(false);
         }
       } catch {
-        // ignore
+        /* ignore */
       }
-    };
+    })();
 
-    checkReservation();
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, [searchParams]);
 
-  // Check slug availability
   useEffect(() => {
     if (!slug || slug.length < 5) {
       setSlugAvailable(null);
       return;
     }
+
     if (slugLocked) {
       setSlugAvailable(true);
       return;
@@ -128,13 +113,9 @@ export function useWizardLogic() {
     return () => clearTimeout(id);
   }, [slug, slugLocked]);
 
-  // Validation
-  const domainValid = useMemo(() => isDomainValid(domain), [domain]);
-
-  // Actions
-
-  const create = async () => {
+  const create = useCallback(async () => {
     setIsCreating(true);
+
     try {
       const parsed = workspaceSchema.safeParse({
         name: name.trim(),
@@ -160,29 +141,38 @@ export function useWizardLogic() {
 
       const createdSlug = data?.workspace?.slug || slug;
 
-      // Update cache
-      try {
-        queryClient.setQueryData(["workspaces"], (prev: { workspaces: { id: string; slug: string; name: string; }[] }) => {
-          const list = Array.isArray(prev) ? prev : prev?.workspaces || [];
+      queryClient.setQueryData(
+        ["workspaces"],
+        (prev: { workspaces: { id: string; slug: string; name: string }[] } | undefined) => {
+          if (!prev) return prev;
+          const list = Array.isArray(prev) ? prev : prev.workspaces || [];
           const next = [...list, data?.workspace].filter(Boolean);
-          return prev && prev.workspaces ? { ...prev, workspaces: next } : next;
-        });
-        if (data?.workspace) {
-          queryClient.setQueryData(["workspace", createdSlug], data.workspace);
+          return prev.workspaces ? { ...prev, workspaces: next } : next;
         }
-      } catch {
-        // ignore
+      );
+
+      if (data?.workspace) {
+        queryClient.setQueryData(["workspace", createdSlug], data.workspace);
       }
 
       router.push(`/workspaces/${createdSlug}`);
     } catch (e: unknown) {
-      toast.error(
-        (e as { message?: string })?.message || "Failed to create workspace"
-      );
+      const message = (e as { message?: string })?.message || "Failed to create workspace";
+      toast.error(message);
     } finally {
       setIsCreating(false);
     }
-  };
+  }, [name, domain, slug, timezone, queryClient, router]);
+
+  const handleNameChange = useCallback((v: string) => {
+    setNameDirty(true);
+    setName(v);
+  }, []);
+
+  const handleSlugChange = useCallback((v: string) => {
+    setSlugDirty(true);
+    setSlug(cleanSlug(v));
+  }, []);
 
   return {
     name,
@@ -201,13 +191,7 @@ export function useWizardLogic() {
     isCreating,
     domainValid,
     create,
-    handleNameChange: (v: string) => {
-      setNameDirty(true);
-      setName(v);
-    },
-    handleSlugChange: (v: string) => {
-      setSlugDirty(true);
-      setSlug(cleanSlug(v));
-    }
+    handleNameChange,
+    handleSlugChange,
   };
 }

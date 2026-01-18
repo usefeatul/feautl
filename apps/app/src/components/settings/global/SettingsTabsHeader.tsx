@@ -13,9 +13,9 @@ export default function SettingsTabsHeader({ slug, selected }: { slug: string; s
   }, [router, slug])
 
   return (
-    <Tabs value={selected} onValueChange={onValueChange} className="space-y-4">
+    <Tabs value={selected} onValueChange={onValueChange} className="mt-7.5 space-y-4">
       <div className="overflow-x-auto -mx-4 px-4 scrollbar-hide">
-        <TabsList className="w-max flex-nowrap">
+        <TabsList className="w-full">
           {SECTIONS.map((item) => (
             <TabsTrigger key={item.value} value={item.value} className="px-3 text-accent whitespace-nowrap">{item.label}</TabsTrigger>
           ))}

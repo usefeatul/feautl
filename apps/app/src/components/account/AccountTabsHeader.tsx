@@ -13,10 +13,10 @@ export default function AccountTabsHeader({ slug, selected }: { slug: string; se
   }, [router, slug])
 
   return (
-    <Tabs value={selected} onValueChange={onValueChange} className="space-y-4">
+    <Tabs value={selected} onValueChange={onValueChange} className="mt-7.5 space-y-4">
       <TabsList className="w-full">
         {ACCOUNT_SECTIONS.map((item) => (
-          <TabsTrigger key={item.value} value={item.value} className="min-h-[36px] px-3 text-accent">{item.label}</TabsTrigger>
+          <TabsTrigger key={item.value} value={item.value} className="px-3 text-accent">{item.label}</TabsTrigger>
         ))}
       </TabsList>
     </Tabs>

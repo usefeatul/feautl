@@ -192,7 +192,7 @@ function TabsTrigger({
       data-slot="tabs-trigger"
       data-value={(props as any).value}
       className={cn(
-        "inline-flex items-center justify-center gap-3 px-1 py-1 text-sm font-medium whitespace-nowrap border-b-2 border-transparent transition-colors cursor-pointer disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-foreground snap-center data-[state=active]:border-primary md:data-[state=active]:border-transparent",
+        "inline-flex items-center justify-center gap-3 px-2 py-2 text-sm font-medium whitespace-nowrap border-b-2 border-transparent transition-colors cursor-pointer disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-foreground snap-center data-[state=active]:border-primary md:data-[state=active]:border-transparent",
         className
       )}
       {...props}

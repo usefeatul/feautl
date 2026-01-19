@@ -13,6 +13,7 @@ export const {
   session,
   account,
   verification,
+  passkeyTable,
   workspace,
   workspaceDomain,
   workspaceMember,

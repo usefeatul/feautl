@@ -5,6 +5,7 @@ import {
   lastLoginMethodClient,
 } from "better-auth/client/plugins"
 import { emailOTPClient } from "better-auth/client/plugins"
+import { passkeyClient } from "@better-auth/passkey/client"
 import type { AuthServer } from "./auth"
 
 export const authClient = createAuthClient({
@@ -13,6 +14,7 @@ export const authClient = createAuthClient({
     organizationClient({ schema: inferOrgAdditionalFields<AuthServer>() }),
     lastLoginMethodClient(),
     emailOTPClient(),
+    passkeyClient(),
   ],
 })
 
@@ -25,4 +27,6 @@ export const {
   organization,
   useListOrganizations,
   useActiveOrganization,
+  passkey,
 } = authClient
+

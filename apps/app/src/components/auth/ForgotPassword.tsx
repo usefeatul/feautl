@@ -256,7 +256,7 @@ export default function ForgotPassword() {
                 <LoadingButton
                   className="w-full"
                   type="button"
-                  variant="outline"
+                  variant="card"
                   onClick={sendResetCode}
                   loading={isSending}
                 >

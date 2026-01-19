@@ -47,9 +47,10 @@ export default function SignUp() {
       });
       toast.success("Account created. Check your email for the code");
       router.push(`/auth/verify?email=${encodeURIComponent(email)}${rawRedirect ? `&redirect=${encodeURIComponent(rawRedirect)}` : ""}`);
-    } catch (e: any) {
-      setError(e?.message || "Failed to sign up");
-      toast.error(e?.message || "Failed to sign up");
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "Failed to sign up";
+      setError(message);
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +64,7 @@ export default function SignUp() {
         provider: "google",
         callbackURL: redirect,
       });
-    } catch (err) {
+    } catch {
       setError("Failed with Google");
       toast.error("Failed with Google");
       setIsLoading(false);
@@ -78,7 +79,7 @@ export default function SignUp() {
         provider: "github",
         callbackURL: redirect,
       });
-    } catch (err) {
+    } catch {
       setError("Failed with GitHub");
       toast.error("Failed with GitHub");
       setIsLoading(false);
@@ -109,7 +110,7 @@ export default function SignUp() {
             <div className="grid grid-cols-2 gap-3">
               <Button
                 type="button"
-                variant="outline"
+                variant="card"
                 onClick={handleGoogleSignUp}
                 disabled={isLoading}
                 className="text-sm sm:text-base gap-2 sm:gap-3"
@@ -119,7 +120,7 @@ export default function SignUp() {
               </Button>
               <Button
                 type="button"
-                variant="outline"
+                variant="card"
                 onClick={handleGithubSignUp}
                 disabled={isLoading}
                 className="text-sm sm:text-base gap-2 sm:gap-3"
@@ -185,6 +186,7 @@ export default function SignUp() {
             <LoadingButton className="w-full" type="submit" loading={isLoading}>
               Sign Up
             </LoadingButton>
+            {error && <p className="text-destructive text-xs mt-2">{error}</p>}
 
           </div>
         </div>

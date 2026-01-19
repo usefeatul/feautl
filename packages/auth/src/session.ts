@@ -74,3 +74,31 @@ export async function listServerAccounts(): Promise<
     return [];
   }
 }
+
+export async function listServerPasskeys(): Promise<
+  { id: string; name?: string | null; createdAt?: string | null; deviceType?: string | null }[]
+> {
+  try {
+    const s = await getServerSession();
+    const userId = String(s?.user?.id || "").trim();
+    if (!userId) return [];
+    const { passkeyTable } = await import("@featul/db");
+    const rows = await db
+      .select({
+        id: passkeyTable.id,
+        name: passkeyTable.name,
+        createdAt: passkeyTable.createdAt,
+        deviceType: passkeyTable.deviceType,
+      })
+      .from(passkeyTable)
+      .where(eq(passkeyTable.userId, userId));
+    return rows.map((r) => ({
+      id: String(r.id),
+      name: r.name || null,
+      createdAt: r.createdAt instanceof Date ? r.createdAt.toISOString() : null,
+      deviceType: r.deviceType || null,
+    }));
+  } catch {
+    return [];
+  }
+}

@@ -172,6 +172,7 @@ export default function Security({ initialMeSession, initialSessions }: { initia
             <div className="text-sm text-accent">No active sessions</div>
           )}
         </div>
+
       </div>
     </SectionCard>
   )

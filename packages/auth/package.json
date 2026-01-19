@@ -24,11 +24,11 @@
     "./*": "./src/*"
   },
   "dependencies": {
-    "better-auth": "^1.3.9",
+    "@better-auth/passkey": "^1.4.15",
     "@featul/db": "workspace:*",
     "@react-email/components": "^1.0.1",
-    "@react-email/render": "^2.0.0"
-
+    "@react-email/render": "^2.0.0",
+    "better-auth": "^1.3.9"
   },
   "devDependencies": {
     "@featul/tsconfig": "workspace:*",

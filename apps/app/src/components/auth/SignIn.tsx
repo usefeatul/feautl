@@ -11,6 +11,7 @@ import GitHubIcon from "@featul/ui/icons/github";
 import Link from "next/link";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/global/loading-button";
+import { FingerprintIcon } from "lucide-react";
 
 
 export default function SignIn() {
@@ -31,7 +32,7 @@ export default function SignIn() {
         provider: "google",
         callbackURL: redirect,
       });
-    } catch (err) {
+    } catch {
       setError("Failed to sign in with Google");
       toast.error("Failed to sign in with Google");
       setIsLoading(false);
@@ -46,9 +47,29 @@ export default function SignIn() {
         provider: "github",
         callbackURL: redirect,
       });
-    } catch (err) {
+    } catch {
       setError("Failed to sign in with GitHub");
       toast.error("Failed to sign in with GitHub");
+      setIsLoading(false);
+    }
+  };
+
+  const handlePasskeySignIn = async () => {
+    setIsLoading(true);
+    setError("");
+    try {
+      const result = await authClient.signIn.passkey();
+      if (result?.error) {
+        setError(result.error.message || "Failed to sign in with passkey");
+        toast.error(result.error.message || "Failed to sign in with passkey");
+      } else {
+        toast.success("Signed in with passkey");
+        router.push(redirect);
+      }
+    } catch {
+      setError("Failed to sign in with passkey");
+      toast.error("Failed to sign in with passkey");
+    } finally {
       setIsLoading(false);
     }
   };
@@ -104,7 +125,7 @@ export default function SignIn() {
             <div className="grid grid-cols-2 gap-3">
               <Button
                 type="button"
-                variant="outline"
+                variant="card"
                 onClick={handleGoogleSignIn}
                 disabled={isLoading}
                 className="text-sm sm:text-base gap-2 sm:gap-3"
@@ -114,7 +135,7 @@ export default function SignIn() {
               </Button>
               <Button
                 type="button"
-                variant="outline"
+                variant="card"
                 onClick={handleGithubSignIn}
                 disabled={isLoading}
                 className="text-sm sm:text-base gap-2 sm:gap-3"
@@ -123,6 +144,17 @@ export default function SignIn() {
                 <span>GitHub</span>
               </Button>
             </div>
+
+            <Button
+              type="button"
+              variant="card"
+              onClick={handlePasskeySignIn}
+              disabled={isLoading}
+              className="w-full text-sm sm:text-base gap-2 sm:gap-3"
+            >
+              <FingerprintIcon className="size-4 sm:size-5" />
+              <span>Sign in with Passkey</span>
+            </Button>
 
             <div className="my-2 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
               <hr className="border-dashed" />

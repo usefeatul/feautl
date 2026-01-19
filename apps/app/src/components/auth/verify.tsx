@@ -149,7 +149,7 @@ export default function Verify() {
             <LoadingButton
               className="w-full"
               type="button"
-              variant="outline"
+              variant="card"
               onClick={resend}
               loading={isResending}
             >

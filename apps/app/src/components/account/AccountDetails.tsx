@@ -2,6 +2,7 @@
 
 import React from "react"
 import SettingsCard from "@/components/global/SettingsCard"
+import Passkeys, { type PasskeyItem } from "./Passkeys"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getDisplayUser } from "@/utils/user-utils"
 import { Input } from "@featul/ui/components/input"
@@ -11,9 +12,10 @@ import { UserFocusIcon } from "@featul/ui/icons/userfocus"
 
 type AccountDetailsProps = {
     initialUser?: { name?: string; email?: string; image?: string | null } | null
+    initialPasskeys?: PasskeyItem[]
 }
 
-export default function AccountDetails({ initialUser }: AccountDetailsProps) {
+export default function AccountDetails({ initialUser, initialPasskeys }: AccountDetailsProps) {
     const queryClient = useQueryClient()
     const [name, setName] = React.useState(() => String(initialUser?.name || "").trim())
     const [saving, setSaving] = React.useState(false)
@@ -103,22 +105,25 @@ export default function AccountDetails({ initialUser }: AccountDetailsProps) {
     }, [saving, name, user, queryClient])
 
     return (
-        <SettingsCard
-            title="Account"
-            description="Your name and email address."
-            icon={<UserFocusIcon className="size-5 text-primary" />}
-        >
-            <div className="flex items-center gap-3">
-                <Input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    onBlur={() => { if (name.trim() !== (user?.name || "").trim()) void onSave() }}
-                    onKeyDown={(e) => { if (e.key === "Enter") { e.currentTarget.blur() } }}
-                    className="h-8 w-[100px] placeholder:text-accent"
-                    placeholder="Your name"
-                />
-                <Input value={d.email || ""} disabled className="hidden lg:block h-8 w-[170px] text-center" />
-            </div>
-        </SettingsCard>
+        <>
+            <SettingsCard
+                title="Account"
+                description="Your name and email address."
+                icon={<UserFocusIcon className="size-5 text-primary" />}
+            >
+                <div className="flex items-center gap-3">
+                    <Input
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        onBlur={() => { if (name.trim() !== (user?.name || "").trim()) void onSave() }}
+                        onKeyDown={(e) => { if (e.key === "Enter") { e.currentTarget.blur() } }}
+                        className="h-8 w-[100px] placeholder:text-accent"
+                        placeholder="Your name"
+                    />
+                    <Input value={d.email || ""} disabled className="hidden lg:block h-8 w-[170px] text-center" />
+                </div>
+            </SettingsCard>
+            <Passkeys initialPasskeys={initialPasskeys} />
+        </>
     )
 }

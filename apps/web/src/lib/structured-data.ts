@@ -199,3 +199,37 @@ export function buildAlternativesBreadcrumbSchema({ siteUrl, slug, name }: Build
     ],
   };
 }
+
+type BuildUseCasesBreadcrumbParams = {
+  siteUrl: string;
+  slug: string;
+  name: string;
+};
+
+export function buildUseCasesBreadcrumbSchema({ siteUrl, slug, name }: BuildUseCasesBreadcrumbParams) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Use Cases", item: `${siteUrl}/use-cases` },
+      { "@type": "ListItem", position: 2, name, item: `${siteUrl}/use-cases/${slug}` },
+    ],
+  };
+}
+
+type BuildIntegrationsBreadcrumbParams = {
+  siteUrl: string;
+  slug: string;
+  name: string;
+};
+
+export function buildIntegrationsBreadcrumbSchema({ siteUrl, slug, name }: BuildIntegrationsBreadcrumbParams) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Integrations", item: `${siteUrl}/integrations` },
+      { "@type": "ListItem", position: 2, name, item: `${siteUrl}/integrations/${slug}` },
+    ],
+  };
+}

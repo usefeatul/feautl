@@ -158,7 +158,7 @@ function ThreadItem({
 function ThreadLine() {
   return (
     <div
-      className="absolute left-[15px] top-8 bottom-0 w-px bg-border transition-colors"
+      className="absolute left-[15px] top-8 bottom-0 w-px bg-border/50 transition-colors"
       aria-hidden="true"
     />
   )
@@ -174,7 +174,7 @@ function ReplyWrapper({
   return (
     <div className="relative">
       {/* Curved connector */}
-      <div className="absolute -left-[21px] top-[14px] size-[18px] rounded-bl-xl border-l border-b border-border transition-colors" />
+      <div className="absolute -left-[21px] top-[14px] size-[18px] rounded-bl-xl border-l border-b border-border/50 transition-colors" />
 
       {/* Mask vertical line at last item */}
       {isLast && (

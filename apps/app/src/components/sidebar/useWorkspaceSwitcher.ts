@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { client } from "@featul/api/client"
 import { useWorkspaceLogo } from "@/lib/branding-store"
@@ -18,6 +18,8 @@ export type Ws = {
 
 export function useWorkspaceSwitcher(slug: string, initialWorkspace?: Ws | null, initialWorkspaces?: Ws[]) {
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   const queryClient = useQueryClient()
 
   const { data: workspaces = [] } = useQuery<Ws[]>({
@@ -62,9 +64,23 @@ export function useWorkspaceSwitcher(slug: string, initialWorkspace?: Ws | null,
 
   const handleSelectWorkspace = React.useCallback(
     (targetSlug: string) => {
+      let targetPath = `/workspaces/${targetSlug}`
+
+      // Check if we are currently in a workspace path
+      if (pathname?.startsWith(`/workspaces/${slug}`)) {
+        // Replace the current slug with the target slug
+        targetPath = pathname.replace(`/workspaces/${slug}`, `/workspaces/${targetSlug}`)
+        // Append query parameters if any
+        if (searchParams?.toString()) {
+          targetPath += `?${searchParams.toString()}`
+        }
+      }
+
       try {
-        router.prefetch(`/workspaces/${targetSlug}`)
-      } catch {}
+        router.prefetch(targetPath)
+      } catch {
+        console.error("Failed to prefetch", targetPath)
+      }
       try {
         queryClient.prefetchQuery({
           queryKey: ["status-counts", targetSlug],
@@ -76,10 +92,12 @@ export function useWorkspaceSwitcher(slug: string, initialWorkspace?: Ws | null,
           staleTime: 300_000,
           gcTime: 300_000,
         })
-      } catch {}
-      router.push(`/workspaces/${targetSlug}`)
+      } catch {
+        console.error("Failed to prefetch status counts for", targetSlug)
+      }
+      router.push(targetPath)
     },
-    [router, queryClient]
+    [router, queryClient, slug, pathname, searchParams]
   )
 
   const handleCreateNew = React.useCallback(() => {

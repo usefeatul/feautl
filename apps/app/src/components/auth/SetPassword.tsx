@@ -178,22 +178,17 @@ export default function SetPassword() {
         }
     };
     return (
-        <section className="flex min-h-screen bg-background px-4 sm:px-6 py-8 sm:py-12">
+        <section className="flex flex-1 bg-background px-4 sm:px-6 py-8 sm:py-12 items-center justify-center">
             <form
                 noValidate
-                className="bg-background m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border border-border shadow-sm shadow-zinc-950/3 dark:[--color-muted:var(--color-zinc-900)] ring-1 ring-border/60 ring-offset-1 ring-offset-white dark:ring-offset-black"
+                className="bg-background m-auto h-fit w-full max-w-sm"
                 onSubmit={handleSubmit}
             >
-                <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-6 sm:p-8 pb-5 sm:pb-6">
-                    <div className="text-left">
-                        <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-left">
+                <div className="p-6 sm:p-8 pb-5 sm:pb-6">
+                    <div className="text-center">
+                        <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-center">
                             Set a Password
                         </h1>
-                        <p className="text-xs sm:text-sm text-accent mb-2 text-left">
-                            {step === "send" && "We'll send a verification code to your email"}
-                            {step === "otp" && "Enter the code sent to your email"}
-                            {step === "password" && "Choose a strong password"}
-                        </p>
                     </div>
 
                     <div className="mt-6 space-y-6">
@@ -216,7 +211,7 @@ export default function SetPassword() {
                                     </p>
                                 </div>
                                 <LoadingButton
-                                    className="w-full"
+                                    className="w-full bg-blue-500 hover:bg-blue-600 text-white"
                                     type="submit"
                                     loading={isSending}
                                 >
@@ -340,7 +335,7 @@ export default function SetPassword() {
                 </div>
 
                 <div className="p-3">
-                    <p className="text-accent-foreground text-center text-sm sm:text-base">
+                    <p className="text-accent-foreground text-center text-sm font-normal">
                         Changed your mind?
                         <Button asChild variant="link" className="px-2 text-primary">
                             <Link href={redirectUrl}>Go back</Link>

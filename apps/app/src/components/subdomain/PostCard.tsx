@@ -8,7 +8,6 @@ import type { RequestItemData } from "@/components/requests/RequestItem"
 import StatusIcon from "@/components/requests/StatusIcon"
 import { Avatar, AvatarImage, AvatarFallback } from "@featul/ui/components/avatar"
 import { getInitials, getPrivacySafeDisplayUser } from "@/utils/user-utils"
-import { randomAvatarUrl } from "@/utils/avatar"
 import { statusLabel } from "@/lib/roadmap"
 import { relativeTime } from "@/lib/time"
 import RoleBadge from "@/components/global/RoleBadge"
@@ -88,7 +87,6 @@ function PostCardBase({
               upvotes={item.upvotes}
               hasVoted={item.hasVoted}
               className="text-xs hover:text-red-500/80"
-              activeBg
               onChange={(v) => onVoteChange?.(item.id, v.upvotes, v.hasVoted)}
             />
           </div>

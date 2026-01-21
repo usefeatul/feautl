@@ -81,7 +81,7 @@ export default function CommentItem({
   const initials = getInitials(displayUser.name)
 
   return (
-    <div className={cn("flex gap-3 group", depth > 0 && "mt-2")}>
+    <div className={cn("flex gap-3 group")}>
       <div className="relative flex-shrink-0">
         <Avatar className="size-8 relative overflow-visible">
           <AvatarImage src={displayUser.image} alt={displayUser.name} />

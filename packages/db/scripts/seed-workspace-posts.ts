@@ -29,22 +29,22 @@ function randItem<T>(arr: T[]) {
 const adjectives = ['Smart', 'Fast', 'Reliable', 'Simple', 'Secure', 'Modern', 'Flexible', 'Robust', 'Scalable', 'Intuitive']
 const nouns = ['Dashboard', 'API', 'Upload', 'Login', 'Notifications', 'Analytics', 'Widget', 'Editor', 'Settings', 'Search']
 const verbs = ['Improvement', 'Fix', 'Update', 'Enhancement', 'Optimization', 'Refactor', 'Redesign', 'Integration', 'Support', 'Validation']
+const contexts = ['for Better User Experience', 'on Mobile Devices', 'in Dark Mode', 'during Onboarding', 'with Large Datasets', 'for Team Accounts', 'in Settings Panel', 'when Offline', 'via Public API', 'after System Update']
 
-const firstNames = ['Avery','Jordan','Taylor','Morgan','Casey','Riley','Cameron','Skyler','Quinn','Alex','Jamie','Drew','Charlie','Parker','Hayden','Rowan','Blake','Emerson','Reese','Sage']
-const lastNames = ['Lee','Garcia','Patel','Kim','Nguyen','Diaz','Brown','Smith','Jones','Martins','Lopez','Hernandez','Singh','Wilson','Clark','Young','Hall','Allen','Scott','Adams']
+const firstNames = ['Avery', 'Jordan', 'Taylor', 'Morgan', 'Casey', 'Riley', 'Cameron', 'Skyler', 'Quinn', 'Alex', 'Jamie', 'Drew', 'Charlie', 'Parker', 'Hayden', 'Rowan', 'Blake', 'Emerson', 'Reese', 'Sage']
+const lastNames = ['Lee', 'Garcia', 'Patel', 'Kim', 'Nguyen', 'Diaz', 'Brown', 'Smith', 'Jones', 'Martins', 'Lopez', 'Hernandez', 'Singh', 'Wilson', 'Clark', 'Young', 'Hall', 'Allen', 'Scott', 'Adams']
 function randomName() {
   return `${randItem(firstNames)} ${randItem(lastNames)}`
 }
 
-function randomTitle(kind: 'feature' | 'bug') {
-  const base = `${randItem(adjectives)} ${randItem(nouns)} ${randItem(verbs)}`
-  return kind === 'bug' ? `Bug: ${base}` : `Feature: ${base}`
+function randomTitle() {
+  return `${randItem(adjectives)} ${randItem(nouns)} ${randItem(verbs)} ${randItem(contexts)}`
 }
 
 function randomContent(kind: 'feature' | 'bug') {
-  const p1 = `This ${kind} request describes ${randItem(['a performance issue','a usability improvement','a new capability','an intermittent error','a missing workflow','an edge case'])}.`
-  const p2 = `Users report ${randItem(['unexpected behavior','slow response','confusing UI','limited configuration','lack of visibility','unstable interactions'])} in certain scenarios.`
-  const p3 = `Proposed solution: ${randItem(['add an option','optimize queries','update UI copy','show progress indicators','improve error handling','add keyboard shortcuts'])}.`
+  const p1 = `This ${kind} request describes ${randItem(['a performance issue', 'a usability improvement', 'a new capability', 'an intermittent error', 'a missing workflow', 'an edge case'])}.`
+  const p2 = `Users report ${randItem(['unexpected behavior', 'slow response', 'confusing UI', 'limited configuration', 'lack of visibility', 'unstable interactions'])} in certain scenarios.`
+  const p3 = `Proposed solution: ${randItem(['add an option', 'optimize queries', 'update UI copy', 'show progress indicators', 'improve error handling', 'add keyboard shortcuts'])}.`
   return [p1, p2, p3].join('\n\n')
 }
 
@@ -73,10 +73,10 @@ async function main() {
   const authorId = u ? USER_ID : undefined
 
   const makeRows = (b: typeof featureBoard, count: number, kind: 'feature' | 'bug') => {
-    const statuses = Array.isArray(b.roadmapStatuses) ? b.roadmapStatuses.map((s: any) => String(s.id)) : ['pending','review','planned','progress','completed','closed']
+    const statuses = Array.isArray(b.roadmapStatuses) ? b.roadmapStatuses.map((s: any) => String(s.id)) : ['pending', 'review', 'planned', 'progress', 'completed', 'closed']
     const rows: any[] = []
     for (let i = 0; i < count; i++) {
-      const title = randomTitle(kind)
+      const title = randomTitle()
       const slug = `${slugify(title)}-${Math.random().toString(36).slice(2, 8)}`
       const isAnon = Math.random() < 0.3
       const name = randomName()

@@ -1,8 +1,7 @@
 import React from "react"
-import type { CommentData } from "../../types/comment";
-
+import type { CommentData } from "../../types/comment"
 import AnimatedReplies from "./AnimatedReplies"
-import CommentItem from "./CommentItem";
+import CommentItem from "./CommentItem"
 import { updateCommentCollapseState } from "@/lib/comments.actions"
 
 interface CommentThreadProps {
@@ -48,14 +47,13 @@ export default function CommentThread({
 
   const rootComments = comments.filter((c) => !c.parentId)
 
-  const getReplies = (parentId: string) => {
-    return comments
+  const getReplies = (parentId: string) =>
+    comments
       .filter((c) => c.parentId === parentId)
       .sort(
         (a, b) =>
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       )
-  }
 
   return (
     <div className="space-y-6">
@@ -75,6 +73,8 @@ export default function CommentThread({
     </div>
   )
 }
+
+// --- Thread Item ---
 
 interface ThreadItemProps {
   comment: CommentData
@@ -101,45 +101,87 @@ function ThreadItem({
 }: ThreadItemProps) {
   const replies = getReplies(comment.id)
   const isCollapsed = collapsedIds.has(comment.id)
+  const hasReplies = replies.length > 0
+  const isOpen = hasReplies && !isCollapsed
 
   return (
-    <div className="group/thread">
+    <div className="group/thread relative">
       <CommentItem
         comment={comment}
         currentUserId={currentUserId}
         onUpdate={onUpdate}
         onReplySuccess={onUpdate}
         depth={depth}
-        hasReplies={replies.length > 0}
+        hasReplies={hasReplies}
         isCollapsed={isCollapsed}
         onToggleCollapse={() => onToggleCollapse(comment.id)}
         workspaceSlug={workspaceSlug}
         hidePublicMemberIdentity={hidePublicMemberIdentity}
       />
-      {replies.length > 0 && (
+
+      {/* Vertical thread line */}
+      {isOpen && <ThreadLine />}
+
+      {/* Replies */}
+      {hasReplies && (
         <AnimatedReplies isOpen={!isCollapsed}>
-          <div className="relative pl-6 mt-2">
-            {/* Thread line */}
-            <div className="absolute left-[11px] top-0 bottom-0 w-px bg-border/40 group-hover/thread:bg-border/60 transition-colors" />
-            <div className="space-y-3">
-              {replies.map((reply) => (
-                <ThreadItem
+          <div className="relative pl-9 pt-2">
+            <div className="space-y-4">
+              {replies.map((reply, index) => (
+                <ReplyWrapper
                   key={reply.id}
-                  comment={reply}
-                  getReplies={getReplies}
-                  currentUserId={currentUserId}
-                  onUpdate={onUpdate}
-                  depth={depth + 1}
-                  collapsedIds={collapsedIds}
-                  onToggleCollapse={onToggleCollapse}
-                  workspaceSlug={workspaceSlug}
-                  hidePublicMemberIdentity={hidePublicMemberIdentity}
-                />
+                  isLast={index === replies.length - 1}
+                >
+                  <ThreadItem
+                    comment={reply}
+                    getReplies={getReplies}
+                    currentUserId={currentUserId}
+                    onUpdate={onUpdate}
+                    depth={depth + 1}
+                    collapsedIds={collapsedIds}
+                    onToggleCollapse={onToggleCollapse}
+                    workspaceSlug={workspaceSlug}
+                    hidePublicMemberIdentity={hidePublicMemberIdentity}
+                  />
+                </ReplyWrapper>
               ))}
             </div>
           </div>
         </AnimatedReplies>
       )}
+    </div>
+  )
+}
+
+// --- Thread Decorators ---
+
+function ThreadLine() {
+  return (
+    <div
+      className="absolute left-[15px] top-8 bottom-0 w-px bg-border/50 transition-colors"
+      aria-hidden="true"
+    />
+  )
+}
+
+function ReplyWrapper({
+  isLast,
+  children,
+}: {
+  isLast: boolean
+  children: React.ReactNode
+}) {
+  return (
+    <div className="relative">
+      {/* Curved connector */}
+      <div className="absolute -left-[21px] top-[14px] size-[18px] rounded-bl-xl border-l border-b border-border/50 transition-colors" />
+
+      {/* Mask vertical line at last item */}
+      {isLast && (
+        <div className="absolute -left-[21px] top-[14px] bottom-0 w-px bg-background z-10" />
+      )}
+
+      {children}
     </div>
   )
 }

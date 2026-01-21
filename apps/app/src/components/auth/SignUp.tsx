@@ -87,46 +87,47 @@ export default function SignUp() {
   };
 
   return (
-    <section className="flex min-h-screen bg-background px-4 sm:px-6 py-8 sm:py-12">
+    <section className="flex flex-1 bg-background px-4 sm:px-6 py-8 sm:py-12 items-center justify-center">
       <form
         noValidate
-        className="bg-background m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border border-border shadow-sm shadow-zinc-950/3 dark:[--color-muted:var(--color-zinc-900)] ring-1 ring-border/60 ring-offset-1 ring-offset-white dark:ring-offset-black"
+        className="bg-background m-auto h-fit w-full max-w-sm"
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
         }}
       >
-        <div className="bg-card dark:bg-black/40 -m-px rounded-[calc(var(--radius)+.125rem)] border p-6 sm:p-8 pb-5 sm:pb-6">
-          <div className="text-left">
-            <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-left">
+        <div className="p-6 sm:p-8 pb-5 sm:pb-6">
+          <div className="text-center">
+            <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-center">
               Sign up to featul
             </h1>
-            <p className="text-xs sm:text-sm text-accent mb-2 text-left">
-              Sign up with social or email
-            </p>
           </div>
 
           <div className="mt-6 space-y-6">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-3">
               <Button
                 type="button"
-                variant="card"
+                variant="nav"
                 onClick={handleGoogleSignUp}
                 disabled={isLoading}
-                className="text-sm sm:text-base gap-2 sm:gap-3"
+                className="w-full text-sm font-normal gap-2 sm:gap-3 border-border/40 hover:bg-accent/40"
               >
-                <GoogleIcon className="size-4 sm:size-5" />
-                <span>Google</span>
+                <div className="flex items-center gap-2">
+                  <GoogleIcon className="size-4 sm:size-5" />
+                  <span>Continue with Google</span>
+                </div>
               </Button>
               <Button
                 type="button"
-                variant="card"
+                variant="nav"
                 onClick={handleGithubSignUp}
                 disabled={isLoading}
-                className="text-sm sm:text-base gap-2 sm:gap-3"
+                className="w-full text-sm font-normal gap-2 sm:gap-3 border-border/40 hover:bg-accent/40"
               >
-                <GitHubIcon className="size-4 sm:size-5" />
-                <span>GitHub</span>
+                <div className="flex items-center gap-2">
+                  <GitHubIcon className="size-4 sm:size-5" />
+                  <span>Continue with GitHub</span>
+                </div>
               </Button>
             </div>
 
@@ -183,16 +184,16 @@ export default function SignUp() {
               )}
             </div>
 
-            <LoadingButton className="w-full" type="submit" loading={isLoading}>
+            <LoadingButton className="w-full bg-blue-500 hover:bg-blue-600 text-white" type="submit" loading={isLoading}>
               Sign Up
             </LoadingButton>
-            {error && <p className="text-destructive text-xs mt-2">{error}</p>}
+            {error && <p className="text-destructive text-xs mt-2 text-center">{error}</p>}
 
           </div>
         </div>
 
         <div className="p-3">
-          <p className="text-accent-foreground text-center text-sm sm:text-base">
+          <p className="text-accent-foreground text-center text-sm font-normal">
             Already have an account?
             <Button asChild variant="link" className="px-2 text-primary">
               <Link href={rawRedirect ? `/auth/sign-in?redirect=${encodeURIComponent(rawRedirect)}` : "/auth/sign-in"}>Sign in</Link>

@@ -76,7 +76,7 @@ function RequestItemBase({ item, workspaceSlug, linkBase, isSelecting, isSelecte
       </Link>
       <div className="ml-auto flex items-center gap-3 text-xs text-accent">
         <div className="inline-flex items-center gap-2 relative z-10">
-          <UpvoteButton postId={item.id} upvotes={item.upvotes} hasVoted={item.hasVoted} className="text-xs hover:text-red-500/80" activeBg />
+          <UpvoteButton postId={item.id} upvotes={item.upvotes} hasVoted={item.hasVoted} className="text-xs hover:text-red-500/80" />
         </div>
         <div className="inline-flex items-center gap-1">
           <CommentsIcon aria-hidden className="size-3.5" />

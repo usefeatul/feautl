@@ -29,10 +29,10 @@ export default function RequestNavigation({ postId, workspaceSlug, prev, next, p
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <div className="inline-flex items-center rounded-sm border bg-card overflow-hidden">
-        <Button 
-          asChild 
-          variant="nav" 
-          size="sm" 
+        <Button
+          asChild
+          variant="nav"
+          size="sm"
           className="h-8 px-3 gap-2 rounded-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:bg-card"
           disabled={!backHref}
         >
@@ -49,10 +49,10 @@ export default function RequestNavigation({ postId, workspaceSlug, prev, next, p
           )}
         </Button>
         <div className="mx-0.5 h-5 w-px bg-border dark:bg-border/10" />
-        <Button 
-          asChild 
-          variant="nav" 
-          size="sm" 
+        <Button
+          asChild
+          variant="nav"
+          size="sm"
           className="h-8 px-3 gap-2 rounded-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:bg-card"
           disabled={!prevHref}
         >
@@ -69,21 +69,21 @@ export default function RequestNavigation({ postId, workspaceSlug, prev, next, p
           )}
         </Button>
         <div className="mx-0.5 h-5 w-px bg-border dark:bg-border/10" />
-        <Button 
-          asChild 
-          variant="nav" 
-          size="sm" 
+        <Button
+          asChild
+          variant="nav"
+          size="sm"
           className="h-8 px-3 gap-2 rounded-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:bg-card "
           disabled={!nextHref}
         >
           {nextHref ? (
             <Link href={nextHref} title={next?.title ? `Next: ${next.title} (X)` : "Next (X)"} aria-label="Next post" aria-keyshortcuts="x">
-               <span className="hidden sm:inline-flex items-center justify-center rounded-sm border bg-card dark:bg-black px-1.5 text-xs font-extralight text-accent h-5">X</span>
+              <span className="hidden sm:inline-flex items-center justify-center rounded-sm border bg-card dark:bg-black px-1.5 text-xs font-extralight text-accent h-5">X</span>
               <span className="text-xs font-medium">Next</span>
             </Link>
           ) : (
             <span aria-hidden="true" className="flex items-center gap-2">
-               <span className="hidden sm:inline-flex items-center justify-center rounded-sm border bg-card dark:bg-black px-1.5 text-xs font-extralight text-accent h-5">X</span>
+              <span className="hidden sm:inline-flex items-center justify-center rounded-sm border bg-card dark:bg-black px-1.5 text-xs font-extralight text-accent h-5">X</span>
               <span className="text-xs font-medium opacity-50">Next</span>
             </span>
           )}

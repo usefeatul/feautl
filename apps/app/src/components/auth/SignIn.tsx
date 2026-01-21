@@ -11,7 +11,7 @@ import GitHubIcon from "@featul/ui/icons/github";
 import Link from "next/link";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/global/loading-button";
-import { FingerprintIcon } from "lucide-react";
+
 
 
 export default function SignIn() {
@@ -105,56 +105,47 @@ export default function SignIn() {
     <section className="flex min-h-screen bg-background px-4 sm:px-6 py-8 sm:py-12">
       <form
         noValidate
-        className="bg-background m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border border-border shadow-sm shadow-zinc-950/3 dark:[--color-muted:var(--color-zinc-900)] ring-1 ring-border/60 ring-offset-1 ring-offset-white dark:ring-offset-black"
+        className="bg-background m-auto h-fit w-full max-w-sm"
         onSubmit={(e) => {
           e.preventDefault();
           handleEmailSignIn();
         }}
       >
-        <div className="bg-card dark:bg-black/40 -m-px rounded-[calc(var(--radius)+.125rem)] border p-6 sm:p-8 pb-5 sm:pb-6">
-          <div className="text-left">
-            <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-left">
+        <div className="p-6 sm:p-8 pb-5 sm:pb-6">
+          <div className="text-center">
+            <h1 className="mb-2 mt-4 text-xl sm:text-2xl font-semibold text-center">
               Sign in to featul
             </h1>
-            <p className="text-xs sm:text-sm text-accent mb-2 text-left">
-              Welcome back! Sign in to continue
-            </p>
           </div>
 
           <div className="mt-6 space-y-6">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-3">
               <Button
                 type="button"
-                variant="card"
+                variant="nav"
                 onClick={handleGoogleSignIn}
                 disabled={isLoading}
-                className="text-sm sm:text-base gap-2 sm:gap-3"
+                className="w-full text-sm font-normal gap-2 sm:gap-3 border-border/40 hover:bg-accent/40"
               >
-                <GoogleIcon className="size-4 sm:size-5" />
-                <span>Google</span>
+                <div className="flex items-center gap-2">
+                  <GoogleIcon className="size-4 sm:size-5" />
+                  <span>Continue with Google</span>
+                </div>
               </Button>
               <Button
                 type="button"
-                variant="card"
+                variant="nav"
                 onClick={handleGithubSignIn}
                 disabled={isLoading}
-                className="text-sm sm:text-base gap-2 sm:gap-3"
+                className="w-full text-sm font-normal gap-2 sm:gap-3 border-border/40 hover:bg-accent/40"
               >
-                <GitHubIcon className="size-4 sm:size-5" />
-                <span>GitHub</span>
+                <div className="flex items-center gap-2">
+                  <GitHubIcon className="size-4 sm:size-5" />
+                  <span>Continue with GitHub</span>
+                </div>
               </Button>
             </div>
 
-            <Button
-              type="button"
-              variant="card"
-              onClick={handlePasskeySignIn}
-              disabled={isLoading}
-              className="w-full text-sm sm:text-base gap-2 sm:gap-3"
-            >
-              <FingerprintIcon className="size-4 sm:size-5" />
-              <span>Sign in with Passkey</span>
-            </Button>
 
             <div className="my-2 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
               <hr className="border-dashed" />
@@ -205,20 +196,31 @@ export default function SignIn() {
               />
             </div>
 
-            <LoadingButton className="w-full" type="submit" loading={isLoading}>
+            <LoadingButton className="w-full bg-blue-500 hover:bg-blue-600 text-white" type="submit" loading={isLoading}>
               Sign In
             </LoadingButton>
-            {error && <p className="text-destructive text-xs mt-2">{error}</p>}
+            {error && <p className="text-destructive text-xs mt-2 text-center">{error}</p>}
           </div>
         </div>
 
         <div className="p-3">
-          <p className="text-accent-foreground text-center text-sm sm:text-base">
+          <p className="text-accent-foreground text-center text-sm sm:text-base mb-4">
             Don't have an account ?
             <Button asChild variant="link" className="px-2">
               <Link href={rawRedirect ? `/auth/sign-up?redirect=${encodeURIComponent(rawRedirect)}` : "/auth/sign-up"}>Create account</Link>
             </Button>
           </p>
+
+          <div className="flex justify-center">
+            <button
+              type="button"
+              onClick={handlePasskeySignIn}
+              disabled={isLoading}
+              className="text-sm font-medium text-foreground/80 hover:text-foreground flex items-center gap-2 transition-colors cursor-pointer"
+            >
+              Sign in with passkey
+            </button>
+          </div>
         </div>
       </form>
     </section>

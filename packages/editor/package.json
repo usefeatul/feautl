@@ -13,6 +13,7 @@
     "format": "biome --write ."
   },
   "dependencies": {
+    "@tiptap/html": "^3.13.0",
     "@floating-ui/dom": "^1.6.0",
     "@featul/ui": "workspace:*",
     "@phosphor-icons/react": "^2.1.10",

@@ -1,10 +1,20 @@
+<<<<<<< HEAD
 export type { ImageUploadOptions, MediaItem } from "./types";
 export { CodeBlock } from "./extensions/code-block/code-block";
+=======
+// Extensions
+/** biome-ignore-all lint/performance/noBarrelFile: <> */
+
+export type { ImageUploadOptions, MediaItem } from "./types";
+export { CodeBlock } from "./extensions/code-block";
+// Extension Kit
+>>>>>>> 7c0fb29d (refactor(editor): consolidate icons and restructure barrel files)
 export {
     default,
     ExtensionKit,
     type ExtensionKitOptions,
 } from "./extensions/extension-kit";
+<<<<<<< HEAD
 export { Figure } from "./extensions/figure/figure";
 export { ImageUpload } from "./extensions/image-upload/image-upload";
 export { MarkdownInput } from "./extensions/markdown-input/markdown-input";
@@ -23,4 +33,23 @@ export { TableColumnMenu } from "./extensions/table/menus/table-column/table-col
 export { TableRowMenu } from "./extensions/table/menus/table-row/table-row-menu";
 export { TwitterUpload } from "./extensions/twitter/twitter-upload";
 export { Twitter } from "./extensions/twitter/twitter";
+=======
+export { Figure } from "./extensions/figure";
+export { ImageUpload } from "./extensions/image-upload";
+export { MarkdownInput } from "./extensions/markdown-input";
+export {
+    configureSlashCommand,
+    handleCommandNavigation,
+    SlashCommand,
+} from "./extensions/slash-command";
+export {
+    Table,
+    TableCell,
+    TableColumnMenu,
+    TableHeader,
+    TableRow,
+    TableRowMenu,
+} from "./extensions/table";
+export { TwitterUpload } from "./extensions/twitter/twitter-upload";
+>>>>>>> 7c0fb29d (refactor(editor): consolidate icons and restructure barrel files)
 export { YouTubeUpload } from "./extensions/youtube/youtube-upload";

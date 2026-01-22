@@ -42,7 +42,10 @@ export type EditorSlashMenuProps = {
     command: (item: SuggestionItem) => void;
     editor: Editor;
     range: Range;
+<<<<<<< HEAD
     isLoading?: boolean;
+=======
+>>>>>>> 7c0fb29d (refactor(editor): consolidate icons and restructure barrel files)
 };
 
 /**

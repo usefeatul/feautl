@@ -2,10 +2,17 @@ export {
     EditorContext,
     EditorProvider,
     type EditorProviderProps,
+<<<<<<< HEAD
     type useFeatulEditorOptions,
     useCurrentEditor,
     useEditor,
     useFeatulEditor,
+=======
+    type UseMarbleEditorOptions,
+    useCurrentEditor,
+    useEditor,
+    useMarbleEditor,
+>>>>>>> 7c0fb29d (refactor(editor): consolidate icons and restructure barrel files)
 } from "./components/editor-provider";
 export { EditorTableMenus } from "./components/editor-table-menus";
 
@@ -78,6 +85,7 @@ export {
 } from "./components/nodes/editor-node-task-list";
 export { EditorNodeText, type EditorNodeTextProps } from "./components/nodes/editor-node-text";
 
+<<<<<<< HEAD
 // UI
 export {
     BubbleMenuButton,
@@ -86,3 +94,6 @@ export {
 } from "./components/ui/editor-button";
 export { EditorSelector, type EditorSelectorProps } from "./components/ui/editor-selector";
 
+=======
+export * from "./components/ui";
+>>>>>>> 7c0fb29d (refactor(editor): consolidate icons and restructure barrel files)

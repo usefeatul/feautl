@@ -26,8 +26,11 @@ export type {
   useFeatulEditorOptions,
 =======
   UseMarbleEditorOptions,
+<<<<<<< HEAD
   // Legacy-compatible types
 >>>>>>> d1482aa1 (refactor(editor): remove unused components and clean up exports)
+=======
+>>>>>>> 7c0fb29d (refactor(editor): consolidate icons and restructure barrel files)
 } from "./components";
 export {
   EditorBubbleMenu,
@@ -60,8 +63,11 @@ export {
   useFeatulEditor,
 =======
   useMarbleEditor,
+<<<<<<< HEAD
   // Legacy-compatible components (for migration from editorold)
 >>>>>>> d1482aa1 (refactor(editor): remove unused components and clean up exports)
+=======
+>>>>>>> 7c0fb29d (refactor(editor): consolidate icons and restructure barrel files)
 } from "./components";
 export {
   BubbleMenuButton,
@@ -85,7 +91,11 @@ export {
 } from "./extensions";
 export type { ExtensionKitOptions } from "./extensions";
 export { ExtensionKit } from "./extensions";
+<<<<<<< HEAD
 export { lowlight } from "./lib/lowlight";
+=======
+export { lowlight } from "./lib";
+>>>>>>> 7c0fb29d (refactor(editor): consolidate icons and restructure barrel files)
 export type {
   EditorButtonProps,
   EditorIcon,

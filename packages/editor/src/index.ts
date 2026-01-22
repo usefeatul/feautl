@@ -5,8 +5,6 @@
 export type { Editor, JSONContent } from "@tiptap/react";
 export type {
   EditorBubbleMenuProps,
-  EditorCharacterCountProps,
-  EditorFloatingMenuProps,
   EditorLinkSelectorProps,
   // Mark Component Types
   EditorMarkBoldProps,
@@ -34,16 +32,10 @@ export type {
   EditorSelectorProps,
   UseMarbleEditorOptions,
   // Legacy-compatible types
-  NotionEditorRef,
-  NotionEditorProps,
-  ChangelogRendererProps,
 } from "./components";
 export {
   EditorBubbleMenu,
-  EditorCharacterCount,
-  EditorContent,
   EditorContext,
-  EditorFloatingMenu,
   EditorLinkSelector,
   // Mark Components
   EditorMarkBold,
@@ -74,8 +66,6 @@ export {
   useEditor,
   useMarbleEditor,
   // Legacy-compatible components (for migration from editorold)
-  NotionEditor,
-  ChangelogRenderer,
 } from "./components";
 export * from "./components/ui";
 export {

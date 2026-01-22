@@ -18,7 +18,7 @@ export default async function StartPage() {
   if (!session?.user) {
     redirect("/auth/sign-in?redirect=/start")
   }
-  const slug = await findFirstAccessibleWorkspaceSlug(session.user.id)
+  const slug = await findFirstAccessibleWorkspaceSlug(session.user.id!)
   if (slug) {
     redirect(`/workspaces/${slug}`)
   }

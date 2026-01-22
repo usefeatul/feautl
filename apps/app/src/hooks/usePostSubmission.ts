@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation"
 interface UsePostSubmissionProps {
   workspaceSlug: string
   onSuccess: () => void
-  onCreated?: (post: { post: { slug: string } }) => void
+  onCreated?: (post: { slug: string }) => void
   skipDefaultRedirect?: boolean
 }
 
@@ -21,7 +21,7 @@ export function usePostSubmission({ workspaceSlug, onSuccess, onCreated, skipDef
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const submitPost = async (selectedBoard: { slug: string } | null, user: { id: string } | null, image?: string | null, roadmapStatus?: string, tags?: string[]) => {
+  const submitPost = async (selectedBoard: { slug: string } | null, user: any | null, image?: string | null, roadmapStatus?: string, tags?: string[]) => {
     if (!title || !content || !selectedBoard) return
 
     const MAX_TITLE_LENGTH = 100

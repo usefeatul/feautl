@@ -44,7 +44,6 @@ export function MemberTopPosts({ slug, topPosts, isLoading }: MemberTopPostsProp
                 postId={p.id}
                 upvotes={Number(p.upvotes || 0)}
                 className="text-xs"
-                activeBg
               />
             </div>
           ))}

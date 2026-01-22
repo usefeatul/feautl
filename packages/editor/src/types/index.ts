@@ -23,19 +23,7 @@ export type SuggestionItem = {
   command: (props: { editor: Editor; range: Range }) => void;
 };
 
-/**
- * Props for editor provider component
- */
-export type EditorProviderProps = {
-  className?: string;
-  limit?: number;
-  placeholder?: string;
-  children?: React.ReactNode;
-  content?: string;
-  extensions?: any[];
-  editorProps?: Record<string, unknown>;
-  onUpdate?: (props: { editor: Editor }) => void;
-};
+
 
 /**
  * Props for editor button components

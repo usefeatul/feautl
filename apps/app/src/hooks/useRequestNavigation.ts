@@ -32,7 +32,7 @@ export function useRequestNavigation(
       if (
         document.activeElement instanceof HTMLInputElement ||
         document.activeElement instanceof HTMLTextAreaElement ||
-        document.activeElement?.isContentEditable
+        (document.activeElement as HTMLElement)?.isContentEditable
       ) {
         return
       }

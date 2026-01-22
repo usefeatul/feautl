@@ -61,7 +61,6 @@ export function SimilarPosts({ posts }: SimilarPostsProps) {
                         upvotes={post.upvotes || 0}
                         hasVoted={false}
                         className="text-xs"
-                        activeBg
                       />
                     </div>
                     <div className="inline-flex items-center gap-1">

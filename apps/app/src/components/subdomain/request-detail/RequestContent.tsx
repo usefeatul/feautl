@@ -126,7 +126,6 @@ export function RequestContent({
             upvotes={post.upvotes}
             hasVoted={post.hasVoted}
             className="text-xs hover:text-red-500/80"
-            activeBg
           />
           <CommentCounter
             postId={post.id}

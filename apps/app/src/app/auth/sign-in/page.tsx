@@ -22,7 +22,7 @@ export default async function SignInPage({ searchParams }: { searchParams?: { re
     if (raw?.startsWith("/")) {
       redirect(raw)
     }
-    const slug = await findFirstAccessibleWorkspaceSlug(session.user.id)
+    const slug = await findFirstAccessibleWorkspaceSlug(session.user.id!)
     if (slug) redirect(`/workspaces/${slug}`)
     redirect("/start")
   }

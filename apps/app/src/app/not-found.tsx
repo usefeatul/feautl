@@ -10,7 +10,7 @@ export default async function NotFound() {
   const session = await getServerSession()
   let href = "/start"
   if (session?.user) {
-    const userId = session.user.id
+    const userId = session.user.id!
     const slug = await findFirstAccessibleWorkspaceSlug(userId)
     if (slug) href = `/workspaces/${slug}`
   }

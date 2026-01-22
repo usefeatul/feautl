@@ -2,11 +2,7 @@
 /** biome-ignore-all lint/performance/noBarrelFile: <> */
 
 // Utility Components
-export {
-  EditorCharacterCount,
-  type EditorCharacterCountProps,
-} from "./editor-character-count";
-export { EditorContent } from "./editor-content";
+
 export {
   EditorContext,
   EditorProvider,
@@ -22,8 +18,6 @@ export * from "./marks";
 export {
   EditorBubbleMenu,
   type EditorBubbleMenuProps,
-  EditorFloatingMenu,
-  type EditorFloatingMenuProps,
 } from "./menus";
 // Node Components
 export * from "./nodes";
@@ -31,8 +25,5 @@ export * from "./ui";
 
 // Legacy-compatible components (for migration from editorold)
 
-export {
-  ChangelogRenderer,
-  type ChangelogRendererProps,
-} from "./changelog-renderer";
+
 export * from "./icons";

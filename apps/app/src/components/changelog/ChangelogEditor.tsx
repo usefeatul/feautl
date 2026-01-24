@@ -11,7 +11,9 @@ import TextareaAutosize from "react-textarea-autosize";
 import { useEditorHeaderActions } from "./EditorHeaderContext";
 import { CoverImageUploader } from "./CoverImageUploader";
 import { TagSelector, type WorkspaceTag } from "./TagSelector";
-import { Loader2, Save, FileText, CheckCircle, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft } from "lucide-react";
+import { InfoIcon } from "@featul/ui/icons/info";
+import { TickIcon } from "@featul/ui/icons/tick";
 
 interface ChangelogEditorProps {
     workspaceSlug: string;
@@ -92,7 +94,8 @@ export function ChangelogEditor({
                 const data = await res.json();
                 if ("ok" in data && data.ok) {
                     toast.success(isDraft ? "Draft saved" : "Entry published");
-                    router.push(`/workspaces/${workspaceSlug}/changelog`);
+                    setIsDirty(false);
+                    router.replace(`/workspaces/${workspaceSlug}/changelog/${data.entry.id}/edit`);
                 } else {
                     toast.error("Failed to create entry");
                 }
@@ -109,7 +112,8 @@ export function ChangelogEditor({
                 const data = await res.json();
                 if ("ok" in data && data.ok) {
                     toast.success("Changes saved");
-                    router.push(`/workspaces/${workspaceSlug}/changelog`);
+                    setIsDirty(false);
+                    // router.push(`/workspaces/${workspaceSlug}/changelog`);
                 } else {
                     toast.error("Failed to update entry");
                 }
@@ -122,32 +126,55 @@ export function ChangelogEditor({
         }
     }, [mode, workspaceSlug, entryId, title, coverImage, selectedTags, isDraft, router]);
 
+    const [isDirty, setIsDirty] = useState(false);
+
+    // Auto-save effect
+    useEffect(() => {
+        if (isDirty && !isSaving) {
+            const timer = setTimeout(() => {
+                handleSave();
+            }, 2000); // Auto-save after 2 seconds
+            return () => clearTimeout(timer);
+        }
+    }, [isDirty, isSaving, handleSave]);
+
+    // Reset isDirty after successful save (handled in handleSave via isSaving check logic ideally, 
+    // but handleSave toggles isSaving. We need to know when save finishes.)
+    // Actually, handleSave sets isSaving(true) then (false). 
+    // We can clear isDirty in handleSave *after* success.
+
     // Register actions with the header context
     useEffect(() => {
         setActions([
             {
+                key: "status",
+                label: "Published", // Label for Switch
+                type: "switch",
+                checked: !isDraft,
+                onClick: () => setIsDraft(!isDraft),
+            },
+            {
                 key: "save",
-                label: "Save Changes",
-                icon: isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />,
+                label: "Save",
+                type: "button",
+                variant: "changelog",
+                // Show InfoIcon if dirty (unsaved), TickIcon if clean (saved), Loader if saving
+                icon: isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : isDirty ? <InfoIcon className="h-4 w-4" /> : <TickIcon className="h-4 w-4" />,
                 onClick: handleSave,
                 disabled: isSaving,
             },
             {
-                key: "status",
-                label: isDraft ? "Publish Entry" : "Revert to Draft",
-                icon: isDraft ? <CheckCircle className="h-4 w-4" /> : <FileText className="h-4 w-4" />,
-                onClick: () => setIsDraft(!isDraft),
-            },
-            {
                 key: "back",
-                label: "Back to Changelog",
+                label: "",
+                type: "button",
+                variant: "changelog",
                 icon: <ArrowLeft className="h-4 w-4" />,
                 onClick: () => router.push(`/workspaces/${workspaceSlug}/changelog`),
             },
         ]);
 
         return () => clearActions();
-    }, [setActions, clearActions, handleSave, isSaving, isDraft, router, workspaceSlug]);
+    }, [setActions, clearActions, handleSave, isSaving, isDraft, isDirty, router, workspaceSlug]);
 
     return (
         <div className="min-h-screen bg-background">
@@ -182,7 +209,7 @@ export function ChangelogEditor({
                 {/* Title */}
                 <TextareaAutosize
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) => { setTitle(e.target.value); setIsDirty(true); }}
                     placeholder="Enter a title"
                     className="w-full resize-none border-none bg-transparent text-3xl font-bold placeholder:text-muted-foreground/50 focus:outline-none focus:ring-0 mb-8 overflow-hidden"
                     minRows={1}
@@ -197,6 +224,7 @@ export function ChangelogEditor({
                         placeholder="Start typing or press '/' for commands"
                         className="min-h-[400px]"
                         onImageUpload={handleImageUpload}
+                        onUpdate={() => setIsDirty(true)}
                     />
                 </div>
             </main>

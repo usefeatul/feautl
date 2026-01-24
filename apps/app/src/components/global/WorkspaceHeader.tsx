@@ -3,18 +3,14 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@featul/ui/components/button"
+
+import { Switch } from "@featul/ui/components/switch"
 import { ChevronLeftIcon } from "@featul/ui/icons/chevron-left"
 import { SECTIONS, WORKSPACE_TITLES } from "@/config/sections"
 import HeaderActions from "@/components/requests/HeaderActions"
-import { Plus, MoreHorizontal } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useEditorHeaderActionsOptional } from "@/components/changelog/EditorHeaderContext"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  PopoverList,
-  PopoverListItem,
-} from "@featul/ui/components/popover"
+
 
 function resolveTitle(segment: string): string {
   const s = segment.toLowerCase()
@@ -70,28 +66,34 @@ export default function WorkspaceHeader() {
             </Link>
           </Button>
         ) : showChangelogEditActions && editorContext && editorContext.actions.length > 0 ? (
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="nav" size="icon-sm">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent align="end" list className="min-w-0 w-fit">
-              <PopoverList>
-                {editorContext.actions.map((action) => (
-                  <PopoverListItem
-                    key={action.key}
-                    onClick={action.onClick}
-                    disabled={action.disabled}
-                    className={`gap-2 text-sm ${action.destructive ? "text-destructive" : ""}`}
-                  >
-                    {action.icon}
-                    {action.label}
-                  </PopoverListItem>
-                ))}
-              </PopoverList>
-            </PopoverContent>
-          </Popover>
+          <div className="flex items-center gap-0 bg-card rounded-md border border-border ring-1 ring-border/60 ring-offset-1 ring-offset-white dark:ring-offset-black divide-x divide-border overflow-hidden">
+            {editorContext.actions
+              .filter((action) => action.type === "switch")
+              .map((action) => (
+                <div key={action.key} className="flex items-center gap-2 px-3 h-8 bg-transparent hover:bg-muted/50 transition-colors">
+                  <span className="text-sm font-medium text-muted-foreground">{action.label}</span>
+                  <Switch checked={action.checked} onCheckedChange={action.onClick} />
+                </div>
+              ))}
+
+            {editorContext.actions
+              .filter((action) => action.type === "button")
+              .map((action) => (
+                <Button
+                  key={action.key}
+                  variant="ghost"
+                  size="xs"
+                  onClick={action.onClick}
+                  disabled={action.disabled}
+                  className="gap-2 h-8 rounded-none hover:bg-muted/50 px-3"
+                >
+                  {action.label}
+                  {action.icon}
+                </Button>
+              ))}
+
+
+          </div>
         ) : null}
       </div>
     </div>

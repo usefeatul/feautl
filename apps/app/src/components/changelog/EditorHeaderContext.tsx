@@ -9,6 +9,9 @@ interface EditorAction {
     onClick: () => void
     disabled?: boolean
     destructive?: boolean
+    type?: "button" | "switch" | "menu"
+    checked?: boolean
+    variant?: "changelog"
 }
 
 interface EditorHeaderContextValue {

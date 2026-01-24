@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@featul/ui/components/button"
+import { Toolbar } from "@featul/ui/components/toolbar"
 
 import { Switch } from "@featul/ui/components/switch"
 import { ChevronLeftIcon } from "@featul/ui/icons/chevron-left"
@@ -50,21 +51,25 @@ export default function WorkspaceHeader() {
           <div />
         )}
         {isMemberDetail ? (
-          <Button asChild variant="nav" size="xs">
-            <Link href={`/workspaces/${workspaceSlug}/members`} aria-label="Back to members">
-              <ChevronLeftIcon className="size-3 mr-1" />
-              <span className="hidden sm:inline">Back</span>
-            </Link>
-          </Button>
+          <Toolbar size="sm">
+            <Button asChild variant="card" className="h-full rounded-none border-none hover:bg-muted px-3 text-xs font-medium text-muted-foreground hover:text-foreground">
+              <Link href={`/workspaces/${workspaceSlug}/members`} aria-label="Back to members">
+                <ChevronLeftIcon className="size-3 mr-1" />
+                <span className="hidden sm:inline">Back</span>
+              </Link>
+            </Button>
+          </Toolbar>
         ) : showRequestsActions ? (
           <HeaderActions />
         ) : showChangelogActions ? (
-          <Button asChild variant="nav">
-            <Link href={`/workspaces/${workspaceSlug}/changelog/new`}>
-              <Plus className="h-4 w-4 mr-2" />
-              New Entry
-            </Link>
-          </Button>
+          <Toolbar size="sm">
+            <Button asChild variant="card" className="h-full rounded-none border-none hover:bg-muted px-3 text-xs font-medium text-muted-foreground hover:text-foreground">
+              <Link href={`/workspaces/${workspaceSlug}/changelog/new`}>
+                <Plus className="h-4 w-4 mr-2" />
+                New Entry
+              </Link>
+            </Button>
+          </Toolbar>
         ) : showChangelogEditActions && editorContext && editorContext.actions.length > 0 ? (
           <div className="flex items-center gap-0 bg-card rounded-md border border-border ring-1 ring-border/60 ring-offset-1 ring-offset-white dark:ring-offset-black divide-x divide-border overflow-hidden">
             {editorContext.actions

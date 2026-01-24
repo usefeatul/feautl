@@ -6,6 +6,7 @@ import { cn } from "@featul/ui/lib/utils"
 import { ChevronLeftIcon } from "@featul/ui/icons/chevron-left"
 import { MergePopover } from "./MergePopover"
 import { DeletePostButton } from "./DeletePostButton"
+import { Toolbar, ToolbarSeparator } from "@featul/ui/components/toolbar"
 
 type NavItem = {
   slug: string
@@ -28,7 +29,7 @@ export interface RequestNavigationProps {
 export default function RequestNavigation({ postId, workspaceSlug, prev, next, prevHref, nextHref, backHref, className, showActions, onMergeClick }: RequestNavigationProps) {
   return (
     <div className={cn("flex items-center gap-3", className)}>
-      <div className="inline-flex items-center rounded-sm border bg-card overflow-hidden">
+      <Toolbar size="sm" variant="plain">
         <Button
           asChild
           variant="nav"
@@ -48,7 +49,7 @@ export default function RequestNavigation({ postId, workspaceSlug, prev, next, p
             </span>
           )}
         </Button>
-        <div className="mx-0.5 h-5 w-px bg-border dark:bg-border/10" />
+        <ToolbarSeparator />
         <Button
           asChild
           variant="nav"
@@ -68,7 +69,7 @@ export default function RequestNavigation({ postId, workspaceSlug, prev, next, p
             </span>
           )}
         </Button>
-        <div className="mx-0.5 h-5 w-px bg-border dark:bg-border/10" />
+        <ToolbarSeparator />
         <Button
           asChild
           variant="nav"
@@ -88,14 +89,14 @@ export default function RequestNavigation({ postId, workspaceSlug, prev, next, p
             </span>
           )}
         </Button>
-      </div>
+      </Toolbar>
 
       {showActions ? (
-        <div className="inline-flex items-center rounded-sm border bg-card overflow-hidden">
+        <Toolbar size="sm" variant="plain">
           <MergePopover postId={postId} workspaceSlug={workspaceSlug} />
-          <div className="h-5 w-px bg-border" />
+          <ToolbarSeparator />
           <DeletePostButton postId={postId} workspaceSlug={workspaceSlug} backHref={backHref} />
-        </div>
+        </Toolbar>
       ) : null}
     </div>
   )

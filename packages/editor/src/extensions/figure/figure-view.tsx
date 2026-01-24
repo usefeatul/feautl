@@ -277,7 +277,7 @@ export const FigureView = ({
         {/* Toolbar in Popover - only shown when selected */}
         <PopoverContent
           align="start"
-          className="p-1 bg-muted rounded-2xl gap-1 w-80 shadow-none border-none"
+          className="p-1 bg-muted dark:bg-black/40 rounded-2xl gap-1 w-80 shadow-none border-none"
           onOpenAutoFocus={(event) => event.preventDefault()}
           side="right"
           sideOffset={18}
@@ -289,7 +289,7 @@ export const FigureView = ({
             </div>
           </div>
 
-          <div className="bg-card rounded-lg p-3 dark:bg-black/40 border border-border flex flex-col gap-3">
+          <div className="bg-card rounded-lg p-3 dark:bg-black border border-border flex flex-col gap-3">
             {/* Width Controls - Only percent for now */}
             <div className="space-y-1">
               <Label className="font-normal text-xs text-muted-foreground" htmlFor={widthId}>

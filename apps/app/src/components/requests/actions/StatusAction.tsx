@@ -65,7 +65,7 @@ export default function StatusAction({ className = "" }: { className?: string })
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="nav"
+          variant="card"
           size="icon-sm"
           aria-label="Requests"
           className={className}

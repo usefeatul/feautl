@@ -36,7 +36,7 @@ export default function SortAction({ className = "" }: SortActionProps) {
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="nav"
+          variant="card"
           size="icon-sm"
           aria-label="Sort"
           className={className}

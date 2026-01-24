@@ -97,9 +97,9 @@ export function CoverImageUploader({
             />
             <Button variant="card" size="icon" className="h-7 w-7" asChild disabled={isUploading}>
                 {isUploading ? (
-                    <span><Loader2 className="h-4 w-4 animate-spin" /></span>
+                    <span><Loader2 className="size-4 animate-spin" /></span>
                 ) : (
-                    <span><ImageIcon size={16} className="text-muted-foreground" /></span>
+                    <span><ImageIcon className="text-muted-foreground size-4" /></span>
                 )}
             </Button>
         </label>

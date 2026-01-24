@@ -72,7 +72,7 @@ export const YouTubeComp = ({
   const isValidUrl = extractYouTubeVideoId(url) !== null;
 
   return (
-    <div className="flex flex-col gap-2 p-1 bg-muted rounded-2xl">
+    <div className="flex flex-col gap-2 p-1 bg-muted dark:bg-black/40 rounded-2xl">
       <div className="flex flex-row items-center justify-between space-y-0 pb-0 px-2 mt-0.5 py-0.5">
         <div className="flex items-center gap-2 text-sm font-normal">
           <YouTubeIcon className="size-3.5" />

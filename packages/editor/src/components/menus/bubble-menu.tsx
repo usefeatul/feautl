@@ -72,7 +72,7 @@ export const EditorBubbleMenu = ({
   return (
     <TiptapBubbleMenu
       className={cn(
-        "p-1 bg-muted rounded-2xl gap-1 shadow-none border-none",
+        "p-1 bg-muted dark:bg-black rounded-2xl gap-1 shadow-none border-none",
         className
       )}
       editor={editor ?? undefined}

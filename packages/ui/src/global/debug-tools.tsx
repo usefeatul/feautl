@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, Fragment } from "react";
 import { Button } from "@featul/ui/components/button";
 import { Switch } from "@featul/ui/components/switch";
+import { Toolbar, ToolbarSeparator } from "@featul/ui/components/toolbar";
 import { ChevronLeft, ChevronRight, Check, Search } from "lucide-react";
 import { cn } from "@featul/ui/lib/utils";
 
@@ -296,10 +297,7 @@ export function DebugTools() {
         ) : null
       )}
 
-      <div className={cn(
-        "flex items-stretch rounded-lg border bg-background/95 transition-all duration-300 overflow-hidden h-9",
-        isCollapsed ? "w-9" : "w-auto"
-      )}>
+      <Toolbar size="default" className={cn(isCollapsed ? "w-9" : "w-auto")}>
         {isCollapsed ? (
           <Button
             size="icon"
@@ -322,7 +320,7 @@ export function DebugTools() {
               />
             </div>
 
-            <div className="w-[1px] bg-border" />
+            <ToolbarSeparator />
 
             <div className="flex items-center gap-2 px-3 hover:bg-muted/50 transition-colors">
               <span className="text-xs font-medium text-muted-foreground">Outline</span>
@@ -334,7 +332,7 @@ export function DebugTools() {
               />
             </div>
 
-            <div className="w-[1px] bg-border" />
+            <ToolbarSeparator />
 
             <Button
               variant="ghost"
@@ -355,7 +353,7 @@ export function DebugTools() {
               </div>
             </Button>
 
-            <div className="w-[1px] bg-border" />
+            <ToolbarSeparator />
 
             <Button
               size="icon"
@@ -368,7 +366,7 @@ export function DebugTools() {
             </Button>
           </>
         )}
-      </div>
+      </Toolbar>
 
       {showAnalysis && !isCollapsed && (
         <div className="mt-1 w-[300px] rounded-lg border bg-background/95 p-3 shadow-md backdrop-blur">

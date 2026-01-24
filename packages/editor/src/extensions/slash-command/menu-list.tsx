@@ -91,7 +91,7 @@ export const EditorSlashMenu = ({
       </PopoverAnchor>
       <PopoverContent
         id="slash-command"
-        className="p-1 bg-muted rounded-2xl gap-1 w-80 shadow-none border-none"
+        className="p-1 bg-muted dark:bg-black/40 rounded-2xl gap-1 w-80 shadow-none border-none"
         list={true}
         side="bottom"
         align="start"
@@ -99,7 +99,7 @@ export const EditorSlashMenu = ({
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <div className="flex flex-row items-center justify-between space-y-0 pb-0 px-2 mt-0.5 py-0.5 mb-1">
-          <div className="flex items-center gap-2 text-sm font-normal">
+          <div className="flex items-center gap-2 text-sm font-normal ">
             <AspectIcon className="size-3.5 text-primary" />
             Commands
           </div>

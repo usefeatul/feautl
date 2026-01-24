@@ -89,7 +89,7 @@ export default function TagsAction({ className = "" }: { className?: string }) {
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="nav"
+          variant="card"
           size="icon-sm"
           aria-label="Tags"
           className={className}

@@ -73,7 +73,7 @@ export default function BoardsAction({ className = "" }: { className?: string })
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="nav"
+          variant="card"
           size="icon-sm"
           aria-label="Boards"
           className={className}

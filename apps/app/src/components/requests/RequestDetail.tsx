@@ -12,6 +12,7 @@ import CommentList from "../comments/CommentList"
 import RequestDetailSidebar from "./RequestDetailSidebar"
 import type { CommentData } from "../../types/comment"
 import { Button } from "@featul/ui/components/button"
+import { Toolbar, ToolbarSeparator } from "@featul/ui/components/toolbar"
 import { ChevronLeftIcon } from "@featul/ui/icons/chevron-left"
 import { ChevronRightIcon } from "@featul/ui/icons/chevron-right"
 import { EditIcon } from "@featul/ui/icons/edit"
@@ -112,11 +113,11 @@ export default function RequestDetail({
                       </Link>
                     </Button>
                     <div className="inline-flex items-center gap-2">
-                      <div className="inline-flex items-center rounded-sm border bg-card overflow-hidden">
+                      <Toolbar size="sm" variant="plain">
                         <MergePopover postId={post.id} workspaceSlug={workspaceSlug} />
-                        <div className="h-5 w-px bg-border" />
+                        <ToolbarSeparator />
                         <DeletePostButton postId={post.id} workspaceSlug={workspaceSlug} backHref={backHref} />
-                      </div>
+                      </Toolbar>
                     </div>
                   </div>
                   <h1 className="text-lg font-semibold leading-tight wrap-break-words text-foreground">
@@ -180,7 +181,7 @@ export default function RequestDetail({
                     <UpvoteButton postId={post.id} upvotes={post.upvotes} hasVoted={post.hasVoted} className="text-sm" />
                     <CommentCounter postId={post.id} initialCount={post.commentCount} />
                   </div>
-                  <div className="inline-flex items-center rounded-sm border bg-card overflow-hidden">
+                  <Toolbar size="sm" variant="plain">
                     <Button
                       asChild
                       variant="nav"
@@ -200,7 +201,7 @@ export default function RequestDetail({
                         </span>
                       )}
                     </Button>
-                    <div className="mx-0.5 h-5 w-px bg-border" />
+                    <ToolbarSeparator />
                     <Button
                       asChild
                       variant="nav"
@@ -220,7 +221,7 @@ export default function RequestDetail({
                         </span>
                       )}
                     </Button>
-                  </div>
+                  </Toolbar>
                 </div>
               ) : null}
               {isMobile ? null : (

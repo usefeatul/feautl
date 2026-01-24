@@ -60,7 +60,7 @@ export default function SearchAction({ className = "" }: { className?: string })
     <>
       <Button
         type="button"
-        variant="nav"
+        variant="card"
         size="icon-sm"
         aria-label="Search"
         className={className}

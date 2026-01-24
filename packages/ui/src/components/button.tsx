@@ -33,11 +33,11 @@ const buttonVariants = cva(
           "bg-background text-foreground hover:bg-muted hover:text-accent-foreground dark:hover:bg-black/50 "
         ),
         card: cn(
-          "bg-card dark:bg-black/5 text-foreground border border-border hover:bg-muted/20 hover:text-accent-foreground dark:hover:bg-black/30"
+          "bg-card dark:bg-black/50 text-foreground border border-border hover:bg-muted/20 hover:text-accent-foreground dark:hover:bg-black/30"
         ),
-        changelog: cn(
-          "bg-card text-foreground hover:bg-muted/30 hover:text-accent-foreground hover:border-accent/20 dark:bg-black/30 dark:hover:bg-black/40"
-        ),
+        // changelog: cn(
+        //   "bg-card text-foreground hover:bg-muted/30 hover:text-accent-foreground hover:border-accent/20 dark:bg-black/30 dark:hover:bg-black/40"
+        // ),
 
       },
       size: {

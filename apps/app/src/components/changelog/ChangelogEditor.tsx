@@ -7,13 +7,13 @@ import { toast } from "sonner";
 import { FeedEditor, type FeedEditorRef } from "@/components/editor/editor";
 import type { JSONContent } from "@featul/editor";
 import TextareaAutosize from "react-textarea-autosize";
-
 import { useEditorHeaderActions } from "./EditorHeaderContext";
 import { CoverImageUploader } from "./CoverImageUploader";
-import { TagSelector, type WorkspaceTag } from "./TagSelector";
-import { Loader2, ArrowLeft } from "lucide-react";
 import { InfoIcon } from "@featul/ui/icons/info";
 import { TickIcon } from "@featul/ui/icons/tick";
+import { LoaderIcon } from "@featul/ui/icons/loader";
+import { ChevronLeftIcon } from "@featul/ui/icons/chevron-left";
+import { TagSelector, type WorkspaceTag } from "./TagSelector";
 
 interface ChangelogEditorProps {
     workspaceSlug: string;
@@ -159,7 +159,7 @@ export function ChangelogEditor({
                 type: "button",
                 variant: "changelog",
                 // Show InfoIcon if dirty (unsaved), TickIcon if clean (saved), Loader if saving
-                icon: isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : isDirty ? <InfoIcon className="h-4 w-4" /> : <TickIcon className="h-4 w-4" />,
+                icon: isSaving ? <LoaderIcon className="size-4 animate-spin" /> : isDirty ? <InfoIcon className="size-4" /> : <TickIcon className="size-4" />,
                 onClick: handleSave,
                 disabled: isSaving,
             },
@@ -168,7 +168,7 @@ export function ChangelogEditor({
                 label: "",
                 type: "button",
                 variant: "changelog",
-                icon: <ArrowLeft className="h-4 w-4" />,
+                icon: <ChevronLeftIcon className="size-3" />,
                 onClick: () => router.push(`/workspaces/${workspaceSlug}/changelog`),
             },
         ]);

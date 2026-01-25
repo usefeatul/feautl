@@ -6,7 +6,7 @@ import EmptyRequests from "./EmptyRequests"
 import { useSelection, toggleSelectionId, selectAllForKey, removeSelectedIds } from "@/lib/selection-store"
 import { BulkDeleteConfirmDialog } from "./BulkDeleteConfirmDialog"
 import { SelectionToolbar } from "./SelectionToolbar"
-import { useBulkDeleteRequests } from "./useBulkDeleteRequests"
+import { useBulkDeleteRequests } from "../../hooks/useBulkDeleteRequests"
 import { useBulkSelectionHotkeys } from "../../hooks/useBulkSelectionHotkeys"
 
 interface RequestListProps {

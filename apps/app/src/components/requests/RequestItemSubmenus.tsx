@@ -23,7 +23,7 @@ interface StatusSubmenuProps {
 
 export function StatusSubmenu({ currentStatus, isPending, onBack, onUpdateStatus }: StatusSubmenuProps) {
     return (
-        <PopoverList>
+        <PopoverList className="max-h-none! overflow-visible">
             <PopoverListItem onClick={onBack} className="text-muted-foreground">
                 <span className="text-sm">← Back</span>
             </PopoverListItem>

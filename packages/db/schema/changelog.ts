@@ -21,7 +21,7 @@ export const changelogEntry = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
     status: text('status', {
-      enum: ['draft', 'published', 'archived'],
+      enum: ['draft', 'published'],
     }).notNull().default('draft'),
     tags: json('tags').$type<string[]>().notNull().default([]),
     publishedAt: timestamp('published_at'),

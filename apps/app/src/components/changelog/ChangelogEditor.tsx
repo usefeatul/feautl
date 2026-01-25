@@ -1,10 +1,8 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { client } from "@featul/api/client";
-import { toast } from "sonner";
-import { FeedEditor, type FeedEditorRef } from "@/components/editor/editor";
+import { FeedEditor } from "@/components/editor/editor";
 import type { JSONContent } from "@featul/editor";
 import TextareaAutosize from "react-textarea-autosize";
 import { useEditorHeaderActions } from "./EditorHeaderContext";
@@ -14,6 +12,7 @@ import { TickIcon } from "@featul/ui/icons/tick";
 import { LoaderIcon } from "@featul/ui/icons/loader";
 import { ChevronLeftIcon } from "@featul/ui/icons/chevron-left";
 import { TagSelector, type WorkspaceTag } from "./TagSelector";
+import { useChangelogEntry } from "./useChangelogEntry";
 
 interface ChangelogEditorProps {
     workspaceSlug: string;
@@ -24,7 +23,7 @@ interface ChangelogEditorProps {
         content: JSONContent;
         coverImage?: string | null;
         tags: string[];
-        status: "draft" | "published" | "archived";
+        status: "draft" | "published";
     };
     availableTags: WorkspaceTag[];
 }
@@ -37,107 +36,26 @@ export function ChangelogEditor({
     availableTags,
 }: ChangelogEditorProps) {
     const router = useRouter();
-    const editorRef = useRef<FeedEditorRef>(null);
-
-    const [title, setTitle] = useState(initialData?.title || "");
-    const [coverImage, setCoverImage] = useState<string | null>(initialData?.coverImage || null);
-    const [selectedTags, setSelectedTags] = useState<string[]>(initialData?.tags || []);
-    const [isDraft, setIsDraft] = useState(initialData?.status !== "published");
-    const [isSaving, setIsSaving] = useState(false);
     const { setActions, clearActions } = useEditorHeaderActions();
 
-    // Image upload handler for the editor (slash command, drag & drop, paste)
-    const handleImageUpload = useCallback(async (file: File): Promise<string> => {
-        const res = await client.storage.getUploadUrl.$post({
-            slug: workspaceSlug,
-            fileName: file.name,
-            contentType: file.type,
-            folder: "changelog/content",
-        });
-        const data = await res.json();
+    const {
+        editorRef,
+        title,
+        setTitle,
+        coverImage,
+        setCoverImage,
+        selectedTags,
+        setSelectedTags,
+        isDraft,
+        setIsDraft,
+        isSaving,
+        isDirty,
+        setIsDirty,
+        handleImageUpload,
+        handleSave,
+    } = useChangelogEntry({ workspaceSlug, mode, entryId, initialData });
 
-        if ("uploadUrl" in data && "publicUrl" in data) {
-            await fetch(data.uploadUrl, {
-                method: "PUT",
-                body: file,
-                headers: { "Content-Type": file.type },
-            });
-            return data.publicUrl;
-        }
-        throw new Error("Failed to upload image");
-    }, [workspaceSlug]);
-
-    const handleSave = useCallback(async () => {
-        const content = editorRef.current?.getContent();
-
-        if (!title.trim()) {
-            toast.error("Please enter a title");
-            return;
-        }
-
-        if (!content || !content.content?.length) {
-            toast.error("Please add some content");
-            return;
-        }
-
-        setIsSaving(true);
-        try {
-            if (mode === "create") {
-                const res = await client.changelog.entriesCreate.$post({
-                    slug: workspaceSlug,
-                    title: title.trim(),
-                    content: content as { type: string; content?: unknown[] },
-                    coverImage: coverImage || undefined,
-                    tags: selectedTags,
-                    status: isDraft ? "draft" : "published",
-                });
-                const data = await res.json();
-                if ("ok" in data && data.ok) {
-                    toast.success(isDraft ? "Draft saved" : "Entry published");
-                    setIsDirty(false);
-                    router.replace(`/workspaces/${workspaceSlug}/changelog/${data.entry.id}/edit`);
-                } else {
-                    toast.error("Failed to create entry");
-                }
-            } else if (entryId) {
-                const res = await client.changelog.entriesUpdate.$post({
-                    slug: workspaceSlug,
-                    entryId,
-                    title: title.trim(),
-                    content: content as { type: string; content?: unknown[] },
-                    coverImage: coverImage,
-                    tags: selectedTags,
-                    status: isDraft ? "draft" : "published",
-                });
-                const data = await res.json();
-                if ("ok" in data && data.ok) {
-                    toast.success("Changes saved");
-                    setIsDirty(false);
-                    // router.push(`/workspaces/${workspaceSlug}/changelog`);
-                } else {
-                    toast.error("Failed to update entry");
-                }
-            }
-        } catch (err) {
-            toast.error("Something went wrong");
-            console.error(err);
-        } finally {
-            setIsSaving(false);
-        }
-    }, [mode, workspaceSlug, entryId, title, coverImage, selectedTags, isDraft, router]);
-
-    const [isDirty, setIsDirty] = useState(false);
-
-    // Auto-save effect
-    useEffect(() => {
-        if (isDirty && !isSaving) {
-            const timer = setTimeout(() => {
-                handleSave();
-            }, 2000); // Auto-save after 2 seconds
-            return () => clearTimeout(timer);
-        }
-    }, [isDirty, isSaving, handleSave]);
-
+    // Register actions with the header context
     useEffect(() => {
         setActions([
             {
@@ -171,7 +89,7 @@ export function ChangelogEditor({
         ]);
 
         return () => clearActions();
-    }, [setActions, clearActions, handleSave, isSaving, isDraft, isDirty, router, workspaceSlug]);
+    }, [setActions, clearActions, handleSave, isSaving, isDraft, isDirty, router, workspaceSlug, setIsDraft, setIsDirty]);
 
     return (
         <div className="min-h-screen bg-background">
@@ -209,8 +127,6 @@ export function ChangelogEditor({
                         }}
                     />
                 </div>
-
-
 
                 {/* Title */}
                 <TextareaAutosize

@@ -27,5 +27,5 @@ export const updateEntrySchema = z.object({
     summary: z.string().max(512).optional().nullable(),
     coverImage: z.string().url().optional().nullable(),
     tags: z.array(z.string()).optional(),
-    status: z.enum(["draft", "published", "archived"]).optional(),
+    status: z.enum(["draft", "published"]).optional(),
 });

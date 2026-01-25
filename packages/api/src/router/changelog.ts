@@ -454,7 +454,7 @@ export function createChangelogRouter() {
     entriesListAll: privateProcedure
       .input(z.object({
         slug: bySlugSchema.shape.slug,
-        status: z.enum(["draft", "published", "archived"]).optional(),
+        status: z.enum(["draft", "published"]).optional(),
         limit: z.number().min(1).max(50).optional(),
         offset: z.number().min(0).optional(),
       }))

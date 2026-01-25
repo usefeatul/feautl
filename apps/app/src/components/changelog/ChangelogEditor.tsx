@@ -138,12 +138,6 @@ export function ChangelogEditor({
         }
     }, [isDirty, isSaving, handleSave]);
 
-    // Reset isDirty after successful save (handled in handleSave via isSaving check logic ideally, 
-    // but handleSave toggles isSaving. We need to know when save finishes.)
-    // Actually, handleSave sets isSaving(true) then (false). 
-    // We can clear isDirty in handleSave *after* success.
-
-    // Register actions with the header context
     useEffect(() => {
         setActions([
             {
@@ -151,13 +145,16 @@ export function ChangelogEditor({
                 label: "Published", // Label for Switch
                 type: "switch",
                 checked: !isDraft,
-                onClick: () => setIsDraft(!isDraft),
+                onClick: () => {
+                    setIsDraft(!isDraft);
+                    setIsDirty(true);
+                },
             },
             {
                 key: "save",
                 label: "Save",
                 type: "button",
-                variant: "changelog",
+                variant: "card",
                 // Show InfoIcon if dirty (unsaved), TickIcon if clean (saved), Loader if saving
                 icon: isSaving ? <LoaderIcon className="size-4 animate-spin" /> : isDirty ? <InfoIcon className="size-4" /> : <TickIcon className="size-4" />,
                 onClick: handleSave,
@@ -167,7 +164,7 @@ export function ChangelogEditor({
                 key: "back",
                 label: "",
                 type: "button",
-                variant: "changelog",
+                variant: "card",
                 icon: <ChevronLeftIcon className="size-3" />,
                 onClick: () => router.push(`/workspaces/${workspaceSlug}/changelog`),
             },
@@ -184,7 +181,10 @@ export function ChangelogEditor({
                     <CoverImageUploader
                         workspaceSlug={workspaceSlug}
                         coverImage={coverImage}
-                        onCoverImageChange={setCoverImage}
+                        onCoverImageChange={(url) => {
+                            setCoverImage(url);
+                            setIsDirty(true);
+                        }}
                     />
                 )}
 
@@ -193,14 +193,20 @@ export function ChangelogEditor({
                     <TagSelector
                         availableTags={availableTags}
                         selectedTags={selectedTags}
-                        onTagsChange={setSelectedTags}
+                        onTagsChange={(tags) => {
+                            setSelectedTags(tags);
+                            setIsDirty(true);
+                        }}
                     />
 
                     {/* Add Cover Image Button (Always visible) */}
                     <CoverImageUploader
                         workspaceSlug={workspaceSlug}
                         coverImage={null}
-                        onCoverImageChange={setCoverImage}
+                        onCoverImageChange={(url) => {
+                            setCoverImage(url);
+                            setIsDirty(true);
+                        }}
                     />
                 </div>
 

@@ -7,7 +7,7 @@ import { useSelection, toggleSelectionId, selectAllForKey, removeSelectedIds } f
 import { BulkDeleteConfirmDialog } from "./BulkDeleteConfirmDialog"
 import { SelectionToolbar } from "./SelectionToolbar"
 import { useBulkDeleteRequests } from "./useBulkDeleteRequests"
-import { useBulkSelectionHotkeys } from "./useBulkSelectionHotkeys"
+import { useBulkSelectionHotkeys } from "../../hooks/useBulkSelectionHotkeys"
 
 interface RequestListProps {
   items: RequestItemData[]

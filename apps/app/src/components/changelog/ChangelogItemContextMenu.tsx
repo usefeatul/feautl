@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { useChangelogEntryActions } from "./useChangelogEntryActions"
+import { useChangelogEntryActions } from "../../hooks/useChangelogEntryActions"
 import {
     Popover,
     PopoverContent,

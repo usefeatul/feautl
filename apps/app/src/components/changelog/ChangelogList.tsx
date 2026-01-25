@@ -6,8 +6,8 @@ import ChangelogItem from "./ChangelogItem"
 import { useSelection, toggleSelectionId, selectAllForKey, removeSelectedIds } from "@/lib/selection-store"
 import { ChangelogBulkDeleteDialog } from "./ChangelogBulkDeleteDialog"
 import { SelectionToolbar } from "@/components/requests/SelectionToolbar"
-import { useBulkDeleteChangelog } from "./useBulkDeleteChangelog"
-import { useBulkSelectionHotkeys } from "@/components/requests/useBulkSelectionHotkeys"
+import { useBulkDeleteChangelog } from "../../hooks/useBulkDeleteChangelog"
+import { useBulkSelectionHotkeys } from "@/hooks/useBulkSelectionHotkeys"
 
 interface ChangelogListProps {
     items: ChangelogEntryWithTags[]

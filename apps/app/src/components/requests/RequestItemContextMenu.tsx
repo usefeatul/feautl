@@ -12,10 +12,10 @@ import {
 import { TrashIcon } from "@featul/ui/icons/trash"
 import { LayersIcon } from "@featul/ui/icons/layers"
 import { TagIcon } from "@featul/ui/icons/tag"
-import { useRequestItemActions } from "./useRequestItemActions"
+import { useRequestItemActions } from "../../hooks/useRequestItemActions"
 import { RequestDeleteDialog } from "./RequestDeleteDialog"
 import type { RequestItemData } from "./RequestItem"
-import { useRequestTags } from "./useRequestTags"
+import { useRequestTags } from "../../hooks/useRequestTags"
 import { StatusSubmenu, TagsSubmenu } from "./RequestItemSubmenus"
 
 interface RequestItemContextMenuProps {

@@ -3,7 +3,7 @@ import { PopoverList, PopoverListItem, PopoverSeparator } from "@featul/ui/compo
 import { CheckIcon } from "@featul/ui/icons/check"
 import { LoaderIcon } from "@featul/ui/icons/loader"
 import StatusIcon from "./StatusIcon"
-import type { Tag } from "./useRequestTags"
+import type { Tag } from "../../hooks/useRequestTags"
 
 export const statusOptions = [
     { label: "Pending", value: "pending" },

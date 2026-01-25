@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { createPageMetadata } from "@/lib/seo";
-import { ChangelogEditor } from "@/components/changelog";
+import { ChangelogEditor } from "@/components/changelog/ChangelogEditor";
 import { getChangelogEntryForEdit } from "../../data";
 
 export const revalidate = 0;

@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { useChangelogEntryActions } from "./useChangelogEntryActions"
+import { useChangelogEntryActions } from "../../hooks/useChangelogEntryActions"
 import { AlertDialogShell } from "@/components/global/AlertDialogShell"
 import { Button } from "@featul/ui/components/button"
 

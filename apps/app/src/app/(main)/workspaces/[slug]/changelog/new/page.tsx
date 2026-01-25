@@ -1,5 +1,5 @@
 import { createPageMetadata } from "@/lib/seo";
-import { ChangelogEditor } from "@/components/changelog";
+import { ChangelogEditor } from "@/components/changelog/ChangelogEditor";
 import { getChangelogTags } from "../data";
 
 export const revalidate = 0;

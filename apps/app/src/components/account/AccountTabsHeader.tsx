@@ -14,7 +14,7 @@ export default function AccountTabsHeader({ slug, selected }: { slug: string; se
 
   return (
     <Tabs value={selected} onValueChange={onValueChange} className="mt-7.5 space-y-4">
-      <TabsList className="w-full">
+      <TabsList className="w-full -mx-4 px-4">
         {ACCOUNT_SECTIONS.map((item) => (
           <TabsTrigger key={item.value} value={item.value} className="px-3 text-accent">{item.label}</TabsTrigger>
         ))}

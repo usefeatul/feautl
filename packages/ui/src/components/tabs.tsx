@@ -119,7 +119,7 @@ function TabsList({
       ref={listRef}
       data-slot="tabs-list"
       className={cn(
-        "relative flex w-full items-center gap-2 pb-2 flex-nowrap overflow-x-auto snap-x snap-mandatory scroll-smooth [-webkit-overflow-scrolling:touch] whitespace-nowrap md:flex-wrap md:overflow-visible",
+        "relative flex w-full items-center gap-2 pb-2 flex-nowrap overflow-x-auto snap-x snap-mandatory scroll-smooth [-webkit-overflow-scrolling:touch] whitespace-nowrap scrollbar-hide lg:flex-wrap lg:overflow-visible",
         className
       )}
       onPointerLeave={() =>
@@ -154,9 +154,9 @@ function TabsList({
           onActive: isMobile
             ? undefined
             : (el) => {
-                measure(el);
-                measureHover(null);
-              },
+              measure(el);
+              measureHover(null);
+            },
         }}
       >
         {props.children}

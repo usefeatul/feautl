@@ -105,7 +105,7 @@ export default function Security({ initialMeSession, initialSessions, twoFactorE
     <SectionCard title="Security" description="Manage your password and active sessions">
       <div className="space-y-4">
         {/* Password, Sessions, and 2FA cards in 2-column grid */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <SettingsCard
             icon={<KeyIcon className="size-5 text-primary" />}
             title="Password"

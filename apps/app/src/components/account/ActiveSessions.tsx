@@ -107,9 +107,7 @@ export default function ActiveSessions({ initialSessions, initialMeSession }: { 
                                 return (
                                     <div key={s.token} className="flex flex-col sm:flex-row sm:items-center justify-between p-2 bg-card gap-2">
                                         <div className="flex items-center gap-3 overflow-hidden">
-                                            <div className="p-2 rounded-full bg-muted/50 shrink-0">
-                                                <CloudIcon className="size-4 text-primary" />
-                                            </div>
+                                         
                                             <div className="min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-sm font-medium truncate">{deviceName}</span>

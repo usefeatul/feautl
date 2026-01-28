@@ -1,4 +1,4 @@
-# featul Web Platform
+# Featul Web Platform
 
 A modern business tools platform built with Next.js, featuring calculators, blog integration, and comprehensive business resources.
 
@@ -51,4 +51,4 @@ npm run dev
 
 ---
 
-**featul** - Built for modern business teams 🚀
+**Featul** - Built for modern business teams 🚀

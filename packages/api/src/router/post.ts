@@ -578,7 +578,7 @@ export function createPostRouter() {
               await sendReportEmail(owner.email, {
                 workspaceName: ws.name,
                 itemName: existingPost.title,
-                itemUrl: `https://${ws.slug}.featul.com/requests/${existingPost.slug}`,
+                itemUrl: `https://${ws.slug}.featul.com/board/p/${existingPost.slug}`,
                 itemType: "post",
                 reason,
                 description,

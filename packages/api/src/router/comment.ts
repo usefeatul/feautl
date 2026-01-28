@@ -881,7 +881,7 @@ export function createCommentRouter() {
             await sendReportEmail(owner.email, {
               workspaceName: ws.name,
               itemName: `Comment on ${postInfo.postTitle}`,
-              itemUrl: `https://${ws.slug}.featul.com/requests/${postInfo.postSlug}`,
+              itemUrl: `https://${ws.slug}.featul.com/board/p/${postInfo.postSlug}`,
               itemType: "comment",
               reason,
               description,

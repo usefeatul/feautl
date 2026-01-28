@@ -1,4 +1,4 @@
-import { db, workspace, board, post, user, workspaceMember, postTag, tag, postMerge } from "@featul/db"
+import { db, workspace, board, post, user, workspaceMember, postTag, tag, postMerge, postReport } from "@featul/db"
 import { and, eq, sql } from "drizzle-orm"
 import { client } from "@featul/api/client"
 import { readHasVotedForPost } from "@/lib/vote.server"
@@ -35,12 +35,12 @@ type RawPostRecord = RequestDetailData & {
   authorId: string | null
   metadata: Record<string, any> | null
   author:
-    | {
-        name: string | null
-        image: string | null
-        email: string | null
-      }
-    | null
+  | {
+    name: string | null
+    image: string | null
+    email: string | null
+  }
+  | null
 }
 
 export async function loadRequestDetailPageData({
@@ -74,6 +74,16 @@ export async function loadRequestDetailPageData({
     searchParams,
   })
 
+  let reportCount = 0
+  if (isOwner) {
+    const [row] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(postReport)
+      .where(eq(postReport.postId, rawPost.id))
+      .limit(1)
+    reportCount = Number(row?.count || 0)
+  }
+
   const post: RequestDetailData = {
     ...postWithAuthor,
     role,
@@ -81,7 +91,8 @@ export async function loadRequestDetailPageData({
     isFeatul: rawPost.authorId === "featul-founder",
     tags,
     hasVoted,
-  }
+    reportCount,
+  } as RequestDetailData & { reportCount: number }
 
   return {
     workspaceSlug,
@@ -151,14 +162,14 @@ async function loadPostWithAuthorAndBoard(workspaceId: string, postSlug: string)
   const mergedCount = Number(mergedCountRow?.[0]?.count || 0)
   let mergedInto:
     | {
-        id: string
-        slug: string
-        title: string
-        roadmapStatus?: string | null
-        mergedAt?: string | null
-        boardName?: string
-        boardSlug?: string
-      }
+      id: string
+      slug: string
+      title: string
+      roadmapStatus?: string | null
+      mergedAt?: string | null
+      boardName?: string
+      boardSlug?: string
+    }
     | null = null
 
   if (p.duplicateOfId) {

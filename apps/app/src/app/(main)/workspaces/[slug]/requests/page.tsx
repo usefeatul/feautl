@@ -7,7 +7,7 @@ import RequestPagination from "@/components/requests/RequestPagination";
 import { createPageMetadata } from "@/lib/seo";
 import { loadRequestsPageData, type RequestsSearchParams } from "./data";
 
-export const revalidate = 30;
+export const dynamic = "30";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -40,7 +40,9 @@ export default async function RequestsPage({ params, searchParams }: Props) {
       if (Array.isArray(parsed)) {
         initialSelectedIds = parsed.filter((v) => typeof v === "string") as string[];
       }
-    } catch {}
+    } catch {
+      console.error("Failed to parse selected IDs");
+    }
   }
 
   let sp: RequestsSearchParams | undefined;

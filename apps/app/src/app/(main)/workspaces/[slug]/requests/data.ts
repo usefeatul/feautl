@@ -27,6 +27,7 @@ export type RequestsPageData = {
   boardSlugs: string[]
   tagSlugs: string[]
   search: string
+  isWorkspaceOwner: boolean
 }
 
 /** Extract a single string value from a string or string array */
@@ -51,14 +52,19 @@ export async function loadRequestsPageData({
   const sp = searchParams ?? {}
 
   // Session check (non-blocking, page is still viewable without auth)
+  let userId: string | null = null
   try {
-    await getServerSession()
+    const session = await getServerSession()
+    userId = session?.user?.id || null
   } catch {
     // Ignore session errors; page is still viewable
   }
 
+
   const ws = await getWorkspaceBySlug(slug)
   if (!ws) return null
+
+  const isOwner = userId === ws.ownerId
 
   // Parse filter parameters
   const statusRaw = parseArrayParam(pickSingle(sp.status))
@@ -92,6 +98,7 @@ export async function loadRequestsPageData({
       search,
       limit: pageSize,
       offset,
+      includeReportCounts: isOwner,
     }),
     getWorkspacePostsCount(slug, {
       statuses: statusFilter,
@@ -111,5 +118,6 @@ export async function loadRequestsPageData({
     boardSlugs,
     tagSlugs,
     search,
+    isWorkspaceOwner: isOwner,
   }
 }

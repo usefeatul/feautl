@@ -12,6 +12,7 @@ import { randomAvatarUrl } from "@/utils/avatar"
 import RoleBadge from "@/components/global/RoleBadge"
 import { UpvoteButton } from "@/components/upvote/UpvoteButton"
 import { RequestItemContextMenu } from "./RequestItemContextMenu"
+import { ReportIndicator } from "./ReportIndicator"
 
 export interface RequestItemData {
   id: string
@@ -40,6 +41,7 @@ export interface RequestItemData {
     slug: string
     color?: string | null
   }>
+  reportCount?: number
 }
 
 interface RequestItemProps {
@@ -50,6 +52,7 @@ interface RequestItemProps {
   isSelected?: boolean
   onToggle?: (checked: boolean) => void
   disableLink?: boolean
+
 }
 
 function RequestItemBase({ item, workspaceSlug, linkBase, isSelecting, isSelected, onToggle, disableLink }: RequestItemProps) {
@@ -86,6 +89,7 @@ function RequestItemBase({ item, workspaceSlug, linkBase, isSelecting, isSelecte
         {displayTitle}
       </Link>
       <div className="ml-auto flex items-center gap-3 text-xs text-accent">
+        <ReportIndicator count={item.reportCount || 0} />
         <div className="inline-flex items-center gap-2 relative z-10">
           <UpvoteButton postId={item.id} upvotes={item.upvotes} hasVoted={item.hasVoted} className="text-xs hover:text-red-500/80" />
         </div>

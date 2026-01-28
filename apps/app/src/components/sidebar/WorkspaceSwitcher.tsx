@@ -119,7 +119,7 @@ export default function WorkspaceSwitcher({
                   })}
                 </div>
               </div>
-              <div className="flex flex-col gap-1 pt-1 border-t border-border">
+              <div className="flex flex-col gap-1 pt-1 border-t border-border -mx-2 px-2">
                 <DropdownMenuItem
                   onSelect={onCreateNew}
                   className="flex items-center gap-3 px-2 py-2 rounded-sm cursor-pointer hover:bg-muted"

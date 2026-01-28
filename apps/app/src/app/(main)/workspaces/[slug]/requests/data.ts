@@ -2,6 +2,7 @@ import { getServerSession } from "@featul/auth/session"
 import { getWorkspaceBySlug, getWorkspacePosts, getWorkspacePostsCount, normalizeStatus } from "@/lib/workspace"
 import { parseArrayParam } from "@/utils/request-filters"
 import { parseSortOrder } from "@/types/sort"
+import type { RequestItemData } from "@/components/requests/RequestItem"
 
 const PAGE_SIZE = 20
 
@@ -19,7 +20,7 @@ export type RequestsSearchParams = {
 
 export type RequestsPageData = {
   slug: string
-  rows: unknown[]
+  rows: RequestItemData[]
   totalCount: number
   page: number
   pageSize: number
@@ -110,7 +111,11 @@ export async function loadRequestsPageData({
 
   return {
     slug,
-    rows,
+    rows: rows.map((r) => ({
+      ...r,
+      createdAt: r.createdAt.toISOString(),
+      publishedAt: r.publishedAt ? r.publishedAt.toISOString() : null,
+    })) as RequestItemData[],
     totalCount,
     page,
     pageSize,

@@ -574,18 +574,16 @@ export function createPostRouter() {
               .limit(1)
 
             if (owner && owner.email) {
-              if (owner && owner.email) {
-                const { sendReportEmail } = await import("@featul/auth")
-                await sendReportEmail(owner.email, {
-                  workspaceName: ws.name,
-                  itemName: existingPost.title,
-                  itemUrl: `https://${ws.slug}.featul.com/requests/${existingPost.slug}`,
-                  itemType: "post",
-                  reason,
-                  description,
-                  reportCount
-                })
-              }
+              const { sendReportEmail } = await import("@featul/auth")
+              await sendReportEmail(owner.email, {
+                workspaceName: ws.name,
+                itemName: existingPost.title,
+                itemUrl: `https://${ws.slug}.featul.com/requests/${existingPost.slug}`,
+                itemType: "post",
+                reason,
+                description,
+                reportCount
+              })
             }
           }
         }

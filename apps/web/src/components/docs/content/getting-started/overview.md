@@ -1,5 +1,5 @@
 ---
-title: What is Featul?
+title: Wellcome?
 description: A quick overview of Featul and how it helps you collect and manage user feedback.
 ---
 
@@ -9,29 +9,21 @@ Featul is a feedback management platform that helps teams collect, organize, and
 
 ## Core Features
 
-### Feedback Boards
+**Feedback Boards** – Create dedicated spaces for feature requests, bug reports, and suggestions. Users submit ideas and vote on existing requests, helping you prioritize what matters most.
 
-Create dedicated boards to collect feature requests, bug reports, and suggestions. Users can submit ideas and vote on existing requests, helping you prioritize what matters most.
+**Public Roadmap** – Share your product roadmap with users. Keep them informed about upcoming features and show that their feedback is being heard.
 
-### Public Roadmap
+**Changelog** – Announce new features and updates. Keep your users engaged and informed about product improvements.
 
-Share your product roadmap with users. Keep them informed about upcoming features and show that their feedback is being heard.
-
-### Changelog
-
-Announce new features and updates. Keep your users engaged and informed about product improvements.
-
-### Team Collaboration
-
-Invite team members to manage feedback together. Assign roles, discuss requests internally, and coordinate responses.
+**Team Collaboration** – Invite team members to manage feedback together. Assign roles, discuss requests internally, and coordinate responses.
 
 ## How It Works
 
-1. **Create a workspace** — Set up your feedback portal in minutes
-2. **Share with users** — Invite users to submit and vote on feedback
-3. **Prioritize** — Use voting data to identify high-impact features
-4. **Build** — Focus development on what users want most
-5. **Communicate** — Update users through your roadmap and changelog
+1. **Create workspace** – Set up your feedback portal in minutes
+2. **Share with users** – Invite users to submit and vote on feedback
+3. **Prioritize** – Use voting data to identify high-impact features
+4. **Build** – Focus development on what users want most
+5. **Communicate** – Update users through your roadmap and changelog
 
 ## Who Uses Featul?
 
@@ -43,4 +35,3 @@ Invite team members to manage feedback together. Assign roles, discuss requests 
 ---
 
 Ready to get started? Head to the [Getting Started](/docs/getting-started) guide.
-

@@ -3,30 +3,29 @@ title: Single Sign-On (SSO)
 description: Enterprise authentication for your workspace.
 ---
 
-# Single Sign-On (SSO)
+## SSO Development
 
-We're currently working on SSO support to enable secure, centralized authentication for your team.
+Enterprise SSO support currently in development. This feature will enable secure, centralized authentication for your organization.
 
-## Coming Soon
+## Planned Features
 
-SSO will allow your team members to access your Featul workspace using their existing corporate credentials, simplifying access management and improving security.
-
-## Planned Providers
-
-We're building integrations with popular identity providers including:
-
+### Authentication Providers
 - SAML 2.0
 - OAuth 2.0 / OpenID Connect
 - Okta
 - Azure Active Directory
 - Google Workspace
 
-## Planned Benefits
+### Benefits
+- **Simplified access** – Team members use existing corporate credentials
+- **Centralized control** – Manage access from your identity provider
+- **Enhanced security** – Enforce organizational authentication policies
+- **Automatic provisioning** – Users created on first login
 
-- **Simplified access** — Team members use existing credentials
-- **Centralized control** — Manage access from your identity provider
-- **Enhanced security** — Enforce your organization's authentication policies
-- **Automatic provisioning** — Users are created automatically on first login
+## Status
 
-> **Note:** SSO is currently in development. If you're interested in this feature, please reach out to us.
+SSO is currently in active development. If you're interested in this feature, please contact us for timeline updates and early access opportunities.
 
+---
+
+**Note:** SSO will be available on enterprise plans.

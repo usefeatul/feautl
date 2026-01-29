@@ -3,51 +3,50 @@ title: Invite members
 description: Add your team to Featul with the right roles and permissions.
 ---
 
-## Team roles
+## Team Roles
 
-Every team member has a role that determines their access level:
+Control workspace access with role-based permissions:
 
-| Role | Description |
-|------|-------------|
-| **Admin** | Full access to everything—settings, billing, members, and all boards |
-| **Member** | Can work with feedback, boards, roadmap, and changelog |
-| **Viewer** | Can browse and read content but has limited editing capabilities |
+| Role | Access Level |
+|------|--------------|
+| **Admin** | Full workspace control – settings, billing, members, all boards |
+| **Member** | Manage feedback, boards, roadmap, changelog |
+| **Viewer** | Read-only access to content |
 
-## Additional permissions
+## Additional Permissions
 
-Beyond roles, you can grant specific permissions to fine-tune access:
+Fine-tune access beyond basic roles:
 
-- **Manage workspace** – Change workspace settings and configuration
-- **Manage billing** – Access subscription and payment settings
-- **Manage members** – Invite, remove, and modify team members
-- **Manage boards** – Create, edit, and delete boards
-- **Moderate all boards** – Review and manage content across all boards
-- **Configure branding** – Customize appearance, logo, and theme
+- **Manage workspace** – Modify settings and configuration
+- **Manage billing** – Access subscription and payment settings  
+- **Manage members** – Invite, remove, modify team members
+- **Manage boards** – Create, edit, delete boards
+- **Moderate all boards** – Review and manage content across boards
+- **Configure branding** – Customize appearance and theme
 
-## How to invite a team member
+## Invite Process
 
-1. Go to **Settings → Team** in your workspace
+1. Go to **Settings → Team**
 2. Click **Invite member**
-3. Enter their email address
-4. Select a role (Admin, Member, or Viewer)
-5. Adjust additional permissions if needed
-6. Click **Send invite**
+3. Enter email address
+4. Select role and permissions
+5. Send invitation
 
-The person will receive an email with a link to join your workspace. Once they accept, they'll appear in your team list.
+Invited members receive an email with workspace access link.
 
-## Managing your team
+## Team Management
 
-From the team settings page, you can:
+From **Settings → Team**, you can:
 
-- **Change roles** – Promote or adjust a member's access level
-- **Update permissions** – Grant or revoke specific capabilities
-- **Resend invites** – Re-send the invitation email for pending invites
-- **Revoke invites** – Cancel invitations that haven't been accepted
-- **Remove members** – Remove someone from your workspace
+- Modify member roles and permissions
+- Resend pending invitations
+- Revoke unaccepted invitations
+- Remove team members
+- View member activity and access history
 
-## Best practices
+## Best Practices
 
-- Start with the most restrictive role that still lets the person do their job
-- Use **Viewer** for stakeholders who need visibility but shouldn't edit
-- Reserve **Admin** for people who need to manage settings and billing
-- Regularly review your team list and remove inactive members
+- Assign the minimum role needed for each member's responsibilities
+- Use **Viewer** role for stakeholders who need visibility without editing access
+- Reserve **Admin** role for team members who manage workspace settings and billing
+- Review team access regularly and remove inactive members

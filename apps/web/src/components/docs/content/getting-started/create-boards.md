@@ -3,64 +3,39 @@ title: Create boards
 description: Organize feedback into focused boards for different purposes.
 ---
 
-## What are boards?
+## Board Types
 
-Boards are containers that organize your feedback. Each board can serve a different purpose—collecting feature requests, displaying your roadmap, or publishing changelog updates.
+Each board serves a specific purpose in your feedback workflow:
 
-## Board settings
+| Type | Purpose | Use Case |
+|------|---------|----------|
+| **Feedback** | Collect requests and ideas | Feature requests, bug reports |
+| **Roadmap** | Show development pipeline | Planned, in-progress, completed work |
+| **Changelog** | Announce releases | Product updates, release notes |
 
-When you create a board, you can configure:
+## Board Settings
 
-| Setting | Description |
-|---------|-------------|
-| **Name & slug** | The display name and URL-friendly identifier |
-| **Privacy** | Public (customers can access) or private (team only) |
-| **Visibility** | Whether the board appears in your portal navigation |
-| **Type** | Feedback board, roadmap, or changelog |
+Configure boards to match your workflow:
+
+| Setting | Options |
+|---------|---------|
+| **Privacy** | Public (customer access) or Private (team only) |
+| **Visibility** | Show/hide in portal navigation |
 | **Anonymous posts** | Allow submissions without sign-in |
-| **Comments** | Enable or disable discussion on posts |
+| **Comments** | Enable/disable discussion |
 
-## How to create a board
+## Create a Board
 
-1. Open your workspace and go to **Settings → Boards**
+1. Navigate to **Settings → Boards**
 2. Click **Create board**
-3. Enter a **name** and **slug** (the slug must be unique)
-4. Choose the board type:
-   - **Feedback board** – For collecting feature requests and ideas
-   - **Roadmap board** – For showing planned and in-progress work
-   - **Changelog board** – For publishing release notes
-5. Set privacy and other options
-6. Click **Save**
+3. Set name and unique slug
+4. Choose board type
+5. Configure privacy and options
+6. Save changes
 
-## Board types explained
+## Roadmap Statuses
 
-### Feedback boards
-
-Standard boards where customers submit ideas and vote on features. Best for:
-
-- Feature requests
-- Bug reports
-- General product feedback
-
-### Roadmap boards
-
-Display work across different stages (Planned, In Progress, Completed). Best for:
-
-- Showing customers what you're building
-- Internal planning and prioritization
-- Transparency about your product direction
-
-### Changelog boards
-
-Announcement-style posts about what you've shipped. Best for:
-
-- Release notes
-- Product updates
-- Keeping users informed
-
-## Default roadmap statuses
-
-Roadmap boards come with these default statuses:
+Roadmap boards include default statuses:
 
 - **Pending** – New requests awaiting review
 - **Review** – Under consideration
@@ -69,14 +44,12 @@ Roadmap boards come with these default statuses:
 - **Completed** – Shipped and available
 - **Closed** – Won't be implemented
 
-You can customize status names, colors, and order in your workspace settings.
+Customize status names, colors, and order in board settings.
 
-## Tips for organizing boards
+## Organization Tips
 
-Consider creating separate boards for:
-
-- Different product areas (e.g., "Mobile App", "Web Dashboard")
-- Public feedback vs. internal team discussions
-- Different types of content (feedback, roadmap, changelog)
-
-Each post belongs to exactly one board, so plan your structure based on how you want to categorize and display feedback.
+Create separate boards for:
+- Different product areas (Mobile, Web, API)
+- Customer segments (Enterprise, SMB)
+- Internal vs. external feedback
+- Content types (feedback, roadmap, changelog)

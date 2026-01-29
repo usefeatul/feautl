@@ -3,41 +3,32 @@ title: Integrations
 description: Connect third-party services to streamline your feedback workflow.
 ---
 
-# Integrations
-
-Connect your favorite tools to receive notifications and manage feedback more efficiently.
-
 ## Available Integrations
 
+Connect your tools to receive notifications and automate workflows:
+
 ### Slack
-
-Receive real-time notifications in your Slack workspace when users submit new feedback requests.
-
-**Features:**
-- Instant notifications for new submissions
+Real-time notifications in your Slack workspace:
+- Instant alerts for new submissions
 - Direct links to feedback items
 - Channel-based routing
 
-### Discord
-
-Get notified in your Discord server when new feedback is submitted.
-
-**Features:**
-- Server notifications for new requests
+### Discord  
+Server notifications for new feedback:
 - Customizable notification channels
 - Quick access to feedback items
+- Server-based organization
 
-## Requesting New Integrations
+## Request Integrations
 
-Don't see the integration you need? Let us know:
+Need a different integration?
 
 1. Go to **Settings → Integrations**
 2. Click **Suggest Integration**
-3. Describe the integration you'd like to see
+3. Describe your requirements
 
-We prioritize integrations based on community feedback.
+We prioritize based on community demand.
 
 ---
 
-> **Note:** Integrations are available on paid plans only.
-
+**Note:** Integrations available on paid plans only.

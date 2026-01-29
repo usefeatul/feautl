@@ -3,36 +3,25 @@ title: Identify users
 description: Link feedback to user accounts for better context and follow-up.
 ---
 
-## Why identify users?
+## User Identification
 
-Linking feedback to user accounts lets you:
+Connect feedback to specific user accounts for enhanced relationship management and data analysis. Identified feedback enables follow-up, segmentation, and personalized responses.
 
-- Filter feedback by customer, plan, or segment
-- Follow up with specific users when features ship
-- See who on your team responded to requests
-- Power notifications and activity summaries
+## Identification Methods
 
-## Anonymous vs identified feedback
+| Method | Implementation |
+|--------|----------------|
+| **Anonymous** | No user data collected |
+| **Identified** | User context stored with posts |
 
-| Type | You know who submitted | Best for |
-|------|----------------------|----------|
-| **Anonymous** | No | Low-friction public feedback |
-| **Identified** | Yes | Customer relationships, follow-up |
+Identified users provide:
+- Contact information for follow-up
+- Account details for segmentation
+- Submission history for analysis
 
-When users are signed in and not posting anonymously:
-- Their profile details are stored with the post
-- You can see their information internally
-- Board settings control what's shown publicly
+## User Context Data
 
-## Identifying users from your product
-
-If you embed Featul or link to it from your app, you can pass user information:
-
-1. Authenticate users in your own application
-2. Pass user identifiers when opening the feedback widget or portal
-3. This data is stored with their posts and comments
-
-Example user context:
+Pass user information from your application:
 
 ```json
 {
@@ -44,33 +33,29 @@ Example user context:
 }
 ```
 
-## What you can do with identified feedback
+## Benefits of Identification
 
-### Filter and segment
+### Enhanced Follow-up
+- Notify users when requested features ship
+- Contact for clarification or user research
+- Close loops on resolved requests
 
-- View all feedback from Enterprise customers
-- See requests from a specific account
-- Identify patterns by customer segment
+### Advanced Segmentation
+- Filter feedback by customer tier
+- Analyze patterns by user segment
+- Identify power user requests
 
-### Follow up
+### Relationship Management
+- Track customer feedback history
+- Identify most engaged users
+- Personalize responses based on account context
 
-- Notify users when their requested feature ships
-- Reach out for clarification or user research
-- Close the loop on resolved requests
+## Privacy Considerations
 
-### Analyze trends
+When identifying users:
+- Follow applicable privacy regulations (GDPR, CCPA)
+- Comply with your privacy policy terms
+- Collect only necessary user data
+- Use identity masking for public board privacy
 
-- Which customer segments request what features?
-- How does feedback vary by plan tier?
-- What are your most engaged customers asking for?
-
-## Privacy considerations
-
-When identifying users, ensure you:
-
-- Follow your privacy policy
-- Comply with GDPR and other regulations
-- Only collect data you actually need
-- Use identity masking if you want to hide user info publicly
-
-See [Mask identities](/docs/getting-started/mask-identities) to learn how to hide user information on public boards while preserving it internally.
+See [Mask identities](/docs/getting-started/mask-identities) to hide user information publicly while preserving internal access.

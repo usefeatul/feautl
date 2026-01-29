@@ -3,64 +3,34 @@ title: Custom metadata
 description: Attach structured context to feedback with custom fields and metadata.
 ---
 
-## Why use custom metadata?
+## Metadata Benefits
 
-Beyond basic feedback, you often need additional context:
+Enhance feedback with additional context beyond basic content:
 
-- Which customer plan or segment submitted this?
-- Where in your product did this request originate?
-- What related tickets exist in other systems?
+- Customer segmentation (plan, company size, region)
+- Source tracking (widget, page, campaign)
+- Integration links (GitHub issues, Jira tickets)
+- Custom business data
 
-Featul supports flexible metadata to capture this information.
+## Implementation
 
-## Post metadata
-
-Every post can carry additional data:
-
-| Type | Description |
-|------|-------------|
-| **Attachments** | Files, screenshots, or links |
-| **Integration references** | Links to GitHub issues, Jira tickets, etc. |
-| **Custom fields** | Any additional context you need |
-
-## Using custom fields
-
-Custom fields let you store structured data with each post. Example:
+Every post supports flexible metadata storage:
 
 ```json
 {
   "source": "in_app_widget",
-  "plan": "professional",
+  "plan": "professional", 
   "feature_area": "billing",
   "customer_id": "cust_12345"
 }
 ```
 
-These fields are available when:
+## Custom Fields
 
-- Viewing post details
-- Building filters and segments
-- Exporting data for analysis
+Design consistent metadata schemas:
 
-## Activity log
-
-Featul records important events in an activity log:
-
-- Status changes (roadmap updates, moderation actions)
-- Merge operations
-- Team member actions
-- Vote and comment activity
-
-This creates an audit trail of how feedback flows through your process.
-
-## Designing your metadata schema
-
-Since metadata is flexible, plan your structure:
-
-### Keep top-level keys consistent
-
+### Top-Level Structure
 Use stable field names across all posts:
-
 ```json
 {
   "source": "...",
@@ -69,10 +39,8 @@ Use stable field names across all posts:
 }
 ```
 
-### Namespace integration data
-
-Group external system data under namespaced keys:
-
+### Namespaced Integration Data
+Group external system references:
 ```json
 {
   "github": {
@@ -86,9 +54,19 @@ Group external system data under namespaced keys:
 }
 ```
 
-## Use cases
+## Activity Logging
 
-- **Segmentation** – Filter feedback by customer plan, company size, or region
-- **Source tracking** – Know which widget, page, or campaign generated feedback
-- **Integration sync** – Link feedback to development tools
-- **Analytics** – Export metadata for deeper analysis
+Automatic tracking of important events:
+- Status changes and moderation actions
+- Merge operations
+- Team member activities
+- Vote and comment interactions
+
+Creates complete audit trail for feedback processing.
+
+## Usage Applications
+
+- **Segmentation** – Filter by customer characteristics
+- **Source Attribution** – Identify high-converting channels
+- **Integration Sync** – Maintain cross-system consistency
+- **Analytics** – Export for deeper analysis

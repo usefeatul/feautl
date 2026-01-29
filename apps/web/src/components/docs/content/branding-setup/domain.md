@@ -1,50 +1,59 @@
 ---
-title: Custom Domain
-description: Connect your own domain to create a branded feedback portal URL.
+title: Custom domains
+description: Set up workspace subdomains and custom domains for your feedback portal.
 ---
 
-# Custom Domain
+## Default Subdomain
 
-Use your own domain to host your feedback portal instead of the default `yourworkspace.featul.com` URL.
+Every workspace receives a free subdomain:
+```
+yourworkspace.featul.com
+```
 
-## Adding a Custom Domain
+Ready to use immediately after workspace creation.
 
-1. Navigate to **Settings → Domain** in your workspace
-2. Click **Add domain**
-3. Enter your custom domain (e.g., `feedback.yourcompany.com`)
-4. Save the domain
+## Custom Domain Setup
 
-## DNS Configuration
+Connect your branded domain for seamless customer experience:
 
-After adding your domain, you'll need to configure DNS records with your domain provider.
+1. Navigate to **Settings → Domain**
+2. Enter desired domain (e.g., `feedback.yourdomain.com`)
+3. Add DNS record with your provider:
 
-### Required Records
+| Type | Name | Value |
+|------|------|-------|
+| CNAME | feedback | `yourworkspace.featul.com` |
 
-Add the following DNS records to your domain:
+4. Wait for DNS propagation (few minutes to hours)
+5. Featul verifies domain automatically
+6. Portal becomes accessible at your custom domain
 
-| Type  | Name              | Value                  |
-|-------|-------------------|------------------------|
-| CNAME | feedback (or @)   | cname.featul.com       |
+## SSL Certificates
 
-### Verification
+Automatic SSL provisioning for all custom domains. No manual configuration required—your portal serves over HTTPS immediately after verification.
 
-Once DNS records are configured:
+## Routing Behavior
 
-1. Return to **Settings → Domain**
-2. Click **Verify** to check your DNS configuration
-3. Verification may take up to 48 hours for DNS propagation
+Both URLs serve identical content:
+- Workspace subdomain: `yourworkspace.featul.com`
+- Custom domain: `feedback.yourdomain.com`
 
-## Removing a Domain
+Featul handles routing automatically.
 
-To remove a custom domain and revert to the default URL:
+## Multiple Workspaces
 
-1. Go to **Settings → Domain**
-2. Click the delete option next to your domain
-3. Confirm the removal
+Each workspace has independent domains:
+- Unique subdomain
+- Optional custom domain
+- Completely isolated data and settings
 
-Your workspace will return to using `yourworkspace.featul.com`.
+## Troubleshooting
 
----
+**Domain verification issues:**
+- Verify DNS record accuracy
+- Allow propagation time (up to 48 hours)
+- Check for conflicting DNS records
 
-> **Note:** Custom domains are available on Starter and Professional plans.
-
+**SSL certificate problems:**
+- Certificates provision automatically after verification
+- Remove and re-add domain if issues persist

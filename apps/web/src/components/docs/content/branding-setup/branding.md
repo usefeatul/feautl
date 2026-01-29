@@ -3,59 +3,44 @@ title: Branding
 description: Customize your workspace appearance with logos, colors, themes, and layout options.
 ---
 
-# Branding
+## Branding Options
 
-Personalize your feedback portal to match your brand identity. The branding settings allow you to customize the visual appearance of your workspace.
+Personalize your feedback portal to match your brand identity:
 
-## Workspace Name
-
-Set a display name for your workspace. This name appears in the sidebar and helps users identify your feedback portal.
-
+### Workspace Name
 - Maximum 15 characters
-- Visible to all workspace visitors
+- Displays in sidebar navigation
+- Visible to all visitors
 
-## Logo
-
-Upload a custom logo to replace the default icon. Your logo appears in the sidebar navigation.
-
+### Logo
 - Supported formats: PNG, JPG, SVG
 - Recommended size: 128×128 pixels or larger
 - Available on paid plans
 
-## Primary Color
+### Primary Color
+- Applied to buttons, links, and interactive elements
+- Choose from preset palette for consistent styling
 
-Choose a primary color that reflects your brand. This color is applied to buttons, links, and interactive elements throughout your workspace.
+### Layout Options
 
-Select from the preset color palette to ensure consistent styling across your portal.
+**Sidebar Position:**
+- Left (traditional layout)
+- Right (alternative layout)
 
-## Sidebar Position
+**Theme:**
+- Light (bright background, dark text)
+- Dark (dark background, light text)  
+- System (matches device preference)
 
-Control where the navigation sidebar appears:
+**Layout Style:**
+- Compact (reduced spacing)
+- Comfortable (balanced spacing - default)
+- Spacious (increased spacing)
 
-- **Left** — Traditional layout with sidebar on the left
-- **Right** — Alternative layout with sidebar on the right
+### Branding Removal
 
-## Theme
-
-Set the default color scheme for your workspace:
-
-- **Light** — Bright background with dark text
-- **Dark** — Dark background with light text
-- **System** — Automatically matches the visitor's device preference
-
-## Layout Style
-
-Adjust the content density of your workspace:
-
-- **Compact** — Reduced spacing for more content visibility
-- **Comfortable** — Balanced spacing (default)
-- **Spacious** — Increased spacing for a more relaxed feel
-
-## Hide "Powered by" Branding
-
-Remove the Featul attribution from your workspace footer. This option is available on higher-tier plans.
+Hide "Powered by Featul" footer branding on higher-tier plans.
 
 ---
 
-> **Note:** Some branding features require a paid plan. Upgrade your workspace to unlock full customization options.
-
+**Note:** Some branding features require paid plans. Upgrade for full customization access.

@@ -3,64 +3,37 @@ title: Get started with Featul
 description: Create your account and start collecting customer feedback in minutes.
 ---
 
-Featul helps you collect user feedback, prioritize feature requests, and share product updates—all in one place. This guide walks you through setting up your first workspace and collecting feedback from customers.
+## Quick Setup
 
-## 1. Create a Free Account
+Create your feedback portal in three steps:
 
-Sign up with Google, GitHub, or email. If you use email, verify your account with the code sent to your inbox.
+### 1. Create Account
+Sign up with Google, GitHub, or email. Email users receive a verification code to complete registration.
 
-Once signed in, you'll be taken to your dashboard where you can create your first workspace.
+### 2. Set Up Workspace
+Choose a workspace name and subdomain (e.g., `yourproduct.featul.com`). This becomes your feedback portal URL.
 
-## 2. Create Your Workspace
-
-Enter a workspace name and choose a subdomain (e.g., `yourproduct.featul.com`). This sets up your feedback portal.
-
-Your workspace is the central hub where all feedback is collected and managed. Choose a name that represents your product or company—this is what your customers will see.
-
-### Workspace Settings
-
-After creating your workspace, you can customize it further:
-
-- **Branding** – Upload your logo and set brand colors
-- **Domain** – Connect a custom domain like `feedback.yourcompany.com`
-- **Team** – Invite team members to collaborate
-
-## 3. Set Up Your First Board
-
+### 3. Create First Board
 Go to **Settings → Boards** and create a public feedback board. This is where customers submit ideas and vote on features.
 
-Boards help you organize feedback by category. Common board setups include:
+## Customization Options
 
-- **Feature Requests** – Ideas for new functionality
-- **Bug Reports** – Issues that need fixing
-- **General Feedback** – Open-ended suggestions
+After setup, personalize your workspace:
 
-Each board can be configured as public or private depending on your needs.
+- **Branding** – Upload logo and set brand colors
+- **Domain** – Connect custom domain like `feedback.yourcompany.com`
+- **Team** – Invite members to collaborate
 
-## 4. Share with Customers
+## Share Your Portal
 
-Share your workspace URL (`yourworkspace.featul.com`) with customers to start collecting feedback.
-
-You can share your feedback portal by:
-
-- Adding a link in your app's navigation or help menu
-- Including it in onboarding emails
-- Embedding a feedback widget on your website
-
-## 5. Manage and Respond
-
-As feedback comes in, you can:
-
-- **Upvote** – Track which requests are most popular
-- **Comment** – Respond to customers and ask follow-up questions
-- **Update Status** – Mark items as planned, in progress, or completed
-- **Group** – Merge duplicate requests into a single item
+Distribute your workspace URL through:
+- App navigation or help menus
+- Onboarding emails
+- Website feedback widgets
 
 ## Next Steps
 
-- **Create Boards** – Structure boards for different use cases
-- **Invite Members** – Add team members to collaborate
-- **Plan Roadmap** – Share what you're building with customers
-- **Publish Updates** – Announce new features through your changelog
-
-> **Tip:** Start with a single board to keep things simple. You can always add more boards as your feedback volume grows.
+- [Create additional boards](/docs/getting-started/create-boards) for different feedback types
+- [Invite team members](/docs/getting-started/invite-members) to manage feedback together
+- [Plan your roadmap](/docs/getting-started/plan-roadmap) to share upcoming features
+- [Publish updates](/docs/getting-started/publish-updates) through your changelog

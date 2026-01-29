@@ -3,74 +3,60 @@ title: Smart grouping
 description: Organize feedback with boards, tags, and statuses as your volume grows.
 ---
 
-## Why grouping matters
+## Organization Hierarchy
 
-When feedback volume grows, a single list becomes overwhelming. Featul gives you three ways to organize:
+Manage growing feedback volume with three organizational levels:
 
-1. **Boards** – High-level separation
-2. **Tags** – Flexible labels
-3. **Statuses** – Workflow stages
+1. **Boards** – High-level separation by product area or content type
+2. **Tags** – Flexible cross-board labeling system
+3. **Statuses** – Workflow stage tracking
 
-## Organizing with boards
+## Board Organization
 
-Boards are your first layer of organization. Each post belongs to exactly one board.
+Each post belongs to exactly one board. Use boards to separate:
 
-Use boards to separate:
+- Product areas (Mobile, Web, API)
+- Feedback types (Feature requests, Bug reports)
+- Visibility levels (Public customer feedback vs. Internal ideas)
+- Content types (Feedback, Roadmap, Changelog)
 
-- Product areas (e.g., "Mobile", "Web", "API")
-- Feedback types (e.g., "Feature Requests", "Bug Reports")
-- Visibility levels (public customer feedback vs. internal ideas)
-- Content types (feedback, roadmap, changelog)
+## Tag System
 
-## Organizing with tags
+Apply multiple tags to any post for flexible categorization:
 
-Tags are workspace-wide labels you can attach to any post. Unlike boards, a post can have multiple tags.
-
-Common tagging strategies:
-
-| Category | Example tags |
+| Category | Example Tags |
 |----------|--------------|
-| **Customer segment** | `Enterprise`, `SMB`, `Free`, `Pro` |
-| **Product area** | `Onboarding`, `Billing`, `Reporting`, `API` |
-| **Theme** | `UX`, `Performance`, `Reliability`, `Security` |
-| **Priority** | `High-impact`, `Quick-win`, `Long-term` |
+| **Customer segment** | Enterprise, SMB, Free, Pro |
+| **Product area** | Onboarding, Billing, Reporting, API |
+| **Theme** | UX, Performance, Reliability, Security |
+| **Priority** | High-impact, Quick-win, Long-term |
 
-### Managing tags
+Create and manage tags from the settings page or while editing posts.
 
-- Create tags from the settings page or while editing posts
-- Apply multiple tags to a single post
-- Filter and sort by tags in list views
-- Use consistent naming for easier filtering
+## Status Management
 
-## Organizing with statuses
+Track content through two status types:
 
-Two types of status help track content:
-
-### Post status
-Tracks the content lifecycle:
+### Post Status
 - **Draft** – Not yet visible
 - **Published** – Live and visible
 - **Archived** – Hidden but preserved
 - **Spam** – Flagged as unwanted
 
-### Roadmap status
-Tracks delivery stage (on roadmap boards):
+### Roadmap Status (Roadmap boards only)
 - **Pending** → **Review** → **Planned** → **Progress** → **Completed**
 
-## Merging duplicate feedback
+## Duplicate Management
 
-When multiple customers request the same thing:
+Merge related requests to maintain clean boards:
+1. Identify duplicate posts
+2. Merge into primary post
+3. Preserve votes and comments
+4. Link original submitters to merged post
 
-1. Identify related posts
-2. Merge them into a single primary post
-3. Votes and comments from merged posts are preserved
-4. Original submitters are linked to the merged post
+## Best Practices
 
-Merging keeps your board clean while preserving all the context and engagement.
-
-## Best practices
-
-- **Start simple** – Don't over-organize early. Add structure as patterns emerge.
-- **Be consistent** – Use the same tag names across your team.
-- **Review regularly** – Archive resolved posts and clean up unused tags.
-- **Combine methods** – Use boards for major divisions, tags for cross-cutting concerns.
+- Start simple and add structure as patterns emerge
+- Maintain consistent tag naming across your team
+- Regularly archive resolved posts and clean unused tags
+- Use boards for major divisions, tags for cross-cutting concerns

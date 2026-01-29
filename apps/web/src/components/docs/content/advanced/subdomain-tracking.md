@@ -3,70 +3,57 @@ title: Custom domains
 description: Set up workspace subdomains and custom domains for your feedback portal.
 ---
 
-## Workspace subdomains
+## Default Subdomain
 
-Every Featul workspace gets a free subdomain:
-
+Every workspace receives a free subdomain:
 ```
 yourworkspace.featul.com
 ```
 
-This is your default feedback portal URL. It's ready to use immediately after creating your workspace.
+Ready to use immediately after workspace creation.
 
-## Custom domains
+## Custom Domain Setup
 
-For a branded experience, you can connect your own domain:
+Connect your branded domain for seamless customer experience:
 
-```
-feedback.yourdomain.com
-```
-
-This gives customers a seamless experience that matches your brand.
-
-## Setting up a custom domain
-
-1. Go to **Settings → Domain** in your workspace
-2. Enter your desired domain (e.g., `feedback.yourdomain.com`)
-3. Add the required DNS records with your DNS provider:
+1. Navigate to **Settings → Domain**
+2. Enter desired domain (e.g., `feedback.yourdomain.com`)
+3. Add DNS record with your provider:
 
 | Type | Name | Value |
 |------|------|-------|
 | CNAME | feedback | `yourworkspace.featul.com` |
 
-4. Wait for DNS propagation (usually a few minutes to a few hours)
-5. Featul will verify the domain automatically
-6. Once verified, your portal is accessible at your custom domain
+4. Wait for DNS propagation (few minutes to hours)
+5. Featul verifies domain automatically
+6. Portal becomes accessible at your custom domain
 
-## SSL certificates
+## SSL Certificates
 
-Featul automatically provisions SSL certificates for custom domains. No manual configuration needed—your portal will be served over HTTPS.
+Automatic SSL provisioning for all custom domains. No manual configuration required—your portal serves over HTTPS immediately after verification.
 
-## How routing works
+## Routing Behavior
 
-Whether visitors access your portal via:
+Both URLs serve identical content:
+- Workspace subdomain: `yourworkspace.featul.com`
+- Custom domain: `feedback.yourdomain.com`
 
-- Your workspace subdomain (`yourworkspace.featul.com`)
-- Your custom domain (`feedback.yourdomain.com`)
+Featul handles routing automatically.
 
-They see the same content. Featul routes all requests to your workspace automatically.
+## Multiple Workspaces
 
-## Multiple workspaces
-
-If you run multiple products or companies, each workspace has its own:
-
+Each workspace has independent domains:
 - Unique subdomain
 - Optional custom domain
-- Separate data and settings
-
-This keeps feedback completely isolated between workspaces.
+- Completely isolated data and settings
 
 ## Troubleshooting
 
-**Domain not verifying?**
-- Check that DNS records are correct
-- Wait for propagation (can take up to 48 hours)
-- Ensure there are no conflicting records
+**Domain verification issues:**
+- Verify DNS record accuracy
+- Allow propagation time (up to 48 hours)
+- Check for conflicting DNS records
 
-**SSL certificate issues?**
-- Certificates are provisioned automatically after domain verification
-- If issues persist, try removing and re-adding the domain
+**SSL certificate problems:**
+- Certificates provision automatically after verification
+- Remove and re-add domain if issues persist

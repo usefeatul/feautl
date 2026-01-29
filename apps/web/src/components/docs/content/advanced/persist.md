@@ -3,71 +3,47 @@ title: Data persistence
 description: How Featul stores your workspaces, feedback, and activity.
 ---
 
-## Overview
+## Data Storage
 
-Featul stores all your data in a durable database. Your feedback, settings, and history are preserved reliably over time.
+All workspace data is stored in a durable PostgreSQL database with automatic backups and redundancy. Your feedback, settings, and history are preserved reliably over time.
 
-## What gets stored
+## Stored Information
 
-| Category | Data |
-|----------|------|
+| Category | Data Types |
+|----------|------------|
 | **Workspace** | Name, slug, domain, plan, theme, branding |
 | **Team** | Members, roles, permissions, invites |
 | **Boards** | Settings, privacy, statuses, tags |
 | **Feedback** | Posts, votes, comments, reactions |
 | **Activity** | Status changes, moderation actions, history |
 
-Every record includes timestamps for creation and last modification.
+Every record includes creation and modification timestamps.
 
-## Workspace data
+## Feedback Data Structure
 
-When you create a workspace, Featul stores:
-
-- **Identity** – Name, slug, subdomain
-- **Configuration** – Plan, theme, feature flags
-- **Branding** – Logo, colors, custom CSS
-- **Team** – Owner, members, their roles and permissions
-
-Workspace slugs can be reserved ahead of time so your desired URL isn't taken while completing setup.
-
-## Feedback data
-
-Posts include:
-
+Posts contain:
 - **Content** – Title, body, optional images
 - **Organization** – Board assignment, tags, roadmap status
 - **State** – Moderation status (draft, published, archived, spam)
 - **Engagement** – Vote counts, comment threads
 - **Metadata** – Custom fields, attachments, integration references
 
-Comments support:
+Comments support nested threads, moderation, reactions, and author attribution.
 
-- Nested threads (replies to replies)
-- Moderation and pinning
-- Reactions and mentions
-- Author attribution
+## Activity Logging
 
-## Activity and audit trail
-
-Important actions are recorded in an activity log:
-
-- Who made changes and when
-- Status transitions (roadmap, moderation)
+Comprehensive audit trail tracks:
+- Status transitions and moderation actions
 - Merge operations
-- Team member actions
+- Team member activities
+- Vote and comment interactions
 
-Reports (for spam, harassment, etc.) track:
+## Data Ownership
 
-- Reporter and reason
-- Resolution status
-- Who handled the report
+Your feedback data belongs to you. The structured storage format enables:
+- Reliable history preservation
+- Data export for analytics
+- Future migration or self-hosting options
+- Integration with external tools
 
-## Why this matters
-
-Reliable data persistence means you can:
-
-- **Trust your history** – Feedback, comments, and changes are preserved
-- **Build on top** – Export data for analytics or custom dashboards
-- **Stay flexible** – Migrate or self-host in the future if needed
-
-Your feedback data is yours—it's stored in a well-structured format that you can access and export.
+Workspace slugs can be reserved during setup to ensure your desired URL remains available.

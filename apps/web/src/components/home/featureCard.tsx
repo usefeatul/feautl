@@ -31,7 +31,7 @@ export default function FeatureCard({ withinContainer = true }: { withinContaine
             <FoundedIcon className="inline-flex size-7 sm:size-8 items-center justify-center rounded-md  bg-foreground/5 text-primary ring-1 ring-foreground/10 p-1 sm:p-1.5" />
             <h3 className="text-foreground text-base sm:text-lg font-semibold">Founded in 2024</h3>
             <p className="text-accent text-balance text-sm sm:text-base sm:max-w-[40ch]">
-              Since 2024, Feedgot has grown into a customer feedback platform,
+              Since 2024, featul has grown into a customer feedback platform,
               processing hundreds of feedback submissions.
             </p>
             <div className="mask-b-from-50 -mx-2 -mt-2 px-2 pt-2"></div>

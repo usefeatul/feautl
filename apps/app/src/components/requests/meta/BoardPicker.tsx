@@ -6,8 +6,7 @@ import { Popover, PopoverTrigger, PopoverContent, PopoverList, PopoverListItem }
 import { DropdownIcon } from "@featul/ui/icons/dropdown"
 import { client } from "@featul/api/client"
 import { cn } from "@featul/ui/lib/utils"
-
-type Board = { id: string; name: string; slug: string }
+import type { Board } from "@/types/board"
 
 export default function BoardPicker({ workspaceSlug, postId, value, onChange, className }: { workspaceSlug: string; postId: string; value: { name: string; slug: string }; onChange: (v: { name: string; slug: string }) => void; className?: string }) {
   const [open, setOpen] = React.useState(false)
@@ -18,9 +17,9 @@ export default function BoardPicker({ workspaceSlug, postId, value, onChange, cl
     let mounted = true
     client.board.settingsByWorkspaceSlug.$get({ slug: workspaceSlug }).then(async (res: Response) => {
       if (!mounted) return
-      const data = await res.json().catch(() => null)
-      const rows = (((data as any)?.boards) || []).map((b: any) => ({ id: b.id, name: b.name, slug: b.slug }))
-      const filtered = rows.filter((b: any) => b.slug !== "roadmap" && b.slug !== "changelog")
+      const data = await res.json().catch(() => ({ boards: [] })) as { boards?: Board[] }
+      const rows = (data?.boards || []).map((b) => ({ id: b.id, name: b.name, slug: b.slug }))
+      const filtered = rows.filter((b) => b.slug !== "roadmap" && b.slug !== "changelog")
       setBoards(filtered)
     })
     return () => {

@@ -5,20 +5,21 @@ import { format } from "date-fns"
 import StatusIcon from "@/components/requests/StatusIcon"
 import { Button } from "@featul/ui/components/button"
 import { LoadingSpinner } from "@/components/settings/global/LoadingSpinner"
+import type { ActivityItem, TagSummary } from "@/types/activity"
 
 interface MemberActivityProps {
-  items: any[]
+  items: ActivityItem[]
   hasNextPage: boolean | undefined
   isFetchingNextPage: boolean
   onLoadMore: () => void
   isLoading?: boolean
 }
 
-function renderActivityDescription(it: any) {
+function renderActivityDescription(it: ActivityItem) {
   const status = it.status || it.metadata?.status || it.metadata?.roadmapStatus || it.metadata?.toStatus
-  const tags =
+  const tags: TagSummary[] =
     (Array.isArray(it.metadata?.tags) && it.metadata?.tags) ||
-    (Array.isArray((it.metadata as any)?.tagSummaries) && (it.metadata as any).tagSummaries) ||
+    (Array.isArray(it.metadata?.tagSummaries) && it.metadata?.tagSummaries) ||
     []
 
   if (it.entity === "post") {
@@ -78,7 +79,7 @@ function renderActivityDescription(it: any) {
           </span>
           {Array.isArray(tags) && tags.length > 0 ? (
             <span className="mt-0.5 flex flex-wrap gap-2 text-sm text-accent">
-              {tags.map((t: any) => (
+              {tags.map((t) => (
                 <span
                   key={String(t.id || t.slug || t.name)}
                   className="inline-flex items-center gap-2 rounded-full border border-border/70  ring-1 ring-border/60 ring-offset-1 ring-offset-white dark:ring-offset-black bg-muted/80 px-2 py-0.5"
@@ -114,7 +115,7 @@ function renderActivityDescription(it: any) {
           </span>
           {Array.isArray(tags) && tags.length > 0 ? (
             <span className="mt-0.5 flex flex-wrap gap-2 text-sm text-accent">
-              {tags.map((t: any) => (
+              {tags.map((t) => (
                 <span
                   key={String(t.id || t.slug || t.name)}
                   className="inline-flex items-center gap-2 rounded-full border border-border/70  ring-1 ring-border/60 ring-offset-1 ring-offset-white dark:ring-offset-black bg-muted/80 px-2 py-0.5"
@@ -389,8 +390,8 @@ function renderActivityDescription(it: any) {
           <span>created tag</span>
           <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-muted/80 ring-1 ring-border/60 ring-offset-1 ring-offset-white dark:ring-offset-black px-2 py-0.5 text-sm">
             {color ? (
-              
-              
+
+
               <span
                 className="inline-block size-2 rounded-full "
                 style={{ backgroundColor: color }}
@@ -474,7 +475,7 @@ export function MemberActivity({ items, hasNextPage, isFetchingNextPage, onLoadM
         ) : items.length === 0 ? (
           <li className="py-6 text-accent text-sm text-center">No activity yet</li>
         ) : (
-          items.map((it: any) => (
+          items.map((it) => (
             <li key={`${it.type}-${it.id}-${String(it.createdAt)}`} className="py-3">
               <div className="text-xs text-accent flex items-start gap-2 min-w-0">
                 <span className="font-medium">
@@ -489,7 +490,7 @@ export function MemberActivity({ items, hasNextPage, isFetchingNextPage, onLoadM
       {hasNextPage ? (
         <div className="pt-3 mt-1 border-t flex justify-center">
           <Button
-          variant="nav"
+            variant="nav"
 
 
             onClick={onLoadMore}

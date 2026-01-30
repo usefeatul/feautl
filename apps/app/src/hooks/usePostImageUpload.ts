@@ -53,8 +53,9 @@ export function usePostImageUpload(workspaceSlug: string, boardSlug?: string) {
         type: file.type,
       })
       toast.success("Image uploaded", { id: toastId })
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to upload image", { id: toastId })
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to upload image"
+      toast.error(message, { id: toastId })
     } finally {
       setUploadingImage(false)
     }

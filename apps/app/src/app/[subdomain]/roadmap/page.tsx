@@ -81,7 +81,7 @@ export default async function RoadmapPage({
             </div>
           )}
         </div>
-        <PublicRequestPagination subdomain={subdomain} slug={slug} page={page} pageSize={PAGE_SIZE} totalCount={totalCount} />
+        <PublicRequestPagination page={page} pageSize={PAGE_SIZE} totalCount={totalCount} />
       </div>
     </DomainPageLayout>
   )

@@ -4,17 +4,26 @@ import React from "react"
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query"
 import { client } from "@featul/api/client"
 import type { Member } from "@/types/team"
+import type { ActivityItem, PaginatedActivity } from "@/types/activity"
 import { MemberHeader } from "@/components/team/MemberHeader"
 import { MemberActivity } from "@/components/team/MemberActivity"
 import { MemberTopPosts } from "@/components/team/MemberTopPosts"
+
+interface TopPost {
+  id: string
+  title: string
+  slug: string
+  upvotes: number
+  status?: string | null
+}
 
 interface Props {
   slug: string
   userId: string
   initialMember?: Member
   initialStats?: { posts: number; comments: number; upvotes: number }
-  initialTopPosts?: Array<{ id: string; title: string; slug: string; upvotes: number; status?: string | null }>
-  initialActivity: { items: any[]; nextCursor: string | null }
+  initialTopPosts?: TopPost[]
+  initialActivity: PaginatedActivity
 }
 
 export default function MemberDetail({ slug, userId, initialMember, initialStats, initialTopPosts = [], initialActivity }: Props) {
@@ -36,10 +45,10 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
     queryKey: ["member-stats", slug, userId],
     queryFn: async () => {
       const res = await client.member.statsByWorkspaceSlug.$get({ slug, userId })
-      const d = await res.json() as { stats?: { posts: number; comments: number; upvotes: number }; topPosts?: any[] }
+      const d = await res.json() as { stats?: { posts: number; comments: number; upvotes: number }; topPosts?: TopPost[] }
       return {
         stats: d?.stats || { posts: 0, comments: 0, upvotes: 0 },
-        topPosts: (d?.topPosts || []) as Array<{ id: string; title: string; slug: string; upvotes: number; status?: string | null }>,
+        topPosts: (d?.topPosts || []) as TopPost[],
       }
     },
     placeholderData: { stats: initialStats || { posts: 0, comments: 0, upvotes: 0 }, topPosts: initialTopPosts },
@@ -48,13 +57,7 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
   })
 
   const stats = statsData?.stats || initialStats || { posts: 0, comments: 0, upvotes: 0 }
-  const topPosts = (statsData?.topPosts || initialTopPosts || []) as Array<{
-    id: string
-    title: string
-    slug: string
-    upvotes: number
-    status?: string | null
-  }>
+  const topPosts: TopPost[] = statsData?.topPosts || initialTopPosts || []
 
   const {
     data: activityData,
@@ -68,19 +71,19 @@ export default function MemberDetail({ slug, userId, initialMember, initialStats
     queryFn: async ({ pageParam }) => {
       const cursor = typeof pageParam === "string" && pageParam.length > 0 ? pageParam : undefined
       const res = await client.member.activityByWorkspaceSlug.$get({ slug, userId, limit: 20, cursor })
-      const d = await res.json() as { items?: any[]; nextCursor?: string | null }
+      const d = await res.json() as PaginatedActivity
       return d
     },
     getNextPageParam: (lastPage) => (lastPage?.nextCursor ?? undefined) as string | undefined,
     initialPageParam: "",
-    placeholderData: { pages: [initialActivity], pageParams: [""] } as any,
+    placeholderData: { pages: [initialActivity], pageParams: [""] },
     staleTime: 30_000,
     refetchOnMount: false,
   })
 
-  const items = React.useMemo(() => {
-    const pages = (activityData?.pages as any[]) || [initialActivity]
-    return pages.flatMap((p: any) => p?.items || [])
+  const items = React.useMemo((): ActivityItem[] => {
+    const pages = activityData?.pages || [initialActivity]
+    return pages.flatMap((p) => p?.items || [])
   }, [activityData?.pages, initialActivity])
 
   return (

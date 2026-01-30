@@ -7,7 +7,7 @@ import { client } from "@featul/api/client"
 import { toast } from "sonner"
 import { getSelectedIds, removeSelectedIds } from "@/lib/selection-store"
 import type { PostDeletedEventDetail, RequestsPageRefreshingDetail } from "@/types/events"
-import type { RequestItemData } from "./RequestItem"
+import type { RequestItemData } from "@/components/requests/RequestItem"
 
 interface UseBulkDeleteRequestsParams {
   workspaceSlug: string
@@ -78,11 +78,15 @@ export function useBulkDeleteRequests({
               }
               window.dispatchEvent(new CustomEvent<PostDeletedEventDetail>("post:deleted", { detail }))
             })
-          } catch {}
+          } catch {
+            toast.error("Failed to delete posts")
+          }
           try {
             queryClient.invalidateQueries({ queryKey: ["member-stats"] })
             queryClient.invalidateQueries({ queryKey: ["member-activity"] })
-          } catch {}
+          } catch {
+            toast.error("Failed to invalidate queries")
+          }
           const remainingItems = listItems.filter((i) => !okIds.includes(i.id))
           const nextLength = remainingItems.length
           const prevTotal = totalCount
@@ -98,7 +102,9 @@ export function useBulkDeleteRequests({
               const detail: RequestsPageRefreshingDetail = { workspaceSlug }
               window.dispatchEvent(new CustomEvent<RequestsPageRefreshingDetail>("requests:page-refreshing", { detail }))
               router.refresh()
-            } catch {}
+            } catch {
+              toast.error("Failed to refresh page")
+            }
           }
           toast.success(`Deleted ${okIds.length} ${okIds.length === 1 ? "post" : "posts"}`)
         }
@@ -113,7 +119,7 @@ export function useBulkDeleteRequests({
         }
       }
     })
-  }, [listKey, listItems, queryClient, workspaceSlug, totalCount, router, onComplete])
+  }, [listKey, listItems, queryClient, workspaceSlug, totalCount, router, onComplete, onItemsChange])
 
   return {
     isPending,

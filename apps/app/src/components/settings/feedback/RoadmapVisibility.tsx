@@ -5,15 +5,16 @@ import { Switch } from "@featul/ui/components/switch"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { client } from "@featul/api/client"
 import { toast } from "sonner"
+import type { Board } from "@/types/board"
 
-export default function RoadmapVisibility({ slug, initialBoards }: { slug: string; initialBoards?: any[] }) {
+export default function RoadmapVisibility({ slug, initialBoards }: { slug: string; initialBoards?: Board[] }) {
   const queryClient = useQueryClient()
   const { data: boards = [], refetch } = useQuery({
     queryKey: ["feedback-boards", slug],
     queryFn: async () => {
       const res = await client.board.settingsByWorkspaceSlug.$get({ slug })
-      const d = await res.json()
-      return (d as any)?.boards || []
+      const d = await res.json() as { boards?: Board[] }
+      return d?.boards || []
     },
     initialData: Array.isArray(initialBoards) ? initialBoards : undefined,
     staleTime: 300000,
@@ -22,15 +23,15 @@ export default function RoadmapVisibility({ slug, initialBoards }: { slug: strin
     refetchOnMount: false,
   })
 
-  const roadmap = React.useMemo(() => (boards || []).find((b: any) => String(b.slug) === "roadmap"), [boards])
+  const roadmap = React.useMemo(() => (boards || []).find((b) => b.slug === "roadmap"), [boards])
 
   const updateRoadmap = async (v: boolean) => {
     try {
-      queryClient.setQueryData(["feedback-boards", slug], (prev: any) => {
+      queryClient.setQueryData<Board[]>(["feedback-boards", slug], (prev) => {
         const arr = Array.isArray(prev) ? prev : []
-        return arr.map((it: any) => it.slug === "roadmap" ? { ...it, isVisible: v } : it)
+        return arr.map((it) => it.slug === "roadmap" ? { ...it, isVisible: v } : it)
       })
-    } catch {}
+    } catch { /* Optimistic update - errors handled in API call below */ }
     try {
       const res = await client.board.updateSettings.$post({ slug, boardSlug: "roadmap", patch: { isVisible: v } })
       if (!res.ok) {

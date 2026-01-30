@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect } from "react"
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import type { NavItem } from "../types/nav"
 
-export function useSidebarHotkeys(active: boolean, middleNav: NavItem[], router: any) {
+export function useSidebarHotkeys(active: boolean, middleNav: NavItem[], router: AppRouterInstance) {
   useEffect(() => {
     if (!active) return
     const onKeyDown = (e: KeyboardEvent) => {
@@ -13,17 +14,17 @@ export function useSidebarHotkeys(active: boolean, middleNav: NavItem[], router:
       const ae = document.activeElement as HTMLElement | null
       const role = ae?.getAttribute("role") || ""
       if (role === "textbox") return
-      if (tag === "INPUT" || tag === "TEXTAREA" || (t && (t as any).isContentEditable)) return
+      if (tag === "INPUT" || tag === "TEXTAREA" || (t instanceof HTMLElement && t.isContentEditable)) return
       const key = e.key.toLowerCase()
       if (key === "r" || key === "c" || key === "b" || key === "m") {
         const target =
           key === "r"
             ? middleNav.find((i) => i.label.toLowerCase() === "roadmap")
             : key === "c"
-            ? middleNav.find((i) => i.label.toLowerCase() === "changelog")
-            : key === "b"
-            ? middleNav.find((i) => i.label.toLowerCase() === "my board")
-            : middleNav.find((i) => i.label.toLowerCase() === "members")
+              ? middleNav.find((i) => i.label.toLowerCase() === "changelog")
+              : key === "b"
+                ? middleNav.find((i) => i.label.toLowerCase() === "my board")
+                : middleNav.find((i) => i.label.toLowerCase() === "members")
         if (target) {
           if (target.external) {
             window.open(target.href, "_blank")

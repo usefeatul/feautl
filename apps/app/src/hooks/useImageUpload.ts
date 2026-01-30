@@ -1,7 +1,7 @@
 import { useState, useRef } from "react"
 import { toast } from "sonner"
 import { getCommentImageUploadUrl } from "@/lib/comment-service"
-import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE, UploadedImage } from "./usePostImageUpload"
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE, type UploadedImage } from "./usePostImageUpload"
 export { type UploadedImage } from "./usePostImageUpload"
 
 export function useImageUpload(postId: string) {
@@ -45,8 +45,9 @@ export function useImageUpload(postId: string) {
         type: file.type,
       })
       toast.success("Image uploaded", { id: toastId })
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to upload image", { id: toastId })
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to upload image"
+      toast.error(message, { id: toastId })
     } finally {
       setUploadingImage(false)
     }

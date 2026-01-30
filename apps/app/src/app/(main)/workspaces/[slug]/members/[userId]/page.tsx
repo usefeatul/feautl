@@ -1,6 +1,7 @@
 import { getServerSession } from "@featul/auth/session"
 import { redirect } from "next/navigation"
 import type { Member } from "@/types/team"
+import type { ActivityItem, PaginatedActivity } from "@/types/activity"
 import MemberDetail from "@/components/team/MemberDetail"
 import { getSettingsInitialData } from "@/lib/workspace"
 import { client } from "@featul/api/client"
@@ -20,7 +21,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
 
   let initialStats: { posts: number; comments: number; upvotes: number } | null = null
   let initialTopPosts: Array<{ id: string; title: string; slug: string; upvotes: number; status?: string | null }> = []
-  let initialActivity: { items: any[]; nextCursor: string | null } = { items: [], nextCursor: null }
+  let initialActivity: PaginatedActivity = { items: [], nextCursor: null }
 
   try {
     const statsRes = await client.member.statsByWorkspaceSlug.$get({ slug, userId })
@@ -32,18 +33,18 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
       initialStats = statsJson.stats || { posts: 0, comments: 0, upvotes: 0 }
       initialTopPosts = statsJson.topPosts || []
     }
-  } catch {}
+  } catch { /* Server component - silently fallback to defaults */ }
 
   try {
     const activityRes = await client.member.activityByWorkspaceSlug.$get({ slug, userId, limit: 20 })
     if (activityRes.ok) {
-      const activityJson = (await activityRes.json()) as { items?: any[]; nextCursor?: string | null }
+      const activityJson = (await activityRes.json()) as { items?: ActivityItem[]; nextCursor?: string | null }
       initialActivity = {
         items: activityJson.items || [],
         nextCursor: activityJson.nextCursor ?? null,
       }
     }
-  } catch {}
+  } catch { /* Server component - silently fallback to empty */ }
 
   return (
     <section className="space-y-4">

@@ -66,8 +66,8 @@ export default function SubdomainChangelogDetail({
             <div
                 className={
                     sidebarPosition === "left"
-                        ? "grid md:grid-cols-[0.3fr_0.7fr] gap-6"
-                        : "grid md:grid-cols-[0.7fr_0.3fr] gap-6"
+                        ? "grid md:grid-cols-[0.3fr_0.7fr] gap-6 items-start"
+                        : "grid md:grid-cols-[0.7fr_0.3fr] gap-6 items-start"
                 }
             >
                 {/* Left Sidebar */}

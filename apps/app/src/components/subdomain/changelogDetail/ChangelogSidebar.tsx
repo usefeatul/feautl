@@ -37,6 +37,7 @@ export function ChangelogSidebar({ subdomain, author }: ChangelogSidebarProps) {
                 </Button>
             </div>
 
+
             {/* Author Card */}
             <ChangelogAuthorCard author={author} />
 

@@ -7,7 +7,7 @@ import { BoardsList } from "./BoardsList"
 import { PoweredBy } from "./PoweredBy"
 import { useDomainBranding } from "./DomainBrandingProvider"
 
-export function DomainSidebar({ subdomain, slug, initialBoards, selectedBoard, hideSubmitButton }: { subdomain: string; slug: string; initialBoards?: Array<{ id: string; name: string; slug: string; postCount?: number }>; selectedBoard?: string; hideSubmitButton?: boolean }) {
+export function DomainSidebar({ subdomain, slug, initialBoards, selectedBoard, hideSubmitButton, hideBoards }: { subdomain: string; slug: string; initialBoards?: Array<{ id: string; name: string; slug: string; postCount?: number }>; selectedBoard?: string; hideSubmitButton?: boolean; hideBoards?: boolean }) {
   const { sidebarPosition } = useDomainBranding()
   const alignClass = sidebarPosition === "left" ? "justify-start" : "justify-end"
   return (
@@ -17,7 +17,7 @@ export function DomainSidebar({ subdomain, slug, initialBoards, selectedBoard, h
         <SearchAction slug={slug} />
       </div>
       {!hideSubmitButton && <SubmitIdeaCard subdomain={subdomain} slug={slug} />}
-      <BoardsList slug={slug} initialBoards={initialBoards} selectedBoard={selectedBoard} />
+      {!hideBoards && <BoardsList slug={slug} initialBoards={initialBoards} selectedBoard={selectedBoard} />}
       <PoweredBy />
     </aside>
   )

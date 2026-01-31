@@ -6,44 +6,10 @@ import { Avatar, AvatarImage, AvatarFallback } from "@featul/ui/components/avata
 import { getInitials } from "@/utils/user-utils";
 import { relativeTime } from "@/lib/time";
 import RoleBadge from "@/components/global/RoleBadge";
-import type { Role } from "@/types/team";
-
-function toPlainText(content: any): string {
-    if (!content) return "";
-    if (typeof content === "string") {
-        return content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-    }
-    // Handle TipTap JSON content - extract text from nodes
-    if (typeof content === "object" && content.content) {
-        const extractText = (node: any): string => {
-            if (node.text) return node.text;
-            if (node.content && Array.isArray(node.content)) {
-                return node.content.map(extractText).join(" ");
-            }
-            return "";
-        };
-        return extractText(content).replace(/\s+/g, " ").trim();
-    }
-    return "";
-}
+import type { ChangelogEntry } from "@/types/changelog";
 
 export interface ChangelogCardProps {
-    item: {
-        id: string;
-        title: string;
-        slug: string;
-        summary?: string | null;
-        content?: any;
-        coverImage?: string | null;
-        publishedAt?: Date | string | null;
-        author?: {
-            name?: string | null;
-            image?: string | null;
-            role?: Role | null;
-            isOwner?: boolean;
-        };
-        tags?: Array<{ id: string; name: string }>;
-    };
+    item: ChangelogEntry;
     linkPrefix?: string;
 }
 
@@ -53,7 +19,7 @@ export function ChangelogCard({ item, linkPrefix = "/p" }: ChangelogCardProps) {
     const displayImage = item.author?.image || undefined;
 
     // Use summary if available, otherwise extract text from content
-    const previewText = item.summary || toPlainText(item.content);
+    const previewText = item.summary || extractTextFromTiptapLocal(item.content);
 
     return (
         <div className="py-6 px-6 relative group">
@@ -121,6 +87,33 @@ export function ChangelogCard({ item, linkPrefix = "/p" }: ChangelogCardProps) {
             </div>
         </div>
     );
+}
+
+// Local implementation to avoid import issues with server/client boundary
+function extractTextFromTiptapLocal(content: ChangelogEntry['content']): string {
+    if (!content) return "";
+    if (typeof content === "string") {
+        return content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    }
+
+    interface TiptapNode {
+        type: string;
+        text?: string;
+        content?: TiptapNode[];
+    }
+
+    const extractText = (node: TiptapNode): string => {
+        if (node.text) return node.text;
+        if (node.content && Array.isArray(node.content)) {
+            return node.content.map(extractText).join(" ");
+        }
+        return "";
+    };
+
+    if (typeof content === "object" && 'content' in content && Array.isArray(content.content)) {
+        return content.content.map(extractText).join(" ").replace(/\s+/g, " ").trim();
+    }
+    return "";
 }
 
 export default React.memo(ChangelogCard);

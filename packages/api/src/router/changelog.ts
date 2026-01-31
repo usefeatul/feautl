@@ -6,6 +6,7 @@ import { HTTPException } from "hono/http-exception"
 import { normalizePlan, getPlanLimits, assertWithinLimit } from "../shared/plan"
 import { toSlug } from "../shared/slug"
 import { requireBoardManagerBySlug } from "../shared/access"
+import { getChangelogTags, findTagsByIds, createTagsMap, type ChangelogTag } from "../shared/changelog-types"
 import {
   bySlugSchema,
   createEntrySchema,
@@ -44,12 +45,12 @@ export function createChangelogRouter() {
         if (!ws) return c.superjson({ ok: false })
 
         const [b] = await ctx.db
-          .select({ id: board.id, isVisible: board.isVisible })
+          .select({ id: board.id, isVisible: board.isVisible, changelogTags: board.changelogTags })
           .from(board)
           .where(and(eq(board.workspaceId, ws.id), eq(board.systemType, "changelog")))
           .limit(1)
 
-        const tags = Array.isArray((b as any)?.changelogTags) ? (b as any).changelogTags.map((t: any) => ({ id: t.id, name: t.name, slug: t.slug, color: t.color || null, count: 0 })) : []
+        const tags = getChangelogTags(b?.changelogTags).map(t => ({ ...t, count: 0 }))
         return c.superjson({ ok: true, isVisible: Boolean(b?.isVisible), tags })
       }),
 
@@ -83,7 +84,7 @@ export function createChangelogRouter() {
           .from(board)
           .where(and(eq(board.workspaceId, ws.id), eq(board.systemType, "changelog")))
           .limit(1)
-        const rows = Array.isArray((b as any)?.changelogTags) ? (b as any).changelogTags.map((t: any) => ({ id: t.id, name: t.name, slug: t.slug, color: t.color || null, count: 0 })) : []
+        const rows = getChangelogTags(b?.changelogTags).map(t => ({ ...t, count: 0 }))
         return c.superjson({ tags: rows })
       }),
 
@@ -98,13 +99,12 @@ export function createChangelogRouter() {
           .limit(1)
         if (!b) throw new HTTPException(404, { message: "Changelog board not found" })
         const limits = getPlanLimits(String(ws.plan || "free"))
-        const current = Array.isArray((b as any)?.changelogTags) ? (b as any).changelogTags.length : 0
+        const currentTags = getChangelogTags(b.changelogTags)
         const maxTags = limits.maxChangelogTags
-        assertWithinLimit(current, maxTags, (max) => `Changelog tags limit reached (${max})`)
+        assertWithinLimit(currentTags.length, maxTags, (max) => `Changelog tags limit reached (${max})`)
         const slug = toSlug(input.name)
         const id = globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`
-        const prev = Array.isArray((b as any)?.changelogTags) ? (b as any).changelogTags : []
-        const next = [...prev, { id, name: input.name.trim(), slug, color: input.color || null }]
+        const next = [...currentTags, { id, name: input.name.trim(), slug, color: input.color || null }]
         await ctx.db.update(board).set({ changelogTags: next, updatedAt: new Date() }).where(eq(board.id, b.id))
 
         await ctx.db.insert(activityLog).values({
@@ -134,8 +134,8 @@ export function createChangelogRouter() {
           .where(and(eq(board.workspaceId, ws.id), eq(board.systemType, "changelog")))
           .limit(1)
         if (!b) throw new HTTPException(404, { message: "Changelog board not found" })
-        const prev = Array.isArray((b as any)?.changelogTags) ? (b as any).changelogTags : []
-        const next = prev.filter((t: any) => String(t.id) !== String(input.tagId))
+        const currentTags = getChangelogTags(b.changelogTags)
+        const next = currentTags.filter(t => String(t.id) !== String(input.tagId))
         await ctx.db.update(board).set({ changelogTags: next, updatedAt: new Date() }).where(eq(board.id, b.id))
 
         await ctx.db.insert(activityLog).values({
@@ -320,7 +320,8 @@ export function createChangelogRouter() {
           isOwner = wsOwner?.ownerId === entry.authorId
         }
 
-        const tags = (b.changelogTags as any[] || []).filter((t: any) => entry.tags.includes(t.id))
+        const allTags = getChangelogTags(b.changelogTags)
+        const entryTags = findTagsByIds(allTags, entry.tags)
 
         c.header("Cache-Control", "public, max-age=60, stale-while-revalidate=300")
         return c.superjson({
@@ -332,7 +333,7 @@ export function createChangelogRouter() {
               role: authorRole,
               isOwner,
             },
-            tags,
+            tags: entryTags,
           },
         })
       }),
@@ -488,17 +489,20 @@ export function createChangelogRouter() {
           .limit(1)
 
         // Get all members for author role lookup
-        const authorIds = entries.map((e: any) => e.authorId).filter(Boolean) as string[]
-        const members = authorIds.length > 0 ? await ctx.db
+        type EntryWithAuthor = (typeof entries)[number]
+        const authorIds = entries.map((e: EntryWithAuthor) => e.authorId).filter((id: string | null): id is string => Boolean(id))
+        type MemberRole = { userId: string; role: "admin" | "member" | "viewer" | null }
+        const members: MemberRole[] = authorIds.length > 0 ? await ctx.db
           .select({ userId: workspaceMember.userId, role: workspaceMember.role })
           .from(workspaceMember)
           .where(eq(workspaceMember.workspaceId, ws.id)) : []
-        const memberRoleMap = new Map(members.map((m: any) => [m.userId, m.role]))
+        const memberRoleMap = new Map(members.map((m: MemberRole) => [m.userId, m.role]))
 
-        const tagsMap = new Map((b.changelogTags as any[] || []).map((t: { id: string }) => [t.id, t]))
-        const entriesWithTags = entries.map((e: any) => ({
+        const allTags = getChangelogTags(b.changelogTags)
+        const tagsMap = createTagsMap(allTags)
+        const entriesWithTags = entries.map((e: EntryWithAuthor) => ({
           ...e,
-          tags: e.tags.map((id: string) => tagsMap.get(id)).filter(Boolean),
+          tags: e.tags.map((id: string) => tagsMap.get(id)).filter((t: ChangelogTag | undefined): t is ChangelogTag => t !== undefined),
           author: {
             name: e.authorName,
             image: e.authorImage,
@@ -549,13 +553,15 @@ export function createChangelogRouter() {
           .limit(limit)
           .offset(offset)
 
-        const tagsMap = new Map((b.changelogTags as any[] || []).map((t: { id: string }) => [t.id, t]))
-        const entriesWithTags = entries.map((e: typeof changelogEntry.$inferSelect) => ({
+        const allTags = getChangelogTags(b.changelogTags)
+        const tagsMap = createTagsMap(allTags)
+        type Entry = (typeof entries)[number]
+        const entriesWithTags = entries.map((e: Entry) => ({
           ...e,
-          tags: e.tags.map((id: string) => tagsMap.get(id)).filter(Boolean),
+          tags: e.tags.map((id: string) => tagsMap.get(id)).filter((t: ChangelogTag | undefined): t is ChangelogTag => t !== undefined),
         }))
 
-        return c.superjson({ entries: entriesWithTags, total: countResult?.count || 0, availableTags: b.changelogTags || [] })
+        return c.superjson({ entries: entriesWithTags, total: countResult?.count || 0, availableTags: allTags })
       }),
   })
 }

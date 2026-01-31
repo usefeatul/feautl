@@ -6,6 +6,7 @@ import { createWorkspaceSectionMetadata } from "@/lib/seo"
 import { getSidebarPositionBySlug } from "@/lib/workspace"
 import { client } from "@featul/api/client"
 import { ChangelogCard } from "@/components/subdomain/ChangelogCard"
+import type { ChangelogEntriesListResponse, ChangelogEntry } from "@/types/changelog"
 
 export async function generateMetadata({ params }: { params: Promise<{ subdomain: string }> }): Promise<Metadata> {
   const { subdomain } = await params
@@ -17,14 +18,14 @@ export default async function ChangelogPage({ params }: { params: Promise<{ subd
   const slug = subdomain
   const sidebarPosition = await getSidebarPositionBySlug(slug)
   const res = await client.changelog.entriesList.$get({ slug })
-  const d = await res.json()
-  const entries = ((d as any)?.entries || []).map((e: any) => ({
+  const d = await res.json() as ChangelogEntriesListResponse
+  const entries: ChangelogEntry[] = (d.entries || []).map((e) => ({
     id: e.id,
     title: e.title,
+    slug: e.slug,
     summary: e.summary,
     content: e.content,
     coverImage: e.coverImage,
-    slug: e.slug,
     publishedAt: e.publishedAt,
     author: e.author,
     tags: Array.isArray(e.tags) ? e.tags : []
@@ -41,8 +42,8 @@ export default async function ChangelogPage({ params }: { params: Promise<{ subd
             </div>
           ) : (
             <div className="divide-y">
-              {entries.map((e: any) => (
-                <ChangelogCard key={e.id} item={e} linkPrefix="/changelog/p" />
+              {entries.map((entry) => (
+                <ChangelogCard key={entry.id} item={entry} linkPrefix="/changelog/p" />
               ))}
             </div>
           )}

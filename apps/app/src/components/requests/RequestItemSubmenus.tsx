@@ -25,7 +25,7 @@ export function StatusSubmenu({ currentStatus, isPending, onBack, onUpdateStatus
     return (
         <PopoverList className="max-h-none! overflow-visible">
             <PopoverListItem onClick={onBack} className="text-muted-foreground">
-                <span className="text-sm">← Back</span>
+                <span className="text-sm">Back</span>
             </PopoverListItem>
             <PopoverSeparator />
             {statusOptions.map((option) => (
@@ -58,7 +58,7 @@ export function TagsSubmenu({ availableTags, optimisticTags, onBack, onToggleTag
     return (
         <PopoverList>
             <PopoverListItem onClick={onBack} className="text-muted-foreground">
-                <span className="text-sm">← Back</span>
+                <span className="text-sm">Back</span>
             </PopoverListItem>
             <PopoverSeparator />
             {availableTags.length === 0 ? (

@@ -120,13 +120,11 @@ export function RequestItemContextMenu({
                             <PopoverListItem onClick={() => setCurrentSubmenu("status")}>
                                 <LayersIcon className="size-4" />
                                 <span className="text-sm">Status</span>
-                                <span className="ml-auto text-xs opacity-50">→</span>
                             </PopoverListItem>
 
                             <PopoverListItem onClick={() => setCurrentSubmenu("tags")}>
                                 <TagIcon className="size-4" />
                                 <span className="text-sm">Tags</span>
-                                <span className="ml-auto text-xs opacity-50">→</span>
                             </PopoverListItem>
 
                             <PopoverSeparator />

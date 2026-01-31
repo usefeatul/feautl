@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@featul/ui/components/button";
 import { Popover, PopoverContent, PopoverTrigger, PopoverList, PopoverListItem } from "@featul/ui/components/popover";
 import { TagIcon } from "@featul/ui/icons/tag";
-import { X } from "lucide-react";
+import XMarkIcon from "@featul/ui/icons/xmark";
 
 export interface WorkspaceTag {
     id: string;
@@ -12,7 +12,7 @@ export interface WorkspaceTag {
     slug: string;
     color?: string | null;
 }
-
+ 
 interface TagSelectorProps {
     availableTags: WorkspaceTag[];
     selectedTags: string[];
@@ -55,7 +55,7 @@ export function TagSelector({
                     onClick={() => toggleTag(tag.id)}
                 >
                     {tag.name}
-                    <X className="h-3 w-3 text-muted-foreground" />
+                    <XMarkIcon className="size-3 text-muted-foreground"/>
                 </Button>
             ))}
 

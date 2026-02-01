@@ -64,6 +64,8 @@ export default async function WorkspacePage({ params, searchParams }: Props) {
     createdAt: row.createdAt instanceof Date ? row.createdAt.toISOString() : String(row.createdAt),
     publishedAt: row.publishedAt instanceof Date ? row.publishedAt.toISOString() : row.publishedAt ? String(row.publishedAt) : null,
     isAnonymous: row.isAnonymous ?? undefined,
+    isPinned: row.isPinned ?? undefined,
+    isFeatured: row.isFeatured ?? undefined,
   }));
 
   return (

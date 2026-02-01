@@ -13,6 +13,7 @@ import RoleBadge from "@/components/global/RoleBadge"
 import { UpvoteButton } from "@/components/upvote/UpvoteButton"
 import { RequestItemContextMenu } from "./RequestItemContextMenu"
 import { ReportIndicator } from "./ReportIndicator"
+import { getFlagHighlightClasses } from "@/utils/flag-styles"
 
 export interface RequestItemData {
   id: string
@@ -65,18 +66,7 @@ function RequestItemBase({ item, workspaceSlug, linkBase, isSelecting, isSelecte
   const title = item.title || ""
   const displayTitle = title.length > 110 ? `${title.slice(0, 110).trimEnd()}…` : title
 
-  // Styling for list items: keep left border design (more compact than ribbon)
-  const pinnedClasses = "border-l-2 border-l-primary bg-primary/5 rounded-l-[5px]"
-  const featuredClasses = "border-l-2 border-l-amber-500 bg-amber-500/5 rounded-l-[5px]"
-  const bothClasses = "border-l-2 border-l-transparent bg-gradient-to-b from-primary/5 to-amber-500/5 rounded-l-[5px] relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-0.5 before:bg-gradient-to-b before:from-primary before:to-amber-500 before:rounded-l-[5px]"
-
-  const highlightClasses = item.isPinned && item.isFeatured
-    ? bothClasses
-    : item.isPinned
-      ? pinnedClasses
-      : item.isFeatured
-        ? featuredClasses
-        : ""
+  const highlightClasses = getFlagHighlightClasses(item.isPinned, item.isFeatured)
 
   return (
     <RequestItemContextMenu

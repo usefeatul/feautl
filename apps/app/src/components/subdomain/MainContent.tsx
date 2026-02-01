@@ -50,6 +50,8 @@ export function MainContent({
       if (orderParam === "likes") {
         next.sort(
           (a, b) =>
+            // Pinned posts always first
+            (Number(b.isPinned || false) - Number(a.isPinned || false)) ||
             (Number(b.upvotes || 0) - Number(a.upvotes || 0)) ||
             new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
         );

@@ -11,7 +11,7 @@ import type { RequestItemData } from "@/components/requests/RequestItem"
 export const revalidate = 0
 export const dynamic = "force-dynamic"
 
-export async function generateMetadata({ params, searchParams }: { params: Promise<{ subdomain: string; slug: string }>; searchParams: Promise<{ board?: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params, _searchParams }: { params: Promise<{ subdomain: string; slug: string }>; _searchParams: Promise<{ board?: string }> }): Promise<Metadata> {
   const { subdomain, slug } = await params
   return createWorkspaceSectionMetadata(subdomain, "feedback", { boardSlug: slug })
 }
@@ -49,7 +49,7 @@ export default async function BoardPage({
   })
 
   const items: RequestItemData[] = await Promise.all(
-    (rows as any[]).map(async (r) => ({
+    rows.map(async (r) => ({
       id: r.id,
       title: r.title,
       slug: r.slug,
@@ -65,11 +65,12 @@ export default async function BoardPage({
       authorImage: r.authorImage,
       authorName: r.authorName,
       authorId: r.authorId,
-      isAnonymous: r.isAnonymous,
+      isAnonymous: r.isAnonymous ?? undefined,
       hasVoted: await readHasVotedForPost(r.id),
       role: r.role,
       isOwner: false,
       isFeatul: r.authorId === "featul-founder",
+      isPinned: r.isPinned ?? false,
     }))
   )
 

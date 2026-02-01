@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "@featul/ui/components/avatar";
 import { getInitials } from "@/utils/user-utils";
-import { relativeTime } from "@/lib/time";
+
 import RoleBadge from "@/components/global/RoleBadge";
 import type { ChangelogEntry } from "@/types/changelog";
 import { extractTextFromTiptap } from "@/types/changelog";
@@ -34,7 +34,7 @@ export function ChangelogCard({ item, linkPrefix = "/p" }: ChangelogCardProps) {
                     <img
                         src={item.coverImage}
                         alt={item.title}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="h-full w-full object-cover"
                     />
                 </div>
             ) : null}
@@ -70,7 +70,11 @@ export function ChangelogCard({ item, linkPrefix = "/p" }: ChangelogCardProps) {
                             {displayName}
                         </span>
                         <span className="text-xs text-muted-foreground leading-tight">
-                            {relativeTime(typeof item.publishedAt === 'string' ? item.publishedAt : item.publishedAt instanceof Date ? item.publishedAt.toISOString() : "")}
+                            {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                            }) : ""}
                         </span>
                     </div>
                 </div>

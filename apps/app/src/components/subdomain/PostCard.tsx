@@ -9,7 +9,7 @@ import StatusIcon from "@/components/requests/StatusIcon"
 import { Avatar, AvatarImage, AvatarFallback } from "@featul/ui/components/avatar"
 import { getInitials, getPrivacySafeDisplayUser } from "@/utils/user-utils"
 import { statusLabel } from "@/lib/roadmap"
-import { relativeTime } from "@/lib/time"
+
 import RoleBadge from "@/components/global/RoleBadge"
 
 function toPlain(s?: string | null): string {
@@ -76,7 +76,11 @@ function PostCardBase({
               {displayName}
             </span>
             <span className="text-xs text-muted-foreground leading-tight">
-              {relativeTime(item.publishedAt ?? item.createdAt)}
+              {new Date(item.publishedAt ?? item.createdAt ?? new Date()).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
             </span>
           </div>
         </div>

@@ -62,7 +62,7 @@ function PostCardBase({
       {item.content ? (
         <p className="mt-3 text-sm text-accent  whitespace-normal line-clamp-2">{toPlain(item.content)}</p>
       ) : null}
-      <div className="mt-3 flex items-center justify-between">
+      <div className="mt-3 flex items-end justify-between">
         <div className="flex items-center gap-2">
           <div className="relative">
             <Avatar className="size-8 relative overflow-visible">

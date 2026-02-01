@@ -19,7 +19,7 @@ import { EditIcon } from "@featul/ui/icons/edit"
 import { MergePopover } from "./MergePopover"
 import { DeletePostButton } from "./DeletePostButton"
 import { useIsMobile } from "@featul/ui/hooks/use-mobile"
-import EditPostModal from "../subdomain/requestDetail/EditPostModal"
+import EditPostModal from "../subdomain/request-detail/EditPostModal"
 
 export type RequestDetailData = {
   id: string
